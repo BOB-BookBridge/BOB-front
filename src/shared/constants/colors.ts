@@ -29,4 +29,4 @@ export const colors = {
     BLACK: '#FAFAFA',
     ...common,
   },
-} as const;
+};

@@ -1,17 +1,24 @@
 import { colors } from '@/shared/constants/colors';
 
-export const lightTheme = {
+export const shared = {
+  font: {
+    base: 'var(--font-pretendard), sans-serif',
+  },
+  breakpoints: {
+    mobile: '393px',
+    tablet: '744px',
+    desktop: '1440px',
+  },
+};
+
+export const light = {
+  ...shared,
   colors: colors.light,
-  font: {
-    base: 'var(--font-pretendard), sans-serif',
-  },
 };
 
-export const darkTheme = {
+export const dark = {
+  ...shared,
   colors: colors.dark,
-  font: {
-    base: 'var(--font-pretendard), sans-serif',
-  },
 };
 
-export type AppTheme = typeof lightTheme;
+export type AppTheme = typeof light;
