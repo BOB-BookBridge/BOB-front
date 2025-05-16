@@ -9,13 +9,13 @@ import * as S from './Header.styles';
 import { colors } from '../constants';
 
 // zustand로 관리 예정
-const isLogin = true;
+const isLogin = false;
 const mode = 'dark';
 
 const Header = () => {
   return (
     <S.Container>
-      <S.Logo src='/logo.svg' alt='Logo' />
+      <S.Logo src='/logo-withoutletter.svg' alt='Logo' />
       <S.RightSection>
         {mode == 'dark' ? (
           <DarkModeIcon fill={colors.dark.PRIMARY} />
