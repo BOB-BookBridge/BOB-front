@@ -2,6 +2,7 @@ import React from 'react';
 import localFont from 'next/font/local';
 import StyledComponentsRegistry from '@/shared/lib/StyledComponentsRegistry';
 import ThemeRegistry from '@/shared/providers/ThemeRegistry';
+import { Header } from '@/shared/ui';
 
 const pretendard = localFont({
   src: '../shared/assets/fonts/PretendardVariable.woff2',
@@ -19,7 +20,10 @@ export default function RootLayout({
     <html lang='ko'>
       <body className={`${pretendard.variable}`} suppressHydrationWarning>
         <StyledComponentsRegistry>
-          <ThemeRegistry>{children}</ThemeRegistry>
+          <ThemeRegistry>
+            <Header />
+            {children}
+          </ThemeRegistry>
         </StyledComponentsRegistry>
       </body>
     </html>
