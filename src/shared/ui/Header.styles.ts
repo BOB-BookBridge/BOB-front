@@ -26,7 +26,9 @@ export const IconGroup = styled.div`
   gap: 10px;
 `;
 
-export const LoginButton = styled.div`
+export const LoginButton = styled.button`
+  all: unset;
+  cursor: pointer;
   border-radius: 10px;
   background-color: ${colors.dark.PRIMARY};
   color: colors.dark.BLACK;
