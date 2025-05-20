@@ -7,7 +7,7 @@ const ListingSearchBar = () => {
 
 export default ListingSearchBar;
 
-export const Container = styled.div`
+const Container = styled.div`
   height: 60px;
   display: flex;
   background-color: black;

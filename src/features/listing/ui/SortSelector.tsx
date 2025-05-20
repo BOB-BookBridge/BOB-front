@@ -7,7 +7,7 @@ const SortSelector = () => {
 };
 export default SortSelector;
 
-export const Container = styled.div`
+const Container = styled.div`
   width: 100px;
   height: 40px;
   background-color: skyblue;

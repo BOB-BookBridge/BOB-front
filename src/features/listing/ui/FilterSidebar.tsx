@@ -7,7 +7,7 @@ const FilterSideBar = () => {
 
 export default FilterSideBar;
 
-export const Container = styled.aside`
+const Container = styled.aside`
   width: 200px;
   @media (max-width: 744px) {
     display: none;

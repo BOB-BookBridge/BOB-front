@@ -6,7 +6,7 @@ const FilterMenu = () => {
 };
 export default FilterMenu;
 
-export const Container = styled.div`
+const Container = styled.div`
   width: 90px;
   height: 40px;
   background-color: grey;

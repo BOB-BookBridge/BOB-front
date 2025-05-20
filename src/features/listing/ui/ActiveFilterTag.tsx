@@ -6,7 +6,7 @@ const ActiveFilterTag = () => {
 };
 export default ActiveFilterTag;
 
-export const Container = styled.div`
+const Container = styled.div`
   flex: 1;
   height: 40px;
   background-color: grey;
