@@ -1,6 +1,6 @@
 'use client';
 
-import LoginLayout from '@/features/auth/LoginLayout';
+import LoginLayout from '@/features/auth/ui/LoginLayout';
 import styled from 'styled-components';
 
 const LoginPage = () => {

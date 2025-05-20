@@ -1,55 +1,51 @@
-import { colors } from '../constants';
+import {
+  FieldError,
+  FieldValues,
+  Path,
+  RegisterOptions,
+  UseFormRegister,
+} from 'react-hook-form';
+import * as S from './InputGroup.styles';
 
-type InputGroupProps = {
-  inputs: {
-    name: string;
-    placeholder: string;
-    value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    error?: string;
-    rightElement?: React.ReactNode;
-  }[];
-};
+interface InputItem<T extends FieldValues> {
+  name: Path<T>;
+  placeholder: string;
+  type?: React.HTMLInputTypeAttribute;
+  rules?: RegisterOptions<T, Path<T>>;
+  rightElement?: React.ReactNode;
+}
 
-const InputGroup = ({ inputs }: InputGroupProps) => {
+interface InputGroupProps<T extends FieldValues> {
+  inputs: InputItem<T>[];
+  register: UseFormRegister<T>;
+  errors?: Partial<Record<keyof T, FieldError>>;
+}
+
+const InputGroup = <T extends Record<string, any>>({
+  inputs,
+  register,
+  errors,
+}: InputGroupProps<T>) => {
   return (
-    <div
-      style={{
-        border: `1px solid ${colors.dark.GRAY_500}`,
-        borderRadius: 12,
-        width: '100%',
-        maxWidth: '300px',
-        overflow: 'hidden',
-      }}>
-      {inputs.map((input, idx) => (
-        <div
-          key={input.name}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%',
-            height: '50px',
-            borderTop: idx === 0 ? 'none' : `1px solid ${colors.dark.GRAY_500}`,
-            padding: '10px',
-          }}>
-          <input
-            type='email'
-            name={input.name}
-            placeholder={input.placeholder}
-            value={input.value}
-            onChange={input.onChange}
-            style={{
-              flex: 1,
-              border: 'none',
-              outline: 'none',
-              fontSize: 12,
-              backgroundColor: 'transparent',
-            }}
-          />
-          {input.rightElement}
-        </div>
-      ))}
-    </div>
+    <S.Container>
+      <S.InputContainer>
+        {inputs.map((input, idx) => (
+          <div key={input.name}>
+            <S.InputWrapper idx={idx}>
+              <S.Input
+                type={input.type ?? 'text'}
+                {...register(input.name, input.rules)}
+                placeholder={input.placeholder}
+              />
+              {input.rightElement}
+            </S.InputWrapper>
+          </div>
+        ))}
+      </S.InputContainer>
+      {errors && (
+        <S.ErrorMessage>{Object.values(errors)[0]?.message}</S.ErrorMessage>
+      )}
+    </S.Container>
   );
 };
 

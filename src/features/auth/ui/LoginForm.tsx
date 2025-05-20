@@ -2,6 +2,7 @@
 
 import { useForm, useWatch } from 'react-hook-form';
 import { InputGroup, Button } from '@/shared/ui';
+import { emailRule, passwordBasicRule } from '@/shared/constants';
 import styled from 'styled-components';
 
 interface LoginFormValues {
@@ -13,6 +14,7 @@ const LoginForm = () => {
   const {
     register,
     control,
+    setError,
     formState: { errors },
   } = useForm<LoginFormValues>({
     mode: 'onChange',
@@ -25,8 +27,18 @@ const LoginForm = () => {
     <Container>
       <InputGroup
         inputs={[
-          { name: 'email', placeholder: '이메일' },
-          { name: 'password', placeholder: '비밀번호' },
+          {
+            name: 'email',
+            placeholder: '이메일',
+            type: 'email',
+            rules: emailRule,
+          },
+          {
+            name: 'password',
+            placeholder: '비밀번호',
+            type: 'password',
+            rules: passwordBasicRule,
+          },
         ]}
         register={register}
         errors={errors}
