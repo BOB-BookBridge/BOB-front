@@ -7,6 +7,12 @@ const GlobalStyle = createGlobalStyle`
    --font-pretendard: ${({ theme }) => theme.font.base};
   }
 
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
   body {
     background-color: ${({ theme }) => theme.colors.WHITE};
     color: ${({ theme }) => theme.colors.BLACK};

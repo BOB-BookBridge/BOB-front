@@ -9,7 +9,7 @@ import {
   SortSelector,
   FilterMenu,
   SelectArea,
-} from '@/features/ui';
+} from '@/features/listing/ui';
 
 const Home = () => {
   return (

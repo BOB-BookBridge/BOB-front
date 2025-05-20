@@ -6,7 +6,7 @@ const SelectArea = () => {
 };
 export default SelectArea;
 
-export const Container = styled.div`
+const Container = styled.div`
   width: 120px;
   height: 40px;
   background-color: brown;
