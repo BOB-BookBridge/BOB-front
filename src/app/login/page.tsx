@@ -1,12 +1,12 @@
 'use client';
 
-import LoginForm from '@/features/auth/LoginForm';
+import LoginLayout from '@/features/auth/LoginLayout';
 import styled from 'styled-components';
 
 const LoginPage = () => {
   return (
     <Container>
-      <LoginForm />
+      <LoginLayout />
     </Container>
   );
 };
