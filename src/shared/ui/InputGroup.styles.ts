@@ -33,6 +33,7 @@ export const Input = styled.input`
   border: none;
   outline: none;
   font-size: 12px;
+  color: ${({ theme }) => theme.colors.BLACK};
   background-color: transparent;
 `;
 
