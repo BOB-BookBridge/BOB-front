@@ -14,14 +14,13 @@ const LoginForm = () => {
   const {
     register,
     control,
-    setError,
     formState: { errors },
   } = useForm<LoginFormValues>({
     mode: 'onChange',
   });
   const email = useWatch({ name: 'email', control });
   const password = useWatch({ name: 'password', control });
-  let disabled = !email || !password;
+  const disabled = !email || !password;
 
   return (
     <Container>

@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import { colors } from '@/shared/constants';
 import LoginForm from './LoginForm';
 import AccountGuide from './AccountGuide';
+import Image from 'next/image';
 
 const LoginLayout = () => {
   return (
     <Container>
-      <img src='/logo-dark.svg' width='150px' alt='Logo'></img>
+      <Image src='/logo-dark.svg' width={150} height={150} alt='Logo' />
       <LoginForm />
       <AccountGuide />
     </Container>

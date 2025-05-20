@@ -21,7 +21,7 @@ interface InputGroupProps<T extends FieldValues> {
   errors?: Partial<Record<keyof T, FieldError>>;
 }
 
-const InputGroup = <T extends Record<string, any>>({
+const InputGroup = <T extends FieldValues>({
   inputs,
   register,
   errors,
