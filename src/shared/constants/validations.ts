@@ -36,6 +36,14 @@ export const passwordConfirmRule = (
   },
 });
 
+export const nicknameRule = {
+  required: VALIDATION_MESSAGES.required('별명'),
+  pattern: {
+    value: /^.{1,10}$/,
+    message: VALIDATION_MESSAGES.nickname.tooLong,
+  },
+};
+
 export const required = (label: string) => ({
   required: VALIDATION_MESSAGES.required(label),
 });

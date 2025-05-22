@@ -5,6 +5,7 @@ import {
   emailRule,
   passwordConfirmRule,
   passwordSignupRule,
+  nicknameRule,
 } from '@/shared/constants';
 import { InputGroup } from '@/shared/ui';
 import { InputItem } from '@/shared/ui/InputGroup';
@@ -160,6 +161,19 @@ const SignUpForm = () => {
         errors={{
           password: errors.password,
           passwordConfirm: errors.passwordConfirm,
+        }}
+      />
+      <InputGroup
+        inputs={[
+          {
+            name: 'nickname',
+            placeholder: '별명',
+            rules: nicknameRule,
+          },
+        ]}
+        register={register}
+        errors={{
+          nickname: errors.nickname,
         }}
       />
     </S.Container>
