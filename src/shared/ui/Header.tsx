@@ -20,8 +20,8 @@ const Header = () => {
   const pathname = usePathname();
   const hideHeader =
     pathname?.startsWith('/login') ||
-    pathname?.startsWith('signup') ||
-    pathname?.startsWith('password');
+    pathname?.startsWith('/signup') ||
+    pathname?.startsWith('/password');
 
   if (hideHeader) return null;
   return (

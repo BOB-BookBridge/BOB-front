@@ -7,8 +7,13 @@ export const emailRule = {
     message: VALIDATION_MESSAGES.email,
   },
 };
+
 export const passwordBasicRule = {
   required: VALIDATION_MESSAGES.required('비밀번호'),
+};
+
+export const codeBasicRule = {
+  required: VALIDATION_MESSAGES.required('인증 코드'),
 };
 
 export const passwordSignupRule = {

@@ -7,7 +7,7 @@ import {
 } from 'react-hook-form';
 import * as S from './InputGroup.styles';
 
-interface InputItem<T extends FieldValues> {
+export interface InputItem<T extends FieldValues> {
   name: Path<T>;
   placeholder: string;
   type?: React.HTMLInputTypeAttribute;

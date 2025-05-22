@@ -1,17 +1,17 @@
 'use client';
 
-import { LoginLayout } from '@/features/auth/ui';
+import { SignUpLayout } from '@/features/auth/ui';
 import styled from 'styled-components';
 
-const LoginPage = () => {
+const SignUpPage = () => {
   return (
     <Container>
-      <LoginLayout />
+      <SignUpLayout />
     </Container>
   );
 };
 
-export default LoginPage;
+export default SignUpPage;
 
 const Container = styled.div`
   width: 100%;
