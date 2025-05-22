@@ -6,6 +6,14 @@ interface ButtonProps {
   type: 'RE-REQUEST' | 'CONFIRM';
 }
 
+export const Container = styled.div`
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+`;
+
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: end;

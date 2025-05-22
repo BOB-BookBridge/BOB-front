@@ -1,8 +1,12 @@
-import { useForm, useWatch } from 'react-hook-form';
-import * as S from './SignUpForm.styles';
-import { codeBasicRule, emailRule } from '@/shared/constants';
-import { InputGroup } from '@/shared/ui';
 import { useEffect, useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
+import {
+  codeBasicRule,
+  emailRule,
+  passwordConfirmRule,
+  passwordSignupRule,
+} from '@/shared/constants';
+import { InputGroup } from '@/shared/ui';
 import { InputItem } from '@/shared/ui/InputGroup';
 import {
   handleCodeRequest,
@@ -10,6 +14,7 @@ import {
   startCountdown,
 } from '../model';
 import SignUpVerifyButton from './SignUpVerifyButton';
+import * as S from './SignUpForm.styles';
 
 interface SignUpFormValues {
   email: string;
@@ -22,6 +27,8 @@ const SignUpForm = () => {
   const {
     register,
     control,
+    getValues,
+    trigger,
     formState: { errors },
   } = useForm<SignUpFormValues>({
     mode: 'onChange',
@@ -38,6 +45,10 @@ const SignUpForm = () => {
   const [showCodeInput, setShowCodeInput] = useState(false);
   const [timeText, setTimeText] = useState('03:00');
   const [restartCountdown, setRestartCountdown] = useState(0);
+
+  useEffect(() => {
+    if (!!errors.password) trigger('passwordConfirm');
+  }, [password]);
 
   useEffect(() => {
     if (!showCodeInput || isVerifiedEmail) return;
@@ -99,8 +110,12 @@ const SignUpForm = () => {
   };
 
   return (
-    <div style={{ width: '100%', maxWidth: 300 }}>
-      <InputGroup inputs={inputs()} register={register} errors={errors} />
+    <S.Container>
+      <InputGroup
+        inputs={inputs()}
+        register={register}
+        errors={{ email: errors.email }}
+      />
       {showCodeInput && !isVerifiedEmail && (
         <S.ButtonContainer>
           <S.StyledButton
@@ -126,7 +141,28 @@ const SignUpForm = () => {
           </S.StyledButton>
         </S.ButtonContainer>
       )}
-    </div>
+      <InputGroup
+        inputs={[
+          {
+            name: 'password',
+            placeholder: '비밀번호',
+            type: 'password',
+            rules: passwordSignupRule,
+          },
+          {
+            name: 'passwordConfirm',
+            placeholder: '비밀번호 확인',
+            type: 'password',
+            rules: passwordConfirmRule(getValues),
+          },
+        ]}
+        register={register}
+        errors={{
+          password: errors.password,
+          passwordConfirm: errors.passwordConfirm,
+        }}
+      />
+    </S.Container>
   );
 };
 

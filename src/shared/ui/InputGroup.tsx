@@ -26,6 +26,9 @@ const InputGroup = <T extends FieldValues>({
   register,
   errors,
 }: InputGroupProps<T>) => {
+  const errorMessage = Object.values(errors || {}).find(
+    (err) => !!err?.message,
+  )?.message;
   return (
     <S.Container>
       <S.InputContainer>
@@ -42,9 +45,7 @@ const InputGroup = <T extends FieldValues>({
           </div>
         ))}
       </S.InputContainer>
-      {errors && (
-        <S.ErrorMessage>{Object.values(errors)[0]?.message}</S.ErrorMessage>
-      )}
+      {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}
     </S.Container>
   );
 };

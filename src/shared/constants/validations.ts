@@ -1,3 +1,4 @@
+import { RegisterOptions } from 'react-hook-form';
 import { VALIDATION_MESSAGES } from '.';
 
 export const emailRule = {
@@ -23,6 +24,17 @@ export const passwordSignupRule = {
     message: VALIDATION_MESSAGES.password,
   },
 };
+
+export const passwordConfirmRule = (
+  getValues: () => { password: string },
+): RegisterOptions<{ passwordConfirm: string }, 'passwordConfirm'> => ({
+  required: VALIDATION_MESSAGES.required('비밀번호 확인'),
+  validate: (value) => {
+    return (
+      value === getValues().password || VALIDATION_MESSAGES.passwordConfirm
+    );
+  },
+});
 
 export const required = (label: string) => ({
   required: VALIDATION_MESSAGES.required(label),
