@@ -35,6 +35,18 @@ export const Input = styled.input`
   font-size: 12px;
   color: ${({ theme }) => theme.colors.BLACK};
   background-color: transparent;
+  caret-color: ${({ theme }) => theme.colors.BLACK};
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.BLACK};
+    -webkit-box-shadow: 0 0 0px 1000px ${({ theme }) => theme.colors.WHITE}
+      inset;
+    box-shadow: 0 0 0px 1000px ${({ theme }) => theme.colors.WHITE} inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
 `;
 
 export const ErrorMessage = styled.p`

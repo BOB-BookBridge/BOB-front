@@ -20,7 +20,7 @@ const LoginForm = () => {
   });
   const email = useWatch({ name: 'email', control });
   const password = useWatch({ name: 'password', control });
-  const disabled = !email || !password;
+  const disabled = !email || !password || Object.keys(errors).length > 0;
 
   return (
     <Container>

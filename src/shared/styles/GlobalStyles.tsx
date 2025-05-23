@@ -20,6 +20,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     line-height: 1.5;
+    overflow-x: hidden;
   }
 
   *, *::before, *::after {
