@@ -4,6 +4,7 @@ import { colors } from '@/shared/constants';
 
 interface ButtonProps {
   type: 'TRANSPARENT' | 'CONFIRM';
+  disabled?: boolean;
 }
 
 export const Container = styled.div`
@@ -20,17 +21,30 @@ export const ButtonContainer = styled.div`
 `;
 
 export const StyledButton = styled.button<ButtonProps>`
-  ${({ type, theme }) =>
-    `background-color: ${type == 'TRANSPARENT' ? 'transparent' : colors.light.SECONDARY};
-  color: ${type == 'TRANSPARENT' ? theme.colors.GRAY_600 : colors.light.WHITE};
-  `}
   width: 50px;
   height: 30px;
   font-weight: 500;
   text-align: center;
   border-radius: 10px;
   border: none;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+  ${({ type, disabled, theme }) => {
+    if (disabled) {
+      return `
+        background-color: ${colors.light.GRAY_300};
+        color: ${colors.light.GRAY_500};
+      `;
+    }
+
+    return `
+      background-color: ${
+        type === 'TRANSPARENT' ? 'transparent' : colors.light.SECONDARY
+      };
+      color: ${
+        type === 'TRANSPARENT' ? theme.colors.GRAY_600 : colors.light.WHITE
+      };
+    `;
+  }}
 `;
 
 export const Line = styled.div`
