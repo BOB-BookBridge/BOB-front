@@ -8,7 +8,7 @@ import SignUpForm from './SignUpForm';
 const SignUpLayout = () => {
   return (
     <Container>
-      <Image src='/logo-dark.svg' width={150} height={150} alt='Logo' />
+      <Image src='/logo-dark.svg' width={100} height={100} alt='Logo' />
       <SignUpForm />
     </Container>
   );

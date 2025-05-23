@@ -4,5 +4,13 @@ import Header from './Header';
 import InputGroup from './InputGroup';
 import ListingList from './ListingList';
 import SelectAreaSection from './SelectAreaSection';
-
-export { Button, Dropdown, Header, InputGroup, ListingList, SelectAreaSection };
+import CheckBox from './CheckBox';
+export {
+  Button,
+  CheckBox,
+  Dropdown,
+  Header,
+  InputGroup,
+  ListingList,
+  SelectAreaSection,
+};

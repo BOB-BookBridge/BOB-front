@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { colors } from '@/shared/constants';
 
 interface ButtonProps {
-  type: 'RE-REQUEST' | 'CONFIRM';
+  type: 'TRANSPARENT' | 'CONFIRM';
 }
 
 export const Container = styled.div`
@@ -21,8 +21,8 @@ export const ButtonContainer = styled.div`
 
 export const StyledButton = styled.button<ButtonProps>`
   ${({ type, theme }) =>
-    `background-color: ${type == 'RE-REQUEST' ? 'transparent' : colors.light.SECONDARY};
-  color: ${type == 'RE-REQUEST' ? theme.colors.GRAY_600 : colors.light.WHITE};
+    `background-color: ${type == 'TRANSPARENT' ? 'transparent' : colors.light.SECONDARY};
+  color: ${type == 'TRANSPARENT' ? theme.colors.GRAY_600 : colors.light.WHITE};
   `}
   width: 50px;
   height: 30px;
@@ -31,4 +31,17 @@ export const StyledButton = styled.button<ButtonProps>`
   border-radius: 10px;
   border: none;
   cursor: pointer;
+`;
+
+export const Line = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: ${colors.dark.GRAY_500};
+  margin-bottom: 10px;
+`;
+
+export const ImportText = styled.p`
+  color: ${({ theme }) => theme.colors.PRIMARY};
+  font-weight: 500px;
+  font-size: 12px;
 `;

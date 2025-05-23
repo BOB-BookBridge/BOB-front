@@ -15,8 +15,10 @@ export default SignUpPage;
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
 `;

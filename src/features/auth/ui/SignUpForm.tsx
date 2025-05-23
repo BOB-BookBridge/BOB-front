@@ -7,7 +7,7 @@ import {
   passwordSignupRule,
   nicknameRule,
 } from '@/shared/constants';
-import { InputGroup, SelectAreaSection } from '@/shared/ui';
+import { Button, CheckBox, InputGroup, SelectAreaSection } from '@/shared/ui';
 import { InputItem } from '@/shared/ui/InputGroup';
 import {
   handleCodeRequest,
@@ -16,6 +16,8 @@ import {
 } from '../model';
 import SignUpVerifyButton from './SignUpVerifyButton';
 import * as S from './SignUpForm.styles';
+import Link from 'next/link';
+import { useTheme } from 'styled-components';
 
 interface SignUpFormValues {
   email: string;
@@ -34,6 +36,7 @@ const SignUpForm = () => {
   } = useForm<SignUpFormValues>({
     mode: 'onChange',
   });
+  const theme = useTheme();
 
   const email = useWatch({ name: 'email', control });
   const verifyCode = useWatch({ name: 'verifyCode', control });
@@ -46,7 +49,32 @@ const SignUpForm = () => {
   const [showCodeInput, setShowCodeInput] = useState(false);
   const [timeText, setTimeText] = useState('03:00');
   const [restartCountdown, setRestartCountdown] = useState(0);
+  const [agreements, setAgreements] = useState({
+    use: false,
+    info: false,
+  });
 
+  const isCheckedAll = agreements.use && agreements.info;
+
+  const isDisabled =
+    !email ||
+    !verifyCode ||
+    !password ||
+    !passwordConfirm ||
+    !nickname ||
+    !isVerifiedEmail ||
+    !isCheckedAll ||
+    Object.keys(errors).length > 0;
+
+  const handleToggle = (key: 'use' | 'info') => {
+    const newAgreements = { ...agreements, [key]: !agreements[key] };
+    setAgreements(newAgreements);
+  };
+
+  const handleToggleAll = () => {
+    const checked = !isCheckedAll;
+    setAgreements({ use: checked, info: checked });
+  };
   useEffect(() => {
     if (!!errors.password) trigger('passwordConfirm');
   }, [password]);
@@ -71,6 +99,7 @@ const SignUpForm = () => {
     setTimeText('03:00');
     setRestartCountdown((prev) => prev + 1);
   }
+
   const inputs = (): InputItem<SignUpFormValues>[] => {
     const baseInputs: InputItem<SignUpFormValues>[] = [
       {
@@ -120,7 +149,7 @@ const SignUpForm = () => {
       {showCodeInput && !isVerifiedEmail && (
         <S.ButtonContainer>
           <S.StyledButton
-            type='RE-REQUEST'
+            type='TRANSPARENT'
             onClick={() =>
               handleCodeRequest({
                 email,
@@ -177,6 +206,61 @@ const SignUpForm = () => {
         }}
       />
       <SelectAreaSection />
+      <div style={{ width: '100%', maxWidth: 300 }}>
+        <S.Line />
+        <CheckBox
+          id='all'
+          checked={isCheckedAll}
+          onChange={handleToggleAll}
+          label={
+            <>
+              <p
+                style={{
+                  fontSize: '16px',
+                }}>
+                전체 동의
+              </p>
+            </>
+          }
+        />
+        <CheckBox
+          id='use'
+          checked={agreements.use}
+          onChange={() => handleToggle('use')}
+          label={
+            <>
+              <S.ImportText>[필수]</S.ImportText>
+              <Link
+                href='/signup/use'
+                style={{
+                  fontSize: '14px',
+                  color: theme.colors.GRAY_500,
+                }}>
+                서비스 이용 약관
+              </Link>
+            </>
+          }
+        />
+        <CheckBox
+          id='info'
+          checked={agreements.info}
+          onChange={() => handleToggle('info')}
+          label={
+            <>
+              <S.ImportText>[필수]</S.ImportText>
+              <Link
+                href='/signup/info'
+                style={{
+                  fontSize: '14px',
+                  color: theme.colors.GRAY_500,
+                }}>
+                개인정보 수집 및 이용
+              </Link>
+            </>
+          }
+        />
+      </div>
+      <Button text='회원가입' disabled={isDisabled} />
     </S.Container>
   );
 };
