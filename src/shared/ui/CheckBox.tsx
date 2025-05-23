@@ -10,26 +10,27 @@ interface CheckboxProps {
 
 const CheckBox = ({ id, checked, onChange, label }: CheckboxProps) => {
   return (
-    <Label htmlFor={id}>
-      <HiddenCheckbox
-        id={id}
-        type='checkbox'
-        checked={checked}
-        onChange={onChange}
-      />
-      <CustomCircle checked={checked} />
+    <Wrapper>
+      <label style={{ cursor: 'pointer' }} htmlFor={id}>
+        <HiddenCheckbox
+          id={id}
+          type='checkbox'
+          checked={checked}
+          onChange={onChange}
+        />
+        <CustomCircle checked={checked} />
+      </label>
       {label}
-    </Label>
+    </Wrapper>
   );
 };
 
 export default CheckBox;
 
-const Label = styled.label`
+const Wrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 3px;
-  cursor: pointer;
 `;
 
 const HiddenCheckbox = styled.input`
