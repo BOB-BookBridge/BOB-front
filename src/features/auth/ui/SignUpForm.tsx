@@ -7,7 +7,7 @@ import {
   passwordSignupRule,
   nicknameRule,
 } from '@/shared/constants';
-import { InputGroup } from '@/shared/ui';
+import { InputGroup, SelectAreaSection } from '@/shared/ui';
 import { InputItem } from '@/shared/ui/InputGroup';
 import {
   handleCodeRequest,
@@ -176,6 +176,7 @@ const SignUpForm = () => {
           nickname: errors.nickname,
         }}
       />
+      <SelectAreaSection />
     </S.Container>
   );
 };
