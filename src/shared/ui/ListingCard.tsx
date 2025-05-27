@@ -19,7 +19,7 @@ const data: ListingCardProps = {
   postId: 1,
   categoryId: 10,
   title: '자바 성능 튜닝 이야기 - 개발자가 반드시 알아야 할',
-  tradeStatus: 'IN_PROGRESS',
+  tradeStatus: 'READY',
   sellPrice: 8000,
   thumbnail:
     'https://image.aladin.co.kr/product/7924/83/coversum/k542434036_1.jpg',
@@ -33,19 +33,19 @@ const ListingCard = () => {
   return (
     <S.CardContainer>
       <S.ImageWrapper>
-        <S.Overlay status={data.tradeStatus}>
-          {data.tradeStatus === 'READY' ? (
-            <S.TagWrapper>
-              <ListingCardTag
-                text={bookStatusMap[data.bookStatus]}
-                type='STATUS'
-              />
-            </S.TagWrapper>
-          ) : (
+        <S.Overlay>
+          <S.OverlayDim status={data.tradeStatus} />
+          {data.tradeStatus !== 'READY' && (
             <S.OverlayStatusText>
               {tradeStatusMap[data.tradeStatus]}
             </S.OverlayStatusText>
           )}
+          <S.TagWrapper>
+            <ListingCardTag
+              text={bookStatusMap[data.bookStatus]}
+              type='STATUS'
+            />
+          </S.TagWrapper>
         </S.Overlay>
         <S.Image src={data.thumbnail} />
       </S.ImageWrapper>

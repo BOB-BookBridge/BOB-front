@@ -28,17 +28,44 @@ export const ImageWrapper = styled.div`
   padding-bottom: 100%;
   overflow: hidden;
   border-radius: 10px;
+  border: 0.5px solid ${colors.light.GRAY_600};
 `;
 
-export const Overlay = styled.div<OverlayProps>`
-  background-color: ${({ status }) =>
-    status === 'READY' ? 'transparent' : 'rgba(0, 0, 0, 0.7)'};
+export const Overlay = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: 10;
   border-radius: 10px;
-  border: 0.5px solid ${colors.light.GRAY_600};
+`;
+
+export const OverlayDim = styled.div<OverlayProps>`
+  position: absolute;
+  background-color: ${({ status }) =>
+    status === 'READY' ? 'transparent' : 'rgba(0, 0, 0, 0.7)'};
+  z-index: 11;
+  width: 100%;
+  height: 100%;
+`;
+
+export const TagWrapper = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+`;
+
+export const OverlayStatusText = styled.div`
+  position: absolute;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: ${colors.light.WHITE};
+  z-index: 13;
 `;
 
 export const Image = styled.img`
@@ -49,21 +76,6 @@ export const Image = styled.img`
   transform: scale(1.03);
   transform-origin: center;
   transition: transform 0.3s ease;
-`;
-
-export const TagWrapper = styled.div`
-  position: absolute;
-  top: 5px;
-  right: 10px;
-`;
-
-export const OverlayStatusText = styled.div`
-  font-size: 20px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
 `;
 
 export const TitleText = styled.p`
