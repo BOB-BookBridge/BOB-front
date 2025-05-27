@@ -1,0 +1,302 @@
+[
+  {
+    "id": 1,
+    "name": "경제/경영",
+    "parent_id": null
+  },
+  {
+    "id": 2,
+    "name": "과학/IT",
+    "parent_id": null
+  },
+  {
+    "id": 3,
+    "name": "만화",
+    "parent_id": null
+  },
+  {
+    "id": 4,
+    "name": "문학",
+    "parent_id": null
+  },
+  {
+    "id": 5,
+    "name": "어린이/청소년",
+    "parent_id": null
+  },
+  {
+    "id": 6,
+    "name": "예술/문화",
+    "parent_id": null
+  },
+  {
+    "id": 7,
+    "name": "인문/사회",
+    "parent_id": null
+  },
+  {
+    "id": 8,
+    "name": "자기계발",
+    "parent_id": null
+  },
+  {
+    "id": 9,
+    "name": "취미/실용",
+    "parent_id": null
+  },
+  {
+    "id": 10,
+    "name": "학습/수험",
+    "parent_id": null
+  },
+  {
+    "id": 11,
+    "name": "기타",
+    "parent_id": null
+  },
+  {
+    "id": 12,
+    "name": "경영일반",
+    "parent_id": 1
+  },
+  {
+    "id": 13,
+    "name": "마케팅/세일즈",
+    "parent_id": 1
+  },
+  {
+    "id": 14,
+    "name": "재테크",
+    "parent_id": 1
+  },
+  {
+    "id": 15,
+    "name": "창업",
+    "parent_id": 1
+  },
+  {
+    "id": 16,
+    "name": "회계/재무",
+    "parent_id": 1
+  },
+  {
+    "id": 17,
+    "name": "공학일반",
+    "parent_id": 2
+  },
+  {
+    "id": 18,
+    "name": "수학",
+    "parent_id": 2
+  },
+  {
+    "id": 19,
+    "name": "자연과학",
+    "parent_id": 2
+  },
+  {
+    "id": 20,
+    "name": "컴퓨터공학",
+    "parent_id": 2
+  },
+  {
+    "id": 21,
+    "name": "프로그래밍",
+    "parent_id": 2
+  },
+  {
+    "id": 22,
+    "name": "그래픽노블",
+    "parent_id": 3
+  },
+  {
+    "id": 23,
+    "name": "웹툰",
+    "parent_id": 3
+  },
+  {
+    "id": 24,
+    "name": "일본만화",
+    "parent_id": 3
+  },
+  {
+    "id": 25,
+    "name": "한국만화",
+    "parent_id": 3
+  },
+  {
+    "id": 26,
+    "name": "시/희곡",
+    "parent_id": 4
+  },
+  {
+    "id": 27,
+    "name": "에세이",
+    "parent_id": 4
+  },
+  {
+    "id": 28,
+    "name": "외국소설",
+    "parent_id": 4
+  },
+  {
+    "id": 29,
+    "name": "한국소설",
+    "parent_id": 4
+  },
+  {
+    "id": 30,
+    "name": "동화책",
+    "parent_id": 5
+  },
+  {
+    "id": 31,
+    "name": "유아그림책",
+    "parent_id": 5
+  },
+  {
+    "id": 32,
+    "name": "청소년 문학",
+    "parent_id": 5
+  },
+  {
+    "id": 33,
+    "name": "학습만화",
+    "parent_id": 5
+  },
+  {
+    "id": 34,
+    "name": "미술/디자인",
+    "parent_id": 6
+  },
+  {
+    "id": 35,
+    "name": "사진",
+    "parent_id": 6
+  },
+  {
+    "id": 36,
+    "name": "영화/연극",
+    "parent_id": 6
+  },
+  {
+    "id": 37,
+    "name": "음악/악보",
+    "parent_id": 6
+  },
+  {
+    "id": 38,
+    "name": "사회학",
+    "parent_id": 7
+  },
+  {
+    "id": 39,
+    "name": "심리학",
+    "parent_id": 7
+  },
+  {
+    "id": 40,
+    "name": "역사",
+    "parent_id": 7
+  },
+  {
+    "id": 41,
+    "name": "정치/법",
+    "parent_id": 7
+  },
+  {
+    "id": 42,
+    "name": "철학",
+    "parent_id": 7
+  },
+  {
+    "id": 43,
+    "name": "리더십",
+    "parent_id": 8
+  },
+  {
+    "id": 44,
+    "name": "성공/동기부여",
+    "parent_id": 8
+  },
+  {
+    "id": 45,
+    "name": "습관",
+    "parent_id": 8
+  },
+  {
+    "id": 46,
+    "name": "시간관리",
+    "parent_id": 8
+  },
+  {
+    "id": 47,
+    "name": "인간관계",
+    "parent_id": 8
+  },
+  {
+    "id": 48,
+    "name": "건강",
+    "parent_id": 9
+  },
+  {
+    "id": 49,
+    "name": "여행",
+    "parent_id": 9
+  },
+  {
+    "id": 50,
+    "name": "요리",
+    "parent_id": 9
+  },
+  {
+    "id": 51,
+    "name": "육아",
+    "parent_id": 9
+  },
+  {
+    "id": 52,
+    "name": "인테리어",
+    "parent_id": 9
+  },
+  {
+    "id": 53,
+    "name": "공무원/수험서",
+    "parent_id": 10
+  },
+  {
+    "id": 54,
+    "name": "대학교재",
+    "parent_id": 10
+  },
+  {
+    "id": 55,
+    "name": "문제집",
+    "parent_id": 10
+  },
+  {
+    "id": 56,
+    "name": "자격증",
+    "parent_id": 10
+  },
+  {
+    "id": 57,
+    "name": "초·중·고 참고서",
+    "parent_id": 10
+  },
+  {
+    "id": 58,
+    "name": "기타도서",
+    "parent_id": 11
+  },
+  {
+    "id": 59,
+    "name": "잡지",
+    "parent_id": 11
+  },
+  {
+    "id": 60,
+    "name": "정기간행물",
+    "parent_id": 11
+  }
+]
