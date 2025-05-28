@@ -22,7 +22,7 @@ const data: ListingCardProps = {
   tradeStatus: 'READY',
   sellPrice: 8000,
   thumbnail:
-    'https://image.aladin.co.kr/product/7924/83/coversum/k542434036_1.jpg',
+    'https://image.aladin.co.kr/product/7924/83/cover500/k542434036_1.jpg',
   bookStatus: 'BEST',
   createdAt: '2024-03-29T10:22:00',
 };
