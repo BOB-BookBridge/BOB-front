@@ -1,7 +1,7 @@
 export function handleCodeRequest({
   email,
   onSuccess,
-  onError,
+  onError: _,
 }: {
   email: string;
   onSuccess: () => void;
