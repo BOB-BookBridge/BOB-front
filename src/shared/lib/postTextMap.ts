@@ -1,6 +1,6 @@
 export const tradeStatusMap = {
-  READY: '거래 대기',
-  IN_PROGRESS: '거래 중',
+  READY: '판매 중',
+  IN_PROGRESS: '거래 예약',
   COMPLETED: '거래 완료',
 } as const;
 

@@ -13,7 +13,7 @@ import {
 
 const Home = () => {
   return (
-    <div>
+    <Container>
       <ListingSearchBar />
       <ContentHeader>
         <div style={{ display: 'flex' }}>
@@ -27,15 +27,21 @@ const Home = () => {
         <FilterSidebar />
         <ListingList />
       </div>
-    </div>
+    </Container>
   );
 };
 
+const Container = styled.div`
+  margin-right: 100px;
+  @media (max-width: 744px) {
+    margin-right: 0;
+  }
+`;
 const ContentHeader = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
-  margin-left: 200px;
+  margin-left: 250px;
 
   @media (max-width: 744px) {
     margin-left: 0;
