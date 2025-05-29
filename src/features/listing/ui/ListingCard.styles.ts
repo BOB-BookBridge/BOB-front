@@ -6,19 +6,20 @@ interface OverlayProps {
 }
 
 export const CardContainer = styled.div`
-  width: 25%;
+  width: 22%;
   padding: 10px;
   cursor: pointer;
+  margin-bottom: 10px;
   &:hover img {
     transform: scale(1.1);
   }
 
   @media (max-width: 1024px) {
-    width: 35%;
+    width: 30%;
   }
 
   @media (max-width: 744px) {
-    width: 45%;
+    width: 48%;
   }
 `;
 
