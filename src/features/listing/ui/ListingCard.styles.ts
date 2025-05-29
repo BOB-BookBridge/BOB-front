@@ -29,7 +29,7 @@ export const ImageWrapper = styled.div`
   padding-bottom: 100%;
   overflow: hidden;
   border-radius: 10px;
-  border: 0.5px solid ${colors.light.GRAY_600};
+  border: 0.5px solid ${({ theme }) => theme.colors.GRAY_300};
 `;
 
 export const Overlay = styled.div`

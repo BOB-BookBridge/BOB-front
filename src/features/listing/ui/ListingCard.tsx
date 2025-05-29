@@ -24,10 +24,7 @@ const ListingCard = ({ data }: { data: ListingCardProps }) => {
             </S.OverlayStatusText>
           )}
           <S.TagWrapper>
-            <ListingCardTag
-              text={bookStatusMap[data.bookStatus]}
-              type='STATUS'
-            />
+            <ListingCardTag status={data.bookStatus} />
           </S.TagWrapper>
         </S.Overlay>
         <S.Image src={data.thumbnail} />
