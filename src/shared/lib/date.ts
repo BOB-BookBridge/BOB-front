@@ -1,7 +1,6 @@
 export function convertDateToString(dateString: string) {
   const dateTime = new Date(dateString);
   const now = new Date();
-  console.log(dateString, 'datetime', dateTime, 'now', now);
 
   const diff = now.getTime() - dateTime.getTime();
 
