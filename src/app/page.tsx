@@ -1,7 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import { ListingList } from '@/shared/ui';
+import { ListingList } from '@/features/listing/ui';
 import {
   ListingSearchBar,
   FilterSidebar,

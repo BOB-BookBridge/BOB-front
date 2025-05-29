@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors } from '../constants';
+import { colors } from '../../../shared/constants';
 
 interface OverlayProps {
   status: 'READY' | 'IN_PROGRESS' | 'COMPLETED';

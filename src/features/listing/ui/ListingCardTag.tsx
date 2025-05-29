@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors } from '../constants';
+import { colors } from '../../../shared/constants';
 
 const ListingCardTag = ({
   text,
