@@ -3,15 +3,16 @@
 import ListingCardTag from './ListingCardTag';
 import {
   bookStatusMap,
-  getCategoryNameById,
+  convertDateToString,
   tradeStatusMap,
 } from '../../../shared/lib';
+import { getCategoryNameById } from '../lib';
 import * as S from './ListingCard.styles';
 import { ListingCardProps } from '@/entities/listing/model/types';
 
 const ListingCard = ({ data }: { data: ListingCardProps }) => {
   const categoryName = getCategoryNameById(data.categoryId);
-
+  const time = convertDateToString(data.createdAt);
   return (
     <S.CardContainer>
       <S.ImageWrapper>
@@ -32,13 +33,10 @@ const ListingCard = ({ data }: { data: ListingCardProps }) => {
         <S.Image src={data.thumbnail} />
       </S.ImageWrapper>
       <S.TitleText>{data.title}</S.TitleText>
-      <S.InfoWrapper>
-        <S.PriceText>{data.sellPrice.toLocaleString('ko-KR')}원</S.PriceText>
-        <ListingCardTag
-          text={categoryName ? categoryName : '찾을 수 없음'}
-          type='CATEGORY'
-        />
-      </S.InfoWrapper>
+      <S.PriceText>{data.sellPrice.toLocaleString('ko-KR')}원</S.PriceText>
+      <S.InfoText>
+        {categoryName} · {time}
+      </S.InfoText>
     </S.CardContainer>
   );
 };
