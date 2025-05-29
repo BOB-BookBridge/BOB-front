@@ -2,6 +2,12 @@ const common = {
   PRIMARY: '#FAC053',
   SECONDARY: '#003867',
   ERROR: '#FF4D4F',
+  BOOK_STATUS: {
+    BEST: '#003867',
+    HIGH: '#3F6484',
+    MEDIUM: '#7E91A0',
+    LOW: '#BDBDBD',
+  },
 };
 
 export const colors = {

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors } from '../constants';
+import { colors } from '../../../shared/constants';
 
 interface OverlayProps {
   status: 'READY' | 'IN_PROGRESS' | 'COMPLETED';
@@ -9,16 +9,17 @@ export const CardContainer = styled.div`
   width: 25%;
   padding: 10px;
   cursor: pointer;
+  margin-bottom: 10px;
   &:hover img {
     transform: scale(1.1);
   }
 
   @media (max-width: 1024px) {
-    width: 35%;
+    width: 33%;
   }
 
   @media (max-width: 744px) {
-    width: 45%;
+    width: 50%;
   }
 `;
 
@@ -28,7 +29,7 @@ export const ImageWrapper = styled.div`
   padding-bottom: 100%;
   overflow: hidden;
   border-radius: 10px;
-  border: 0.5px solid ${colors.light.GRAY_600};
+  border: 0.5px solid ${({ theme }) => theme.colors.GRAY_300};
 `;
 
 export const Overlay = styled.div`
@@ -80,9 +81,9 @@ export const Image = styled.img`
 
 export const TitleText = styled.p`
   margin-top: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 0;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 300;
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -94,16 +95,19 @@ export const TitleText = styled.p`
 
 export const PriceText = styled.span`
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
 
   @media (max-width: 480px) {
     font-size: 14px;
   }
 `;
 
-export const InfoWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
+export const InfoText = styled.p`
+  font-size: 12px;
+  font-weight: 400;
+  color: ${colors.light.GRAY_600};
+  margin: 0;
+  @media (max-width: 480px) {
+    font-size: 10px;
+  }
 `;

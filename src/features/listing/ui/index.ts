@@ -4,6 +4,7 @@ import ActiveFilterTag from './ActiveFilterTag';
 import SortSelector from './SortSelector';
 import SelectArea from './SelectArea';
 import FilterMenu from './FilterMenu';
+import ListingList from './ListingList';
 
 export {
   ListingSearchBar,
@@ -12,4 +13,5 @@ export {
   SortSelector,
   SelectArea,
   FilterMenu,
+  ListingList,
 };

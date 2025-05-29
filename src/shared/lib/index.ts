@@ -1,5 +1,5 @@
-import { getCategoryNameById } from './getCategoryNameById';
 import { withIconSize } from './withIconSize';
 import { tradeStatusMap, bookStatusMap } from './postTextMap';
+import { convertDateToString } from './date';
 
-export { getCategoryNameById, withIconSize, tradeStatusMap, bookStatusMap };
+export { withIconSize, tradeStatusMap, bookStatusMap, convertDateToString };
