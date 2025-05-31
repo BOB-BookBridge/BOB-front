@@ -14,7 +14,7 @@ export function handleEmailConfirm({
   email,
   verifyCode,
   onSuccess,
-  onError,
+  onError: _,
 }: {
   email: string;
   verifyCode: string;

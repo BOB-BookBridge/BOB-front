@@ -1,11 +1,7 @@
 'use client';
 
 import ListingCardTag from './ListingCardTag';
-import {
-  bookStatusMap,
-  convertDateToString,
-  tradeStatusMap,
-} from '../../../shared/lib';
+import { convertDateToString, tradeStatusMap } from '../../../shared/lib';
 import { getCategoryNameById } from '../lib';
 import * as S from './ListingCard.styles';
 import { ListingCardProps } from '@/entities/listing/model/types';
