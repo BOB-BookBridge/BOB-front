@@ -21,7 +21,8 @@ export const StyledButton = styled.button`
 export const ConfirmButton = styled.button`
   border: none;
   display: flex;
-  width: 90%;
+  max-width: 455px;
+  width: 95%;
   align-items: center;
   justify-content: center;
   background-color: ${colors.light.PRIMARY};

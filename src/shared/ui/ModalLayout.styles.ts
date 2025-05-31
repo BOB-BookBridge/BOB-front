@@ -23,17 +23,6 @@ export const Backdrop = styled.div`
   justify-content: center;
 `;
 
-export const HeaderWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-`;
-
-export const Title = styled.span`
-  font-weight: 600;
-`;
-
 export const ModalContainer = styled.div.withConfig({
   shouldForwardProp: (prop) => !['isClosing'].includes(prop),
 })<{ isClosing?: boolean }>`
@@ -41,6 +30,8 @@ export const ModalContainer = styled.div.withConfig({
   top: 50%;
   left: 50%;
   width: 600px;
+  min-height: 35vh;
+  max-height: 80vh;
   border-radius: 12px;
   transform: translate(-50%, -50%);
   background-color: ${({ theme }) => theme.colors.WHITE};
@@ -53,8 +44,6 @@ export const ModalContainer = styled.div.withConfig({
     left: 0;
     transform: none;
     width: 100%;
-    max-height: 80vh;
-    min-height: 35vh;
     border-radius: 20px 20px 0 0;
     bottom: 0;
     animation: ${({ isClosing }) =>
@@ -68,10 +57,24 @@ export const ModalContainer = styled.div.withConfig({
   }
 `;
 
+export const HeaderWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`;
+
+export const Title = styled.span`
+  font-weight: 600;
+  font-size: 20px;
+`;
+
 export const ChildrenWrapper = styled.div`
   display: flex;
+  height: 100%;
   flex-direction: column;
-  gap: 20px;
   justify-content: center;
   align-items: center;
+  margin-top: 30px;
+  gap: 30px;
 `;
