@@ -3,7 +3,6 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import ListingCard from './ListingCard';
 import { data } from '@/mocks/mockListingList';
-import { colors } from '@/shared/constants';
 
 const PAGE_SIZE = 12;
 const ListingList = () => {

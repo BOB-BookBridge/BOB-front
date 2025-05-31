@@ -1,11 +1,11 @@
 'use client';
-import { useState } from 'react';
+import { forwardRef, useImperativeHandle, useState } from 'react';
+import styled from 'styled-components';
 import { Dropdown } from '@/shared/ui';
+import { colors } from '../constants';
 import sido_areas from '@/shared/constants/sido_areas.json';
 import sigg_areas from '@/shared/constants/sigg_areas.json';
 import emd_areas from '@/shared/constants/emd_areas.json';
-import { colors } from '../constants';
-import styled from 'styled-components';
 
 const AreaType: Record<number, string> = {
   1: 'sido',
@@ -13,11 +13,34 @@ const AreaType: Record<number, string> = {
   3: 'emd',
 } as const;
 
-const SelectAreaSection = () => {
+export interface AreaState {
+  sidoId?: number;
+  siggId?: number;
+  emdId?: number;
+}
+
+export interface SelectAreaSectionProps {
+  showVerifyButton?: boolean;
+}
+
+export interface SelectAreaSectionRef {
+  getSelection: () => {
+    sidoId?: number;
+    siggId?: number;
+    emdId?: number;
+  };
+}
+export const SelectAreaSection = forwardRef<
+  SelectAreaSectionRef,
+  SelectAreaSectionProps
+>(({ showVerifyButton = true }: SelectAreaSectionProps, ref) => {
   const [sidoId, setSidoId] = useState<number | undefined>(undefined);
   const [siggId, setSiggId] = useState<number | undefined>(undefined);
   const [emdId, setEmdId] = useState<number | undefined>(undefined);
 
+  useImperativeHandle(ref, () => ({
+    getSelection: () => ({ sidoId, siggId, emdId }),
+  }));
   const [openDropdown, setOpenDropdown] = useState<string | null>('');
   const isDisabled = !sidoId || !siggId || !emdId;
 
@@ -41,6 +64,10 @@ const SelectAreaSection = () => {
       setEmdId(undefined);
     }
     setSiggId(value);
+  }
+
+  function handleSelectEmd(value: number) {
+    setEmdId(value);
   }
 
   function handleAreaVerify() {
@@ -79,18 +106,20 @@ const SelectAreaSection = () => {
           .filter((value) => value.sigg_area_id == siggId)
           .sort((a, b) => a.name.localeCompare(b.name))}
         placeholder='읍/면/동'
-        onSelect={(value) => setEmdId(value)}
+        onSelect={handleSelectEmd}
         onClose={() => setOpenDropdown(null)}
         selectedId={emdId}
       />
-      <StyledButton disabled={isDisabled} onClick={handleAreaVerify}>
-        위치 인증
-      </StyledButton>
+      {showVerifyButton && (
+        <StyledButton disabled={isDisabled} onClick={handleAreaVerify}>
+          위치 인증
+        </StyledButton>
+      )}
     </div>
   );
-};
+});
 
-export default SelectAreaSection;
+SelectAreaSection.displayName = 'SelectAreaSection';
 
 const StyledButton = styled.button<{ disabled: boolean }>`
   ${({ disabled = true }) =>
