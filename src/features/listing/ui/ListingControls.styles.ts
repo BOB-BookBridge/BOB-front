@@ -17,3 +17,18 @@ export const StyledButton = styled.button`
   padding: 10px;
   margin-right: 10px;
 `;
+
+export const ConfirmButton = styled.button`
+  border: none;
+  display: flex;
+  width: 90%;
+  align-items: center;
+  justify-content: center;
+  background-color: ${colors.light.PRIMARY};
+  color: ${colors.light.WHITE};
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 5px;
+  height: 40px;
+`;
