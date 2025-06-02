@@ -23,9 +23,7 @@ export const Backdrop = styled.div`
   justify-content: center;
 `;
 
-export const ModalContainer = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['isClosing'].includes(prop),
-})<{ isClosing?: boolean }>`
+export const ModalContainer = styled.div<{ $isClosing?: boolean }>`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -36,7 +34,7 @@ export const ModalContainer = styled.div.withConfig({
   transform: translate(-50%, -50%);
   background-color: ${({ theme }) => theme.colors.WHITE};
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  padding: 20px;
+  padding: 20px 0;
   overflow-y: auto;
 
   @media (max-width: 744px) {
@@ -46,8 +44,8 @@ export const ModalContainer = styled.div.withConfig({
     width: 100%;
     border-radius: 20px 20px 0 0;
     bottom: 0;
-    animation: ${({ isClosing }) =>
-      isClosing
+    animation: ${({ $isClosing }) =>
+      $isClosing
         ? css`
             ${slideDown} 0.3s ease
           `
@@ -62,6 +60,7 @@ export const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+  padding: 0 20px;
 `;
 
 export const Title = styled.span`

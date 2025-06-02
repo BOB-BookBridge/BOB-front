@@ -75,7 +75,12 @@ export const SelectAreaSection = forwardRef<
   }
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+    <div
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: 10,
+      }}>
       <Dropdown
         category={1}
         isOpen={openDropdown === 'sido'}
@@ -85,6 +90,7 @@ export const SelectAreaSection = forwardRef<
         onSelect={handleSelectSido}
         onClose={() => setOpenDropdown(null)}
         selectedId={sidoId}
+        isResponsive={!showVerifyButton}
       />
       <Dropdown
         category={2}
@@ -97,6 +103,7 @@ export const SelectAreaSection = forwardRef<
         onSelect={handleSelectSigg}
         onClose={() => setOpenDropdown(null)}
         selectedId={siggId}
+        isResponsive={!showVerifyButton}
       />
       <Dropdown
         category={3}
@@ -109,6 +116,7 @@ export const SelectAreaSection = forwardRef<
         onSelect={handleSelectEmd}
         onClose={() => setOpenDropdown(null)}
         selectedId={emdId}
+        isResponsive={!showVerifyButton}
       />
       {showVerifyButton && (
         <StyledButton disabled={isDisabled} onClick={handleAreaVerify}>

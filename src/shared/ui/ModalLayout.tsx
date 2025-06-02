@@ -39,7 +39,7 @@ const ModalLayout = ({
     <S.Backdrop onClick={handleClose}>
       <div>
         <S.ModalContainer
-          isClosing={isMobile ? isClosing : false}
+          $isClosing={isMobile ? isClosing : false}
           className={isMobile && isClosing ? 'closing' : ''}
           onClick={(e) => e.stopPropagation()}>
           <S.HeaderWrapper>
