@@ -1,10 +1,13 @@
+export type BookStatus = 'BEST' | 'HIGH' | 'MEDIUM' | 'LOW';
+export type TradeStatus = 'READY' | 'IN_PROGRESS' | 'COMPLETED';
+
 export interface ListingCardProps {
   postId: number;
   categoryId: number;
   title: string;
-  tradeStatus: 'READY' | 'IN_PROGRESS' | 'COMPLETED';
+  tradeStatus: TradeStatus;
   sellPrice: number;
   thumbnail: string;
-  bookStatus: 'BEST' | 'HIGH' | 'MEDIUM' | 'LOW';
+  bookStatus: BookStatus;
   createdAt: string;
 }

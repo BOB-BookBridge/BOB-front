@@ -1,12 +1,9 @@
 import styled from 'styled-components';
 import { colors } from '../../../shared/constants';
 import { bookStatusMap } from '@/shared/lib';
+import { BookStatus } from '@/entities/listing/model/types';
 
-const ListingCardTag = ({
-  status,
-}: {
-  status: 'BEST' | 'HIGH' | 'MEDIUM' | 'LOW';
-}) => {
+const ListingCardTag = ({ status }: { status: BookStatus }) => {
   const text = bookStatusMap[status];
   return <Container status={status}>#{text}</Container>;
 };
@@ -14,7 +11,7 @@ const ListingCardTag = ({
 export default ListingCardTag;
 
 interface TagProps {
-  status: 'BEST' | 'HIGH' | 'MEDIUM' | 'LOW';
+  status: BookStatus;
 }
 const Container = styled.div<TagProps>`
   background-color: ${({ status }) => colors.light.BOOK_STATUS[status]};
