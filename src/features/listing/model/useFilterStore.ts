@@ -8,7 +8,7 @@ type FilterState = {
   bookStatus: BookStatus | null;
   priceRange: number | null;
   setEmdId: (e: number | null) => void;
-  setIsAvailableOnly: (a: boolean) => void;
+  toggleIsAvailableOnly: () => void;
   setCategoryId: (c: number | null) => void;
   setBookStatus: (b: BookStatus | null) => void;
   setPriceRange: (p: number | null) => void;
@@ -22,7 +22,8 @@ export const useFilterStore = create<FilterState>((set) => ({
   bookStatus: null,
   priceRange: null,
   setEmdId: (e) => set({ emdId: e }),
-  setIsAvailableOnly: (a) => set({ isAvailableOnly: a }),
+  toggleIsAvailableOnly: () =>
+    set((state) => ({ isAvailableOnly: !state.isAvailableOnly })),
   setCategoryId: (c) => set({ categoryId: c }),
   setBookStatus: (b) => set({ bookStatus: b }),
   setPriceRange: (p) => set({ priceRange: p }),
