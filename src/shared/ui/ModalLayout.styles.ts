@@ -10,7 +10,7 @@ const slideDown = keyframes`
   to { transform: translateY(100%); }
 `;
 
-export const Backdrop = styled.div`
+export const Backdrop = styled.div<{ $isOnlyMobile: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -21,6 +21,8 @@ export const Backdrop = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  ${({ $isOnlyMobile }) =>
+    $isOnlyMobile ? `@media(min-width: 744px){display: none;}` : ''}
 `;
 
 export const ModalContainer = styled.div<{ $isClosing?: boolean }>`
@@ -29,7 +31,7 @@ export const ModalContainer = styled.div<{ $isClosing?: boolean }>`
   left: 50%;
   width: 600px;
   min-height: 35vh;
-  max-height: 80vh;
+  max-height: 90vh;
   border-radius: 12px;
   transform: translate(-50%, -50%);
   background-color: ${({ theme }) => theme.colors.WHITE};

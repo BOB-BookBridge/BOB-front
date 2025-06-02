@@ -12,6 +12,7 @@ interface ResponsiveModalProps {
   isOpen: boolean;
   title: string;
   onClose: () => void;
+  isOnlyMobile?: boolean;
 }
 
 const ModalLayout = ({
@@ -19,6 +20,7 @@ const ModalLayout = ({
   onClose,
   title,
   children,
+  isOnlyMobile = false,
 }: ResponsiveModalProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width: 744px)');
@@ -36,7 +38,7 @@ const ModalLayout = ({
   }
 
   return createPortal(
-    <S.Backdrop onClick={handleClose}>
+    <S.Backdrop onClick={handleClose} $isOnlyMobile={isOnlyMobile}>
       <div>
         <S.ModalContainer
           $isClosing={isMobile ? isClosing : false}

@@ -14,10 +14,9 @@ export const TradeStatusWrapper = styled.div`
 `;
 
 export const CategoryWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  display: grid;
   gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   padding: 10px 15px;
 `;
 export const BookStatusWrapper = styled.div`

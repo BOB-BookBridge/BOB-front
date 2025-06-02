@@ -1,8 +1,7 @@
 'use client';
 import styled from 'styled-components';
-import FilterContent from './FilterContent';
 import { useFilterStore } from '../model';
-import { useEffect } from 'react';
+import FilterContentControl from './FilterContentControl';
 
 const FilterSideBar = () => {
   const isAvailableOnly = useFilterStore((state) => state.isAvailableOnly);
@@ -17,14 +16,10 @@ const FilterSideBar = () => {
     resetFilters,
   } = useFilterStore();
 
-  useEffect(() => {
-    console.log(categoryId);
-  }, [categoryId]);
-
   return (
     <Container>
       <p style={{ fontSize: 20, fontWeight: 600, margin: 10 }}>필터</p>
-      <FilterContent
+      <FilterContentControl
         isAvailableOnly={isAvailableOnly}
         categoryId={categoryId}
         bookStatus={bookStatus}
