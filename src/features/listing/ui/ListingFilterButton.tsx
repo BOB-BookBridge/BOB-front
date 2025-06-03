@@ -3,7 +3,7 @@
 import { FilterIcon } from '@/shared/assets/icons';
 import * as S from './ListingControls.styles';
 import { ModalLayout } from '@/shared/ui';
-import { useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import FilterContent from './FilterContent';
 import { BookStatus } from '@/entities/listing/model/types';
 import styled from 'styled-components';
@@ -40,10 +40,10 @@ const ListingFilterButton = () => {
 
     const { isAvailableOnly, categoryId, bookStatus, priceRange } = filter;
 
-    isAvailableOnly !== undefined && setIsAvailableOnly(isAvailableOnly);
-    categoryId !== undefined && setCategoryId(categoryId);
-    bookStatus !== undefined && setBookStatus(bookStatus);
-    priceRange !== undefined && setPriceRange(priceRange);
+    if (isAvailableOnly !== undefined) setIsAvailableOnly(isAvailableOnly);
+    if (categoryId !== undefined) setCategoryId(categoryId);
+    if (bookStatus !== undefined) setBookStatus(bookStatus);
+    if (priceRange !== undefined) setPriceRange(priceRange);
 
     setIsOpen(false);
   }

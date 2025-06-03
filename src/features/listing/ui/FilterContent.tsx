@@ -120,4 +120,5 @@ const FilterContent = forwardRef<FilterContentRef, FilterContentProps>(
   },
 );
 
+FilterContent.displayName = 'FilterContent';
 export default FilterContent;
