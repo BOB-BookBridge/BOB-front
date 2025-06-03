@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTheme } from 'styled-components';
 import { useMediaQuery } from '../model';
@@ -12,6 +12,7 @@ interface ResponsiveModalProps {
   isOpen: boolean;
   title: string;
   onClose: () => void;
+  isOnlyMobile?: boolean;
 }
 
 const ModalLayout = ({
@@ -19,10 +20,19 @@ const ModalLayout = ({
   onClose,
   title,
   children,
+  isOnlyMobile = false,
 }: ResponsiveModalProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width: 744px)');
   const [isClosing, setIsClosing] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
   if (!isOpen) return null;
 
   function handleClose() {
@@ -36,10 +46,10 @@ const ModalLayout = ({
   }
 
   return createPortal(
-    <S.Backdrop onClick={handleClose}>
+    <S.Backdrop onClick={handleClose} $isOnlyMobile={isOnlyMobile}>
       <div>
         <S.ModalContainer
-          isClosing={isMobile ? isClosing : false}
+          $isClosing={isMobile ? isClosing : false}
           className={isMobile && isClosing ? 'closing' : ''}
           onClick={(e) => e.stopPropagation()}>
           <S.HeaderWrapper>

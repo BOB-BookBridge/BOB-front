@@ -19,6 +19,7 @@ const Dropdown = ({
   onToggle,
   onClose,
   selectedId,
+  isResponsive = false,
 }: {
   options: DropdownOptionsProps[];
   onSelect: (value: number) => void;
@@ -28,6 +29,7 @@ const Dropdown = ({
   onToggle: (value: number) => void;
   onClose: () => void;
   selectedId: number | undefined;
+  isResponsive?: boolean;
 }) => {
   const theme = useTheme();
   const [isSelected, setIsSelected] = useState(false);
@@ -66,7 +68,7 @@ const Dropdown = ({
     onSelect(id);
   }
   return (
-    <div style={{ width: 145 }} ref={ref}>
+    <Container $isResponsive={isResponsive} ref={ref}>
       <DropdownBox onClick={handleClickDropdown}>
         <p
           style={{
@@ -78,7 +80,7 @@ const Dropdown = ({
         <DropdownIcon fill={theme.colors.GRAY_500} />
       </DropdownBox>
       {isOpen && (
-        <OptionsWrapper>
+        <OptionsWrapper $isResponsive={isResponsive}>
           {options.length > 0 ? (
             options.map((option) => (
               <OptionBox
@@ -88,16 +90,28 @@ const Dropdown = ({
               </OptionBox>
             ))
           ) : (
-            <OptionBox disabled>상위 지역을 먼저 선택해 주세요</OptionBox>
+            <OptionBox $disabled={true}>
+              상위 지역을 먼저 선택해 주세요
+            </OptionBox>
           )}
         </OptionsWrapper>
       )}
-    </div>
+    </Container>
   );
 };
 
 export default Dropdown;
 
+const Container = styled.div<{ $isResponsive: boolean }>`
+  width: 145px;
+  ${({ $isResponsive }) =>
+    $isResponsive &&
+    `
+      @media (max-width: 479px) {
+        width: 100px;
+      }
+    `}
+`;
 const DropdownBox = styled.button`
   width: 100%;
   height: 50px;
@@ -111,14 +125,15 @@ const DropdownBox = styled.button`
   background-color: ${({ theme }) => `${theme.colors.WHITE}`};
 `;
 
-const OptionBox = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== 'disabled',
-})<{ disabled?: boolean }>`
+const OptionBox = styled.div<{ $disabled?: boolean }>`
   font-size: 12px;
   padding: 3px;
   border-radius: 5px;
-  ${({ disabled, theme }) =>
-    !disabled &&
+  height: 40px;
+  display: flex;
+  align-items: center;
+  ${({ $disabled, theme }) =>
+    !$disabled &&
     `
     cursor: pointer;
     &:hover {
@@ -128,7 +143,7 @@ const OptionBox = styled.div.withConfig({
   `}
 `;
 
-const OptionsWrapper = styled.div`
+const OptionsWrapper = styled.div<{ $isResponsive: boolean }>`
   padding: 2px;
   margin-top: 5px;
   max-height: 100px;
@@ -139,6 +154,14 @@ const OptionsWrapper = styled.div`
   z-index: 9999;
   background-color: ${({ theme }) => `${theme.colors.WHITE}`};
   border: ${({ theme }) => `1px solid ${theme.colors.GRAY_500}`};
+
+  ${({ $isResponsive }) =>
+    $isResponsive &&
+    `
+      @media (max-width: 479px) {
+        width: 100px;
+      }
+    `}
 
   &::-webkit-scrollbar {
     width: 8px;

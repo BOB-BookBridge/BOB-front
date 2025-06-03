@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { colors } from '../../../shared/constants';
+import { TradeStatus } from '@/entities/listing/model/types';
 
 interface OverlayProps {
-  status: 'READY' | 'IN_PROGRESS' | 'COMPLETED';
+  status: TradeStatus;
 }
 
 export const CardContainer = styled.div`

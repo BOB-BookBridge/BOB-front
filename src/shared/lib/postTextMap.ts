@@ -10,3 +10,9 @@ export const bookStatusMap = {
   MEDIUM: '중',
   LOW: '하',
 } as const;
+
+export const priceRangeMap: { [key: number]: string } = {
+  0: '~5,000원',
+  1: '5,000원~10,000원',
+  2: '10,000원~20,000원',
+} as const;
