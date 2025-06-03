@@ -1,7 +1,7 @@
 import { BookStatus } from '@/entities/listing/model/types';
 import { CheckBox, CheckCircle } from '@/shared/ui';
 import categories from '@/shared/constants/category.json';
-import { bookStatusMap } from '@/shared/lib';
+import { bookStatusMap, priceRangeMap } from '@/shared/lib';
 import * as S from './FilterContent.styles';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { FilterStatus } from './ListingFilterButton';
@@ -13,12 +13,7 @@ interface FilterContentProps {
   priceStatus: number | null;
 }
 const bookStatusList: BookStatus[] = ['BEST', 'HIGH', 'MEDIUM', 'LOW'];
-const priceRangeList = [
-  '~5,000원',
-  '5,000원~10,000원',
-  '10,000원~20,000원',
-  '20,000원~',
-];
+const priceRangeList = [0, 1, 2];
 
 export interface FilterContentRef {
   getFilter: () => FilterStatus;
@@ -115,7 +110,7 @@ const FilterContent = forwardRef<FilterContentRef, FilterContentProps>(
                 key={price}
                 onClick={() => setPriceRange(idx)}
                 $isChecked={priceRange === idx}>
-                <S.OptionText>{price}</S.OptionText>
+                <S.OptionText>{priceRangeMap[price]}</S.OptionText>
               </S.PriceRange>
             ))}
           </S.PriceWrapper>

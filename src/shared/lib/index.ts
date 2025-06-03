@@ -1,5 +1,11 @@
 import { withIconSize } from './withIconSize';
-import { tradeStatusMap, bookStatusMap } from './postTextMap';
+import { tradeStatusMap, bookStatusMap, priceRangeMap } from './postTextMap';
 import { convertDateToString } from './date';
 
-export { withIconSize, tradeStatusMap, bookStatusMap, convertDateToString };
+export {
+  withIconSize,
+  tradeStatusMap,
+  bookStatusMap,
+  priceRangeMap,
+  convertDateToString,
+};
