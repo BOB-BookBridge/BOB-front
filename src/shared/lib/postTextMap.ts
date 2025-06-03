@@ -16,3 +16,10 @@ export const priceRangeMap: { [key: number]: string } = {
   1: '5,000원~10,000원',
   2: '10,000원~20,000원',
 } as const;
+
+export const sortMap = {
+  RECENT: '최신순',
+  OLD: '오래된순',
+  LOW_PRICE: '낮은가격순',
+  HIGH_PRICE: '높은가격순',
+} as const;
