@@ -31,7 +31,7 @@ export const ModalContainer = styled.div<{ $isClosing?: boolean }>`
   left: 50%;
   width: 600px;
   min-height: 35vh;
-  max-height: 90vh;
+  max-height: 80vh;
   border-radius: 12px;
   transform: translate(-50%, -50%);
   background-color: ${({ theme }) => theme.colors.WHITE};
@@ -54,6 +54,14 @@ export const ModalContainer = styled.div<{ $isClosing?: boolean }>`
         : css`
             ${slideUp} 0.3s ease
           `};
+  }
+
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
