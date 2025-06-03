@@ -26,7 +26,7 @@ const ListingSortDropdown = () => {
       <DropdownBox onClick={handleDropdownToggle}>
         <span>{sortMap[options.find((opt) => opt === sort) ?? 'RECENT']}</span>
 
-        <DropdownIconSm style={{ fill: theme.colors.BLACK }} />
+        <DropdownIconSm style={{ fill: theme.colors.GRAY_700 }} />
       </DropdownBox>
       {isOpen && (
         <DropdownList>
@@ -48,24 +48,21 @@ export default ListingSortDropdown;
 const Container = styled.div`
   position: relative;
   width: 100px;
-  height: 40px;
   display: flex;
   align-items: center;
-  justify-content: center;
+
   font-size: 14px;
+  color: ${({ theme }) => theme.colors.GRAY_700};
 `;
 
 const DropdownBox = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: end;
   font-weight: 500;
   width: 100%;
   gap: 5px;
   cursor: pointer;
-  padding: 5px 0 5px 5px;
-  border-radius: 10px;
-  border: 1px solid ${({ theme }) => theme.colors.GRAY_400};
 `;
 
 const DropdownList = styled.div`
@@ -87,7 +84,7 @@ const DropdownItem = styled.div<{ selected: boolean }>`
   margin: 5px;
   font-weight: ${({ selected }) => (selected ? 500 : 400)};
   color: ${({ selected, theme }) =>
-    selected ? theme.colors.BLACK : theme.colors.GRAY_500};
+    selected ? theme.colors.GRAY_700 : theme.colors.GRAY_500};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.GRAY_300};
