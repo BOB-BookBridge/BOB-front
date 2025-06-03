@@ -11,6 +11,7 @@ import RawFilterIcon from './filter.svg';
 import RawPinIcon from './pin.svg';
 import RawArrowICon from './arrow.svg';
 import RawCloseIcon from './close.svg';
+import RawLikeIcon from './like.svg';
 
 export const UserIcon = withIconSize(RawUserIcon);
 export const NotiIcon = withIconSize(RawNotiIcon);
@@ -24,3 +25,4 @@ export const FilterIcon = withIconSize(RawFilterIcon, 15);
 export const PinIcon = withIconSize(RawPinIcon, 20);
 export const ArrowICon = withIconSize(RawArrowICon, 20);
 export const CloseIcon = withIconSize(RawCloseIcon);
+export const LikeIcon = withIconSize(RawLikeIcon);

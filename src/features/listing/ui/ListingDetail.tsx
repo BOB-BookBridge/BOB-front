@@ -1,9 +1,12 @@
 'use client';
 
 import { data } from '@/mocks/mockListingDetail';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { getCategoryNameById } from '../lib';
 import { bookStatusMap, convertDateToString } from '@/shared/lib';
+import { useState } from 'react';
+import { colors } from '@/shared/constants';
+import { LikeIcon } from '@/shared/assets/icons';
 
 interface ListingDetailProps {
   id: number;
@@ -12,6 +15,15 @@ interface ListingDetailProps {
 const ListingDetail = ({ id }: ListingDetailProps) => {
   const visibleData = data.find((e) => e.postId === id);
   if (!visibleData) return null;
+
+  const [liked, setLiked] = useState(visibleData.isFavorite);
+
+  const theme = useTheme();
+
+  const handleLike = () => {
+    setLiked((prev) => !prev);
+    // 서버 전송 시 debounce 사용
+  };
 
   return (
     <Container>
@@ -62,8 +74,17 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
         </InfoGrid>
 
         <ButtonRow>
-          <div>찜하기</div>
-          <div>채팅하기</div>
+          <Button
+            variant={liked ? 'outline-primary' : 'outline-gray'}
+            onClick={handleLike}>
+            <LikeIcon
+              fill={liked ? colors.light.PRIMARY : 'none'}
+              stroke={!liked ? theme.colors.GRAY_500 : theme.colors.PRIMARY}
+              strokeWidth={1.5}
+            />
+            찜하기
+          </Button>
+          <Button variant='primary'>채팅하기</Button>
         </ButtonRow>
       </RightSection>
     </Container>
@@ -148,4 +169,48 @@ const ButtonRow = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 20px;
+  gap: 10px;
+`;
+
+type ButtonVariant = 'primary' | 'outline-primary' | 'outline-gray';
+
+interface StyledButtonProps {
+  variant: ButtonVariant;
+}
+
+const Button = styled.div<StyledButtonProps>`
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 16px;
+  border: 1.5px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+
+  ${({ theme, variant }) => {
+    switch (variant) {
+      case 'primary':
+        return `
+          background-color: ${theme.colors.PRIMARY};
+          color: ${colors.light.WHITE};
+          border-color: ${theme.colors.PRIMARY};
+        `;
+      case 'outline-primary':
+        return `
+          background-color: transparent;
+          color: ${theme.colors.PRIMARY};
+          border-color: ${theme.colors.PRIMARY};
+        `;
+      case 'outline-gray':
+        return `
+          background-color: transparent;
+          color: ${theme.colors.GRAY_500};
+          border-color: ${theme.colors.GRAY_500};
+        `;
+    }
+  }}
 `;
