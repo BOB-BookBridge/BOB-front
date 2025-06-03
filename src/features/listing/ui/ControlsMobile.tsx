@@ -9,7 +9,12 @@ const ControlsMobile = () => {
   return (
     <Container>
       <ListingSearchBar />
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginTop: 20,
+        }}>
         <div style={{ display: 'flex' }}>
           <ListingFilterButton />
           <ListingAreaButton />

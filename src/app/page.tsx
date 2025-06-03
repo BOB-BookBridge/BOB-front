@@ -13,7 +13,7 @@ const Home = () => {
     <Container>
       <ControlsDesktop />
       <ControlsMobile />
-      <div style={{ display: 'flex', marginTop: 20 }}>
+      <div style={{ display: 'flex' }}>
         <FilterSidebar />
         <ListingList />
       </div>
