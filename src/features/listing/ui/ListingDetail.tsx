@@ -1,13 +1,15 @@
 'use client';
 
-import { data } from '@/mocks/mockListingDetail';
 import { useTheme } from 'styled-components';
+import { data } from '@/mocks/mockListingDetail';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { useEffect, useRef, useState } from 'react';
+import { Navigation, Pagination } from 'swiper/modules';
 import Image from 'next/image';
 
+import { colors } from '@/shared/constants';
 import { getCategoryNameById } from '../lib';
 import { bookStatusMap, convertDateToString } from '@/shared/lib';
-import { useEffect, useRef, useState } from 'react';
-import { colors } from '@/shared/constants';
 import {
   CancleIcon,
   CompleteIcon,
@@ -18,6 +20,9 @@ import {
 } from '@/shared/assets/icons';
 import DefaultProfile from '@/shared/assets/default-profile.svg';
 import * as S from './ListingDetail.styles';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 interface ListingDetailProps {
   id: number;
@@ -102,7 +107,25 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
   return (
     <S.Container>
       <S.LeftSection>
-        <S.ImageCarousel>이미지 캐러셀</S.ImageCarousel>
+        <S.SwiperWrapper>
+          <Swiper
+            style={{ width: '100%' }}
+            modules={[Navigation]}
+            navigation={{
+              prevEl: '.swiper-button-prev',
+              nextEl: '.swiper-button-next',
+            }}
+            speed={400}
+            slidesPerView={1}>
+            {visibleData.images.map((image, idx) => (
+              <SwiperSlide>
+                <img src='https://cdn.eyesmag.com/content/uploads/posts/2025/01/22/shutterstock_2491179401-06f50759-c2c5-49cb-b10b-ba47ca6d2166.jpg' />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <div className='swiper-button-prev' />
+          <div className='swiper-button-next' />
+        </S.SwiperWrapper>
         <S.UserInfo>
           {visibleData.writer.profileUrl ? (
             <Image

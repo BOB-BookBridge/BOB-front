@@ -12,6 +12,7 @@ export const LeftSection = styled.div`
   flex: 0.8;
   padding: 5px 20px;
   margin: 0;
+  min-width: 0;
 `;
 
 export const RightSection = styled.div`
@@ -172,5 +173,70 @@ export const EditItem = styled.div<EditItemProps>`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.GRAY_300};
+  }
+`;
+
+export const SwiperWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+
+  .swiper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+  }
+
+  .swiper-slide {
+    position: relative;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 30px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: ${colors.light.WHITE};
+    font-size: 12px;
+
+    transition: background-color 0.2s;
+
+    &::after {
+      font-size: 10px;
+      color: ${colors.light.WHITE};
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .swiper-button-prev {
+    left: 8px;
+  }
+
+  .swiper-button-next {
+    right: 8px;
   }
 `;
