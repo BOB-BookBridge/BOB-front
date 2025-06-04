@@ -1,16 +1,16 @@
 'use client';
 
-import ListingCardTag from './ListingCardTag';
 import { convertDateToString, tradeStatusMap } from '../../../../../shared/lib';
-import { getCategoryNameById } from '../../../lib';
-import * as S from './ListingCard.styles';
 import { ListingCardProps } from '@/entities/listing/model/types';
+import { getCategoryNameById } from '../../../lib';
+import ListingCardTag from './ListingCardTag';
+import * as S from './ListingCard.styles';
 
 const ListingCard = ({ data }: { data: ListingCardProps }) => {
   const categoryName = getCategoryNameById(data.categoryId);
   const time = convertDateToString(data.createdAt);
   return (
-    <S.CardContainer>
+    <S.CardContainer href={`/listing/${data.postId}`}>
       <S.ImageWrapper>
         <S.Overlay>
           <S.OverlayDim status={data.tradeStatus} />

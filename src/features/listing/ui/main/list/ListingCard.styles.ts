@@ -1,16 +1,20 @@
 import styled from 'styled-components';
 import { colors } from '../../../../../shared/constants';
 import { TradeStatus } from '@/entities/listing/model/types';
+import Link from 'next/link';
 
 interface OverlayProps {
   status: TradeStatus;
 }
 
-export const CardContainer = styled.div`
+export const CardContainer = styled(Link)`
   width: 25%;
   padding: 10px;
   cursor: pointer;
   margin-bottom: 10px;
+  text-decoration: none;
+  color: inherit;
+
   &:hover img {
     transform: scale(1.1);
   }
