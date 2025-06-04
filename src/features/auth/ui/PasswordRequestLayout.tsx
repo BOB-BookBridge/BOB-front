@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import styled from 'styled-components';
 import { colors, emailRule } from '@/shared/constants';
 import { InputGroup } from '@/shared/ui';
@@ -38,7 +39,9 @@ const PasswordRequestLayout = () => {
   }
   return (
     <Container>
-      <Logo width={150} />
+      <Link href='/'>
+        <Logo width={150} />
+      </Link>
       <InputGroup
         inputs={[
           {
