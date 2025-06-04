@@ -2,13 +2,13 @@
 
 import styled from 'styled-components';
 import { colors } from '@/shared/constants';
-import Image from 'next/image';
+import Logo from '@/shared/assets/logo-text.svg';
 import SignUpForm from './SignUpForm';
 
 const SignUpLayout = () => {
   return (
     <Container>
-      <Image src='/logo-dark.svg' width={100} height={100} alt='Logo' />
+      <Logo width={150} />
       <SignUpForm />
     </Container>
   );

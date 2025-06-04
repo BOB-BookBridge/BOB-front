@@ -11,7 +11,7 @@ import { colors } from '../constants';
 import { useRouter, usePathname } from 'next/navigation';
 import { useTheme } from 'styled-components';
 import { useThemeStore } from '../model';
-
+import Logo from '@/shared/assets/logo.svg';
 // #todo: isLogin zustand로 관리 예정
 const isLogin = false;
 
@@ -29,7 +29,7 @@ const Header = () => {
 
   return (
     <S.Container>
-      <S.Logo src='/logo-withoutletter.svg' alt='Logo' />
+      <Logo width={60} />
       <S.RightSection>
         <div
           style={{
