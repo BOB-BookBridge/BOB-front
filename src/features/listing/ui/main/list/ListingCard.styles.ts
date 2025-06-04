@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors } from '../../../shared/constants';
+import { colors } from '../../../../../shared/constants';
 import { TradeStatus } from '@/entities/listing/model/types';
 
 interface OverlayProps {

@@ -7,7 +7,7 @@ import { AreaState } from '@/shared/ui/SelectAreaSection';
 import { colors } from '@/shared/constants';
 import emd_areas from '@/shared/constants/emd_areas.json';
 import * as S from './ListingControls.styles';
-import { useFilterStore } from '../model';
+import { useFilterStore } from '../../../model';
 
 const ListingAreaButton = () => {
   const [isOpen, setIsOpen] = useState(false);

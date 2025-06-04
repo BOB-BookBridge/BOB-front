@@ -8,7 +8,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import Image from 'next/image';
 
 import { colors } from '@/shared/constants';
-import { getCategoryNameById } from '../lib';
+import { getCategoryNameById } from '../../lib';
 import { bookStatusMap, convertDateToString } from '@/shared/lib';
 import {
   CancleIcon,

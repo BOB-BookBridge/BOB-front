@@ -5,7 +5,7 @@ import { DropdownIconSm } from '@/shared/assets/icons';
 import { sortMap } from '@/shared/lib';
 import { useState } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { useFilterStore } from '../model';
+import { useFilterStore } from '../../../model';
 
 const options: SortKey[] = ['RECENT', 'OLD', 'LOW_PRICE', 'HIGH_PRICE'];
 

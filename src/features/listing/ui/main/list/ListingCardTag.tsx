@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors } from '../../../shared/constants';
+import { colors } from '../../../../../shared/constants';
 import { bookStatusMap } from '@/shared/lib';
 import { BookStatus } from '@/entities/listing/model/types';
 

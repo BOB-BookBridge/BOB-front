@@ -1,6 +1,6 @@
 'use client';
 import styled from 'styled-components';
-import { useFilterStore } from '../model';
+import { useFilterStore } from '../../../model';
 import FilterContentControl from './FilterContentControl';
 import { colors } from '@/shared/constants';
 
