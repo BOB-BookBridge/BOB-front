@@ -1,15 +1,16 @@
 'use client';
 
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { colors } from '@/shared/constants';
 import LoginForm from './LoginForm';
 import AccountGuide from './AccountGuide';
-import Image from 'next/image';
+import Logo from '@/shared/assets/logo-text.svg';
 
 const LoginLayout = () => {
+  const theme = useTheme();
   return (
     <Container>
-      <Image src='/logo-dark.svg' width={150} height={150} alt='Logo' />
+      <Logo width={150} />
       <LoginForm />
       <AccountGuide />
     </Container>

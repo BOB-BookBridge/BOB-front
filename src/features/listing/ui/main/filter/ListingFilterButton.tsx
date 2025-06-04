@@ -7,7 +7,7 @@ import { useRef, useState } from 'react';
 import FilterContent from './FilterContent';
 import { BookStatus } from '@/entities/listing/model/types';
 import styled from 'styled-components';
-import { useFilterStore } from '../model';
+import { useFilterStore } from '../../../model';
 import { colors } from '@/shared/constants';
 
 export interface FilterStatus {

@@ -1,7 +1,7 @@
 'use client';
 import styled from 'styled-components';
-import { useFilterStore } from '../model';
-import { getCategoryNameById } from '../lib';
+import { useFilterStore } from '../../../model';
+import { getCategoryNameById } from '../../../lib';
 import { bookStatusMap, priceRangeMap } from '@/shared/lib';
 
 const ActiveFilterTag = () => {

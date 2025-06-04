@@ -2,12 +2,12 @@
 
 import styled from 'styled-components';
 import { colors, emailRule } from '@/shared/constants';
-import Image from 'next/image';
 import { InputGroup } from '@/shared/ui';
 import { useForm, useWatch } from 'react-hook-form';
 import { StyledButton } from './SignUpForm.styles';
 import { useState } from 'react';
 import { ErrorIcon, SuccessIcon } from '@/shared/assets/icons';
+import Logo from '@/shared/assets/logo-text.svg';
 
 const PasswordRequestLayout = () => {
   const {
@@ -38,7 +38,7 @@ const PasswordRequestLayout = () => {
   }
   return (
     <Container>
-      <Image src='/logo-dark.svg' width={150} height={150} alt='Logo' />
+      <Logo width={150} />
       <InputGroup
         inputs={[
           {

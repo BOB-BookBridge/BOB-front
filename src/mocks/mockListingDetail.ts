@@ -1,0 +1,68 @@
+import { ListingDetailProps } from '@/entities/listing/model/types';
+
+export const data: ListingDetailProps[] = [
+  {
+    postId: 1,
+    sellPrice: 8000,
+    bookStatus: 'BEST',
+    tradeStatus: 'READY',
+    category: 4,
+    book: {
+      title: '디디의 우산',
+      author: '황정은',
+      description:
+        '이제 행복해지자, 너의 행복과 더불어 세계라는 빗속에서 황정은이 건네는 우산 같은 소설 장편소설 『계속해보겠습니다』『百의 그림자』, 소설집 『파씨의 입문』 『아무도 아닌』 등으로 넓고 탄탄한 독자층을 형성한 동시에 평단의 확고한 지지를 받으며 명실공히 한국문학을 대표하는 작가 중 한 사람으로 자리매김한 황정은 작가의 신간 『디디의 우산』이 출간되었다. 김유정문학상 수상작 「d」(발표 당시 제목 ‘웃는 남자’)와 『문학3』 웹 연재시 뜨거운 호응을 얻었던 「아무것도 말할 필요가 없다」, 인물과 서사는 다르지만 시대상과 주제의식을 공유하며 서로 공명하는 연작 성격의 중편 2편을 묶은 소설집이다. 2014년 세월호참사와 2016~17년 촛불혁명이라는 사회적 격변을 배경에 두고 개인의 일상 속에서 ‘혁명’의 새로운 의미를 탐구한 작품들이다. 삶과 죽음, 사랑과 인간을 사유하는 깊은 성찰이 마음속 깊이 파고드는 아름다운 문장들과 어우러진 가운데 끝내 압도적인 감동을 선사하는 반가운 신작이다.',
+      priceStandard: 15000,
+      pubDate: '2019-01-11',
+    },
+    description: '책 상태 양호하고 밑줄 없음',
+    images: [
+      'https://cdn.eyesmag.com/content/uploads/posts/2025/01/22/shutterstock_2491179401-06f50759-c2c5-49cb-b10b-ba47ca6d2166.jpg',
+      'https://images.pet-friends.co.kr/storage/pet_friends/community/803586/2024/03/07/58fe27a6-b300-4c26-bd0a-9214be16a615_iOS_image.jpg?f=webp',
+    ],
+    writer: {
+      memberId: '018e0df5-b7ec-7f36-b67f-80f3e4f49895',
+      nickname: 'booklover',
+      activityArea: '사하구 하단동',
+      profileUrl: null,
+    },
+
+    scrapCount: 2, // 찜 수
+    viewCount: 24, // 조회 수
+    isFavorite: true, // 사용자의 찜 여부
+    isOwner: true, // 사용자가 작성한 게시글 여부
+    createdAt: '2025-05-29T10:22:00',
+  },
+  {
+    postId: 2,
+    sellPrice: 8000,
+    bookStatus: 'BEST',
+    tradeStatus: 'COMPLETED',
+    category: 10,
+    book: {
+      title: '자바 성능 튜닝',
+      author: '스캇 오크스',
+      description:
+        '자바 성능 튜닝을 위한 완벽 가이드 코딩과 테스트는 흔히 별도의 전문 분야로 여겨진다. 저자이자 자바 전문가인 스캇 오크스는 JVM에서 코드가 동작하는 방법뿐만 아니라 튜닝을 통해 성능이 개선되는 방법도 함께, 자바로 작업하는 이라면 누구나 이해할 수 있게끔 이 책에서 설명한다.언어와 API를 포괄한 자바 가상 머신(JVM)과 자바 플랫폼을 이용해서 자바 애플리케이션의 성능에 대한 깊은 지식을 습득하자. 개발자나 성능 엔지니어 모두, 이 완벽 가이드를 통해 자바 7과 8 애플리케이션이 동작하는 방법을 개선하기 위한 다양한 특징과 도구와 절차를 배울 수 있다.',
+      priceStandard: 15000,
+      pubDate: '2019-01-11',
+    },
+    description: '책 상태 양호하고 밑줄 없음',
+    images: [
+      'https://yt3.googleusercontent.com/R83Dwa6lwYubJlSPsAyikFeIBGsv3kj4Wb3p80uORzOnADMOySr0zPgGbGd83jsv3GIcbwJHeJ0=s900-c-k-c0x00ffffff-no-rj',
+      'https://mblogthumb-phinf.pstatic.net/MjAxNzExMDZfMSAg/MDAxNTA5OTQyNTM1MDAw.vZIEwPi_hKWwwvJs16AQ2cFnI5UHA2TIJRFGuY1S71wg.5siYlGqKXU6wJvk7URhTuqzxbfUPJjpiCTkfHIRHG18g.JPEG.heeyoung9302/Papillon-puppy-jump-grass-1920x1200.jpg?type=w800',
+    ],
+    writer: {
+      memberId: '018e0df5-b7ec-7f36-b67f-80f3e4f49895',
+      nickname: 'booklover',
+      activityArea: '사하구 하단동',
+      profileUrl: 'https://s3.bucket.com/default.jpg',
+    },
+
+    scrapCount: 0, // 찜 수
+    viewCount: 5, // 조회 수
+    isFavorite: false, // 사용자의 찜 여부
+    isOwner: true, // 사용자가 작성한 게시글 여부
+    createdAt: '2025-05-27T10:22:00',
+  },
+];
