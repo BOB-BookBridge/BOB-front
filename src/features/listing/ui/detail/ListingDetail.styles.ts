@@ -193,6 +193,7 @@ export const SwiperWrapper = styled.div`
     height: 100%;
     object-fit: cover;
     display: block;
+    cursor: pointer;
   }
 
   .swiper-button-prev,

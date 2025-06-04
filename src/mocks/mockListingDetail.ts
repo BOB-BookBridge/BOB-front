@@ -17,8 +17,8 @@ export const data: ListingDetailProps[] = [
     },
     description: '책 상태 양호하고 밑줄 없음',
     images: [
-      'https://s3.bucket.com/post1.jpg',
-      'https://s3.bucket.com/post2.jpg',
+      'https://cdn.eyesmag.com/content/uploads/posts/2025/01/22/shutterstock_2491179401-06f50759-c2c5-49cb-b10b-ba47ca6d2166.jpg',
+      'https://images.pet-friends.co.kr/storage/pet_friends/community/803586/2024/03/07/58fe27a6-b300-4c26-bd0a-9214be16a615_iOS_image.jpg?f=webp',
     ],
     writer: {
       memberId: '018e0df5-b7ec-7f36-b67f-80f3e4f49895',
@@ -49,8 +49,8 @@ export const data: ListingDetailProps[] = [
     },
     description: '책 상태 양호하고 밑줄 없음',
     images: [
-      'https://image.aladin.co.kr/product/7924/83/cover500/k542434036_1.jpg',
-      'https://s3.bucket.com/post2.jpg',
+      'https://yt3.googleusercontent.com/R83Dwa6lwYubJlSPsAyikFeIBGsv3kj4Wb3p80uORzOnADMOySr0zPgGbGd83jsv3GIcbwJHeJ0=s900-c-k-c0x00ffffff-no-rj',
+      'https://mblogthumb-phinf.pstatic.net/MjAxNzExMDZfMSAg/MDAxNTA5OTQyNTM1MDAw.vZIEwPi_hKWwwvJs16AQ2cFnI5UHA2TIJRFGuY1S71wg.5siYlGqKXU6wJvk7URhTuqzxbfUPJjpiCTkfHIRHG18g.JPEG.heeyoung9302/Papillon-puppy-jump-grass-1920x1200.jpg?type=w800',
     ],
     writer: {
       memberId: '018e0df5-b7ec-7f36-b67f-80f3e4f49895',
