@@ -32,7 +32,7 @@ export interface ListingDetailProps {
     memberId: string;
     nickname: string;
     activityArea: string;
-    profileUrl: string;
+    profileUrl: string | null;
   };
   scrapCount: number;
   viewCount: number;

@@ -1,15 +1,45 @@
 'use client';
 
 import { data } from '@/mocks/mockListingDetail';
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
+import Image from 'next/image';
+
 import { getCategoryNameById } from '../lib';
 import { bookStatusMap, convertDateToString } from '@/shared/lib';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { colors } from '@/shared/constants';
-import { LikeIcon } from '@/shared/assets/icons';
+import {
+  CancleIcon,
+  CompleteIcon,
+  DeleteIcon,
+  EditIcon,
+  LikeIcon,
+  MeatballsIcon,
+} from '@/shared/assets/icons';
+import DefaultProfile from '@/shared/assets/default-profile.svg';
+import * as S from './ListingDetail.styles';
 
 interface ListingDetailProps {
   id: number;
+}
+
+const editOptions = [
+  { value: 'EDIT', label: '수정하기' },
+  { value: 'RESERVATION', label: '거래 예약' },
+  { value: 'CANCLE', label: '거래 취소' },
+  { value: 'COMPLETE', label: '거래 완료' },
+  { value: 'DELETE', label: '삭제하기' },
+];
+
+const tradeStatusOptionMap: Record<string, string[]> = {
+  READY: ['EDIT', 'RESERVATION', 'COMPLETE', 'DELETE'],
+  IN_PROGRESS: ['EDIT', 'CANCLE', 'COMPLETE', 'DELETE'],
+  COMPLETE: ['EDIT', 'DELETE'],
+};
+
+function getFilteredOptions(tradeStatus: string) {
+  const allowed = tradeStatusOptionMap[tradeStatus] ?? [];
+  return editOptions.filter((opt) => allowed.includes(opt.value));
 }
 
 const ListingDetail = ({ id }: ListingDetailProps) => {
@@ -17,64 +47,146 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
   if (!visibleData) return null;
 
   const [liked, setLiked] = useState(visibleData.isFavorite);
-
+  const [isOpenInfo, setIsOpenInfo] = useState(false);
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
   const theme = useTheme();
 
-  const handleLike = () => {
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!isOpenEdit) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(target)
+      ) {
+        setIsOpenEdit(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpenEdit]);
+
+  function handleLike() {
     setLiked((prev) => !prev);
     // 서버 전송 시 debounce 사용
-  };
+  }
+
+  function handleInfoToggle() {
+    setIsOpenInfo((prev) => !prev);
+  }
+  function handleOpenEdit() {
+    setIsOpenEdit((prev) => !prev);
+  }
+
+  function handleEditOptionClick(value: string) {}
+
+  function getMatchIcon(option: string) {
+    if (option === 'EDIT') return <EditIcon fill={theme.colors.BLACK} />;
+    if (option === 'CANCLE' || option === 'RESERVATION')
+      return <CancleIcon fill={theme.colors.BLACK} />;
+    if (option === 'COMPLETE')
+      return <CompleteIcon fill={theme.colors.BLACK} />;
+    if (option === 'DELETE') return <DeleteIcon fill={theme.colors.ERROR} />;
+  }
 
   return (
-    <Container>
-      <LeftSection>
-        <ImageCarousel>이미지 캐러셀</ImageCarousel>
-        <UserInfo>
-          <Avatar>프사</Avatar>
-          <UserText>
-            <div>{visibleData.writer.nickname}</div>
-            <div>{visibleData.writer.activityArea}</div>
-          </UserText>
-        </UserInfo>
-      </LeftSection>
+    <S.Container>
+      <S.LeftSection>
+        <S.ImageCarousel>이미지 캐러셀</S.ImageCarousel>
+        <S.UserInfo>
+          {visibleData.writer.profileUrl ? (
+            <Image
+              src={visibleData.writer.profileUrl}
+              width={60}
+              height={60}
+              alt='profile image'
+            />
+          ) : (
+            <DefaultProfile width={60} />
+          )}
+          <S.UserText>
+            <S.HeadingText>{visibleData.writer.nickname}</S.HeadingText>
+            <S.Text>{visibleData.writer.activityArea}</S.Text>
+          </S.UserText>
+        </S.UserInfo>
+      </S.LeftSection>
 
-      <RightSection>
-        <HeaderRow>
-          <div>{visibleData.book.title}</div>
-          <div>...</div>
-        </HeaderRow>
+      <S.RightSection>
+        <S.HeaderRow>
+          <S.HeadingText>{visibleData.book.title}</S.HeadingText>
+          {visibleData.isOwner && (
+            <div
+              ref={buttonRef}
+              onClick={handleOpenEdit}
+              style={{
+                display: 'inline-block',
+                padding: 8,
+                cursor: 'pointer',
+              }}>
+              <MeatballsIcon stroke={theme.colors.BLACK} strokeWidth={2} />
+            </div>
+          )}
+          {isOpenEdit && (
+            <S.EditList ref={menuRef}>
+              {getFilteredOptions(visibleData.tradeStatus).map((option) => (
+                <S.EditItem
+                  key={option.value}
+                  type={option.value}
+                  onClick={() => handleEditOptionClick(option.value)}>
+                  {getMatchIcon(option.value)}
+                  {option.label}
+                </S.EditItem>
+              ))}
+            </S.EditList>
+          )}
+        </S.HeaderRow>
 
-        <MetaRow>
-          <div>
+        <S.MetaRow>
+          <S.SubText>
             #{getCategoryNameById(visibleData.category)} · #
             {bookStatusMap[visibleData.bookStatus]} ·{' '}
             {convertDateToString(visibleData.createdAt)}
-          </div>
-          <div>
+          </S.SubText>
+          <S.SubText>
             조회 {visibleData.viewCount} · 찜 {visibleData.scrapCount}
-          </div>
-        </MetaRow>
+          </S.SubText>
+        </S.MetaRow>
 
-        <Price>{visibleData.sellPrice.toLocaleString()}원</Price>
-        <Description>{visibleData.description}</Description>
+        <S.HeadingText>
+          {visibleData.sellPrice.toLocaleString()}원
+        </S.HeadingText>
+        <S.Description>{visibleData.description}</S.Description>
 
-        <SectionTitle>책 기본 정보</SectionTitle>
-        <InfoGrid>
-          <div>저자</div>
-          <div>{visibleData.book.author}</div>
+        <S.SectionTitle onClick={handleInfoToggle}>
+          책 정보 더보기
+        </S.SectionTitle>
+        {isOpenInfo && (
+          <S.InfoGrid>
+            <S.Text>저자</S.Text>
+            <S.Text>{visibleData.book.author}</S.Text>
 
-          <div>출간일</div>
-          <div>{visibleData.book.pubDate}</div>
+            <S.Text>출간일</S.Text>
+            <S.Text>{visibleData.book.pubDate}</S.Text>
 
-          <div>정가</div>
-          <div>{visibleData.book.priceStandard}</div>
+            <S.Text>정가</S.Text>
+            <S.Text>{visibleData.book.priceStandard}</S.Text>
 
-          <div>책소개</div>
-          <div>{visibleData.book.description}</div>
-        </InfoGrid>
-
-        <ButtonRow>
-          <Button
+            <S.Text>책소개</S.Text>
+            <S.Text>{visibleData.book.description}</S.Text>
+          </S.InfoGrid>
+        )}
+        <S.ButtonRow>
+          <S.Button
             variant={liked ? 'outline-primary' : 'outline-gray'}
             onClick={handleLike}>
             <LikeIcon
@@ -83,134 +195,12 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
               strokeWidth={1.5}
             />
             찜하기
-          </Button>
-          <Button variant='primary'>채팅하기</Button>
-        </ButtonRow>
-      </RightSection>
-    </Container>
+          </S.Button>
+          <S.Button variant='primary'>채팅하기</S.Button>
+        </S.ButtonRow>
+      </S.RightSection>
+    </S.Container>
   );
 };
 
 export default ListingDetail;
-
-const Container = styled.div`
-  display: flex;
-  @media (max-width: 479px) {
-    flex-direction: column;
-  }
-`;
-
-const LeftSection = styled.div`
-  flex: 0.8;
-  padding: 20px;
-`;
-
-const RightSection = styled.div`
-  flex: 1;
-  padding: 20px;
-`;
-
-const ImageCarousel = styled.div`
-  background-color: pink;
-  width: 100%;
-  padding-bottom: 100%;
-`;
-
-const UserInfo = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  margin-top: 10px;
-`;
-
-const Avatar = styled.div``;
-
-const UserText = styled.div``;
-
-const HeaderRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const MetaRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 10px 0;
-`;
-
-const Price = styled.div`
-  font-weight: bold;
-  font-size: 20px;
-  margin: 10px 0;
-`;
-
-const Description = styled.div`
-  margin-bottom: 16px;
-`;
-
-const SectionTitle = styled.div`
-  margin-top: 20px;
-  font-weight: 600;
-`;
-
-const InfoGrid = styled.div`
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  row-gap: 10px;
-  column-gap: 12px;
-  margin: 10px 0;
-`;
-
-const ButtonRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 20px;
-  gap: 10px;
-`;
-
-type ButtonVariant = 'primary' | 'outline-primary' | 'outline-gray';
-
-interface StyledButtonProps {
-  variant: ButtonVariant;
-}
-
-const Button = styled.div<StyledButtonProps>`
-  flex: 1;
-  padding: 12px 16px;
-  border-radius: 16px;
-  font-weight: 600;
-  font-size: 16px;
-  border: 1.5px solid;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
-
-  ${({ theme, variant }) => {
-    switch (variant) {
-      case 'primary':
-        return `
-          background-color: ${theme.colors.PRIMARY};
-          color: ${colors.light.WHITE};
-          border-color: ${theme.colors.PRIMARY};
-        `;
-      case 'outline-primary':
-        return `
-          background-color: transparent;
-          color: ${theme.colors.PRIMARY};
-          border-color: ${theme.colors.PRIMARY};
-        `;
-      case 'outline-gray':
-        return `
-          background-color: transparent;
-          color: ${theme.colors.GRAY_500};
-          border-color: ${theme.colors.GRAY_500};
-        `;
-    }
-  }}
-`;

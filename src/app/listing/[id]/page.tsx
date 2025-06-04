@@ -14,11 +14,6 @@ const ListingDetailPage = () => {
   );
 };
 
-const Container = styled.div`
-  margin-right: 100px;
-  @media (max-width: 744px) {
-    margin-right: 0;
-  }
-`;
+const Container = styled.div``;
 
 export default ListingDetailPage;
