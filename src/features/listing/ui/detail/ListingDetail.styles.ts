@@ -44,12 +44,6 @@ export const SubText = styled.span`
   color: ${({ theme }) => theme.colors.GRAY_600};
 `;
 
-export const ImageCarousel = styled.div`
-  background-color: pink;
-  width: 100%;
-  padding-bottom: 100%;
-`;
-
 export const UserInfo = styled.div`
   display: flex;
   align-items: center;
