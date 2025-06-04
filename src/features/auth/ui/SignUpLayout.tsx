@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import styled from 'styled-components';
 import { colors } from '@/shared/constants';
 import Logo from '@/shared/assets/logo-text.svg';
@@ -8,7 +9,9 @@ import SignUpForm from './SignUpForm';
 const SignUpLayout = () => {
   return (
     <Container>
-      <Logo width={150} />
+      <Link href='/'>
+        <Logo width={150} />
+      </Link>
       <SignUpForm />
     </Container>
   );

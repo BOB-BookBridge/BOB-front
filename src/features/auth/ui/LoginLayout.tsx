@@ -1,6 +1,7 @@
 'use client';
 
 import styled, { useTheme } from 'styled-components';
+import Link from 'next/link';
 import { colors } from '@/shared/constants';
 import LoginForm from './LoginForm';
 import AccountGuide from './AccountGuide';
@@ -10,7 +11,9 @@ const LoginLayout = () => {
   const theme = useTheme();
   return (
     <Container>
-      <Logo width={150} />
+      <Link href='/'>
+        <Logo width={150} />
+      </Link>
       <LoginForm />
       <AccountGuide />
     </Container>

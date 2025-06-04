@@ -1,4 +1,12 @@
 'use client';
+
+import Link from 'next/link';
+import { useTheme } from 'styled-components';
+import { useRouter, usePathname } from 'next/navigation';
+import Logo from '@/shared/assets/logo.svg';
+import { useThemeStore } from '../model';
+import { colors } from '../constants';
+import * as S from './Header.styles';
 import {
   DarkModeIcon,
   LightModeIcon,
@@ -6,12 +14,6 @@ import {
   UserIcon,
 } from '../assets/icons';
 
-import * as S from './Header.styles';
-import { colors } from '../constants';
-import { useRouter, usePathname } from 'next/navigation';
-import { useTheme } from 'styled-components';
-import { useThemeStore } from '../model';
-import Logo from '@/shared/assets/logo.svg';
 // #todo: isLogin zustand로 관리 예정
 const isLogin = false;
 
@@ -29,7 +31,9 @@ const Header = () => {
 
   return (
     <S.Container>
-      <Logo width={60} />
+      <Link href='/'>
+        <Logo width={60} />
+      </Link>
       <S.RightSection>
         <div
           style={{
