@@ -26,24 +26,28 @@ pipeline {
         stage('Lint') {
             steps {
                 script {
-                    sh 'eslint . --cache --cache-location $ESLINT_CACHE --parallel --fix'
+                    sh 'docker exec ${CONTAINER_NAME} ./node_modules/.bin/eslint . --cache --cache-location $ESLINT_CACHE --parallel --fix'
                 }
             }
         }
+
         stage('Type Check') {
             steps {
                 script {
-                    sh 'tsc --noEmit --incremental'
+                    sh 'docker exec ${CONTAINER_NAME} tsc --noEmit --incremental --tsBuildInfoFile $TS_CACHE'
                 }
             }
         }
+
         stage('Lint Changed Files') {
             steps {
                 script {
                     def changedFiles = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim().split('\n')
                     def lintFiles = changedFiles.findAll { it.endsWith('.ts') || it.endsWith('.tsx') }
                     if (lintFiles.size() > 0) {
-                        sh "eslint ${lintFiles.join(' ')} --cache --fix --parallel"
+                        sh "docker exec ${CONTAINER_NAME} ./node_modules/.bin/eslint ${lintFiles.join(' ')} --cache --fix --parallel"
+                    } else {
+                        echo '변경된 .ts/.tsx 파일이 없습니다. 린트를 건너뜁니다.'
                     }
                 }
             }
