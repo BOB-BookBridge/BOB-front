@@ -64,27 +64,29 @@ const ListingFilterButton = () => {
       <p style={{ margin: 0 }}>
         필터 {activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
       </p>
-      <ModalLayout
-        isOpen={isOpen}
-        title={'필터'}
-        onClose={() => setIsOpen(false)}
-        isOnlyMobile={true}>
-        <FilterContent
-          isAvailableOnly={isAvailableOnly}
-          categoryId={categoryId}
-          bookStatus={bookStatus}
-          priceStatus={priceRange}
-          ref={filterRef}
-        />
-        <ButtonWrapper>
-          <Button $type='RESET' onClick={handleReset}>
-            초기화
-          </Button>
-          <Button $type='APPLY' onClick={handleApply}>
-            적용
-          </Button>
-        </ButtonWrapper>
-      </ModalLayout>
+      {isOpen && (
+        <ModalLayout
+          isOpen={isOpen}
+          title={'필터'}
+          onClose={() => setIsOpen(false)}
+          isOnlyMobile={true}>
+          <FilterContent
+            isAvailableOnly={isAvailableOnly}
+            categoryId={categoryId}
+            bookStatus={bookStatus}
+            priceStatus={priceRange}
+            ref={filterRef}
+          />
+          <ButtonWrapper>
+            <Button $type='RESET' onClick={handleReset}>
+              초기화
+            </Button>
+            <Button $type='APPLY' onClick={handleApply}>
+              적용
+            </Button>
+          </ButtonWrapper>
+        </ModalLayout>
+      )}
     </S.StyledButton>
   );
 };

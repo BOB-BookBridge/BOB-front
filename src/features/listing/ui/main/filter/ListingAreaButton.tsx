@@ -54,13 +54,15 @@ const ListingAreaButton = () => {
         <p style={{ margin: 0 }}>{selectedName}</p>
         <DropdownIconSm fill={colors.light.BLACK} />
       </S.StyledButton>
-      <ModalLayout
-        isOpen={isOpen}
-        onClose={handleButtonToggle}
-        title='지역 변경'>
-        <SelectAreaSection ref={sectionRef} showVerifyButton={false} />
-        <S.ConfirmButton onClick={handleApply}>적용</S.ConfirmButton>
-      </ModalLayout>
+      {isOpen && (
+        <ModalLayout
+          isOpen={isOpen}
+          onClose={handleButtonToggle}
+          title='지역 변경'>
+          <SelectAreaSection ref={sectionRef} showVerifyButton={false} />
+          <S.ConfirmButton onClick={handleApply}>적용</S.ConfirmButton>
+        </ModalLayout>
+      )}
     </div>
   );
 };
