@@ -40,3 +40,11 @@ export interface ListingDetailProps {
   isOwner: boolean;
   createdAt: string;
 }
+
+export interface TradeProps {
+  tradeId: number;
+  buyer: {
+    nickname: string;
+    profileUrl: string | null;
+  };
+}

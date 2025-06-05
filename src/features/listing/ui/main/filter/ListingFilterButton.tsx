@@ -2,7 +2,7 @@
 
 import { FilterIcon } from '@/shared/assets/icons';
 import * as S from './ListingControls.styles';
-import { ModalLayout } from '@/shared/ui';
+import { Button, ModalLayout } from '@/shared/ui';
 import { useRef, useState } from 'react';
 import FilterContent from './FilterContent';
 import { BookStatus } from '@/entities/listing/model/types';
@@ -64,27 +64,26 @@ const ListingFilterButton = () => {
       <p style={{ margin: 0 }}>
         필터 {activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
       </p>
-      <ModalLayout
-        isOpen={isOpen}
-        title={'필터'}
-        onClose={() => setIsOpen(false)}
-        isOnlyMobile={true}>
-        <FilterContent
-          isAvailableOnly={isAvailableOnly}
-          categoryId={categoryId}
-          bookStatus={bookStatus}
-          priceStatus={priceRange}
-          ref={filterRef}
-        />
-        <ButtonWrapper>
-          <Button $type='RESET' onClick={handleReset}>
-            초기화
-          </Button>
-          <Button $type='APPLY' onClick={handleApply}>
-            적용
-          </Button>
-        </ButtonWrapper>
-      </ModalLayout>
+      {isOpen && (
+        <ModalLayout
+          isOpen={isOpen}
+          title={'필터'}
+          onClose={() => setIsOpen(false)}
+          isOnlyMobile={true}>
+          <FilterContent
+            isAvailableOnly={isAvailableOnly}
+            categoryId={categoryId}
+            bookStatus={bookStatus}
+            priceStatus={priceRange}
+            ref={filterRef}
+          />
+          <ButtonWrapper>
+            <Button variant='cancel' text='초기화' onClick={handleReset} />
+
+            <Button variant='primary' text='적용' onClick={handleApply} />
+          </ButtonWrapper>
+        </ModalLayout>
+      )}
     </S.StyledButton>
   );
 };
@@ -94,17 +93,7 @@ export default ListingFilterButton;
 const ButtonWrapper = styled.div`
   display: flex;
   width: 100%;
-`;
-const Button = styled.div<{ $type: 'RESET' | 'APPLY' }>`
-  flex: 1;
-  display: flex;
+  gap: 10px;
+  padding: 0 10px;
   justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  padding: 10px 0;
-  border-radius: 10px;
-  margin: 10px;
-  ${({ $type, theme }) =>
-    `background-color: ${$type === 'APPLY' ? theme.colors.PRIMARY : colors.light.GRAY_500};
-     color: ${$type === 'APPLY' ? colors.light.WHITE : colors.light.GRAY_200};`}
 `;

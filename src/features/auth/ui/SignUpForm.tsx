@@ -139,6 +139,9 @@ const SignUpForm = () => {
     return baseInputs;
   };
 
+  function handleClickSignUp() {
+    console.log('signup');
+  }
   return (
     <S.Container>
       <InputGroup
@@ -260,7 +263,11 @@ const SignUpForm = () => {
           }
         />
       </div>
-      <Button text='회원가입' disabled={isDisabled} />
+      <Button
+        text='회원가입'
+        variant={isDisabled ? 'disabled' : 'primary'}
+        onClick={handleClickSignUp}
+      />
     </S.Container>
   );
 };

@@ -2,6 +2,7 @@ const common = {
   PRIMARY: '#FAC053',
   SECONDARY: '#003867',
   ERROR: '#FF4D4F',
+  PRIMARY_100: '#FFF8E6',
   BOOK_STATUS: {
     BEST: '#003867',
     HIGH: '#3F6484',

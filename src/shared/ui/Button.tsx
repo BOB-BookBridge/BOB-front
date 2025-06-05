@@ -4,22 +4,26 @@ import styled from 'styled-components';
 import { colors } from '../constants';
 
 const BUTTON_STYLE = {
-  sm: { width: '180px', height: '50px', fontSize: '14px' },
+  sm: { width: '180px', height: '45px', fontSize: '14px' },
   md: { width: '300px', height: '50px', fontSize: '16px' },
   lg: { width: '370px', height: '50px', fontSize: '18px' },
 } as const;
 
+type Variant = 'primary' | 'cancel' | 'disabled';
+
 const Button = ({
   text,
-  disabled,
+  variant = 'primary',
   size,
+  onClick,
 }: {
   text: string;
-  disabled: boolean;
+  variant?: Variant;
   size?: Size;
+  onClick: () => void;
 }) => {
   return (
-    <StyledButton disabled={disabled} size={size}>
+    <StyledButton variant={variant} size={size} onClick={onClick}>
       {text}
     </StyledButton>
   );
@@ -30,7 +34,7 @@ export default Button;
 type Size = 'sm' | 'md' | 'lg';
 
 interface ButtonProps {
-  disabled: boolean;
+  variant: Variant;
   size?: Size;
 }
 
@@ -44,10 +48,28 @@ const StyledButton = styled.button<ButtonProps>`
     font-size: ${style.fontSize};
   `;
   }}
-  ${({ disabled = true }) =>
-    `background-color: ${disabled ? colors.light.GRAY_300 : colors.light.PRIMARY};
-  color: ${disabled ? colors.light.GRAY_500 : colors.light.WHITE};
-  `}
+  ${({ theme, variant }) => {
+    switch (variant) {
+      case 'cancel':
+        return `
+          background-color: transparent;
+          color: ${theme.colors.GRAY_600};
+          border: 1px solid ${theme.colors.GRAY_400};
+        `;
+      case 'disabled':
+        return `
+          background-color: ${theme.colors.GRAY_300};
+          color: ${theme.colors.GRAY_500};
+          cursor: not-allowed;
+        `;
+      case 'primary':
+      default:
+        return `
+          background-color: ${theme.colors.PRIMARY};
+          color: ${theme.colors.WHITE};
+        `;
+    }
+  }}
   width: 100%;
   font-weight: 700;
   text-align: center;

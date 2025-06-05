@@ -5,7 +5,7 @@ export const data: ListingDetailProps[] = [
     postId: 1,
     sellPrice: 8000,
     bookStatus: 'BEST',
-    tradeStatus: 'READY',
+    tradeStatus: 'IN_PROGRESS',
     category: 4,
     book: {
       title: '디디의 우산',
