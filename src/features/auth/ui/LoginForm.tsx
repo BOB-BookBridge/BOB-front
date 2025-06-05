@@ -22,6 +22,9 @@ const LoginForm = () => {
   const password = useWatch({ name: 'password', control });
   const disabled = !email || !password || Object.keys(errors).length > 0;
 
+  function handleClickLogin() {
+    console.log('login');
+  }
   return (
     <Container>
       <InputGroup
@@ -42,7 +45,11 @@ const LoginForm = () => {
         register={register}
         errors={errors}
       />
-      <Button text='로그인' disabled={disabled} />
+      <Button
+        text='로그인'
+        variant={disabled ? 'disabled' : 'primary'}
+        onClick={handleClickLogin}
+      />
     </Container>
   );
 };
