@@ -25,10 +25,10 @@
   "include": [
     "svg.d.ts",
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.js"
   ],
-  "exclude": ["node_modules", ".next", "build", "public"]
+  "exclude": ["node_modules", ".next"]
 }
