@@ -14,7 +14,7 @@ import RawCloseIcon from './close.svg';
 import RawLikeIcon from './like.svg';
 import RawMeatballsIcon from './meatballs.svg';
 import RawEditIcon from './edit.svg';
-import RawCancleIcon from './cancle.svg';
+import RawCancelIcon from './cancel.svg';
 import RawDeleteIcon from './delete.svg';
 import RawCompleteIcon from './complete.svg';
 
@@ -33,6 +33,6 @@ export const CloseIcon = withIconSize(RawCloseIcon);
 export const LikeIcon = withIconSize(RawLikeIcon);
 export const MeatballsIcon = withIconSize(RawMeatballsIcon, 18);
 export const EditIcon = withIconSize(RawEditIcon, 18);
-export const CancleIcon = withIconSize(RawCancleIcon, 18);
+export const CancelIcon = withIconSize(RawCancelIcon, 18);
 export const DeleteIcon = withIconSize(RawDeleteIcon, 18);
 export const CompleteIcon = withIconSize(RawCompleteIcon, 18);

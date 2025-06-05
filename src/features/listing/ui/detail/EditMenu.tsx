@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { TradeStatus } from '@/entities/listing/model/types';
 import {
-  CancleIcon,
+  CancelIcon,
   CompleteIcon,
   DeleteIcon,
   EditIcon,
@@ -9,18 +9,27 @@ import {
 } from '@/shared/assets/icons';
 import { useTheme } from 'styled-components';
 import * as S from './ListingDetail.styles';
+import { ModalLayout } from '@/shared/ui';
 
 const editOptions = [
   { value: 'EDIT', label: '수정하기' },
   { value: 'RESERVATION', label: '거래 예약' },
-  { value: 'CANCLE', label: '거래 취소' },
+  { value: 'CANCEL', label: '거래 취소' },
   { value: 'COMPLETE', label: '거래 완료' },
   { value: 'DELETE', label: '삭제하기' },
 ];
 
+const EDIT_TITLE = {
+  RESERVATION: '예약자 선택',
+  CANCEL: '취소 사유 입력',
+  COMPLETE: '거래자 선택',
+} as const;
+
+type EditModalType = keyof typeof EDIT_TITLE;
+
 const tradeStatusOptionMap: Record<string, string[]> = {
   READY: ['EDIT', 'RESERVATION', 'COMPLETE', 'DELETE'],
-  IN_PROGRESS: ['EDIT', 'CANCLE', 'COMPLETE', 'DELETE'],
+  IN_PROGRESS: ['EDIT', 'CANCEL', 'COMPLETE', 'DELETE'],
   COMPLETE: ['EDIT', 'DELETE'],
 };
 
@@ -35,7 +44,9 @@ interface EditMenuProps {
 const EditMenu = ({ tradeStatus, postId }: EditMenuProps) => {
   const theme = useTheme();
   const [isOpenEdit, setIsOpenEdit] = useState(false);
-
+  const [openModalType, setOpenModalType] = useState<EditModalType | null>(
+    null,
+  );
   const menuRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
 
@@ -65,16 +76,30 @@ const EditMenu = ({ tradeStatus, postId }: EditMenuProps) => {
     setIsOpenEdit((prev) => !prev);
   }
 
-  function handleEditOptionClick(value: string) {}
+  function handleEditOptionClick(option: string) {
+    if (option === 'EDIT') console.log(postId);
+    else if (
+      option === 'CANCEL' ||
+      option === 'RESERVATION' ||
+      option == 'COMPLETE'
+    )
+      setOpenModalType(option);
+    else if (option === 'DELETE') console.log('delete', postId);
+    setIsOpenEdit(false);
+  }
 
+  function handleCloseModal() {
+    setOpenModalType(null);
+  }
   function getMatchIcon(option: string) {
     if (option === 'EDIT') return <EditIcon fill={theme.colors.BLACK} />;
-    if (option === 'CANCLE' || option === 'RESERVATION')
-      return <CancleIcon fill={theme.colors.BLACK} />;
+    if (option === 'CANCEL' || option === 'RESERVATION')
+      return <CancelIcon fill={theme.colors.BLACK} />;
     if (option === 'COMPLETE')
       return <CompleteIcon fill={theme.colors.BLACK} />;
     if (option === 'DELETE') return <DeleteIcon fill={theme.colors.ERROR} />;
   }
+
   return (
     <div>
       <div
@@ -100,6 +125,14 @@ const EditMenu = ({ tradeStatus, postId }: EditMenuProps) => {
             </S.EditItem>
           ))}
         </S.EditList>
+      )}
+      {openModalType && (
+        <ModalLayout
+          isOpen={true}
+          title={EDIT_TITLE[openModalType]}
+          onClose={handleCloseModal}>
+          <div></div>
+        </ModalLayout>
       )}
     </div>
   );
