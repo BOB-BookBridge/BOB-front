@@ -4,6 +4,8 @@ pipeline {
     environment {
         TARGET_HOST = "ubuntu@13.125.29.139"
         CONTAINER_NAME = "fserver"
+        ESLINT_CACHE = 'eslint-cache'
+        TS_CACHE = 'ts-cache'
     }
 
     stages {
@@ -18,6 +20,31 @@ pipeline {
                       docker-compose up -d ${CONTAINER_NAME}
                     '
                     """
+                }
+            }
+        }
+        stage('Lint') {
+            steps {
+                script {
+                    sh 'eslint . --cache --cache-location $ESLINT_CACHE --parallel --fix'
+                }
+            }
+        }
+        stage('Type Check') {
+            steps {
+                script {
+                    sh 'tsc --noEmit --incremental'
+                }
+            }
+        }
+        stage('Lint Changed Files') {
+            steps {
+                script {
+                    def changedFiles = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim().split('\n')
+                    def lintFiles = changedFiles.findAll { it.endsWith('.ts') || it.endsWith('.tsx') }
+                    if (lintFiles.size() > 0) {
+                        sh "eslint ${lintFiles.join(' ')} --cache --fix --parallel"
+                    }
                 }
             }
         }

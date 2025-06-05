@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN CI=true npm run build
+RUN npm run build
 
 FROM node:20-alpine
 
