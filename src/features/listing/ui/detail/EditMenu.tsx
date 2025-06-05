@@ -48,12 +48,12 @@ export type CancelSubmitData = {
   reason: string;
 };
 
-export type SelectPersonSubmitData = {
-  userId: number;
+export type SelectBuyerSubmitData = {
+  tradeId: number;
   type: 'RESERVATION' | 'COMPLETE';
 };
 
-type ModalSubmitData = CancelSubmitData | SelectPersonSubmitData;
+type ModalSubmitData = CancelSubmitData | SelectBuyerSubmitData;
 
 const EditMenu = ({ tradeStatus, postId }: EditMenuProps) => {
   const theme = useTheme();
@@ -112,7 +112,7 @@ const EditMenu = ({ tradeStatus, postId }: EditMenuProps) => {
       console.log(data.reason);
     } else {
       // 예약자 선택 or 거래 완료 처리
-      console.log(data.userId, data.type);
+      console.log(data.tradeId, data.type);
     }
 
     setOpenModalType(null);

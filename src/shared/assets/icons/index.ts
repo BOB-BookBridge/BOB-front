@@ -17,6 +17,7 @@ import RawEditIcon from './edit.svg';
 import RawCancelIcon from './cancel.svg';
 import RawDeleteIcon from './delete.svg';
 import RawCompleteIcon from './complete.svg';
+import RawSelectIcon from './select.svg';
 
 export const UserIcon = withIconSize(RawUserIcon);
 export const NotiIcon = withIconSize(RawNotiIcon);
@@ -36,3 +37,4 @@ export const EditIcon = withIconSize(RawEditIcon, 18);
 export const CancelIcon = withIconSize(RawCancelIcon, 18);
 export const DeleteIcon = withIconSize(RawDeleteIcon, 18);
 export const CompleteIcon = withIconSize(RawCompleteIcon, 18);
+export const SelectIcon = withIconSize(RawSelectIcon);

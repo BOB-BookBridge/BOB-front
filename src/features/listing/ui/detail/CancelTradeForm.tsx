@@ -12,7 +12,7 @@ const CancelTradeForm = ({ onSubmit, onClose }: CancelTradeFormProps) => {
   const [value, setValue] = useState('');
 
   return (
-    <Wrapper>
+    <Container>
       <Textarea
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -31,13 +31,13 @@ const CancelTradeForm = ({ onSubmit, onClose }: CancelTradeFormProps) => {
           />
         </ButtonGroup>
       </Footer>
-    </Wrapper>
+    </Container>
   );
 };
 
 export default CancelTradeForm;
 
-const Wrapper = styled.div`
+const Container = styled.div`
   width: 100%;
   padding: 0 20px;
 `;
