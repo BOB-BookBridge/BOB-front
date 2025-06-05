@@ -10,6 +10,8 @@ import {
 import { useTheme } from 'styled-components';
 import * as S from './ListingDetail.styles';
 import { ModalLayout } from '@/shared/ui';
+import CancelTradeForm from './CancelTradeForm';
+import SelectBuyerForm from './SelectBuyerForm';
 
 const editOptions = [
   { value: 'EDIT', label: '수정하기' },
@@ -21,7 +23,7 @@ const editOptions = [
 
 const EDIT_TITLE = {
   RESERVATION: '예약자 선택',
-  CANCEL: '취소 사유 입력',
+  CANCEL: '거래 취소',
   COMPLETE: '거래자 선택',
 } as const;
 
@@ -41,6 +43,18 @@ interface EditMenuProps {
   tradeStatus: TradeStatus;
   postId: number;
 }
+
+export type CancelSubmitData = {
+  reason: string;
+};
+
+export type SelectPersonSubmitData = {
+  userId: number;
+  type: 'RESERVATION' | 'COMPLETE';
+};
+
+type ModalSubmitData = CancelSubmitData | SelectPersonSubmitData;
+
 const EditMenu = ({ tradeStatus, postId }: EditMenuProps) => {
   const theme = useTheme();
   const [isOpenEdit, setIsOpenEdit] = useState(false);
@@ -91,6 +105,19 @@ const EditMenu = ({ tradeStatus, postId }: EditMenuProps) => {
   function handleCloseModal() {
     setOpenModalType(null);
   }
+
+  function handleModalSubmit(data: ModalSubmitData) {
+    if ('reason' in data) {
+      // 거래 취소 처리
+      console.log(data.reason);
+    } else {
+      // 예약자 선택 or 거래 완료 처리
+      console.log(data.userId, data.type);
+    }
+
+    setOpenModalType(null);
+  }
+
   function getMatchIcon(option: string) {
     if (option === 'EDIT') return <EditIcon fill={theme.colors.BLACK} />;
     if (option === 'CANCEL' || option === 'RESERVATION')
@@ -131,7 +158,18 @@ const EditMenu = ({ tradeStatus, postId }: EditMenuProps) => {
           isOpen={true}
           title={EDIT_TITLE[openModalType]}
           onClose={handleCloseModal}>
-          <div></div>
+          {openModalType === 'CANCEL' ? (
+            <CancelTradeForm
+              onClose={handleCloseModal}
+              onSubmit={handleModalSubmit}
+            />
+          ) : (
+            <SelectBuyerForm
+              mode={openModalType}
+              onSubmit={handleModalSubmit}
+              onClose={handleCloseModal}
+            />
+          )}
         </ModalLayout>
       )}
     </div>
