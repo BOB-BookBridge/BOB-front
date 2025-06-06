@@ -5,6 +5,7 @@ pipeline {
         TARGET_HOST = "ubuntu@13.125.29.139"
         CONTAINER_NAME = "fserver"
         ESLINT_CACHE = 'eslint-cache'
+        NPM_CONFIG_CACHE = "/var/jenkins_home/npm-cache"
         TS_CACHE = 'ts-cache'
     }
 
@@ -12,7 +13,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    sh 'npm ci'
+                    sh 'npm install --cache $NPM_CONFIG_CACHE --prefer-offline'
                 }
             }
         }
@@ -42,10 +43,9 @@ pipeline {
                 sshagent (credentials: ['ec2-ssh-key']) {
                     sh """
                     ssh -o StrictHostKeyChecking=no ${TARGET_HOST} '
-                      docker-compose stop ${CONTAINER_NAME} || true &&
-                      docker-compose rm -f ${CONTAINER_NAME} || true &&
-                      docker-compose build ${CONTAINER_NAME} &&
-                      docker-compose up -d ${CONTAINER_NAME}
+                    docker-compose stop ${CONTAINER_NAME} || true &&
+                    docker-compose rm -f ${CONTAINER_NAME} || true &&
+                    docker-compose up --build -d ${CONTAINER_NAME}
                     '
                     """
                 }
