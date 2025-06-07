@@ -1,6 +1,5 @@
 import type { NextConfig } from 'next';
 
-const isCI = process.env.CI === 'true';
 const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
@@ -9,10 +8,10 @@ const nextConfig: NextConfig = {
     domains: ['s3.bucket.com'],
   },
   typescript: {
-    ignoreBuildErrors: isCI,
+    ignoreBuildErrors: true,
   },
   eslint: {
-    ignoreDuringBuilds: isCI,
+    ignoreDuringBuilds: true,
   },
   webpack(config) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

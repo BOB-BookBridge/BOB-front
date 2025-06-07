@@ -4,18 +4,48 @@ pipeline {
     environment {
         TARGET_HOST = "ubuntu@13.125.29.139"
         CONTAINER_NAME = "fserver"
+        ESLINT_CACHE = 'eslint-cache'
+        NPM_CONFIG_CACHE = "/var/jenkins_home/npm-cache"
+        TS_CACHE = 'ts-cache'
     }
 
     stages {
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    sh 'npm install --cache $NPM_CONFIG_CACHE --prefer-offline'
+                }
+            }
+        }
+        stage('Type Check') {
+            steps {
+                script {
+                    sh './node_modules/.bin/tsc --noEmit --incremental'
+                }
+            }
+        }
+        stage('Lint') {
+            steps {
+                script {
+                    def changedFiles = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim().split('\n')
+                    def lintFiles = changedFiles.findAll { it.endsWith('.ts') || it.endsWith('.tsx') }
+                    
+                    if (lintFiles.size() > 0) {
+                        sh "./node_modules/.bin/eslint ${lintFiles.join(' ')} --cache --cache-location $ESLINT_CACHE --fix"
+                    } else {
+                        sh './node_modules/.bin/eslint . --cache --cache-location $ESLINT_CACHE --fix'
+                    }
+                }
+            }
+        }
         stage('Deploy frontend container') {
             steps {
                 sshagent (credentials: ['ec2-ssh-key']) {
                     sh """
                     ssh -o StrictHostKeyChecking=no ${TARGET_HOST} '
-                      docker-compose stop ${CONTAINER_NAME} || true &&
-                      docker-compose rm -f ${CONTAINER_NAME} || true &&
-                      docker-compose build ${CONTAINER_NAME} &&
-                      docker-compose up -d ${CONTAINER_NAME}
+                    docker-compose stop ${CONTAINER_NAME} || true &&
+                    docker-compose rm -f ${CONTAINER_NAME} || true &&
+                    docker-compose up --build -d ${CONTAINER_NAME}
                     '
                     """
                 }
