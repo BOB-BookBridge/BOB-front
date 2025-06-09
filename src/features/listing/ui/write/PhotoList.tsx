@@ -1,14 +1,66 @@
-import { PhotoIcon } from '@/shared/assets/icons';
 import styled, { useTheme } from 'styled-components';
+import { CloseIconSm, PhotoIcon } from '@/shared/assets/icons';
+import { ImageFile } from './ListingWrite';
+import * as S from './ListingWrite.styles';
 
-const PhotoList = () => {
+interface PhotoListProps {
+  images: ImageFile[];
+  onAddImage: (image: ImageFile) => void;
+  onDeleteImage: (idx: number) => void;
+}
+const PhotoList = ({ images, onAddImage, onDeleteImage }: PhotoListProps) => {
   const theme = useTheme();
+
+  function handleAddImage(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files) return;
+    if (images.length + files.length > 5) {
+      alert('최대 5장까지 업로드 할 수 있어요');
+      return;
+    }
+    const fileArray = Array.from(files);
+
+    fileArray.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          const imageObj: ImageFile = {
+            previewUrl: reader.result,
+            file,
+          };
+          onAddImage(imageObj);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function handleDeleteImage(idx: number) {
+    onDeleteImage(idx);
+  }
+
   return (
     <Container>
-      <AddPhoto>
+      <S.AddPhoto>
+        <input
+          onChange={handleAddImage}
+          type='file'
+          multiple
+          style={{ display: 'none' }}
+        />
         <PhotoIcon fill={theme.colors.GRAY_500} />
-        <div style={{ color: theme.colors.GRAY_500 }}>0/5</div>
-      </AddPhoto>
+        <div style={{ color: theme.colors.GRAY_500 }}>{images.length}/5</div>
+      </S.AddPhoto>
+      {images.map((image, idx) => (
+        <div
+          key={image.previewUrl}
+          style={{ flexShrink: 0, position: 'relative' }}>
+          <S.DeleteButton onClick={() => handleDeleteImage(idx)}>
+            <CloseIconSm fill={theme.colors.WHITE} />
+          </S.DeleteButton>
+          <S.StyledImage src={image.previewUrl} draggable={false} />
+        </div>
+      ))}
     </Container>
   );
 };
@@ -17,16 +69,7 @@ export default PhotoList;
 
 const Container = styled.div`
   width: 100%;
-`;
-
-const AddPhoto = styled.div`
-  border: 1.5px solid ${({ theme }) => theme.colors.GRAY_500};
-  border-radius: 20px;
-  width: 120px;
-  height: 120px;
+  overflow-x: scroll;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+  gap: 10px;
 `;

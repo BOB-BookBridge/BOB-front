@@ -9,7 +9,7 @@ export const Container = styled.div`
   gap: 20px;
 `;
 
-export const AddPhoto = styled.div`
+export const AddPhoto = styled.label`
   border: 1.5px solid ${({ theme }) => theme.colors.GRAY_500};
   border-radius: 20px;
   width: 120px;
@@ -19,6 +19,28 @@ export const AddPhoto = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  flex-shrink: 0;
+`;
+
+export const DeleteButton = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  background-color: ${({ theme }) => theme.colors.BLACK};
+  border-radius: 50%;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const StyledImage = styled.img`
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 20px;
+  border: 1.5px solid ${({ theme }) => theme.colors.GRAY_500};
 `;
 
 export const InputWrapper = styled.div`

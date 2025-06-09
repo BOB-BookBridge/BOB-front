@@ -33,6 +33,7 @@ export const PinIcon = withIconSize(RawPinIcon, 20);
 export const ArrowICon = withIconSize(RawArrowICon, 20);
 export const ArrowIConLg = withIconSize(RawArrowICon, 30);
 export const CloseIcon = withIconSize(RawCloseIcon);
+export const CloseIconSm = withIconSize(RawCloseIcon, 18);
 export const LikeIcon = withIconSize(RawLikeIcon);
 export const MeatballsIcon = withIconSize(RawMeatballsIcon, 18);
 export const EditIcon = withIconSize(RawEditIcon, 18);

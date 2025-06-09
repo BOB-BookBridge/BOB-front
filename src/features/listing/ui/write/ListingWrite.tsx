@@ -1,17 +1,19 @@
 import { useState } from 'react';
-import { useTheme } from 'styled-components';
-import { ArrowIConLg } from '@/shared/assets/icons';
-import PhotoList from './PhotoList';
-import * as S from './ListingWrite.styles';
-import SearchSection from './SearchSection';
 import PriceAndCategory from './PriceAndCategory';
+import SearchSection from './SearchSection';
+import * as S from './ListingWrite.styles';
+import PhotoList from './PhotoList';
 
 interface ListingWriteProps {
   id?: number;
 }
 
+export type ImageFile = {
+  previewUrl: string;
+  file: File;
+};
 const ListingWrite = ({ id }: ListingWriteProps) => {
-  const theme = useTheme();
+  const [images, setImages] = useState<ImageFile[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [title, setTitle] = useState<string>('파과');
   const [price, setPrice] = useState<string>('');
@@ -46,9 +48,21 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
     e.target.style.height = `${e.target.scrollHeight}px`;
     setDescription(e.target.value);
   }
+
+  function handleAddImage(value: ImageFile) {
+    setImages((prev) => [...prev, value]);
+  }
+  function handleRemoveImage(indexToRemove: number) {
+    setImages((prev) => prev.filter((_, index) => index !== indexToRemove));
+  }
+
   return (
     <S.Container>
-      <PhotoList />
+      <PhotoList
+        images={images}
+        onAddImage={handleAddImage}
+        onDeleteImage={handleRemoveImage}
+      />
       <SearchSection value={searchTerm} onChange={handleSearchTermChange} />
       <S.TitleSection>
         <S.HeaderText>제목</S.HeaderText>
