@@ -10,7 +10,7 @@ const ListingCard = ({ data }: { data: ListingCardProps }) => {
   const categoryName = getCategoryNameById(data.categoryId);
   const time = convertDateToString(data.createdAt);
   return (
-    <S.CardContainer href={`/listing/${data.postId}`}>
+    <S.CardContainer href={`/listings/${data.postId}`}>
       <S.ImageWrapper>
         <S.Overlay>
           <S.OverlayDim status={data.tradeStatus} />
