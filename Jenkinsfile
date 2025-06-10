@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'Node20'
+    }
+
     environment {
         TARGET_HOST = "ubuntu@13.125.29.139"
         CONTAINER_NAME = "fserver"
