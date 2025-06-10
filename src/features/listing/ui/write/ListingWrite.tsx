@@ -4,6 +4,7 @@ import SearchSection from './SearchSection';
 import * as S from './ListingWrite.styles';
 import PhotoList from './PhotoList';
 import HelpButton from './HelpButton';
+import { HELP_MESSAGES } from '@/shared/constants';
 
 interface ListingWriteProps {
   id?: number;
@@ -14,8 +15,6 @@ export type ImageFile = {
   file: File;
 };
 
-const STATE_HELP_MESSAGE =
-  '최상: 사용 흔적이 거의 없고, 선물용으로도 무리 없음\n\n상: 표지나 책 등에 미세한 마모 또는 작은 접힘이 있음\n\n중: 필기, 접힘 등 사용 흔적이 있으나 열람에는 지장이 없음\n\n하: 사용감이 많고, 일부 페이지가 찢어지거나 필기가 많음';
 const ListingWrite = ({ id }: ListingWriteProps) => {
   const [images, setImages] = useState<ImageFile[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -76,7 +75,7 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
       </S.TitleSection>
       <S.StatusSection>
         <S.HeaderText>상태</S.HeaderText>
-        <HelpButton text={STATE_HELP_MESSAGE} />
+        <HelpButton text={HELP_MESSAGES.state} />
       </S.StatusSection>
       <PriceAndCategory price={price} handlePriceChange={handlePriceChange} />
       <S.DescriptionSection>
