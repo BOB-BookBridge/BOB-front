@@ -7,6 +7,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  margin-top: 50px;
 `;
 
 export const AddPhoto = styled.label`

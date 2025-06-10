@@ -6,7 +6,7 @@ import PriceAndCategory from './PriceAndCategory';
 import { bookStatusMap } from '@/shared/lib';
 import SearchSection from './SearchSection';
 import * as S from './ListingWrite.styles';
-import { CheckCircle } from '@/shared/ui';
+import { Button, CheckCircle } from '@/shared/ui';
 import HelpButton from './HelpButton';
 import PhotoList from './PhotoList';
 
@@ -65,6 +65,10 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
     setImages((prev) => prev.filter((_, index) => index !== indexToRemove));
   }
 
+  function handleClickUpload() {
+    // #todo: 업로드 후 메인 페이지로 이동
+  }
+
   return (
     <S.Container>
       <PhotoList
@@ -109,6 +113,12 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
           />
         </S.InputWrapper>
       </S.DescriptionSection>
+      <Button
+        text='업로드'
+        onClick={handleClickUpload}
+        variant='primary'
+        size='lg'
+      />
     </S.Container>
   );
 };
