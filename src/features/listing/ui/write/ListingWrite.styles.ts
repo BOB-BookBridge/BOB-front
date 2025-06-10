@@ -137,3 +137,69 @@ export const HeaderWrapper = styled.div`
   gap: 8px;
   align-items: center;
 `;
+
+export const DropdownBox = styled.button`
+  width: 150px;
+  height: 50px;
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+  border: ${({ theme }) => `1px solid ${theme.colors.GRAY_500}`};
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: ${({ theme }) => `${theme.colors.WHITE}`};
+`;
+
+export const OptionBox = styled.div<{ $disabled?: boolean }>`
+  font-size: 12px;
+  padding: 3px;
+  border-radius: 5px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  ${({ $disabled, theme }) =>
+    !$disabled &&
+    `
+    cursor: pointer;
+    &:hover {
+      background-color: ${theme.colors.GRAY_500};
+      color: ${theme.colors.BLACK};
+    }
+  `}
+`;
+
+export const OptionsWrapper = styled.div`
+  padding: 2px;
+  margin-top: 5px;
+  max-height: 200px;
+  overflow-y: scroll;
+  position: absolute;
+  width: 150px;
+  border-radius: 5px;
+  z-index: 9999;
+  background-color: ${({ theme }) => `${theme.colors.WHITE}`};
+  border: ${({ theme }) => `1px solid ${theme.colors.GRAY_500}`};
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => `${theme.colors.GRAY_700}`};
+    border-radius: 5px;
+    border-right: 1px solid transparent;
+    background-clip: padding-box;
+    box-sizing: border-box;
+  }
+
+  &::-webkit-scrollbar-button:vertical:start:increment,
+  &::-webkit-scrollbar-button:vertical:end:decrement {
+    display: block;
+    height: 1px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: ${({ theme }) => `${theme.colors.GRAY_500}`};
+  }
+`;
