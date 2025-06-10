@@ -23,6 +23,7 @@ import RawHelpIcon from './help.svg';
 import RawHelpDarkIcon from './help-dark.svg';
 import RawHelpInactiveIcon from './help-inactive.svg';
 import RawHelpInactiveDarkIcon from './help-inactive-dark.svg';
+import RawSearchIcon from './search.svg';
 
 export const UserIcon = withIconSize(RawUserIcon);
 export const NotiIcon = withIconSize(RawNotiIcon);
@@ -51,3 +52,4 @@ export const HelpIcon = withIconSize(RawHelpIcon, 18);
 export const HelpDarkIcon = withIconSize(RawHelpDarkIcon, 18);
 export const HelpInactiveIcon = withIconSize(RawHelpInactiveIcon, 18);
 export const HelpInactiveDarkIcon = withIconSize(RawHelpInactiveDarkIcon, 18);
+export const SearchIcon = withIconSize(RawSearchIcon);

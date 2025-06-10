@@ -1,10 +1,10 @@
 import { useState } from 'react';
+import { HELP_MESSAGES } from '@/shared/constants';
 import PriceAndCategory from './PriceAndCategory';
 import SearchSection from './SearchSection';
 import * as S from './ListingWrite.styles';
-import PhotoList from './PhotoList';
 import HelpButton from './HelpButton';
-import { HELP_MESSAGES } from '@/shared/constants';
+import PhotoList from './PhotoList';
 
 interface ListingWriteProps {
   id?: number;
@@ -42,6 +42,7 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
     setRawPrice(numeric === '' ? null : Number(numeric));
     setPrice(formatNumber(numeric));
   }
+
   function handleSearchTermChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
   }
