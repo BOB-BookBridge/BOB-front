@@ -1,4 +1,4 @@
 import useThemeStore from './useThemeStore';
 import { useMediaQuery } from './useMediaQuery';
-
-export { useThemeStore, useMediaQuery };
+import { useIsMobile } from './useIsMobile';
+export { useThemeStore, useIsMobile, useMediaQuery };

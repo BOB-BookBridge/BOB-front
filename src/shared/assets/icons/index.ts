@@ -19,6 +19,10 @@ import RawDeleteIcon from './delete.svg';
 import RawCompleteIcon from './complete.svg';
 import RawSelectIcon from './select.svg';
 import RawPhotoIcon from './photo.svg';
+import RawHelpIcon from './help.svg';
+import RawHelpDarkIcon from './help-dark.svg';
+import RawHelpInactiveIcon from './help-inactive.svg';
+import RawHelpInactiveDarkIcon from './help-inactive-dark.svg';
 
 export const UserIcon = withIconSize(RawUserIcon);
 export const NotiIcon = withIconSize(RawNotiIcon);
@@ -42,3 +46,8 @@ export const DeleteIcon = withIconSize(RawDeleteIcon, 18);
 export const CompleteIcon = withIconSize(RawCompleteIcon, 18);
 export const SelectIcon = withIconSize(RawSelectIcon);
 export const PhotoIcon = withIconSize(RawPhotoIcon, 40);
+
+export const HelpIcon = withIconSize(RawHelpIcon, 18);
+export const HelpDarkIcon = withIconSize(RawHelpDarkIcon, 18);
+export const HelpInactiveIcon = withIconSize(RawHelpInactiveIcon, 18);
+export const HelpInactiveDarkIcon = withIconSize(RawHelpInactiveDarkIcon, 18);
