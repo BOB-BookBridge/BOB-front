@@ -12,7 +12,7 @@ interface FilterContentProps {
   bookStatus: BookStatus | null;
   priceStatus: number | null;
 }
-const bookStatusList: BookStatus[] = ['BEST', 'HIGH', 'MEDIUM', 'LOW'];
+export const bookStatusList: BookStatus[] = ['BEST', 'HIGH', 'MEDIUM', 'LOW'];
 const priceRangeList = [0, 1, 2];
 
 export interface FilterContentRef {
