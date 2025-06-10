@@ -26,10 +26,10 @@ const SearchSection = ({ value, onChange }: SearchSectionProps) => {
 
   return (
     <Container>
-      <Header>
+      <S.HeaderWrapper>
         <S.HeaderText>책 조회</S.HeaderText>
         <HelpButton text={HELP_MESSAGES.search} />
-      </Header>
+      </S.HeaderWrapper>
       <S.InputWrapper>
         <S.Input
           value={value}
@@ -60,10 +60,4 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-`;
-
-const Header = styled.div`
-  display: flex;
-  gap: 8px;
-  align-items: center;
 `;

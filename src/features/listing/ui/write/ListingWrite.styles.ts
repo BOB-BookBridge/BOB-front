@@ -127,3 +127,13 @@ export const Textarea = styled.textarea`
     color: ${({ theme }) => theme.colors.GRAY_500};
   }
 `;
+
+export const OptionText = styled.p`
+  margin: 0 5px;
+`;
+
+export const HeaderWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`;

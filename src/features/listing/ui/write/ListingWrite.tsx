@@ -1,8 +1,12 @@
 import { useState } from 'react';
+import { bookStatusList } from '../main/filter/FilterContent';
+import { BookStatus } from '@/entities/listing/model/types';
 import { HELP_MESSAGES } from '@/shared/constants';
 import PriceAndCategory from './PriceAndCategory';
+import { bookStatusMap } from '@/shared/lib';
 import SearchSection from './SearchSection';
 import * as S from './ListingWrite.styles';
+import { CheckCircle } from '@/shared/ui';
 import HelpButton from './HelpButton';
 import PhotoList from './PhotoList';
 
@@ -17,6 +21,7 @@ export type ImageFile = {
 
 const ListingWrite = ({ id }: ListingWriteProps) => {
   const [images, setImages] = useState<ImageFile[]>([]);
+  const [bookStatus, setBookStatus] = useState<BookStatus | null>();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [title, setTitle] = useState<string>('파과');
   const [price, setPrice] = useState<string>('');
@@ -75,8 +80,22 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
         </S.InputWrapper>
       </S.TitleSection>
       <S.StatusSection>
-        <S.HeaderText>상태</S.HeaderText>
-        <HelpButton text={HELP_MESSAGES.state} />
+        <S.HeaderWrapper>
+          <S.HeaderText>상태</S.HeaderText>
+          <HelpButton text={HELP_MESSAGES.state} />
+        </S.HeaderWrapper>
+        <div style={{ display: 'flex' }}>
+          {bookStatusList.map((status) => (
+            <CheckCircle
+              key={status}
+              id={bookStatusMap[status]}
+              checked={bookStatus === status}
+              onChange={() => setBookStatus(status)}
+              label={
+                <S.OptionText>{bookStatusMap[status]}</S.OptionText>
+              }></CheckCircle>
+          ))}
+        </div>
       </S.StatusSection>
       <PriceAndCategory price={price} handlePriceChange={handlePriceChange} />
       <S.DescriptionSection>
