@@ -150,9 +150,9 @@ export const SelectAreaSection = forwardRef<
 SelectAreaSection.displayName = 'SelectAreaSection';
 
 const StyledButton = styled.button<{ disabled: boolean }>`
-  ${({ disabled = true }) =>
-    `background-color: ${disabled ? colors.light.GRAY_300 : colors.light.PRIMARY};
-    color: ${disabled ? colors.light.GRAY_500 : colors.light.WHITE};
+  ${({ disabled = true, theme }) =>
+    `background-color: ${disabled ? theme.colors.GRAY_300 : colors.light.PRIMARY};
+    color: ${disabled ? theme.colors.GRAY_500 : colors.light.WHITE};
     cursor: ${disabled ? 'default' : 'pointer'};
   `}
   width: 145px;
