@@ -53,6 +53,7 @@ const EditPassword = () => {
             display: 'flex',
             flexDirection: 'column',
             gap: 20,
+            maxWidth: 450,
           }}>
           <InputGroup
             inputs={[
@@ -87,7 +88,7 @@ const EditPassword = () => {
             style={{
               display: 'flex',
               width: '100%',
-              maxWidth: 300,
+              maxWidth: 450,
               justifyContent: 'end',
             }}>
             <S.ButtonWrapper>

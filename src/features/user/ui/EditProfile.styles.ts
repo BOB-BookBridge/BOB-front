@@ -1,10 +1,20 @@
 import styled from 'styled-components';
 
+export const Container = styled.div`
+  width: 100%;
+  margin-top: 50px;
+  padding: 10px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    margin: 0;
+  }
+`;
 export const NicknameSection = styled.div`
   margin-top: 10px;
   display: flex;
   gap: 10px;
   align-items: start;
+  max-width: 390px;
 `;
 
 export const ButtonWrapper = styled.div`

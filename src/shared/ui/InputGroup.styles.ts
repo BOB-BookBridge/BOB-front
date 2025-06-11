@@ -8,14 +8,12 @@ interface InputWrapperProps {
 
 export const Container = styled.div`
   width: 100%;
-  max-width: 300px;
 `;
 
 export const InputContainer = styled.div`
   border: 1px solid ${colors.light.GRAY_500};
   border-radius: 12px;
   width: 100%;
-  max-width: 300px;
 `;
 
 export const InputWrapper = styled.div<InputWrapperProps>`
