@@ -25,9 +25,9 @@ const MyTab = ({ selected, onClick }: MyTabProps) => {
 export default MyTab;
 
 const Container = styled.div`
-  width: 250px;
+  width: 350px;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     width: 100%;
   }
 `;
@@ -38,7 +38,7 @@ const ListWrapper = styled.ul`
   padding: 20px;
   list-style: inside;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     height: auto;
@@ -65,7 +65,7 @@ const ListItem = styled.li<ListItemProps>`
       $isSelect ? theme.colors.PRIMARY : theme.colors.BLACK};
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     font-size: 18px;
     text-align: center;
     padding: 10px;

@@ -32,7 +32,7 @@ export const Input = styled.input`
   flex: 1;
   border: none;
   outline: none;
-  font-size: 12px;
+  font-size: 14px;
   color: ${({ theme }) => theme.colors.BLACK};
   background-color: transparent;
   caret-color: ${({ theme }) => theme.colors.BLACK};
@@ -51,5 +51,5 @@ export const Input = styled.input`
 
 export const ErrorMessage = styled.p`
   color: ${colors.light.ERROR};
-  font-size: 10px;
+  font-size: 12px;
 `;
