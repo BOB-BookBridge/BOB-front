@@ -9,7 +9,7 @@ const BUTTON_STYLE = {
   lg: { width: '370px', height: '50px', fontSize: '18px' },
 } as const;
 
-type Variant = 'primary' | 'cancel' | 'disabled';
+type Variant = 'primary' | 'secondary' | 'cancel' | 'disabled';
 
 const Button = ({
   text,
@@ -62,11 +62,16 @@ const StyledButton = styled.button<ButtonProps>`
           color: ${theme.colors.GRAY_500};
           cursor: not-allowed;
         `;
+      case 'secondary':
+        return `
+          background-color: ${theme.colors.SECONDARY};
+          color: ${colors.light.WHITE};
+        `;
       case 'primary':
       default:
         return `
           background-color: ${theme.colors.PRIMARY};
-          color: ${theme.colors.WHITE};
+          color: ${colors.light.WHITE};
         `;
     }
   }}
