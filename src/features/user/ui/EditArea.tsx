@@ -23,12 +23,15 @@ const EditArea = () => {
   }
   return (
     <S.EditAreaContainer>
+      <div style={{ marginBottom: 10 }}>
+        <span style={{ fontWeight: 600 }}>활동 지역</span>
+        <S.InfoText>*{emdName} 인증됨 (2025.06.11)</S.InfoText>
+      </div>
       <SelectAreaSection
         ref={sectionRef}
         showEditButton={true}
         onClickEdit={handleEditArea}
       />
-      <S.InfoText>*{emdName} 인증됨 (2025.06.11)</S.InfoText>
     </S.EditAreaContainer>
   );
 };

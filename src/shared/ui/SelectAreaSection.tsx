@@ -137,7 +137,7 @@ export const SelectAreaSection = forwardRef<
           <div style={{ width: 100 }}>
             <Button
               text='수정'
-              variant={emdId ? 'disabled' : 'primary'}
+              variant={emdId ? 'primary' : 'disabled'}
               onClick={onClickEdit}
             />
           </div>

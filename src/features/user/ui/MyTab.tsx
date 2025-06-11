@@ -66,7 +66,7 @@ const ListItem = styled.li<ListItemProps>`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
     padding: 10px;
     border-bottom: ${({ $isSelect, theme }) =>
