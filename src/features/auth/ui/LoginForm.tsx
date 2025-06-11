@@ -62,4 +62,5 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  max-width: 300px;
 `;

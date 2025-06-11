@@ -8,14 +8,12 @@ interface InputWrapperProps {
 
 export const Container = styled.div`
   width: 100%;
-  max-width: 300px;
 `;
 
 export const InputContainer = styled.div`
   border: 1px solid ${colors.light.GRAY_500};
   border-radius: 12px;
   width: 100%;
-  max-width: 300px;
 `;
 
 export const InputWrapper = styled.div<InputWrapperProps>`
@@ -32,7 +30,7 @@ export const Input = styled.input`
   flex: 1;
   border: none;
   outline: none;
-  font-size: 12px;
+  font-size: 14px;
   color: ${({ theme }) => theme.colors.BLACK};
   background-color: transparent;
   caret-color: ${({ theme }) => theme.colors.BLACK};
@@ -51,5 +49,5 @@ export const Input = styled.input`
 
 export const ErrorMessage = styled.p`
   color: ${colors.light.ERROR};
-  font-size: 10px;
+  font-size: 12px;
 `;
