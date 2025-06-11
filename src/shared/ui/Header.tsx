@@ -15,7 +15,7 @@ import {
 } from '../assets/icons';
 
 // #todo: isLogin zustand로 관리 예정
-const isLogin = false;
+const isLogin = true;
 
 const Header = () => {
   const { mode, toggleMode } = useThemeStore();
@@ -49,7 +49,19 @@ const Header = () => {
         </div>
         {isLogin ? (
           <S.IconGroup>
-            <UserIcon stroke={theme.colors.BLACK} strokeWidth={2} fill='none' />
+            <Link
+              href='/my'
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <UserIcon
+                stroke={theme.colors.BLACK}
+                strokeWidth={2}
+                fill='none'
+              />
+            </Link>
             <NotiIcon stroke={theme.colors.BLACK} strokeWidth={2} fill='none' />
           </S.IconGroup>
         ) : (
