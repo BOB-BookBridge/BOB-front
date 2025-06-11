@@ -19,8 +19,7 @@ const EditNickname = () => {
   });
 
   const nickname = useWatch({ name: 'nickname', control });
-  const nicknameDisabled =
-    !nickname || errors.nickname || nickname === defaultNickname;
+  const disabled = !nickname || errors.nickname || nickname === defaultNickname;
   function handleEditNickname() {}
   return (
     <S.NicknameSection>
@@ -34,12 +33,12 @@ const EditNickname = () => {
           },
         ]}
         register={register}
-        errors={{ nickname: errors.nickname }}
+        errors={errors}
       />
       <S.ButtonWrapper>
         <Button
           text='수정'
-          variant={nicknameDisabled ? 'disabled' : 'primary'}
+          variant={disabled ? 'disabled' : 'primary'}
           onClick={handleEditNickname}
         />
       </S.ButtonWrapper>

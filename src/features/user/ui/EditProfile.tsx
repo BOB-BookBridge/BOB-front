@@ -1,6 +1,7 @@
 import DefaultProfile from '@/shared/assets/default-profile.svg';
 import EditNickname from './EditNickname';
 import EditArea from './EditArea';
+import EditPassword from './EditPassword';
 
 const EditProfile = () => {
   // #todo: 기본값 처리
@@ -9,6 +10,7 @@ const EditProfile = () => {
       <DefaultProfile width={100} />
       <EditNickname />
       <EditArea />
+      <EditPassword />
     </div>
   );
 };
