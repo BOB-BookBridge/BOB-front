@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ListingCard from './ListingCard';
 import { data } from '@/mocks/mockListingList';
 
+// #todo 보여줄 data나 data 구분 기준? Props로 받아서 처리하기
 const PAGE_SIZE = 12;
 const ListingList = () => {
   const [currentPage, setCurrentPage] = useState(0);
