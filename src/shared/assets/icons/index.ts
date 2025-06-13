@@ -26,6 +26,8 @@ import RawHelpInactiveDarkIcon from './help-inactive-dark.svg';
 import RawSearchIcon from './search.svg';
 import RawFABDefaultIcon from './fab-default.svg';
 import RawAIIcon from './ai.svg';
+import RawBookIcon from './book.svg';
+import RawChatIcon from './chat.svg';
 
 export const UserIcon = withIconSize(RawUserIcon);
 export const NotiIcon = withIconSize(RawNotiIcon);
@@ -58,3 +60,6 @@ export const SearchIcon = withIconSize(RawSearchIcon);
 
 export const FABDefaultIcon = withIconSize(RawFABDefaultIcon);
 export const AIIcon = withIconSize(RawAIIcon, 35);
+export const AIIconSm = withIconSize(RawAIIcon, 18);
+export const BookIcon = withIconSize(RawBookIcon, 18);
+export const ChatIcon = withIconSize(RawChatIcon, 18);

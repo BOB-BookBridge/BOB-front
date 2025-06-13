@@ -1,19 +1,31 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { AIIcon, FABDefaultIcon } from '../assets/icons';
-import styled from 'styled-components';
-import { colors } from '../constants';
+import {
+  AIIcon,
+  AIIconSm,
+  BookIcon,
+  ChatIcon,
+  FABDefaultIcon,
+} from '../assets/icons';
+import { useTheme } from 'styled-components';
 import { useThemeStore } from '../model';
+import { colors } from '../constants';
+import * as S from './FloatingButton.styles';
 
 // #todo: isLogin zustand로 관리 예정
 const isLogin = true;
 
 const FloatingButton = () => {
   const mode = useThemeStore((state) => state.mode);
+  const theme = useTheme();
   const router = useRouter();
   const pathname = usePathname();
+
+  const [isOpen, setIsOpen] = useState(false);
+
   const hideHeader =
     pathname?.startsWith('/login') ||
     pathname?.startsWith('/signup') ||
@@ -22,53 +34,76 @@ const FloatingButton = () => {
 
   if (hideHeader) return null;
 
-  function handleClickAI() {}
+  const menuItems = [
+    {
+      icon: <AIIconSm />,
+      label: 'AI 북메이트',
+      href: '/ai',
+    },
+    {
+      icon: <ChatIcon />,
+      label: '채팅',
+      onClick: handleClickChat,
+    },
+    {
+      icon: <BookIcon />,
+      label: '내 책 팔기',
+      href: '/listings/write',
+    },
+  ];
 
-  function handleClickToggle() {}
+  function handleClickAI() {
+    router.push('/ai');
+  }
+  function handleClickChat() {}
+  function handleClickToggle() {
+    setIsOpen((prev) => !prev);
+  }
+
   return (
-    <Container>
-      <IconWrapper
-        mode={mode}
-        onClick={isLogin ? handleClickToggle : handleClickAI}>
-        {isLogin ? (
-          <FABDefaultIcon
-            stroke={colors.light.WHITE}
-            strokeWidth={6}
-            strokeLinecap='round'
-          />
-        ) : (
-          <AIIcon fill={colors.light.WHITE} />
+    <>
+      {isOpen && <S.Overlay onClick={() => setIsOpen(false)} />}
+      <S.Container>
+        <S.IconWrapper
+          mode={mode}
+          onClick={isLogin ? handleClickToggle : handleClickAI}>
+          {isLogin ? (
+            <FABDefaultIcon
+              stroke={colors.light.WHITE}
+              strokeWidth={6}
+              strokeLinecap='round'
+            />
+          ) : (
+            <AIIcon fill={colors.light.WHITE} />
+          )}
+        </S.IconWrapper>
+
+        {isOpen && (
+          <S.MenuWrapper>
+            {menuItems.map((item, idx) =>
+              item.href ? (
+                <Link
+                  href={item.href}
+                  key={idx}
+                  passHref
+                  style={{ textDecoration: 'none', color: theme.colors.BLACK }}>
+                  <S.MenuItem>
+                    <S.SmallIconWrapper>{item.icon}</S.SmallIconWrapper>
+                    <span>{item.label}</span>
+                  </S.MenuItem>
+                </Link>
+              ) : (
+                <S.MenuItem key={idx} onClick={item.onClick}>
+                  <S.SmallIconWrapper>{item.icon}</S.SmallIconWrapper>
+                  <span>{item.label}</span>
+                </S.MenuItem>
+              ),
+            )}
+          </S.MenuWrapper>
         )}
-      </IconWrapper>
-    </Container>
+      </S.Container>
+    </>
   );
 };
 
 export default FloatingButton;
-
-const Container = styled.div`
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
-`;
-
-interface IconWrapperProps {
-  mode: 'dark' | 'light';
-}
-const IconWrapper = styled.div<IconWrapperProps>`
-  background-color: ${({ theme }) => theme.colors.PRIMARY};
-  width: 60px;
-  height: 60px;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 50px;
-    height: 50px;
-  }
-`;
