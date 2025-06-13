@@ -2,7 +2,7 @@ import React from 'react';
 import localFont from 'next/font/local';
 import StyledComponentsRegistry from '@/shared/lib/StyledComponentsRegistry';
 import ThemeRegistry from '@/shared/providers/ThemeRegistry';
-import { Header } from '@/shared/ui';
+import { FloatingButton, Header } from '@/shared/ui';
 import { Metadata } from 'next';
 
 const pretendard = localFont({
@@ -24,6 +24,7 @@ export default function RootLayout({
           <ThemeRegistry>
             <Header />
             {children}
+            <FloatingButton />
           </ThemeRegistry>
         </StyledComponentsRegistry>
       </body>
