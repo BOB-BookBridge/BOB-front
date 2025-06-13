@@ -8,6 +8,7 @@ import {
   AIIconSm,
   BookIcon,
   ChatIcon,
+  CloseIcon,
   FABDefaultIcon,
 } from '../assets/icons';
 import { useTheme } from 'styled-components';
@@ -17,6 +18,7 @@ import * as S from './FloatingButton.styles';
 
 // #todo: isLogin zustand로 관리 예정
 const isLogin = true;
+const unReadCount = 199;
 
 const FloatingButton = () => {
   const mode = useThemeStore((state) => state.mode);
@@ -34,6 +36,8 @@ const FloatingButton = () => {
 
   if (hideHeader) return null;
 
+  const badgeText = unReadCount > 99 ? '99+' : String(unReadCount);
+
   const menuItems = [
     {
       icon: <AIIconSm />,
@@ -44,6 +48,7 @@ const FloatingButton = () => {
       icon: <ChatIcon />,
       label: '채팅',
       onClick: handleClickChat,
+      badge: unReadCount > 0 ? badgeText : undefined,
     },
     {
       icon: <BookIcon />,
@@ -63,18 +68,23 @@ const FloatingButton = () => {
   return (
     <>
       {isOpen && <S.Overlay onClick={() => setIsOpen(false)} />}
-      <S.Container>
-        <S.IconWrapper
-          mode={mode}
-          onClick={isLogin ? handleClickToggle : handleClickAI}>
+      <S.Container onClick={isLogin ? handleClickToggle : handleClickAI}>
+        <S.IconWrapper mode={mode} $isOpen={isOpen}>
           {isLogin ? (
-            <FABDefaultIcon
-              stroke={colors.light.WHITE}
-              strokeWidth={6}
-              strokeLinecap='round'
-            />
+            isOpen ? (
+              <CloseIcon fill={theme.colors.BLACK} />
+            ) : (
+              <FABDefaultIcon
+                stroke={colors.light.WHITE}
+                strokeWidth={6}
+                strokeLinecap='round'
+              />
+            )
           ) : (
             <AIIcon fill={colors.light.WHITE} />
+          )}
+          {!isOpen && unReadCount > 0 && (
+            <S.FabBadge length={badgeText.length}>{badgeText}</S.FabBadge>
           )}
         </S.IconWrapper>
 
@@ -96,6 +106,7 @@ const FloatingButton = () => {
                 <S.MenuItem key={idx} onClick={item.onClick}>
                   <S.SmallIconWrapper>{item.icon}</S.SmallIconWrapper>
                   <span>{item.label}</span>
+                  {item.badge !== undefined && <S.Badge>{item.badge}</S.Badge>}
                 </S.MenuItem>
               ),
             )}

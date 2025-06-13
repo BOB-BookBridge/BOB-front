@@ -15,22 +15,26 @@ export const Container = styled.div`
   bottom: 20px;
   right: 20px;
   z-index: 1100;
+  cursor: pointer;
+  padding: 10px;
   flex-direction: column;
   align-items: flex-end;
 `;
 
 interface IconWrapperProps {
   mode: 'dark' | 'light';
+  $isOpen: boolean;
 }
 export const IconWrapper = styled.div<IconWrapperProps>`
-  background-color: ${({ theme }) => theme.colors.PRIMARY};
+  position: relative;
+  background-color: ${({ $isOpen, theme }) =>
+    $isOpen ? theme.colors.WHITE : theme.colors.PRIMARY};
   width: 60px;
   height: 60px;
   border-radius: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -73,4 +77,40 @@ export const SmallIconWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+interface FabBadgeProps {
+  length: number;
+}
+export const FabBadge = styled.span<FabBadgeProps>`
+  position: absolute;
+  top: -4px;
+  right: ${({ length }) =>
+    length === 1 ? '-4px' : length === 2 ? '-8px' : '-12px'};
+  min-width: 24px;
+  height: 24px;
+  background-color: ${({ theme }) => theme.colors.BADGE};
+  color: white;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  padding: 0 6px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Badge = styled.span`
+  background-color: ${({ theme }) => theme.colors.BADGE};
+  color: white;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  padding: 0 6px;
 `;
