@@ -1,5 +1,6 @@
 import Button from './Button';
 import Dropdown from './Dropdown';
+import FloatingButton from './FloatingButton';
 import Header from './Header';
 import InputGroup from './InputGroup';
 import { SelectAreaSection } from './SelectAreaSection';
@@ -12,6 +13,7 @@ export {
   CheckBox,
   CheckCircle,
   Dropdown,
+  FloatingButton,
   Header,
   InputGroup,
   ModalLayout,
