@@ -57,7 +57,7 @@ const TooltipBox = styled.div`
   border-radius: 20px;
   bottom: 100%;
   margin-bottom: 5px;
-  z-index: 1000;
+  z-index: ${({ theme }) => theme.zIndex.tooltip};
   font-size: 12px;
   background-color: ${({ theme }) => theme.colors.GRAY_200};
 `;

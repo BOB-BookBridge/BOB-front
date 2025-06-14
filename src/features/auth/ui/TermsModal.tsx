@@ -62,7 +62,7 @@ const Overlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
+  z-index: ${({ theme }) => theme.zIndex.overlay};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,6 +72,7 @@ const ModalBox = styled.div`
   position: absolute;
   top: 30%;
   left: 50%;
+  width: 90%;
   max-width: 400px;
   max-height: 500px;
   overflow-y: scroll;
@@ -79,6 +80,7 @@ const ModalBox = styled.div`
   background-color: ${({ theme }) => theme.colors.WHITE};
   padding: 20px;
   border-radius: 20px;
+  z-index: ${({ theme }) => theme.zIndex.modal};
 
   &::-webkit-scrollbar {
     width: 8px;

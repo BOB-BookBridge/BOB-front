@@ -47,21 +47,19 @@ const ModalLayout = ({
 
   return createPortal(
     <S.Backdrop onClick={handleClose} $isOnlyMobile={isOnlyMobile}>
-      <div>
-        <S.ModalContainer
-          $isClosing={isMobile ? isClosing : false}
-          className={isMobile && isClosing ? 'closing' : ''}
-          onClick={(e) => e.stopPropagation()}>
-          <S.HeaderWrapper>
-            <S.Title>{title}</S.Title>
-            <CloseIcon
-              onClick={handleClose}
-              style={{ cursor: 'pointer', fill: theme.colors.BLACK }}
-            />
-          </S.HeaderWrapper>
-          <S.ChildrenWrapper>{children}</S.ChildrenWrapper>
-        </S.ModalContainer>
-      </div>
+      <S.ModalContainer
+        $isClosing={isMobile ? isClosing : false}
+        className={isMobile && isClosing ? 'closing' : ''}
+        onClick={(e) => e.stopPropagation()}>
+        <S.HeaderWrapper>
+          <S.Title>{title}</S.Title>
+          <CloseIcon
+            onClick={handleClose}
+            style={{ cursor: 'pointer', fill: theme.colors.BLACK }}
+          />
+        </S.HeaderWrapper>
+        <S.ChildrenWrapper>{children}</S.ChildrenWrapper>
+      </S.ModalContainer>
     </S.Backdrop>,
     document.body,
   );

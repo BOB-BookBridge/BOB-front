@@ -60,7 +60,7 @@ export const ModalOverlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
-  z-index: 999;
+  z-index: ${({ theme }) => theme.zIndex.overlay};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -74,7 +74,7 @@ export const CloseButton = styled.button`
   border: none;
   padding: 10px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: ${({ theme }) => theme.zIndex.modal};
 `;
 
 export const ModalContent = styled.div`

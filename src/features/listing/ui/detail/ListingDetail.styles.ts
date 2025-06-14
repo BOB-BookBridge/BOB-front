@@ -145,7 +145,7 @@ export const EditList = styled.div`
   background-color: ${({ theme }) => theme.colors.WHITE};
   border-radius: 10px;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
+  z-index: ${({ theme }) => theme.zIndex.dropdown};
 `;
 
 interface EditItemProps {
@@ -205,7 +205,7 @@ export const SwiperWrapper = styled.div`
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 10;
+    z-index: ${({ theme }) => theme.zIndex.button};
     cursor: pointer;
 
     display: flex;

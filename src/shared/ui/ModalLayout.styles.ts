@@ -17,7 +17,7 @@ export const Backdrop = styled.div<{ $isOnlyMobile: boolean }>`
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: ${({ theme }) => theme.zIndex.overlay};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,6 +38,7 @@ export const ModalContainer = styled.div<{ $isClosing?: boolean }>`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   padding: 20px 0;
   overflow-y: auto;
+  z-index: ${({ theme }) => theme.zIndex.modal};
 
   @media (max-width: 744px) {
     top: auto;
@@ -46,6 +47,7 @@ export const ModalContainer = styled.div<{ $isClosing?: boolean }>`
     width: 100%;
     border-radius: 20px 20px 0 0;
     bottom: 0;
+    z-index: ${({ theme }) => theme.zIndex.modal};
     animation: ${({ $isClosing }) =>
       $isClosing
         ? css`
