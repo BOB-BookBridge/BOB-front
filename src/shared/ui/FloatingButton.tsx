@@ -8,23 +8,28 @@ import {
   AIIconSm,
   BookIcon,
   ChatIcon,
+  CloseIcon,
   FABDefaultIcon,
 } from '../assets/icons';
 import { useTheme } from 'styled-components';
-import { useThemeStore } from '../model';
-import { colors } from '../constants';
+import { useChatWidgetStore, useIsMobile, useThemeStore } from '../model';
 import * as S from './FloatingButton.styles';
+import { colors } from '../constants';
+import Badge from './Badge';
 
 // #todo: isLogin zustand로 관리 예정
 const isLogin = true;
+const unReadCount = 199;
 
 const FloatingButton = () => {
   const mode = useThemeStore((state) => state.mode);
   const theme = useTheme();
   const router = useRouter();
   const pathname = usePathname();
-
+  const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
+  const chatIsOpen = useChatWidgetStore((s) => s.isOpen);
+  const { open, close } = useChatWidgetStore();
 
   const hideHeader =
     pathname?.startsWith('/login') ||
@@ -44,6 +49,7 @@ const FloatingButton = () => {
       icon: <ChatIcon />,
       label: '채팅',
       onClick: handleClickChat,
+      badge: unReadCount,
     },
     {
       icon: <BookIcon />,
@@ -55,26 +61,40 @@ const FloatingButton = () => {
   function handleClickAI() {
     router.push('/ai');
   }
-  function handleClickChat() {}
+
+  function handleClickChat() {
+    if (isMobile) {
+      router.push('/chats');
+    } else {
+      open();
+    }
+  }
+
   function handleClickToggle() {
     setIsOpen((prev) => !prev);
+    if (chatIsOpen) close();
   }
 
   return (
     <>
       {isOpen && <S.Overlay onClick={() => setIsOpen(false)} />}
-      <S.Container>
-        <S.IconWrapper
-          mode={mode}
-          onClick={isLogin ? handleClickToggle : handleClickAI}>
+      <S.Container onClick={isLogin ? handleClickToggle : handleClickAI}>
+        <S.IconWrapper mode={mode} $isOpen={isOpen}>
           {isLogin ? (
-            <FABDefaultIcon
-              stroke={colors.light.WHITE}
-              strokeWidth={6}
-              strokeLinecap='round'
-            />
+            isOpen ? (
+              <CloseIcon fill={theme.colors.BLACK} />
+            ) : (
+              <FABDefaultIcon
+                stroke={colors.light.WHITE}
+                strokeWidth={6}
+                strokeLinecap='round'
+              />
+            )
           ) : (
             <AIIcon fill={colors.light.WHITE} />
+          )}
+          {!isOpen && unReadCount > 0 && (
+            <Badge type='fab' unReadCount={unReadCount} />
           )}
         </S.IconWrapper>
 
@@ -96,6 +116,9 @@ const FloatingButton = () => {
                 <S.MenuItem key={idx} onClick={item.onClick}>
                   <S.SmallIconWrapper>{item.icon}</S.SmallIconWrapper>
                   <span>{item.label}</span>
+                  {item.badge !== undefined && (
+                    <Badge unReadCount={item.badge} />
+                  )}
                 </S.MenuItem>
               ),
             )}

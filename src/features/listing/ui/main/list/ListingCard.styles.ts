@@ -3,6 +3,11 @@ import { colors } from '../../../../../shared/constants';
 import { TradeStatus } from '@/entities/listing/model/types';
 import Link from 'next/link';
 
+const Z_OVERLAY_BASE = 10;
+const Z_OVERLAY_DIM = 11;
+const Z_OVERLAY_STATUS = 13;
+const Z_TAG_WRAPPER = 10;
+
 interface OverlayProps {
   status: TradeStatus;
 }
@@ -41,7 +46,7 @@ export const Overlay = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: ${Z_OVERLAY_BASE};
   border-radius: 10px;
 `;
 
@@ -49,7 +54,7 @@ export const OverlayDim = styled.div<OverlayProps>`
   position: absolute;
   background-color: ${({ status }) =>
     status === 'READY' ? 'transparent' : 'rgba(0, 0, 0, 0.7)'};
-  z-index: 11;
+  z-index: ${Z_OVERLAY_DIM};
   width: 100%;
   height: 100%;
 `;
@@ -58,7 +63,7 @@ export const TagWrapper = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
-  z-index: 10;
+  z-index: ${Z_TAG_WRAPPER};
 `;
 
 export const OverlayStatusText = styled.div`
@@ -71,7 +76,7 @@ export const OverlayStatusText = styled.div`
   width: 100%;
   height: 100%;
   color: ${colors.light.WHITE};
-  z-index: 13;
+  z-index: ${Z_OVERLAY_STATUS};
 `;
 
 export const Image = styled.img`

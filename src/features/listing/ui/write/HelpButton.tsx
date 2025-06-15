@@ -1,3 +1,7 @@
+'use client';
+
+import { useState } from 'react';
+import styled from 'styled-components';
 import {
   HelpIcon,
   HelpInactiveIcon,
@@ -5,14 +9,12 @@ import {
   HelpInactiveDarkIcon,
 } from '@/shared/assets/icons';
 import { useIsMobile, useThemeStore } from '@/shared/model';
-import { useState } from 'react';
-import styled from 'styled-components';
 
 const HelpButton = ({ text }: { text: string }) => {
   const isMobile = useIsMobile();
   const [active, setActive] = useState(false);
 
-  const { mode } = useThemeStore();
+  const mode = useThemeStore((state) => state.mode);
 
   const handleEnter = () => !isMobile && setActive(true);
   const handleLeave = () => !isMobile && setActive(false);
@@ -57,7 +59,7 @@ const TooltipBox = styled.div`
   border-radius: 20px;
   bottom: 100%;
   margin-bottom: 5px;
-  z-index: 1000;
+  z-index: ${({ theme }) => theme.zIndex.tooltip};
   font-size: 12px;
   background-color: ${({ theme }) => theme.colors.GRAY_200};
 `;

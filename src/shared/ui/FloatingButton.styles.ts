@@ -6,7 +6,7 @@ export const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1000;
+  z-index: ${({ theme }) => theme.zIndex.fabOverlay};
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
@@ -14,23 +14,27 @@ export const Container = styled.div`
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 1100;
+  cursor: pointer;
+  padding: 10px;
+  z-index: ${({ theme }) => theme.zIndex.fab};
   flex-direction: column;
   align-items: flex-end;
 `;
 
 interface IconWrapperProps {
   mode: 'dark' | 'light';
+  $isOpen: boolean;
 }
 export const IconWrapper = styled.div<IconWrapperProps>`
-  background-color: ${({ theme }) => theme.colors.PRIMARY};
+  position: relative;
+  background-color: ${({ $isOpen, theme }) =>
+    $isOpen ? theme.colors.WHITE : theme.colors.PRIMARY};
   width: 60px;
   height: 60px;
   border-radius: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {

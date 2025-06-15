@@ -87,7 +87,7 @@ const ButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  z-index: 9999;
+  z-index: ${({ theme }) => theme.zIndex.button};
 `;
 
 interface BookItemWrapperProps {

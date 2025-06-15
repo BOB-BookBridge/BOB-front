@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 
 export function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState<null | boolean>(null);
+
   useEffect(() => {
     const checkIsMobile = () => {
       const userAgent =
@@ -18,5 +19,6 @@ export function useIsMobile() {
     window.addEventListener('resize', checkIsMobile);
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
+
   return isMobile;
 }

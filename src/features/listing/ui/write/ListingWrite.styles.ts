@@ -178,7 +178,7 @@ export const OptionsWrapper = styled.div`
   position: absolute;
   width: 150px;
   border-radius: 5px;
-  z-index: 9999;
+  z-index: ${({ theme }) => theme.zIndex.dropdown};
   background-color: ${({ theme }) => `${theme.colors.WHITE}`};
   border: ${({ theme }) => `1px solid ${theme.colors.GRAY_500}`};
 
