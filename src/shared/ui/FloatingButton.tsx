@@ -15,6 +15,7 @@ import { useTheme } from 'styled-components';
 import { useThemeStore } from '../model';
 import { colors } from '../constants';
 import * as S from './FloatingButton.styles';
+import Badge from './Badge';
 
 // #todo: isLogin zustand로 관리 예정
 const isLogin = true;
@@ -36,8 +37,6 @@ const FloatingButton = () => {
 
   if (hideHeader) return null;
 
-  const badgeText = unReadCount > 99 ? '99+' : String(unReadCount);
-
   const menuItems = [
     {
       icon: <AIIconSm />,
@@ -48,7 +47,7 @@ const FloatingButton = () => {
       icon: <ChatIcon />,
       label: '채팅',
       onClick: handleClickChat,
-      badge: unReadCount > 0 ? badgeText : undefined,
+      badge: unReadCount,
     },
     {
       icon: <BookIcon />,
@@ -84,7 +83,7 @@ const FloatingButton = () => {
             <AIIcon fill={colors.light.WHITE} />
           )}
           {!isOpen && unReadCount > 0 && (
-            <S.FabBadge length={badgeText.length}>{badgeText}</S.FabBadge>
+            <Badge type='fab' unReadCount={unReadCount} />
           )}
         </S.IconWrapper>
 
@@ -106,7 +105,9 @@ const FloatingButton = () => {
                 <S.MenuItem key={idx} onClick={item.onClick}>
                   <S.SmallIconWrapper>{item.icon}</S.SmallIconWrapper>
                   <span>{item.label}</span>
-                  {item.badge !== undefined && <S.Badge>{item.badge}</S.Badge>}
+                  {item.badge !== undefined && (
+                    <Badge unReadCount={item.badge} />
+                  )}
                 </S.MenuItem>
               ),
             )}
