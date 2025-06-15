@@ -1,9 +1,12 @@
-import { ChatListProps } from '@/entities/chat/model/types';
-import DefaultProfile from '@/shared/assets/default-profile.svg';
+'use client';
+
 import Image from 'next/image';
+import styled from 'styled-components';
+import DefaultProfile from '@/shared/assets/default-profile.svg';
+import { ChatListProps } from '@/entities/chat/model/types';
 import { convertDateToString } from '@/shared/lib';
 import Badge from '@/shared/ui/Badge';
-import styled from 'styled-components';
+
 const ChatListItem = ({ data }: { data: ChatListProps }) => {
   return (
     <Container>

@@ -3,8 +3,9 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
-import ChatList from '@/features/chat/ui/ChatList';
+import { ChatList } from '@/features/chat/ui';
 import { useIsMobile } from '@/shared/model';
+
 const ChatPage = () => {
   const isMobile = useIsMobile();
   const router = useRouter();

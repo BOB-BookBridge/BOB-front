@@ -1,9 +1,10 @@
 import React from 'react';
+import { Metadata } from 'next';
 import localFont from 'next/font/local';
 import StyledComponentsRegistry from '@/shared/lib/StyledComponentsRegistry';
 import ThemeRegistry from '@/shared/providers/ThemeRegistry';
+import { ChatWidget } from '@/features/chat/ui';
 import { FloatingButton, Header } from '@/shared/ui';
-import { Metadata } from 'next';
 
 const pretendard = localFont({
   src: '../shared/assets/fonts/PretendardVariable.woff2',
@@ -25,6 +26,7 @@ export default function RootLayout({
             <Header />
             {children}
             <FloatingButton />
+            <ChatWidget />
           </ThemeRegistry>
         </StyledComponentsRegistry>
       </body>

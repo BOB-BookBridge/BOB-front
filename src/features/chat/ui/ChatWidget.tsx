@@ -1,0 +1,73 @@
+'use client';
+
+import styled from 'styled-components';
+import { useChatWidgetStore } from '@/shared/model';
+import ChatList from './ChatList';
+
+const ChatWidget = () => {
+  const isOpen = useChatWidgetStore((s) => s.isOpen);
+  if (!isOpen) return null;
+  return (
+    <Container>
+      <TitleText>채팅</TitleText>
+      <Div />
+      <ListWrapper>
+        <ChatList />
+      </ListWrapper>
+    </Container>
+  );
+};
+export default ChatWidget;
+
+export const Container = styled.div`
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 393px;
+  overflow-y: hidden;
+  background-color: ${({ theme }) => theme.colors.WHITE};
+  border-radius: 20px;
+  height: 640px;
+  z-index: ${({ theme }) => theme.zIndex.fab};
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+`;
+
+export const TitleText = styled.div`
+  padding-top: 20px;
+  padding-left: 20px;
+  font-size: 20px;
+  font-weight: 600;
+`;
+
+export const Div = styled.div`
+  width: 100%;
+  height: 1px;
+  margin-top: 10px;
+  background-color: ${({ theme }) => theme.colors.GRAY_300};
+`;
+
+export const ListWrapper = styled.div`
+  overflow-y: auto;
+  height: 570px;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => `${theme.colors.GRAY_700}`};
+    border-radius: 5px;
+    border-right: 1px solid transparent;
+    background-clip: padding-box;
+    box-sizing: border-box;
+  }
+
+  &::-webkit-scrollbar-button:vertical:start:increment,
+  &::-webkit-scrollbar-button:vertical:end:decrement {
+    display: block;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: ${({ theme }) => `${theme.colors.GRAY_500}`};
+  }
+`;
