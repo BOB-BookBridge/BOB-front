@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
 import { useForm, useWatch } from 'react-hook-form';
@@ -17,6 +18,7 @@ import {
 import { Button, CheckBox, InputGroup, SelectAreaSection } from '@/shared/ui';
 import SignUpVerifyButton from './SignUpVerifyButton';
 import { InputItem } from '@/shared/ui/InputGroup';
+import { postSignUp } from '@/entities/auth';
 import * as S from './SignUpForm.styles';
 
 interface SignUpFormValues {
@@ -37,12 +39,15 @@ const SignUpForm = () => {
     mode: 'onChange',
   });
   const theme = useTheme();
+  const router = useRouter();
 
   const email = useWatch({ name: 'email', control });
   const code = useWatch({ name: 'code', control });
   const password = useWatch({ name: 'password', control });
   const passwordConfirm = useWatch({ name: 'passwordConfirm', control });
   const nickname = useWatch({ name: 'nickname', control });
+  const [emdId, setEmdId] = useState<number | undefined>();
+  const [isVerifiedArea, setIsVerifiedArea] = useState(false);
 
   const sendCodeDisabled = !email || !!errors.email;
   const [isVerifiedEmail, setIsVerifiedEmail] = useState(false);
@@ -64,6 +69,8 @@ const SignUpForm = () => {
     !nickname ||
     !isVerifiedEmail ||
     !isCheckedAll ||
+    !emdId ||
+    !isVerifiedArea ||
     Object.keys(errors).length > 0;
 
   useEffect(() => {
@@ -80,6 +87,16 @@ const SignUpForm = () => {
 
     return () => clearInterval(interval);
   }, [showCodeInput, restartCountdown, isVerifiedEmail]);
+
+  function handleAreaChange() {
+    setEmdId(undefined);
+    setIsVerifiedArea(false);
+  }
+
+  function handleAreaVerified(emdId: number) {
+    setEmdId(emdId);
+    setIsVerifiedArea(true);
+  }
 
   const handleToggle = (key: 'use' | 'info') => {
     const newAgreements = { ...agreements, [key]: !agreements[key] };
@@ -140,8 +157,15 @@ const SignUpForm = () => {
     return baseInputs;
   };
 
-  function handleClickSignUp() {
-    console.log('signup');
+  async function handleClickSignUp() {
+    if (isDisabled) return;
+    try {
+      await postSignUp({ nickname, email, password, emdId });
+      alert('가입 완료');
+      router.replace('/');
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <S.Container>
@@ -209,7 +233,10 @@ const SignUpForm = () => {
           nickname: errors.nickname,
         }}
       />
-      <SelectAreaSection />
+      <SelectAreaSection
+        onSuccess={handleAreaVerified}
+        onChange={handleAreaChange}
+      />
       <div style={{ width: '100%', maxWidth: 300 }}>
         <S.Line />
         <CheckBox

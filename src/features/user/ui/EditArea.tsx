@@ -1,5 +1,4 @@
-import { useRef, useState } from 'react';
-import { AreaState } from '@/shared/ui/SelectAreaSection';
+import { useState } from 'react';
 import emd_areas from '@/shared/constants/emd_areas.json';
 import { SelectAreaSection } from '@/shared/ui';
 import * as S from './EditProfile.styles';
@@ -7,20 +6,17 @@ import * as S from './EditProfile.styles';
 const EditArea = () => {
   const defaultEmdId = 309;
   const emdName = emd_areas.find((area) => area.id === defaultEmdId)?.name;
-  const sectionRef = useRef<{ getSelection: () => AreaState }>(null);
   const [emdId, setEmdId] = useState<number | undefined>();
 
-  function handleApply() {
-    const selection = sectionRef.current?.getSelection();
-
-    if (selection?.sidoId && selection?.siggId && selection?.emdId) {
-      setEmdId(selection.emdId);
-    }
+  function handleAreaChange() {
+    setEmdId(undefined);
   }
 
-  function handleEditArea() {
-    handleApply();
+  function handleEditArea(emdId: number) {
+    // 수정 api
+    setEmdId(emdId);
   }
+
   return (
     <S.EditAreaContainer>
       <div style={{ marginBottom: 10 }}>
@@ -28,9 +24,9 @@ const EditArea = () => {
         <S.InfoText>*{emdName} 인증됨 (2025.06.11)</S.InfoText>
       </div>
       <SelectAreaSection
-        ref={sectionRef}
         showEditButton={true}
-        onClickEdit={handleEditArea}
+        onChange={handleAreaChange}
+        onSuccess={handleEditArea}
       />
     </S.EditAreaContainer>
   );

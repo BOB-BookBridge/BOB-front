@@ -7,7 +7,7 @@ export interface patchAreaProps {
   purpose: PURPOSE_AREA;
 }
 
-export interface postJoinProps {
+export interface postSignUpProps {
   nickname: string;
   email: string;
   password: string;

@@ -1,5 +1,5 @@
 import axiosInstance from '@/shared/config/axios';
-import { patchAreaProps, postJoinProps } from './type';
+import { patchAreaProps, postSignUpProps } from './type';
 
 export const postEmailVerify = async ({ email }: { email: string }) => {
   const { data } = await axiosInstance.post('/auth/email', { email });
@@ -25,7 +25,7 @@ export const patchArea = async (area: patchAreaProps) => {
   return data;
 };
 
-export const postJoin = async (user: postJoinProps) => {
+export const postSignUp = async (user: postSignUpProps) => {
   const { data } = await axiosInstance.post('/members', user);
   return data;
 };

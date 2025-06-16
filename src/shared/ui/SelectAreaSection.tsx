@@ -24,7 +24,8 @@ export interface AreaState {
 export interface SelectAreaSectionProps {
   showVerifyButton?: boolean;
   showEditButton?: boolean;
-  onClickEdit?: () => void;
+  onSuccess?: (emdId: number) => void;
+  onChange?: () => void;
 }
 
 export interface SelectAreaSectionRef {
@@ -42,7 +43,8 @@ export const SelectAreaSection = forwardRef<
     {
       showVerifyButton = true,
       showEditButton = false,
-      onClickEdit,
+      onSuccess,
+      onChange,
     }: SelectAreaSectionProps,
     ref,
   ) => {
@@ -69,6 +71,7 @@ export const SelectAreaSection = forwardRef<
         setIsVerify(false);
         setSiggId(undefined);
         setEmdId(undefined);
+        if (onChange) onChange();
       }
       setSidoId(value);
     }
@@ -77,20 +80,33 @@ export const SelectAreaSection = forwardRef<
       if (siggId && value !== siggId) {
         setIsVerify(false);
         setEmdId(undefined);
+        if (onChange) onChange();
       }
       setSiggId(value);
     }
 
     function handleSelectEmd(value: number) {
       setEmdId(value);
+      if (onChange) onChange();
     }
 
     function handleAreaVerify() {
+      if (!onSuccess) return;
       if (!emdId) {
         console.log('위치 정보를 전부 입력해 주세요');
         return;
       }
-      areaVerify({ emdId, onSuccess: () => setIsVerify(true) });
+      areaVerify({
+        emdId,
+        onSuccess: () => {
+          setIsVerify(true);
+          onSuccess(emdId);
+        },
+      });
+    }
+
+    function handleClickEdit() {
+      if (onSuccess && emdId) onSuccess(emdId);
     }
 
     return (
@@ -144,12 +160,12 @@ export const SelectAreaSection = forwardRef<
             {isVerify ? '인증 완료' : '위치 인증'}
           </StyledButton>
         )}
-        {showEditButton && onClickEdit && (
+        {showEditButton && onSuccess && (
           <div style={{ width: 100 }}>
             <Button
               text='수정'
-              variant={emdId ? 'primary' : 'disabled'}
-              onClick={onClickEdit}
+              variant={isVerify ? 'primary' : 'disabled'}
+              onClick={handleClickEdit}
             />
           </div>
         )}
