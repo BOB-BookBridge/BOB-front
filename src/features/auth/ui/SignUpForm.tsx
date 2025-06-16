@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useTheme } from 'styled-components';
 import { useForm, useWatch } from 'react-hook-form';
 import {
   codeBasicRule,
@@ -7,21 +9,19 @@ import {
   passwordSignupRule,
   nicknameRule,
 } from '@/shared/constants';
-import { Button, CheckBox, InputGroup, SelectAreaSection } from '@/shared/ui';
-import { InputItem } from '@/shared/ui/InputGroup';
 import {
   handleCodeRequest,
   handleEmailConfirm,
   startCountdown,
 } from '../model';
+import { Button, CheckBox, InputGroup, SelectAreaSection } from '@/shared/ui';
 import SignUpVerifyButton from './SignUpVerifyButton';
+import { InputItem } from '@/shared/ui/InputGroup';
 import * as S from './SignUpForm.styles';
-import Link from 'next/link';
-import { useTheme } from 'styled-components';
 
 interface SignUpFormValues {
   email: string;
-  verifyCode: string;
+  code: string;
   password: string;
   passwordConfirm: string;
   nickname: string;
@@ -39,7 +39,7 @@ const SignUpForm = () => {
   const theme = useTheme();
 
   const email = useWatch({ name: 'email', control });
-  const verifyCode = useWatch({ name: 'verifyCode', control });
+  const code = useWatch({ name: 'code', control });
   const password = useWatch({ name: 'password', control });
   const passwordConfirm = useWatch({ name: 'passwordConfirm', control });
   const nickname = useWatch({ name: 'nickname', control });
@@ -58,7 +58,7 @@ const SignUpForm = () => {
 
   const isDisabled =
     !email ||
-    !verifyCode ||
+    !code ||
     !password ||
     !passwordConfirm ||
     !nickname ||
@@ -66,15 +66,6 @@ const SignUpForm = () => {
     !isCheckedAll ||
     Object.keys(errors).length > 0;
 
-  const handleToggle = (key: 'use' | 'info') => {
-    const newAgreements = { ...agreements, [key]: !agreements[key] };
-    setAgreements(newAgreements);
-  };
-
-  const handleToggleAll = () => {
-    const checked = !isCheckedAll;
-    setAgreements({ use: checked, info: checked });
-  };
   useEffect(() => {
     if (!!errors.password) trigger('passwordConfirm');
   }, [password]);
@@ -90,14 +81,24 @@ const SignUpForm = () => {
     return () => clearInterval(interval);
   }, [showCodeInput, restartCountdown, isVerifiedEmail]);
 
-  function onEmailConfirmSuccess() {
-    setIsVerifiedEmail(true);
-  }
+  const handleToggle = (key: 'use' | 'info') => {
+    const newAgreements = { ...agreements, [key]: !agreements[key] };
+    setAgreements(newAgreements);
+  };
+
+  const handleToggleAll = () => {
+    const checked = !isCheckedAll;
+    setAgreements({ use: checked, info: checked });
+  };
 
   function onCodeRequestSuccess() {
     setShowCodeInput(true);
     setTimeText('03:00');
     setRestartCountdown((prev) => prev + 1);
+  }
+
+  function onEmailConfirmSuccess() {
+    setIsVerifiedEmail(true);
   }
 
   const inputs = (): InputItem<SignUpFormValues>[] => {
@@ -130,7 +131,7 @@ const SignUpForm = () => {
 
     if (showCodeInput) {
       baseInputs.push({
-        name: 'verifyCode',
+        name: 'code',
         placeholder: '인증 코드',
         rules: codeBasicRule,
       });
@@ -166,7 +167,7 @@ const SignUpForm = () => {
             onClick={() =>
               handleEmailConfirm({
                 email,
-                verifyCode,
+                code,
                 onSuccess: onEmailConfirmSuccess,
               })
             }>

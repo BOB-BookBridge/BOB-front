@@ -1,4 +1,6 @@
-export function handleCodeRequest({
+import { postCodeVerify, postEmailVerify } from '@/entities/auth';
+
+export async function handleCodeRequest({
   email,
   onSuccess,
   onError: _,
@@ -7,20 +9,31 @@ export function handleCodeRequest({
   onSuccess: () => void;
   onError?: () => void;
 }) {
-  console.log(email);
-  onSuccess();
+  try {
+    await postEmailVerify({ email });
+    onSuccess();
+  } catch (error) {
+    console.log(error);
+    // onError();
+  }
 }
-export function handleEmailConfirm({
+
+export async function handleEmailConfirm({
   email,
-  verifyCode,
+  code,
   onSuccess,
   onError: _,
 }: {
   email: string;
-  verifyCode: string;
+  code: string;
   onSuccess: () => void;
   onError?: () => void;
 }) {
-  console.log(email, verifyCode);
-  onSuccess();
+  try {
+    await postCodeVerify({ email, code });
+    onSuccess();
+  } catch (error) {
+    console.log(error);
+    // onError();
+  }
 }
