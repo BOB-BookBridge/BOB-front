@@ -1,4 +1,4 @@
-import { ListingDetailProps } from '@/entities/listing/model/types';
+import { ListingDetailProps } from '@/entities/listing/types';
 
 export const data: ListingDetailProps[] = [
   {

@@ -1,4 +1,4 @@
-import { TradeProps } from '@/entities/listing/model/types';
+import { TradeProps } from '@/entities/listing/types';
 
 export const data: TradeProps[] = [
   {

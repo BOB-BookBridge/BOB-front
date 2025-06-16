@@ -1,4 +1,4 @@
-import { ListingCardProps } from '@/entities/listing/model/types';
+import { ListingCardProps } from '@/entities/listing/types';
 
 export const data: ListingCardProps[] = [
   {

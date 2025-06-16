@@ -1,4 +1,4 @@
-import { BookStatus, SortKey } from '@/entities/listing/model/types';
+import { BookStatus, SortKey } from '@/entities/listing/types';
 import { create } from 'zustand';
 
 type FilterState = {

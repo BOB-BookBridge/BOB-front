@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useTheme } from 'styled-components';
 import { useForm, useWatch } from 'react-hook-form';
 import {
   codeBasicRule,
@@ -7,21 +9,20 @@ import {
   passwordSignupRule,
   nicknameRule,
 } from '@/shared/constants';
-import { Button, CheckBox, InputGroup, SelectAreaSection } from '@/shared/ui';
-import { InputItem } from '@/shared/ui/InputGroup';
-import {
-  handleCodeRequest,
-  handleEmailConfirm,
-  startCountdown,
-} from '../model';
+import { handleCodeRequest, handleEmailConfirm } from '@/features/auth/model';
+import { Button, InputGroup, SelectAreaSection } from '@/shared/ui';
+import { useEmailVerify } from '../../model/useEmailVerify';
+import { useAreaVerify } from '../../model/useAreaVerify';
+import { useAgreement } from '../../model/useAgreement';
 import SignUpVerifyButton from './SignUpVerifyButton';
+import { InputItem } from '@/shared/ui/InputGroup';
+import AgreementSection from './AgreementSection';
+import { postSignUp } from '@/entities/auth';
 import * as S from './SignUpForm.styles';
-import Link from 'next/link';
-import { useTheme } from 'styled-components';
 
 interface SignUpFormValues {
   email: string;
-  verifyCode: string;
+  code: string;
   password: string;
   passwordConfirm: string;
   nickname: string;
@@ -36,69 +37,44 @@ const SignUpForm = () => {
   } = useForm<SignUpFormValues>({
     mode: 'onChange',
   });
-  const theme = useTheme();
 
   const email = useWatch({ name: 'email', control });
-  const verifyCode = useWatch({ name: 'verifyCode', control });
+  const code = useWatch({ name: 'code', control });
   const password = useWatch({ name: 'password', control });
   const passwordConfirm = useWatch({ name: 'passwordConfirm', control });
   const nickname = useWatch({ name: 'nickname', control });
 
-  const sendCodeDisabled = !email || !!errors.email;
-  const [isVerifiedEmail, setIsVerifiedEmail] = useState(false);
-  const [showCodeInput, setShowCodeInput] = useState(false);
-  const [timeText, setTimeText] = useState('03:00');
-  const [restartCountdown, setRestartCountdown] = useState(0);
-  const [agreements, setAgreements] = useState({
-    use: false,
-    info: false,
-  });
+  const { emdId, isVerifiedArea, handleAreaChange, handleAreaVerified } =
+    useAreaVerify();
+  const { agreements, isCheckedAll, handleToggle, handleToggleAll } =
+    useAgreement();
 
-  const isCheckedAll = agreements.use && agreements.info;
+  const {
+    isVerifiedEmail,
+    showCodeInput,
+    timeText,
+    sendCodeDisabled,
+    onCodeRequestSuccess,
+    onEmailConfirmSuccess,
+  } = useEmailVerify(email, !!errors.email);
+
+  const router = useRouter();
 
   const isDisabled =
     !email ||
-    !verifyCode ||
+    !code ||
     !password ||
     !passwordConfirm ||
     !nickname ||
     !isVerifiedEmail ||
     !isCheckedAll ||
+    !emdId ||
+    !isVerifiedArea ||
     Object.keys(errors).length > 0;
 
-  const handleToggle = (key: 'use' | 'info') => {
-    const newAgreements = { ...agreements, [key]: !agreements[key] };
-    setAgreements(newAgreements);
-  };
-
-  const handleToggleAll = () => {
-    const checked = !isCheckedAll;
-    setAgreements({ use: checked, info: checked });
-  };
   useEffect(() => {
     if (!!errors.password) trigger('passwordConfirm');
   }, [password]);
-
-  useEffect(() => {
-    if (!showCodeInput || isVerifiedEmail) return;
-
-    const interval = startCountdown({
-      onTick: setTimeText,
-      shouldStop: () => isVerifiedEmail,
-    });
-
-    return () => clearInterval(interval);
-  }, [showCodeInput, restartCountdown, isVerifiedEmail]);
-
-  function onEmailConfirmSuccess() {
-    setIsVerifiedEmail(true);
-  }
-
-  function onCodeRequestSuccess() {
-    setShowCodeInput(true);
-    setTimeText('03:00');
-    setRestartCountdown((prev) => prev + 1);
-  }
 
   const inputs = (): InputItem<SignUpFormValues>[] => {
     const baseInputs: InputItem<SignUpFormValues>[] = [
@@ -130,7 +106,7 @@ const SignUpForm = () => {
 
     if (showCodeInput) {
       baseInputs.push({
-        name: 'verifyCode',
+        name: 'code',
         placeholder: '인증 코드',
         rules: codeBasicRule,
       });
@@ -139,8 +115,15 @@ const SignUpForm = () => {
     return baseInputs;
   };
 
-  function handleClickSignUp() {
-    console.log('signup');
+  async function handleClickSignUp() {
+    if (isDisabled) return;
+    try {
+      await postSignUp({ nickname, email, password, emdId });
+      alert('가입 완료');
+      router.replace('/');
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <S.Container>
@@ -166,7 +149,7 @@ const SignUpForm = () => {
             onClick={() =>
               handleEmailConfirm({
                 email,
-                verifyCode,
+                code,
                 onSuccess: onEmailConfirmSuccess,
               })
             }>
@@ -208,61 +191,17 @@ const SignUpForm = () => {
           nickname: errors.nickname,
         }}
       />
-      <SelectAreaSection />
-      <div style={{ width: '100%', maxWidth: 300 }}>
-        <S.Line />
-        <CheckBox
-          id='all'
-          checked={isCheckedAll}
-          onChange={handleToggleAll}
-          label={
-            <>
-              <p
-                style={{
-                  fontSize: '16px',
-                }}>
-                전체 동의
-              </p>
-            </>
-          }
-        />
-        <CheckBox
-          id='use'
-          checked={agreements.use}
-          onChange={() => handleToggle('use')}
-          label={
-            <>
-              <S.ImportText>[필수]</S.ImportText>
-              <Link
-                href='/signup/use'
-                style={{
-                  fontSize: '14px',
-                  color: theme.colors.GRAY_500,
-                }}>
-                서비스 이용 약관
-              </Link>
-            </>
-          }
-        />
-        <CheckBox
-          id='info'
-          checked={agreements.info}
-          onChange={() => handleToggle('info')}
-          label={
-            <>
-              <S.ImportText>[필수]</S.ImportText>
-              <Link
-                href='/signup/info'
-                style={{
-                  fontSize: '14px',
-                  color: theme.colors.GRAY_500,
-                }}>
-                개인정보 수집 및 이용
-              </Link>
-            </>
-          }
-        />
-      </div>
+      <SelectAreaSection
+        purpose='SIGN_UP'
+        onSuccess={handleAreaVerified}
+        onChange={handleAreaChange}
+      />
+      <AgreementSection
+        agreements={agreements}
+        isCheckedAll={isCheckedAll}
+        handleToggle={handleToggle}
+        handleToggleAll={handleToggleAll}
+      />
       <Button
         text='회원가입'
         variant={isDisabled ? 'disabled' : 'primary'}

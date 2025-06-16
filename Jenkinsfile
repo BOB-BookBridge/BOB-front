@@ -14,6 +14,13 @@ pipeline {
     }
 
     stages {
+        stage('Prepare .env.production') {
+            steps {
+                withCredentials([file(credentialsId: 'env-production', variable: 'ENV_PROD_FILE')]) {
+                    sh 'cp $ENV_PROD_FILE .env.production'
+                }
+            }
+        }
         stage('Install Dependencies') {
             steps {
                 script {

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { TradeStatus } from '@/entities/listing/model/types';
+import { TradeStatus } from '@/entities/listing/types';
 import {
   CancelIcon,
   CompleteIcon,
