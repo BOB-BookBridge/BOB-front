@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import DefaultProfile from '@/shared/assets/default-profile.svg';
-import { ChatListProps } from '@/entities/chat/model/types';
+import { ChatListProps } from '@/entities/chat/types';
 import { convertDateToString } from '@/shared/lib';
 import Badge from '@/shared/ui/Badge';
 

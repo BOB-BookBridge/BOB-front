@@ -1,4 +1,4 @@
-import { ChatListProps } from '@/entities/chat/model/types';
+import { ChatListProps } from '@/entities/chat/types';
 
 export const data: ChatListProps[] = [
   {

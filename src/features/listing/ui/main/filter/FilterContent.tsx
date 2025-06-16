@@ -1,4 +1,4 @@
-import { BookStatus } from '@/entities/listing/model/types';
+import { BookStatus } from '@/entities/listing/types';
 import { CheckBox, CheckCircle } from '@/shared/ui';
 import categories from '@/shared/constants/category.json';
 import { bookStatusMap, priceRangeMap } from '@/shared/lib';

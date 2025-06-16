@@ -1,6 +1,6 @@
 'use client';
 
-import { SortKey } from '@/entities/listing/model/types';
+import { SortKey } from '@/entities/listing/types';
 import { DropdownIconSm } from '@/shared/assets/icons';
 import { sortMap } from '@/shared/lib';
 import { useState } from 'react';

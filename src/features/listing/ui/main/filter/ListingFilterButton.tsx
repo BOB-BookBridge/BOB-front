@@ -5,7 +5,7 @@ import * as S from './ListingControls.styles';
 import { Button, ModalLayout } from '@/shared/ui';
 import { useRef, useState } from 'react';
 import FilterContent from './FilterContent';
-import { BookStatus } from '@/entities/listing/model/types';
+import { BookStatus } from '@/entities/listing/types';
 import styled from 'styled-components';
 import { useFilterStore } from '../../../model';
 import { colors } from '@/shared/constants';

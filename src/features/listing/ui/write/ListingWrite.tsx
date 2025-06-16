@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { bookStatusList } from '../main/filter/FilterContent';
-import { BookStatus } from '@/entities/listing/model/types';
+import { BookStatus } from '@/entities/listing/types';
 import { HELP_MESSAGES } from '@/shared/constants';
 import PriceAndCategory from './PriceAndCategory';
 import { bookStatusMap } from '@/shared/lib';

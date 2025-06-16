@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ListingDetailProps } from '@/entities/listing/model/types';
+import { ListingDetailProps } from '@/entities/listing/types';
 import DefaultProfile from '@/shared/assets/default-profile.svg';
 import * as S from './ListingDetail.styles';
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { colors } from '../../../../../shared/constants';
-import { TradeStatus } from '@/entities/listing/model/types';
+import { TradeStatus } from '@/entities/listing/types';
 import Link from 'next/link';
 
 const Z_OVERLAY_BASE = 10;
