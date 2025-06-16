@@ -11,6 +11,7 @@ pipeline {
         ESLINT_CACHE = 'eslint-cache'
         NPM_CONFIG_CACHE = "/var/jenkins_home/npm-cache"
         TS_CACHE = 'ts-cache'
+        REMOTE_PATH = "/home/ubuntu/app"
     }
 
     stages {
@@ -46,6 +47,13 @@ pipeline {
                     } else {
                         sh './node_modules/.bin/eslint . --cache --cache-location $ESLINT_CACHE --fix'
                     }
+                }
+            }
+        }
+        stage('Copy .env.production to remote') {
+            steps {
+                sshagent(['ec2-ssh-key']) {
+                    sh "scp -o StrictHostKeyChecking=no .env.production ${TARGET_HOST}:${REMOTE_PATH}/.env.production"
                 }
             }
         }
