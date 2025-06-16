@@ -1,11 +1,13 @@
 'use client';
-import { forwardRef, useImperativeHandle, useState } from 'react';
+
 import styled from 'styled-components';
-import { Button, Dropdown } from '@/shared/ui';
-import { colors } from '../constants';
+import { forwardRef, useImperativeHandle, useState } from 'react';
 import sido_areas from '@/shared/constants/sido_areas.json';
 import sigg_areas from '@/shared/constants/sigg_areas.json';
 import emd_areas from '@/shared/constants/emd_areas.json';
+import { areaVerify } from '../model/areaVerify';
+import { Button, Dropdown } from '@/shared/ui';
+import { colors } from '../constants';
 
 const AreaType: Record<number, string> = {
   1: 'sido',
@@ -47,6 +49,7 @@ export const SelectAreaSection = forwardRef<
     const [sidoId, setSidoId] = useState<number | undefined>(undefined);
     const [siggId, setSiggId] = useState<number | undefined>(undefined);
     const [emdId, setEmdId] = useState<number | undefined>(undefined);
+    const [isVerify, setIsVerify] = useState(false);
 
     useImperativeHandle(ref, () => ({
       getSelection: () => ({ sidoId, siggId, emdId }),
@@ -63,6 +66,7 @@ export const SelectAreaSection = forwardRef<
     // 상위 지역이 변경되면 하위 지역은 리셋되어야 함
     function handleSelectSido(value: number) {
       if (sidoId && value !== sidoId) {
+        setIsVerify(false);
         setSiggId(undefined);
         setEmdId(undefined);
       }
@@ -71,6 +75,7 @@ export const SelectAreaSection = forwardRef<
 
     function handleSelectSigg(value: number) {
       if (siggId && value !== siggId) {
+        setIsVerify(false);
         setEmdId(undefined);
       }
       setSiggId(value);
@@ -81,7 +86,11 @@ export const SelectAreaSection = forwardRef<
     }
 
     function handleAreaVerify() {
-      console.log(emdId);
+      if (!emdId) {
+        console.log('위치 정보를 전부 입력해 주세요');
+        return;
+      }
+      areaVerify({ emdId, onSuccess: () => setIsVerify(true) });
     }
 
     return (
@@ -129,8 +138,10 @@ export const SelectAreaSection = forwardRef<
           isResponsive={!showVerifyButton}
         />
         {showVerifyButton && (
-          <StyledButton disabled={isDisabled} onClick={handleAreaVerify}>
-            위치 인증
+          <StyledButton
+            disabled={isDisabled || isVerify}
+            onClick={handleAreaVerify}>
+            {isVerify ? '인증 완료' : '위치 인증'}
           </StyledButton>
         )}
         {showEditButton && onClickEdit && (
