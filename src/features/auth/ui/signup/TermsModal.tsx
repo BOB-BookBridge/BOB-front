@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import styled from 'styled-components';
+import { useRouter } from 'next/navigation';
 import { StyledButton } from './SignUpForm.styles';
 
 const TermsModal = ({

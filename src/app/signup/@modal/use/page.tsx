@@ -1,4 +1,4 @@
-import TermsModal from '@/features/auth/ui/TermsModal';
+import TermsModal from '@/features/auth/ui/signup/TermsModal';
 import { useTerms } from '@/shared/constants';
 const UseTermsPage = () => {
   return (

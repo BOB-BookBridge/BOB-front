@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { colors, emailRule } from '@/shared/constants';
 import { InputGroup } from '@/shared/ui';
 import { useForm, useWatch } from 'react-hook-form';
-import { StyledButton } from './SignUpForm.styles';
+import { StyledButton } from './signup/SignUpForm.styles';
 import { useState } from 'react';
 import { ErrorIcon, SuccessIcon } from '@/shared/assets/icons';
 import Logo from '@/shared/assets/logo-text.svg';

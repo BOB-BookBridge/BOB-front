@@ -17,7 +17,7 @@ export interface SelectAreaSectionProps {
   showEditButton?: boolean;
   onSuccess?: (emdId: number) => void;
   onChange?: () => void;
-  purpose: PURPOSE_AREA;
+  purpose?: PURPOSE_AREA;
 }
 
 export interface SelectAreaSectionRef {
