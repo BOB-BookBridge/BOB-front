@@ -8,33 +8,14 @@ import emd_areas from '@/shared/constants/emd_areas.json';
 import { areaVerify } from '../model/areaVerify';
 import { Button, Dropdown } from '@/shared/ui';
 import { colors } from '../constants';
+import { useAreaSection } from '../model/useAreaSection';
+import {
+  SelectAreaSectionRef,
+  SelectAreaSectionProps,
+  AreaType,
+} from '../model/SelectAreaSection.type';
+import { AreaOptionsProps } from './Dropdown';
 
-const AreaType: Record<number, string> = {
-  1: 'sido',
-  2: 'sigg',
-  3: 'emd',
-} as const;
-
-export interface AreaState {
-  sidoId?: number;
-  siggId?: number;
-  emdId?: number;
-}
-
-export interface SelectAreaSectionProps {
-  showVerifyButton?: boolean;
-  showEditButton?: boolean;
-  onSuccess?: (emdId: number) => void;
-  onChange?: () => void;
-}
-
-export interface SelectAreaSectionRef {
-  getSelection: () => {
-    sidoId?: number;
-    siggId?: number;
-    emdId?: number;
-  };
-}
 export const SelectAreaSection = forwardRef<
   SelectAreaSectionRef,
   SelectAreaSectionProps
@@ -45,13 +26,20 @@ export const SelectAreaSection = forwardRef<
       showEditButton = false,
       onSuccess,
       onChange,
+      purpose,
     }: SelectAreaSectionProps,
     ref,
   ) => {
-    const [sidoId, setSidoId] = useState<number | undefined>(undefined);
-    const [siggId, setSiggId] = useState<number | undefined>(undefined);
-    const [emdId, setEmdId] = useState<number | undefined>(undefined);
-    const [isVerify, setIsVerify] = useState(false);
+    const {
+      sidoId,
+      siggId,
+      emdId,
+      isVerify,
+      handleSelectSido,
+      handleSelectSigg,
+      handleSelectEmd,
+      setIsVerify,
+    } = useAreaSection(onChange);
 
     useImperativeHandle(ref, () => ({
       getSelection: () => ({ sidoId, siggId, emdId }),
@@ -59,45 +47,44 @@ export const SelectAreaSection = forwardRef<
     const [openDropdown, setOpenDropdown] = useState<string | null>('');
     const isDisabled = !sidoId || !siggId || !emdId;
 
+    const dropdownOptions = [
+      {
+        options: sido_areas,
+        placeholder: '시/도',
+        onSelect: handleSelectSido,
+        selectedId: sidoId,
+        filter: undefined,
+      },
+      {
+        options: sigg_areas,
+        placeholder: '시/군/구',
+        onSelect: handleSelectSigg,
+        selectedId: siggId,
+        filter: (item: AreaOptionsProps) => item.sido_area_id === sidoId,
+      },
+      {
+        options: emd_areas,
+        placeholder: '읍/면/동',
+        onSelect: handleSelectEmd,
+        selectedId: emdId,
+        filter: (item: AreaOptionsProps) => item.sigg_area_id == siggId,
+      },
+    ];
     function handleToggleDropdown(value: number) {
       setOpenDropdown((prev) =>
         prev === AreaType[value] ? null : AreaType[value],
       );
     }
 
-    // 상위 지역이 변경되면 하위 지역은 리셋되어야 함
-    function handleSelectSido(value: number) {
-      if (sidoId && value !== sidoId) {
-        setIsVerify(false);
-        setSiggId(undefined);
-        setEmdId(undefined);
-        if (onChange) onChange();
-      }
-      setSidoId(value);
-    }
-
-    function handleSelectSigg(value: number) {
-      if (siggId && value !== siggId) {
-        setIsVerify(false);
-        setEmdId(undefined);
-        if (onChange) onChange();
-      }
-      setSiggId(value);
-    }
-
-    function handleSelectEmd(value: number) {
-      setEmdId(value);
-      if (onChange) onChange();
-    }
-
     function handleAreaVerify() {
-      if (!onSuccess) return;
+      if (!onSuccess || !purpose) return;
       if (!emdId) {
         console.log('위치 정보를 전부 입력해 주세요');
         return;
       }
       areaVerify({
         emdId,
+        purpose,
         onSuccess: () => {
           setIsVerify(true);
           onSuccess(emdId);
@@ -116,43 +103,27 @@ export const SelectAreaSection = forwardRef<
           flexWrap: 'wrap',
           gap: 10,
         }}>
-        <Dropdown
-          category={1}
-          isOpen={openDropdown === 'sido'}
-          onToggle={handleToggleDropdown}
-          options={sido_areas}
-          placeholder='시/도'
-          onSelect={handleSelectSido}
-          onClose={() => setOpenDropdown(null)}
-          selectedId={sidoId}
-          isResponsive={!showVerifyButton}
-        />
-        <Dropdown
-          category={2}
-          isOpen={openDropdown === 'sigg'}
-          onToggle={handleToggleDropdown}
-          options={sigg_areas
-            .filter((value) => value.sido_area_id === sidoId)
-            .sort((a, b) => a.name.localeCompare(b.name))}
-          placeholder='시/군/구'
-          onSelect={handleSelectSigg}
-          onClose={() => setOpenDropdown(null)}
-          selectedId={siggId}
-          isResponsive={!showVerifyButton}
-        />
-        <Dropdown
-          category={3}
-          isOpen={openDropdown === 'emd'}
-          onToggle={handleToggleDropdown}
-          options={emd_areas
-            .filter((value) => value.sigg_area_id == siggId)
-            .sort((a, b) => a.name.localeCompare(b.name))}
-          placeholder='읍/면/동'
-          onSelect={handleSelectEmd}
-          onClose={() => setOpenDropdown(null)}
-          selectedId={emdId}
-          isResponsive={!showVerifyButton}
-        />
+        {dropdownOptions.map((option, idx) => (
+          <Dropdown
+            key={idx}
+            category={idx + 1}
+            isOpen={openDropdown === AreaType[idx + 1]}
+            onToggle={handleToggleDropdown}
+            options={
+              option.filter
+                ? option.options
+                    .filter(option.filter)
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                : option.options
+            }
+            placeholder={option.placeholder}
+            onSelect={option.onSelect}
+            onClose={() => setOpenDropdown(null)}
+            selectedId={option.selectedId}
+            isResponsive={!showVerifyButton}
+          />
+        ))}
+
         {showVerifyButton && (
           <StyledButton
             disabled={isDisabled || isVerify}

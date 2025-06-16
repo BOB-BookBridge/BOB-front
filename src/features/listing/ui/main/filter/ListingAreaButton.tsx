@@ -1,13 +1,13 @@
 'use client';
 
 import { useMemo, useRef, useState } from 'react';
+import { AreaState } from '@/shared/model/SelectAreaSection.type';
 import { DropdownIconSm, PinIcon } from '@/shared/assets/icons';
 import { ModalLayout, SelectAreaSection } from '@/shared/ui';
-import { AreaState } from '@/shared/ui/SelectAreaSection';
-import { colors } from '@/shared/constants';
 import emd_areas from '@/shared/constants/emd_areas.json';
-import * as S from './ListingControls.styles';
 import { useFilterStore } from '../../../model';
+import * as S from './ListingControls.styles';
+import { colors } from '@/shared/constants';
 
 const ListingAreaButton = () => {
   const [isOpen, setIsOpen] = useState(false);

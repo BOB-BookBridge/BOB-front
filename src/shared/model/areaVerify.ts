@@ -1,10 +1,11 @@
-import { patchArea } from '@/entities/auth';
+import { patchArea, PURPOSE_AREA } from '@/entities/auth';
 
 interface areaVerifyProps {
   emdId: number;
+  purpose: PURPOSE_AREA;
   onSuccess: () => void;
 }
-export function areaVerify({ emdId, onSuccess }: areaVerifyProps) {
+export function areaVerify({ emdId, purpose, onSuccess }: areaVerifyProps) {
   if (!navigator.geolocation) {
     console.log('위치 정보 지원 X');
     return;
@@ -17,7 +18,7 @@ export function areaVerify({ emdId, onSuccess }: areaVerifyProps) {
           emdId,
           lat: pos.coords.latitude,
           lon: pos.coords.longitude,
-          purpose: 'SIGN_UP',
+          purpose,
         });
         onSuccess();
       } catch (error) {

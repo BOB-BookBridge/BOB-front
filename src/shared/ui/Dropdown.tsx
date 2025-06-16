@@ -3,11 +3,12 @@ import { useEffect, useRef, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { DropdownIcon } from '../assets/icons';
 
-interface DropdownOptionsProps {
+export interface AreaOptionsProps {
   id: number;
   name: string;
   adm_code?: string;
   sido_area_id?: number;
+  sigg_area_id?: number;
 }
 
 const Dropdown = ({
@@ -21,7 +22,7 @@ const Dropdown = ({
   selectedId,
   isResponsive = false,
 }: {
-  options: DropdownOptionsProps[];
+  options: AreaOptionsProps[];
   onSelect: (value: number) => void;
   placeholder: string;
   category: number;

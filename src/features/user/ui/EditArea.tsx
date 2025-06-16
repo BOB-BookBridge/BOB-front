@@ -25,6 +25,7 @@ const EditArea = () => {
       </div>
       <SelectAreaSection
         showEditButton={true}
+        purpose='CHANGE_AREA'
         onChange={handleAreaChange}
         onSuccess={handleEditArea}
       />
