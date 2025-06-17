@@ -20,13 +20,15 @@ export const FallbackGlobal = ({
   };
 
   const errorData = getErrorDataByCode(error);
+  const isLoginRequired =
+    'requireLogin' in errorData && errorData.requireLogin === true;
   return (
     <Container>
       <Wrapper>
         <CodeText>{errorData.code}!</CodeText>
         <MessageText>{errorData.message}</MessageText>
-        <StyledLink href={errorData.requireLogin ? '/login' : '/'}>
-          {errorData.requireLogin ? '로그인' : '메인 화면으로'}
+        <StyledLink href={isLoginRequired ? '/login' : '/'}>
+          {isLoginRequired ? '로그인' : '메인 화면으로'}
         </StyledLink>
       </Wrapper>
     </Container>
