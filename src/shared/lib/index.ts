@@ -6,6 +6,7 @@ import {
   sortMap,
 } from './postTextMap';
 import { convertDateToString } from './date';
+import { queryClient } from './queryClient';
 
 export {
   withIconSize,
@@ -14,4 +15,5 @@ export {
   priceRangeMap,
   sortMap,
   convertDateToString,
+  queryClient,
 };
