@@ -1,20 +1,21 @@
 'use client';
 
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import sido_areas from '@/shared/constants/sido_areas.json';
 import sigg_areas from '@/shared/constants/sigg_areas.json';
 import emd_areas from '@/shared/constants/emd_areas.json';
-import { areaVerify } from '../model/areaVerify';
-import { Button, Dropdown } from '@/shared/ui';
-import { colors } from '../constants';
+import { useAreaMutation } from '@/entities/auth/queries';
 import { useAreaSection } from '../model/useAreaSection';
+import { Button, Dropdown } from '@/shared/ui';
+import { AreaOptionsProps } from './Dropdown';
+import { colors } from '../constants';
 import {
   SelectAreaSectionRef,
   SelectAreaSectionProps,
   AreaType,
 } from '../model/SelectAreaSection.type';
-import { AreaOptionsProps } from './Dropdown';
 
 export const SelectAreaSection = forwardRef<
   SelectAreaSectionRef,
@@ -46,7 +47,7 @@ export const SelectAreaSection = forwardRef<
     }));
     const [openDropdown, setOpenDropdown] = useState<string | null>('');
     const isDisabled = !sidoId || !siggId || !emdId;
-
+    const { mutate: areaVerify } = useAreaMutation();
     const dropdownOptions = [
       {
         options: sido_areas,
@@ -82,14 +83,33 @@ export const SelectAreaSection = forwardRef<
         console.log('위치 정보를 전부 입력해 주세요');
         return;
       }
-      areaVerify({
-        emdId,
-        purpose,
-        onSuccess: () => {
-          setIsVerify(true);
-          onSuccess(emdId);
+
+      if (!navigator.geolocation) {
+        toast.error('위치 정보 불러오기를 지원하지 않습니다.');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          areaVerify(
+            {
+              emdId,
+              lat: pos.coords.latitude,
+              lon: pos.coords.longitude,
+              purpose,
+            },
+            {
+              onSuccess: () => {
+                setIsVerify(true);
+                onSuccess(emdId);
+              },
+            },
+          );
         },
-      });
+        (err) => {
+          toast.error('위치 인증에 실패했습니다. 권한을 허용해 주세요.');
+        },
+      );
     }
 
     function handleClickEdit() {
