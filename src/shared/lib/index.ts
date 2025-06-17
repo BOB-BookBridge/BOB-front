@@ -7,6 +7,8 @@ import {
 } from './postTextMap';
 import { convertDateToString } from './date';
 import { queryClient } from './queryClient';
+import { getErrorDataByCode } from './getErrorDataByCode';
+import GlobalErrorBoundary from './GlobalErrorBoundary';
 
 export {
   withIconSize,
@@ -16,4 +18,6 @@ export {
   sortMap,
   convertDateToString,
   queryClient,
+  getErrorDataByCode,
+  GlobalErrorBoundary,
 };

@@ -6,6 +6,7 @@ import StyledComponentsRegistry from '@/shared/lib/StyledComponentsRegistry';
 import { ReactQueryClientProvider, ThemeRegistry } from '@/shared/providers';
 import { FloatingButton, Header } from '@/shared/ui';
 import { ChatWidget } from '@/features/chat/ui';
+import { GlobalErrorBoundary } from '@/shared/lib';
 
 const pretendard = localFont({
   src: '../shared/assets/fonts/PretendardVariable.woff2',
@@ -25,11 +26,13 @@ export default function RootLayout({
         <StyledComponentsRegistry>
           <ReactQueryClientProvider>
             <ThemeRegistry>
-              <Header />
-              {children}
-              <FloatingButton />
-              <ChatWidget />
-              <ToastContainer />
+              <GlobalErrorBoundary>
+                <Header />
+                {children}
+                <FloatingButton />
+                <ChatWidget />
+                <ToastContainer />
+              </GlobalErrorBoundary>
             </ThemeRegistry>
           </ReactQueryClientProvider>
         </StyledComponentsRegistry>
