@@ -12,6 +12,7 @@ RUN npm prune --production
 
 # 런타임 스테이지
 FROM node:20-alpine
+ENV NODE_ENV=production
 
 WORKDIR /app
 

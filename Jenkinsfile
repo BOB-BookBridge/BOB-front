@@ -16,12 +16,15 @@ pipeline {
 
     stages {
         stage('Prepare .env.production') {
-            steps {
-                withCredentials([file(credentialsId: 'env-production', variable: 'ENV_PROD_FILE')]) {
-                    sh 'cp $ENV_PROD_FILE .env.production'
-                }
+        steps {
+            withCredentials([file(credentialsId: 'env-production', variable: 'ENV_PROD_FILE')]) {
+                sh '''
+                    cp $ENV_PROD_FILE .env.production
+                    chmod 644 .env.production
+                '''
             }
         }
+    }
         stage('Install Dependencies') {
             steps {
                 script {
@@ -47,13 +50,6 @@ pipeline {
                     } else {
                         sh './node_modules/.bin/eslint . --cache --cache-location $ESLINT_CACHE --fix'
                     }
-                }
-            }
-        }
-        stage('Copy .env.production to remote') {
-            steps {
-                sshagent(['ec2-ssh-key']) {
-                    sh "scp -o StrictHostKeyChecking=no .env.production ${TARGET_HOST}:${REMOTE_PATH}/.env.production"
                 }
             }
         }
