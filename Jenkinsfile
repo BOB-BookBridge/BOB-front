@@ -42,17 +42,25 @@ pipeline {
         stage('Lint') {
             steps {
                 script {
-                    def changedFiles = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim().split('\n')
-                    def lintFiles = changedFiles.findAll { it.endsWith('.ts') || it.endsWith('.tsx') }
-                    
-                    if (lintFiles.size() > 0) {
-                        sh "./node_modules/.bin/eslint ${lintFiles.join(' ')} --cache --cache-location $ESLINT_CACHE --fix"
-                    } else {
-                        sh './node_modules/.bin/eslint . --cache --cache-location $ESLINT_CACHE --fix'
+                def changedFiles = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim().split('\n')
+                def existingLintFiles = []
+
+                for (file in changedFiles) {
+                    if ((file.endsWith('.ts') || file.endsWith('.tsx')) && file != '' && file != null) {
+                    if (fileExists(file)) {
+                        existingLintFiles.add(file)
+                    }
                     }
                 }
+
+                if (existingLintFiles.size() > 0) {
+                    sh "./node_modules/.bin/eslint ${existingLintFiles.join(' ')} --cache --cache-location $ESLINT_CACHE --fix"
+                } else {
+                    echo "No existing lintable files changed. Skipping ESLint."
+                }
+                }
             }
-        }
+            }
         stage('Deploy frontend container') {
             steps {
                 sshagent (credentials: ['ec2-ssh-key']) {
