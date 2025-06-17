@@ -1,6 +1,4 @@
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { useTheme } from 'styled-components';
 import { useForm, useWatch } from 'react-hook-form';
 import {
   codeBasicRule,
@@ -9,7 +7,6 @@ import {
   passwordSignupRule,
   nicknameRule,
 } from '@/shared/constants';
-import { handleCodeRequest, handleEmailConfirm } from '@/features/auth/model';
 import { Button, InputGroup, SelectAreaSection } from '@/shared/ui';
 import { useEmailVerify } from '../../model/useEmailVerify';
 import { useAreaVerify } from '../../model/useAreaVerify';
@@ -17,8 +14,12 @@ import { useAgreement } from '../../model/useAgreement';
 import SignUpVerifyButton from './SignUpVerifyButton';
 import { InputItem } from '@/shared/ui/InputGroup';
 import AgreementSection from './AgreementSection';
-import { postSignUp } from '@/entities/auth';
 import * as S from './SignUpForm.styles';
+import {
+  useCodeVerifyMutation,
+  useEmailVerifyMutation,
+  useSignupMutation,
+} from '@/entities/auth/queries';
 
 interface SignUpFormValues {
   email: string;
@@ -58,7 +59,9 @@ const SignUpForm = () => {
     onEmailConfirmSuccess,
   } = useEmailVerify(email, !!errors.email);
 
-  const router = useRouter();
+  const { mutate: signup } = useSignupMutation();
+  const { mutate: emailVerify } = useEmailVerifyMutation();
+  const { mutate: codeVerify } = useCodeVerifyMutation();
 
   const isDisabled =
     !email ||
@@ -93,12 +96,7 @@ const SignUpForm = () => {
                 : '인증 코드 요청'
             }
             disabled={sendCodeDisabled || showCodeInput}
-            onClick={() =>
-              handleCodeRequest({
-                email,
-                onSuccess: onCodeRequestSuccess,
-              })
-            }
+            onClick={handleEmailVerify}
           />
         ),
       },
@@ -115,15 +113,27 @@ const SignUpForm = () => {
     return baseInputs;
   };
 
-  async function handleClickSignUp() {
+  function handleEmailVerify() {
+    emailVerify(
+      {
+        email,
+      },
+      { onSuccess: () => onCodeRequestSuccess() },
+    );
+  }
+
+  function handleCodeVerify() {
+    codeVerify(
+      {
+        email,
+        code,
+      },
+      { onSuccess: () => onEmailConfirmSuccess() },
+    );
+  }
+  function handleClickSignUp() {
     if (isDisabled) return;
-    try {
-      await postSignUp({ nickname, email, password, emdId });
-      alert('가입 완료');
-      router.replace('/');
-    } catch (error) {
-      console.log(error);
-    }
+    signup({ nickname, email, password, emdId });
   }
   return (
     <S.Container>
@@ -134,25 +144,10 @@ const SignUpForm = () => {
       />
       {showCodeInput && !isVerifiedEmail && (
         <S.ButtonContainer>
-          <S.StyledButton
-            type='TRANSPARENT'
-            onClick={() =>
-              handleCodeRequest({
-                email,
-                onSuccess: onCodeRequestSuccess,
-              })
-            }>
+          <S.StyledButton type='TRANSPARENT' onClick={handleEmailVerify}>
             재요청
           </S.StyledButton>
-          <S.StyledButton
-            type='CONFIRM'
-            onClick={() =>
-              handleEmailConfirm({
-                email,
-                code,
-                onSuccess: onEmailConfirmSuccess,
-              })
-            }>
+          <S.StyledButton type='CONFIRM' onClick={handleCodeVerify}>
             확인
           </S.StyledButton>
         </S.ButtonContainer>

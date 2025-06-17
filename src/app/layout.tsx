@@ -1,10 +1,12 @@
 import React from 'react';
 import { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { ToastContainer } from 'react-toastify';
 import StyledComponentsRegistry from '@/shared/lib/StyledComponentsRegistry';
-import ThemeRegistry from '@/shared/providers/ThemeRegistry';
-import { ChatWidget } from '@/features/chat/ui';
+import { ReactQueryClientProvider, ThemeRegistry } from '@/shared/providers';
 import { FloatingButton, Header } from '@/shared/ui';
+import { ChatWidget } from '@/features/chat/ui';
+import { GlobalErrorBoundary } from '@/shared/lib';
 
 const pretendard = localFont({
   src: '../shared/assets/fonts/PretendardVariable.woff2',
@@ -22,12 +24,17 @@ export default function RootLayout({
     <html lang='ko'>
       <body className={`${pretendard.variable}`} suppressHydrationWarning>
         <StyledComponentsRegistry>
-          <ThemeRegistry>
-            <Header />
-            {children}
-            <FloatingButton />
-            <ChatWidget />
-          </ThemeRegistry>
+          <ReactQueryClientProvider>
+            <ThemeRegistry>
+              <GlobalErrorBoundary>
+                <Header />
+                {children}
+                <FloatingButton />
+                <ChatWidget />
+                <ToastContainer />
+              </GlobalErrorBoundary>
+            </ThemeRegistry>
+          </ReactQueryClientProvider>
         </StyledComponentsRegistry>
       </body>
     </html>

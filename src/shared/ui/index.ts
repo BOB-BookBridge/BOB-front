@@ -7,7 +7,7 @@ import { SelectAreaSection } from './SelectAreaSection';
 import CheckBox from './CheckBox';
 import CheckCircle from './CheckCircle';
 import ModalLayout from './ModalLayout';
-
+import { FallbackGlobal } from './FallbackGlobal';
 export {
   Button,
   CheckBox,
@@ -17,5 +17,6 @@ export {
   Header,
   InputGroup,
   ModalLayout,
+  FallbackGlobal,
   SelectAreaSection,
 };
