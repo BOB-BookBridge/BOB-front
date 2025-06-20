@@ -13,3 +13,8 @@ export interface postSignUpProps {
   password: string;
   emdId: number;
 }
+
+export interface postLoginProps {
+  email: string;
+  password: string;
+}
