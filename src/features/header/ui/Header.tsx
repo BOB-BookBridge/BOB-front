@@ -3,22 +3,23 @@
 import Link from 'next/link';
 import { useTheme } from 'styled-components';
 import { useRouter, usePathname } from 'next/navigation';
+import { useThemeStore } from '../../../shared/model';
+import { colors } from '../../../shared/constants';
+import { useMyQuery } from '@/entities/user';
 import Logo from '@/shared/assets/logo.svg';
-import { useThemeStore } from '../model';
-import { colors } from '../constants';
 import * as S from './Header.styles';
 import {
   DarkModeIcon,
   LightModeIcon,
   NotiIcon,
   UserIcon,
-} from '../assets/icons';
-
-// #todo: isLogin zustand로 관리 예정
-const isLogin = true;
+} from '../../../shared/assets/icons';
 
 const Header = () => {
-  const { mode, toggleMode } = useThemeStore();
+  const mode = useThemeStore((state) => state.mode);
+  const toggleMode = useThemeStore((state) => state.toggleMode);
+  const { data, isLoading, isError } = useMyQuery();
+  const isLogin = !isError && !!data?.memberId;
   const theme = useTheme();
   const router = useRouter();
   const pathname = usePathname();
@@ -47,7 +48,7 @@ const Header = () => {
             <LightModeIcon fill={colors.dark.PRIMARY} />
           )}
         </div>
-        {isLogin ? (
+        {!isLoading && isLogin ? (
           <S.IconGroup>
             <Link
               href='/my'
@@ -64,11 +65,11 @@ const Header = () => {
             </Link>
             <NotiIcon stroke={theme.colors.BLACK} strokeWidth={2} fill='none' />
           </S.IconGroup>
-        ) : (
+        ) : !isLoading && !isLogin ? (
           <S.LoginButton onClick={() => router.push('/login')}>
             로그인
           </S.LoginButton>
-        )}
+        ) : null}
       </S.RightSection>
     </S.Container>
   );

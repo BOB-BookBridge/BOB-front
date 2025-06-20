@@ -1,17 +1,27 @@
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { patchArea, postCodeVerify, postEmailVerify, postSignUp } from './api';
-import { patchAreaProps, postSignUpProps } from './type';
+import {
+  patchArea,
+  postCodeVerify,
+  postEmailVerify,
+  postLogin,
+  postLogout,
+  postSignUp,
+  patchAreaProps,
+  postLoginProps,
+  postSignUpProps,
+} from '.';
+import { queryClient } from '@/shared/lib';
 
 export const useSignupMutation = () => {
-  const router = useRouter();
+  const login = useLoginMutation();
 
   return useMutation<void, Error, postSignUpProps>({
     mutationFn: (data) => postSignUp(data),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       toast.success('회원가입 완료!');
-      router.replace('/');
+      login.mutate({ email: variables.email, password: variables.password });
     },
   });
 };
@@ -39,6 +49,28 @@ export const useAreaMutation = () => {
     mutationFn: (data) => patchArea(data),
     onSuccess: () => {
       toast.success('인증 완료! 계속 진행해 주세요');
+    },
+  });
+};
+
+export const useLoginMutation = () => {
+  const router = useRouter();
+  return useMutation<void, Error, postLoginProps>({
+    mutationFn: (data) => postLogin(data),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['my'] });
+      router.replace('/');
+    },
+  });
+};
+
+export const useLogoutMutation = () => {
+  const router = useRouter();
+  return useMutation<void, Error>({
+    mutationFn: postLogout,
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ['my'] });
+      router.replace('/');
     },
   });
 };

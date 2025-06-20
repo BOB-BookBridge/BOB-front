@@ -4,6 +4,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { InputGroup, Button } from '@/shared/ui';
 import { emailRule, passwordBasicRule } from '@/shared/constants';
 import styled from 'styled-components';
+import { useLoginMutation } from '@/entities/auth/queries';
 
 interface LoginFormValues {
   email: string;
@@ -22,8 +23,9 @@ const LoginForm = () => {
   const password = useWatch({ name: 'password', control });
   const disabled = !email || !password || Object.keys(errors).length > 0;
 
+  const { mutate: login } = useLoginMutation();
   function handleClickLogin() {
-    console.log('login');
+    login({ email, password });
   }
   return (
     <Container>
