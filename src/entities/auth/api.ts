@@ -1,5 +1,5 @@
 import axiosInstance from '@/shared/config/axios';
-import { patchAreaProps, postLoginProps, postSignUpProps } from './type';
+import { patchAreaProps, postLoginProps, postSignUpProps } from '.';
 
 export const postEmailVerify = async ({ email }: { email: string }) => {
   const { data } = await axiosInstance.post('/auth/email', { email });

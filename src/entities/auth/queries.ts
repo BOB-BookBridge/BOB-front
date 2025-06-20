@@ -8,8 +8,11 @@ import {
   postLogin,
   postLogout,
   postSignUp,
-} from './api';
-import { patchAreaProps, postLoginProps, postSignUpProps } from './type';
+  patchAreaProps,
+  postLoginProps,
+  postSignUpProps,
+} from '.';
+import { queryClient } from '@/shared/lib';
 
 export const useSignupMutation = () => {
   return useMutation<void, Error, postSignUpProps>({
@@ -62,6 +65,7 @@ export const useLogoutMutation = () => {
   return useMutation<void, Error>({
     mutationFn: postLogout,
     onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ['my'] });
       router.replace('/');
     },
   });
