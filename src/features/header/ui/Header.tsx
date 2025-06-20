@@ -3,10 +3,10 @@
 import Link from 'next/link';
 import { useTheme } from 'styled-components';
 import { useRouter, usePathname } from 'next/navigation';
-import Logo from '@/shared/assets/logo.svg';
 import { useThemeStore } from '../../../shared/model';
 import { colors } from '../../../shared/constants';
 import { useMyQuery } from '@/entities/user';
+import Logo from '@/shared/assets/logo.svg';
 import * as S from './Header.styles';
 import {
   DarkModeIcon,

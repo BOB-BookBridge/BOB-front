@@ -15,10 +15,13 @@ import {
 import { queryClient } from '@/shared/lib';
 
 export const useSignupMutation = () => {
+  const login = useLoginMutation();
+
   return useMutation<void, Error, postSignUpProps>({
     mutationFn: (data) => postSignUp(data),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       toast.success('회원가입 완료!');
+      login.mutate({ email: variables.email, password: variables.password });
     },
   });
 };
@@ -54,7 +57,8 @@ export const useLoginMutation = () => {
   const router = useRouter();
   return useMutation<void, Error, postLoginProps>({
     mutationFn: (data) => postLogin(data),
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['my'] });
       router.replace('/');
     },
   });
