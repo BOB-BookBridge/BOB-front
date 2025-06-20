@@ -1,6 +1,6 @@
 'use client';
 import styled from 'styled-components';
-import { colors } from '../constants';
+import { colors } from '../../../shared/constants';
 
 export const Container = styled.header`
   height: 60px;
