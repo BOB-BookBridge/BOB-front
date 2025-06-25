@@ -1,12 +1,17 @@
 import { useForm, useWatch } from 'react-hook-form';
-import * as S from './EditProfile.styles';
-import { Button, InputGroup } from '@/shared/ui';
+import { useNicknameMutation } from '@/entities/user';
 import { nicknameRule } from '@/shared/constants';
+import { Button, InputGroup } from '@/shared/ui';
+import * as S from './EditProfile.styles';
+
 interface EditNicknameValues {
   nickname: string;
 }
-const EditNickname = () => {
-  const defaultNickname = '지지';
+
+interface EditNicknameProps {
+  defaultNickname: string;
+}
+const EditNickname = ({ defaultNickname }: EditNicknameProps) => {
   const {
     register,
     control,
@@ -20,7 +25,11 @@ const EditNickname = () => {
 
   const nickname = useWatch({ name: 'nickname', control });
   const disabled = !nickname || errors.nickname || nickname === defaultNickname;
-  function handleEditNickname() {}
+
+  const { mutate: changeNickname } = useNicknameMutation();
+  function handleEditNickname() {
+    changeNickname(nickname);
+  }
   return (
     <S.NicknameSection>
       <InputGroup
