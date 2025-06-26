@@ -2,9 +2,16 @@ import { useState } from 'react';
 import emd_areas from '@/shared/constants/emd_areas.json';
 import { SelectAreaSection } from '@/shared/ui';
 import * as S from './EditProfile.styles';
+import { formatDate } from '@/shared/lib';
+import { useMyInfoMutation } from '@/entities/user';
 
-const EditArea = () => {
-  const defaultEmdId = 309;
+interface EditAreaProps {
+  emdId: number;
+  isAuthentication: boolean;
+  authenticatedAt: string;
+}
+const EditArea = (area: EditAreaProps) => {
+  const defaultEmdId = area.emdId;
   const emdName = emd_areas.find((area) => area.id === defaultEmdId)?.name;
   const [emdId, setEmdId] = useState<number | undefined>();
 
@@ -12,8 +19,9 @@ const EditArea = () => {
     setEmdId(undefined);
   }
 
+  const { mutate: changeArea } = useMyInfoMutation();
   function handleEditArea(emdId: number) {
-    // 수정 api
+    changeArea({ area: emdId });
     setEmdId(emdId);
   }
 
@@ -21,7 +29,9 @@ const EditArea = () => {
     <S.EditAreaContainer>
       <div style={{ marginBottom: 10 }}>
         <span style={{ fontWeight: 600 }}>활동 지역</span>
-        <S.InfoText>*{emdName} 인증됨 (2025.06.11)</S.InfoText>
+        <S.InfoText>
+          *{emdName} 인증됨 ({formatDate(area.authenticatedAt)})
+        </S.InfoText>
       </div>
       <SelectAreaSection
         showEditButton={true}

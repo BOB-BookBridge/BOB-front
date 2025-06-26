@@ -19,7 +19,7 @@ const EditProfile = () => {
         <S.Container>
           <DefaultProfile width={80} />
           <EditNickname defaultNickname={data.nickname} />
-          <EditArea />
+          <EditArea {...data.area} />
           <EditPassword />
           <S.AccountRow>
             <div style={{ fontWeight: 600 }}>계정</div>
