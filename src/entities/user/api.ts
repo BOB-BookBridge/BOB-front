@@ -5,13 +5,8 @@ export const getMyProfile = async () => {
   return data;
 };
 
-export interface patchMyInfoProps {
-  nickname?: string;
-  area?: number;
-}
-
-export const patchMyInfo = async (change: patchMyInfoProps) => {
-  const { data } = await axiosInstance.patch('/members/me', change);
+export const patchNickname = async (nickname: string) => {
+  const { data } = await axiosInstance.patch('/members/me', nickname);
   return data;
 };
 
