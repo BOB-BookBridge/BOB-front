@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { colors } from '@/shared/constants';
 import { getCategoryNameById } from '../../lib';
 import { LikeIcon } from '@/shared/assets/icons';
-import { bookStatusMap, convertDateToString } from '@/shared/lib';
+import { bookStatusMap, convertDiffToString } from '@/shared/lib';
 import * as S from './ListingDetail.styles';
 import ImageCarousel from './ImageCarousel';
 import UserInfo from './UserInfo';
@@ -52,7 +52,7 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
           <S.SubText>
             #{getCategoryNameById(visibleData.category)} · #
             {bookStatusMap[visibleData.bookStatus]} ·{' '}
-            {convertDateToString(visibleData.createdAt)}
+            {convertDiffToString(visibleData.createdAt)}
           </S.SubText>
           <S.SubText>
             조회 {visibleData.viewCount} · 찜 {visibleData.scrapCount}

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import DefaultProfile from '@/shared/assets/default-profile.svg';
 import { ChatListProps } from '@/entities/chat/types';
-import { convertDateToString } from '@/shared/lib';
+import { convertDiffToString } from '@/shared/lib';
 import Badge from '@/shared/ui/Badge';
 
 const ChatListItem = ({ data }: { data: ChatListProps }) => {
@@ -41,7 +41,7 @@ const ChatListItem = ({ data }: { data: ChatListProps }) => {
         </TitleAndMessage>
       </LeftSection>
       <RightSection>
-        <TimeText>{convertDateToString(data.lastMessageAt)}</TimeText>
+        <TimeText>{convertDiffToString(data.lastMessageAt)}</TimeText>
         {data.unreadCount > 0 && <Badge unReadCount={data.unreadCount} />}
       </RightSection>
     </Container>

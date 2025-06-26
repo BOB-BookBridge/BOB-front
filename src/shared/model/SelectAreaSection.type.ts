@@ -14,7 +14,6 @@ export interface AreaState {
 
 export interface SelectAreaSectionProps {
   showVerifyButton?: boolean;
-  showEditButton?: boolean;
   onSuccess?: (emdId: number) => void;
   onChange?: () => void;
   purpose?: PURPOSE_AREA;
