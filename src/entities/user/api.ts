@@ -6,7 +6,7 @@ export const getMyProfile = async () => {
 };
 
 export const patchNickname = async (nickname: string) => {
-  const { data } = await axiosInstance.patch('/members/me', nickname);
+  const { data } = await axiosInstance.patch('/members/me', { nickname });
   return data;
 };
 

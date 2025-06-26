@@ -28,7 +28,7 @@ const EditNickname = ({ defaultNickname }: EditNicknameProps) => {
 
   const { mutate: changeNickname } = useMyInfoMutation();
   function handleEditNickname() {
-    changeNickname({ nickname });
+    changeNickname(nickname);
   }
   return (
     <S.NicknameSection>
