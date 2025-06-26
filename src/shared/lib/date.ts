@@ -1,4 +1,4 @@
-export function convertDateToString(dateString: string) {
+export function convertDiffToString(dateString: string) {
   const dateTime = new Date(dateString);
   const now = new Date();
 

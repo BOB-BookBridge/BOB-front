@@ -5,7 +5,7 @@ import {
   priceRangeMap,
   sortMap,
 } from './postTextMap';
-import { convertDateToString } from './date';
+import { convertDiffToString } from './date';
 import { queryClient } from './queryClient';
 import { getErrorDataByCode } from './getErrorDataByCode';
 import GlobalErrorBoundary from './GlobalErrorBoundary';
@@ -16,7 +16,7 @@ export {
   bookStatusMap,
   priceRangeMap,
   sortMap,
-  convertDateToString,
+  convertDiffToString,
   queryClient,
   getErrorDataByCode,
   GlobalErrorBoundary,

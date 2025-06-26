@@ -1,6 +1,6 @@
 'use client';
 
-import { convertDateToString, tradeStatusMap } from '../../../../../shared/lib';
+import { convertDiffToString, tradeStatusMap } from '../../../../../shared/lib';
 import { ListingCardProps } from '@/entities/listing/types';
 import { getCategoryNameById } from '../../../lib';
 import ListingCardTag from './ListingCardTag';
@@ -8,7 +8,7 @@ import * as S from './ListingCard.styles';
 
 const ListingCard = ({ data }: { data: ListingCardProps }) => {
   const categoryName = getCategoryNameById(data.categoryId);
-  const time = convertDateToString(data.createdAt);
+  const time = convertDiffToString(data.createdAt);
   return (
     <S.CardContainer href={`/listings/${data.postId}`}>
       <S.ImageWrapper>
