@@ -3,6 +3,7 @@ import * as S from './EditProfile.styles';
 import { Button, InputGroup } from '@/shared/ui';
 import { passwordConfirmRule, passwordSignupRule } from '@/shared/constants';
 import { useState } from 'react';
+import { usePasswordMutation } from '@/entities/user';
 
 interface EditPasswordValues {
   nowPwd: string;
@@ -35,7 +36,14 @@ const EditPassword = () => {
     reset();
     setIsOpen(false);
   }
-  function handleEditPassword() {}
+
+  const { mutate: changePassword } = usePasswordMutation();
+  function handleEditPassword() {
+    changePassword(
+      { oldPassword: nowPwd, newPassword: password },
+      { onSuccess: handleCancelEdit },
+    );
+  }
 
   return (
     <div style={{ marginTop: 20 }}>

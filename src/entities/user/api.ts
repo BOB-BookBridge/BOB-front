@@ -14,3 +14,12 @@ export const patchMyInfo = async (change: patchMyInfoProps) => {
   const { data } = await axiosInstance.patch('/members/me', change);
   return data;
 };
+
+export interface patchPasswordProps {
+  oldPassword: string;
+  newPassword: string;
+}
+export const patchPassword = async (password: patchPasswordProps) => {
+  const { data } = await axiosInstance.patch('/members/me/password', password);
+  return data;
+};

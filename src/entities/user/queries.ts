@@ -1,6 +1,12 @@
 import { toast } from 'react-toastify';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getMyProfile, patchMyInfo, patchMyInfoProps } from './api';
+import {
+  getMyProfile,
+  patchMyInfo,
+  patchMyInfoProps,
+  patchPassword,
+  patchPasswordProps,
+} from './api';
 import { queryClient } from '@/shared/lib';
 
 export const useMyQuery = () => {
@@ -20,6 +26,15 @@ export const useMyInfoMutation = () => {
     onSuccess: () => {
       toast.success('변경 완료!');
       queryClient.invalidateQueries({ queryKey: ['my'] });
+    },
+  });
+};
+
+export const usePasswordMutation = () => {
+  return useMutation<void, Error, patchPasswordProps>({
+    mutationFn: (data) => patchPassword(data),
+    onSuccess: () => {
+      toast.success('비밀번호 변경 완료');
     },
   });
 };
