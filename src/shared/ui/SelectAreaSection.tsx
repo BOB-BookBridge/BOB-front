@@ -8,7 +8,7 @@ import sigg_areas from '@/shared/constants/sigg_areas.json';
 import emd_areas from '@/shared/constants/emd_areas.json';
 import { useAreaMutation } from '@/entities/auth/queries';
 import { useAreaSection } from '../model/useAreaSection';
-import { Button, Dropdown } from '@/shared/ui';
+import { Dropdown } from '@/shared/ui';
 import { AreaOptionsProps } from './Dropdown';
 import { colors } from '../constants';
 import {
@@ -24,7 +24,6 @@ export const SelectAreaSection = forwardRef<
   (
     {
       showVerifyButton = true,
-      showEditButton = false,
       onSuccess,
       onChange,
       purpose,
@@ -112,10 +111,6 @@ export const SelectAreaSection = forwardRef<
       );
     }
 
-    function handleClickEdit() {
-      if (onSuccess && emdId) onSuccess(emdId);
-    }
-
     return (
       <div
         style={{
@@ -150,15 +145,6 @@ export const SelectAreaSection = forwardRef<
             onClick={handleAreaVerify}>
             {isVerify ? '인증 완료' : '위치 인증'}
           </StyledButton>
-        )}
-        {showEditButton && onSuccess && (
-          <div style={{ width: 100 }}>
-            <Button
-              text='수정'
-              variant={isVerify ? 'primary' : 'disabled'}
-              onClick={handleClickEdit}
-            />
-          </div>
         )}
       </div>
     );

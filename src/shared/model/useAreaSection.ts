@@ -28,7 +28,6 @@ export function useAreaSection(onChange?: () => void) {
 
   function handleSelectEmd(value: number) {
     setEmdId(value);
-    if (onChange) onChange();
   }
 
   return {
