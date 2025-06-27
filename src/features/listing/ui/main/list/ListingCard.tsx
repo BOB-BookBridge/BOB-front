@@ -1,6 +1,7 @@
 'use client';
 
-import { convertDiffToString, tradeStatusMap } from '../../../../../shared/lib';
+import Image from 'next/image';
+import { convertDiffToString, postStatusMap } from '@/shared/lib';
 import { ListingCardProps } from '@/entities/listing/types';
 import { getCategoryNameById } from '../../../lib';
 import ListingCardTag from './ListingCardTag';
@@ -13,19 +14,19 @@ const ListingCard = ({ data }: { data: ListingCardProps }) => {
     <S.CardContainer href={`/listings/${data.postId}`}>
       <S.ImageWrapper>
         <S.Overlay>
-          <S.OverlayDim status={data.tradeStatus} />
-          {data.tradeStatus !== 'READY' && (
+          <S.OverlayDim status={data.postStatus} />
+          {data.postStatus !== 'READY' && (
             <S.OverlayStatusText>
-              {tradeStatusMap[data.tradeStatus]}
+              {postStatusMap[data.postStatus]}
             </S.OverlayStatusText>
           )}
           <S.TagWrapper>
             <ListingCardTag status={data.bookStatus} />
           </S.TagWrapper>
         </S.Overlay>
-        <S.Image src={data.thumbnail} />
+        <Image src={data.thumbnailUrl} alt='책 대표사진' fill />
       </S.ImageWrapper>
-      <S.TitleText>{data.title}</S.TitleText>
+      <S.TitleText>{data.postTitle}</S.TitleText>
       <S.PriceText>{data.sellPrice.toLocaleString('ko-KR')}원</S.PriceText>
       <S.InfoText>
         {categoryName} · {time}

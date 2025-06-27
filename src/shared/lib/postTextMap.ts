@@ -1,4 +1,4 @@
-export const tradeStatusMap = {
+export const postStatusMap = {
   READY: '판매 중',
   IN_PROGRESS: '거래 예약',
   COMPLETED: '거래 완료',
