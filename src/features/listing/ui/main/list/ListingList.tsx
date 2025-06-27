@@ -55,10 +55,9 @@ const ListingList = ({
     data: favoriteData,
     fetchNextPage: fetchFavoriteNext,
     hasNextPage: hasFavoriteNext,
-  } = useFavoritesQuery();
+  } = useFavoritesQuery(isFavorite ? true : false);
 
   const data = isFavorite ? favoriteData : listingData;
-  console.log(isFavorite, data);
   const fetchNextPage = isFavorite ? fetchFavoriteNext : fetchListingNext;
   const hasNextPage = isFavorite ? hasFavoriteNext : hasListingNext;
 

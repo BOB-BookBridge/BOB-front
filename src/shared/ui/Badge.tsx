@@ -11,7 +11,7 @@ const Badge = ({ unReadCount, type = 'default' }: BadgeProps) => {
       {type === 'default' ? (
         <StyledBadge>{badgeText}</StyledBadge>
       ) : (
-        <FabBadge length={badgeText.length}>{badgeText}</FabBadge>
+        <FabBadge $length={badgeText.length}>{badgeText}</FabBadge>
       )}
     </>
   );
@@ -20,13 +20,13 @@ const Badge = ({ unReadCount, type = 'default' }: BadgeProps) => {
 export default Badge;
 
 interface FabBadgeProps {
-  length: number;
+  $length: number;
 }
 export const FabBadge = styled.span<FabBadgeProps>`
   position: absolute;
   top: -4px;
-  right: ${({ length }) =>
-    length === 1 ? '-4px' : length === 2 ? '-8px' : '-12px'};
+  right: ${({ $length }) =>
+    $length === 1 ? '-4px' : $length === 2 ? '-8px' : '-12px'};
   min-width: 24px;
   height: 24px;
   background-color: ${({ theme }) => theme.colors.BADGE};

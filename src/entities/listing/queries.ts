@@ -1,4 +1,8 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  UseInfiniteQueryOptions,
+  useQuery,
+} from '@tanstack/react-query';
 import { getFavorites, getPost, getPosts } from './api';
 import { getPostsProps } from './types';
 
@@ -24,7 +28,7 @@ export const useListingDetailQuery = (postId: number) => {
   });
 };
 
-export const useFavoritesQuery = () => {
+export const useFavoritesQuery = (enabled: boolean) => {
   return useInfiniteQuery({
     queryKey: ['favorites'],
     queryFn: ({ pageParam = 0 }) => getFavorites({ page: pageParam, size: 12 }),
@@ -36,5 +40,6 @@ export const useFavoritesQuery = () => {
       return totalFetched < lastPage.totalCount ? allPages.length : undefined;
     },
     initialPageParam: 0,
+    enabled: enabled,
   });
 };
