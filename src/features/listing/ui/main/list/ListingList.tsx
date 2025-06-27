@@ -1,13 +1,23 @@
 'use client';
 
 import styled from 'styled-components';
-import { PostStatus, useListingQuery } from '@/entities/listing';
+import {
+  PostStatus,
+  useFavoritesQuery,
+  useListingQuery,
+} from '@/entities/listing';
 import { useFilterStore } from '@/features/listing/model';
 import { useMyQuery } from '@/entities/user';
 import ListingCard from './ListingCard';
 
 const PAGE_SIZE = 12;
-const ListingList = ({ isMyPage }: { isMyPage?: boolean }) => {
+const ListingList = ({
+  isMyPage,
+  isFavorite,
+}: {
+  isMyPage?: boolean;
+  isFavorite?: boolean;
+}) => {
   const { data: myData } = useMyQuery();
   const memberId = myData?.memberId;
   const {
@@ -35,9 +45,25 @@ const ListingList = ({ isMyPage }: { isMyPage?: boolean }) => {
         size: PAGE_SIZE,
       };
 
-  const { data, fetchNextPage, hasNextPage } = useListingQuery(filter);
+  const {
+    data: listingData,
+    fetchNextPage: fetchListingNext,
+    hasNextPage: hasListingNext,
+  } = useListingQuery(filter);
+
+  const {
+    data: favoriteData,
+    fetchNextPage: fetchFavoriteNext,
+    hasNextPage: hasFavoriteNext,
+  } = useFavoritesQuery();
+
+  const data = isFavorite ? favoriteData : listingData;
+  console.log(isFavorite, data);
+  const fetchNextPage = isFavorite ? fetchFavoriteNext : fetchListingNext;
+  const hasNextPage = isFavorite ? hasFavoriteNext : hasListingNext;
+
   const listings = data?.pages.flatMap((page) => page.posts) ?? [];
-  console.log(listings);
+
   function handleLoadMore() {
     fetchNextPage();
   }
@@ -67,6 +93,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 90%;
 `;
 export const EmptyMessage = styled.div`
   font-weight: 500;
