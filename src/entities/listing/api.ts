@@ -14,3 +14,16 @@ export const getPost = async (postId: number): Promise<ListingDetailProps> => {
   const { data } = await axiosInstance.get(`/posts/${postId}`);
   return data;
 };
+
+export const getFavorites = async ({
+  page,
+  size,
+}: {
+  page?: number;
+  size?: number;
+}): Promise<GetPostsResponse> => {
+  const { data } = await axiosInstance.get('/posts/favorites', {
+    params: { page, size },
+  });
+  return data;
+};
