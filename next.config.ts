@@ -6,6 +6,18 @@ const nextConfig: NextConfig = {
   },
   images: {
     domains: ['s3.bucket.com', 'image.aladin.co.kr'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'image.aladin.co.kr',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 's3.bucket.com',
+        pathname: '/**',
+      },
+    ],
   },
   typescript: {
     ignoreBuildErrors: true,
