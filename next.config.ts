@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     styledComponents: true,
   },
   images: {
-    domains: ['s3.bucket.com'],
+    domains: ['s3.bucket.com', 'image.aladin.co.kr'],
   },
   typescript: {
     ignoreBuildErrors: true,

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { TradeStatus } from '@/entities/listing/types';
+import { PostStatus } from '@/entities/listing/types';
 import {
   CancelIcon,
   CompleteIcon,
@@ -40,7 +40,7 @@ function getFilteredOptions(tradeStatus: string) {
   return editOptions.filter((opt) => allowed.includes(opt.value));
 }
 interface EditMenuProps {
-  tradeStatus: TradeStatus;
+  postStatus: PostStatus;
   postId: number;
 }
 
@@ -55,7 +55,7 @@ export type SelectBuyerSubmitData = {
 
 type ModalSubmitData = CancelSubmitData | SelectBuyerSubmitData;
 
-const EditMenu = ({ tradeStatus, postId }: EditMenuProps) => {
+const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
   const theme = useTheme();
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [openModalType, setOpenModalType] = useState<EditModalType | null>(
@@ -142,7 +142,7 @@ const EditMenu = ({ tradeStatus, postId }: EditMenuProps) => {
 
       {isOpenEdit && (
         <S.EditList ref={menuRef}>
-          {getFilteredOptions(tradeStatus).map((option) => (
+          {getFilteredOptions(postStatus).map((option) => (
             <S.EditItem
               key={option.value}
               type={option.value}

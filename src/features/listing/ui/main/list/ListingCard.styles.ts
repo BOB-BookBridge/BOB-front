@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { colors } from '../../../../../shared/constants';
-import { TradeStatus } from '@/entities/listing/types';
+import { PostStatus } from '@/entities/listing/types';
 import Link from 'next/link';
 
 const Z_OVERLAY_BASE = 10;
@@ -9,7 +9,7 @@ const Z_OVERLAY_STATUS = 13;
 const Z_TAG_WRAPPER = 10;
 
 interface OverlayProps {
-  status: TradeStatus;
+  status: PostStatus;
 }
 
 export const CardContainer = styled(Link)`
@@ -40,6 +40,16 @@ export const ImageWrapper = styled.div`
   overflow: hidden;
   border-radius: 10px;
   border: 0.5px solid ${({ theme }) => theme.colors.GRAY_300};
+
+  img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.03);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+  }
 `;
 
 export const Overlay = styled.div`
@@ -77,16 +87,6 @@ export const OverlayStatusText = styled.div`
   height: 100%;
   color: ${colors.light.WHITE};
   z-index: ${Z_OVERLAY_STATUS};
-`;
-
-export const Image = styled.img`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.03);
-  transform-origin: center;
-  transition: transform 0.3s ease;
 `;
 
 export const TitleText = styled.p`

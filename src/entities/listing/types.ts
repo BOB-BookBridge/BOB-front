@@ -1,23 +1,35 @@
 export type BookStatus = 'BEST' | 'HIGH' | 'MEDIUM' | 'LOW';
-export type TradeStatus = 'READY' | 'IN_PROGRESS' | 'COMPLETED';
+export type PostStatus = 'READY' | 'IN_PROGRESS' | 'COMPLETED';
 export type SortKey = 'RECENT' | 'OLD' | 'LOW_PRICE' | 'HIGH_PRICE';
+export type SearchKey = '통합' | '제목' | '저자';
 
+export type GetPostsResponse = {
+  totalCount: number;
+  posts: ListingCardProps[];
+};
+
+export type DetailImage = {
+  sequence: number;
+  fileName: string;
+};
 export interface ListingCardProps {
   postId: number;
   categoryId: number;
-  title: string;
-  tradeStatus: TradeStatus;
+  postTitle: string;
+  postStatus: PostStatus;
   sellPrice: number;
-  thumbnail: string;
+  thumbnailUrl: string;
   bookStatus: BookStatus;
   createdAt: string;
 }
 
 export interface ListingDetailProps {
   postId: number;
+  sellerId: string;
+  thumbnailUrl: string;
   sellPrice: number;
   bookStatus: BookStatus;
-  tradeStatus: TradeStatus;
+  postStatus: PostStatus;
   category: number;
   book: {
     title: string;
@@ -27,7 +39,7 @@ export interface ListingDetailProps {
     pubDate: string;
   };
   description: string;
-  images: string[];
+  images: DetailImage[];
   writer: {
     memberId: string;
     nickname: string;
@@ -47,4 +59,18 @@ export interface TradeProps {
     nickname: string;
     profileUrl: string | null;
   };
+}
+
+export interface getPostsProps {
+  key?: SearchKey;
+  keyword?: string;
+  memberId?: string;
+  emdId?: number;
+  categoryId?: number;
+  price?: number;
+  postStatus?: PostStatus;
+  bookStatus?: BookStatus;
+  sort?: SortKey;
+  page?: number;
+  size?: number;
 }

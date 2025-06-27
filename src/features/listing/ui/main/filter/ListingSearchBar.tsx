@@ -3,40 +3,53 @@
 import { useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { ArrowICon, DropdownIconSm } from '@/shared/assets/icons';
+import { useFilterStore } from '@/features/listing/model';
+import { SearchKey } from '@/entities/listing';
 
-const options = [
-  { value: 'all', label: '통합' },
-  { value: 'title', label: '제목' },
-  { value: 'author', label: '저자' },
-];
+const options: SearchKey[] = ['통합', '제목', '저자'];
 
 const ListingSearchBar = () => {
   const theme = useTheme();
+  const key = useFilterStore((s) => s.key);
+  const keyword = useFilterStore((s) => s.keyword);
+  const { setKey, setKeyword } = useFilterStore();
+
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState('all');
+  const [selected, setSelected] = useState(key);
+  const [input, setInput] = useState(keyword ? keyword : '');
   function handleDropdownToggle() {
     setIsOpen((prev) => !prev);
   }
-  function handleDropdownOptionClick(value: string) {
+  function handleDropdownOptionClick(value: SearchKey) {
     setSelected(value);
+    setKey(value);
     setIsOpen(false);
   }
+
+  function handleInputChange(value: string) {
+    setInput(value);
+  }
+
+  function handleEnterInput() {
+    setKeyword(input);
+  }
+
   return (
     <Container>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', width: '100%' }}>
         <DropdownWrapper>
           <KeyDropdown onClick={handleDropdownToggle}>
-            <span>{options.find((opt) => opt.value === selected)?.label}</span>
+            <span>{options.find((opt) => opt === selected)}</span>
             <DropdownIconSm style={{ fill: theme.colors.BLACK }} />
           </KeyDropdown>
           {isOpen && (
             <DropdownList>
               {options.map((option) => (
                 <DropdownItem
-                  key={option.value}
-                  selected={option.value === selected}
-                  onClick={() => handleDropdownOptionClick(option.value)}>
-                  {option.label}
+                  key={option}
+                  selected={option === selected}
+                  onClick={() => handleDropdownOptionClick(option)}>
+                  {option}
                 </DropdownItem>
               ))}
             </DropdownList>
@@ -49,9 +62,19 @@ const ListingSearchBar = () => {
           }}>
           |
         </span>
-        <StyledInput placeholder='검색어를 입력하세요' />
+        <StyledInput
+          placeholder='검색어를 입력하세요'
+          value={input}
+          onChange={(e) => handleInputChange(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') handleEnterInput();
+          }}
+        />
       </div>
-      <ArrowICon style={{ fill: theme.colors.GRAY_600 }} />
+      <ArrowICon
+        style={{ fill: theme.colors.GRAY_600, cursor: 'pointer' }}
+        onClick={handleEnterInput}
+      />
     </Container>
   );
 };
@@ -117,6 +140,7 @@ const StyledInput = styled.input`
   border: none;
   outline: none;
   font-size: 12px;
+  width: 100%;
   color: ${({ theme }) => theme.colors.BLACK};
   background-color: transparent;
   caret-color: ${({ theme }) => theme.colors.BLACK};
