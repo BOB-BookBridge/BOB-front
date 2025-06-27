@@ -25,10 +25,12 @@ const ListingCard = ({ data }: { data: ListingCardProps }) => {
           </S.TagWrapper>
         </S.Overlay>
         <Image
+          loader={() => data.thumbnailUrl}
           src={data.thumbnailUrl}
           alt='책 대표사진'
           fill
           sizes='(max-width: 744px) 50vw, 20vw'
+          unoptimized
         />
       </S.ImageWrapper>
       <S.TitleText>{data.postTitle}</S.TitleText>
