@@ -1,6 +1,6 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { getPost, getPosts } from './api';
 import { getPostsProps } from './types';
-import { getPosts } from './api';
 
 export const useListingQuery = (filter: getPostsProps) => {
   return useInfiniteQuery({
@@ -14,5 +14,12 @@ export const useListingQuery = (filter: getPostsProps) => {
       return totalFetched < lastPage.totalCount ? allPages.length : undefined;
     },
     initialPageParam: 0,
+  });
+};
+
+export const useListingDetailQuery = (postId: number) => {
+  return useQuery({
+    queryKey: ['listingDetail'],
+    queryFn: () => getPost(postId),
   });
 };
