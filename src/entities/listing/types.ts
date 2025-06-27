@@ -1,7 +1,7 @@
 export type BookStatus = 'BEST' | 'HIGH' | 'MEDIUM' | 'LOW';
 export type PostStatus = 'READY' | 'IN_PROGRESS' | 'COMPLETED';
 export type SortKey = 'RECENT' | 'OLD' | 'LOW_PRICE' | 'HIGH_PRICE';
-export type SearchKey = '제목' | '저자';
+export type SearchKey = '통합' | '제목' | '저자';
 
 export type GetPostsResponse = {
   totalCount: number;

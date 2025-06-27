@@ -21,7 +21,7 @@ const SearchSection = ({ value, onChange }: SearchSectionProps) => {
     setIsOpen(true);
   }
   function handleEnterEvent(e: React.KeyboardEvent) {
-    if (e.keyCode == 13) handleSearchBook();
+    if (e.key === 'Enter') handleSearchBook();
   }
 
   return (
