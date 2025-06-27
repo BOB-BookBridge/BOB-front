@@ -1,31 +1,62 @@
 'use client';
-import { useState } from 'react';
+
 import styled from 'styled-components';
+import { PostStatus, useListingQuery } from '@/entities/listing';
+import { useFilterStore } from '@/features/listing/model';
+import { useMyQuery } from '@/entities/user';
 import ListingCard from './ListingCard';
-import { data } from '@/mocks/mockListingList';
 
-// #todo 보여줄 data나 data 구분 기준? Props로 받아서 처리하기
 const PAGE_SIZE = 12;
-const ListingList = () => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const visibleData = data.slice(0, (currentPage + 1) * PAGE_SIZE);
+const ListingList = ({ isMyPage }: { isMyPage?: boolean }) => {
+  const { data: myData } = useMyQuery();
+  const memberId = myData?.memberId;
+  const {
+    key,
+    keyword,
+    emdId,
+    isAvailableOnly,
+    categoryId,
+    bookStatus,
+    priceRange,
+    sort,
+  } = useFilterStore();
 
-  console.log(visibleData.length, data.length);
-  const hasMore = visibleData.length < data.length;
+  const filter = isMyPage
+    ? { memberId, size: PAGE_SIZE }
+    : {
+        key: key && keyword ? key : undefined,
+        keyword: keyword ?? undefined,
+        emdId: emdId ?? undefined,
+        categoryId: categoryId ?? undefined,
+        bookStatus: bookStatus ?? undefined,
+        price: priceRange ?? undefined,
+        postStatus: isAvailableOnly ? ('READY' as PostStatus) : undefined,
+        sort,
+        size: PAGE_SIZE,
+      };
 
-  console.log(hasMore);
+  const { data, fetchNextPage, hasNextPage } = useListingQuery(filter);
+  const listings = data?.pages.flatMap((page) => page.posts) ?? [];
+  console.log(listings);
   function handleLoadMore() {
-    setCurrentPage((prev) => prev + 1);
+    fetchNextPage();
   }
 
   return (
     <Container>
-      <ListWrapper>
-        {visibleData.map((listing, idx) => (
-          <ListingCard key={listing.postId + idx} data={listing} />
-        ))}
-        {hasMore && <MoreButton onClick={handleLoadMore}>더보기</MoreButton>}
-      </ListWrapper>
+      {listings.length === 0 ? (
+        <EmptyMessage>판매글이 없습니다.</EmptyMessage>
+      ) : (
+        <ListWrapper>
+          {listings.map((listing) => (
+            <ListingCard key={`listing-${listing.postId}`} data={listing} />
+          ))}
+
+          {hasNextPage && (
+            <MoreButton onClick={handleLoadMore}>더보기</MoreButton>
+          )}
+        </ListWrapper>
+      )}
     </Container>
   );
 };
@@ -37,6 +68,11 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
 `;
+export const EmptyMessage = styled.div`
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.GRAY_600};
+`;
+
 export const ListWrapper = styled.div`
   flex: 1;
   display: flex;
