@@ -24,7 +24,12 @@ const ListingCard = ({ data }: { data: ListingCardProps }) => {
             <ListingCardTag status={data.bookStatus} />
           </S.TagWrapper>
         </S.Overlay>
-        <Image src={data.thumbnailUrl} alt='책 대표사진' fill />
+        <Image
+          src={data.thumbnailUrl}
+          alt='책 대표사진'
+          fill
+          sizes='(max-width: 744px) 50vw, 20vw'
+        />
       </S.ImageWrapper>
       <S.TitleText>{data.postTitle}</S.TitleText>
       <S.PriceText>{data.sellPrice.toLocaleString('ko-KR')}원</S.PriceText>
