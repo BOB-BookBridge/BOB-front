@@ -7,6 +7,11 @@ export type GetPostsResponse = {
   totalCount: number;
   posts: ListingCardProps[];
 };
+
+export type DetailImage = {
+  sequence: number;
+  fileName: string;
+};
 export interface ListingCardProps {
   postId: number;
   categoryId: number;
@@ -20,6 +25,8 @@ export interface ListingCardProps {
 
 export interface ListingDetailProps {
   postId: number;
+  sellerId: string;
+  thumbnailUrl: string;
   sellPrice: number;
   bookStatus: BookStatus;
   postStatus: PostStatus;
@@ -32,7 +39,7 @@ export interface ListingDetailProps {
     pubDate: string;
   };
   description: string;
-  images: string[];
+  images: DetailImage[];
   writer: {
     memberId: string;
     nickname: string;

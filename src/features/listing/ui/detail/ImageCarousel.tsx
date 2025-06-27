@@ -5,9 +5,10 @@ import 'swiper/css/navigation';
 import * as S from './ListingDetail.styles';
 import { useState } from 'react';
 import ModalCarousel from './ModalCarousel';
+import { DetailImage } from '@/entities/listing';
 
 interface ImageCarouselProps {
-  images: string[];
+  images: DetailImage[];
 }
 // #todo: img 태그 -> Image로 변경
 // 이미지 도메인 s3.~~~ 맞는지 확인
@@ -26,15 +27,15 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
         }}
         speed={400}
         slidesPerView={1}>
-        {images.map((image, idx) => (
-          <SwiperSlide key={idx + image}>
+        {images.map((image) => (
+          <SwiperSlide key={image.sequence}>
             <img
               alt='등록된 책 사진'
               onClick={() => {
-                setSelectedIndex(idx);
+                setSelectedIndex(image.sequence);
                 setIsModalOpen(true);
               }}
-              src={image}
+              src={image.fileName}
             />
           </SwiperSlide>
         ))}

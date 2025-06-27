@@ -5,7 +5,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 interface ModalCarouselProps {
-  images: string[];
+  images: DetailImage[];
   initialIndex: number;
   onClose: () => void;
 }
@@ -33,10 +33,10 @@ const ModalCarousel = ({
           slidesPerView={1}
           navigation
           modules={[Navigation]}>
-          {images.map((img, idx) => (
-            <SwiperSlide key={idx}>
+          {images.map((img) => (
+            <SwiperSlide key={img.sequence}>
               <ImageWrapper>
-                <img src={img} alt={`Image ${idx + 1}`} />
+                <img src={img.fileName} alt={`Image ${img.sequence + 1}`} />
               </ImageWrapper>
             </SwiperSlide>
           ))}
@@ -52,6 +52,7 @@ import styled from 'styled-components';
 import { CloseIcon } from '@/shared/assets/icons';
 import { colors } from '@/shared/constants';
 import { useEffect } from 'react';
+import { DetailImage } from '@/entities/listing';
 
 export const ModalOverlay = styled.div`
   position: fixed;
