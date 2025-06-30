@@ -1,5 +1,5 @@
 'use client';
-import { PasswordRequestLayout } from '@/features/auth/ui';
+import { PasswordRequestLayout } from '@/features/user/ui';
 import styled from 'styled-components';
 const PasswordRequestPage = () => {
   return (
