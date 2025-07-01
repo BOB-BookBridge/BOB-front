@@ -5,6 +5,7 @@ import {
   patchNickname,
   patchPassword,
   patchPasswordProps,
+  patchTempPassword,
 } from './api';
 import { queryClient } from '@/shared/lib';
 
@@ -23,7 +24,7 @@ export const useMyInfoMutation = () => {
   return useMutation<void, Error, string>({
     mutationFn: (data) => patchNickname(data),
     onSuccess: () => {
-      toast.success('닉네임 변경 완료!');
+      toast.success('닉네임 변경 완료');
       queryClient.invalidateQueries({ queryKey: ['my'] });
     },
   });
@@ -34,6 +35,15 @@ export const usePasswordMutation = () => {
     mutationFn: (data) => patchPassword(data),
     onSuccess: () => {
       toast.success('비밀번호 변경 완료');
+    },
+  });
+};
+
+export const useTempPasswordMutation = () => {
+  return useMutation<void, Error, string>({
+    mutationFn: (data) => patchTempPassword(data),
+    onSuccess: () => {
+      toast.success('임시 비밀번호를 발급했습니다. 메일함을 확인해 주세요');
     },
   });
 };

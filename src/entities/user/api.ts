@@ -18,3 +18,10 @@ export const patchPassword = async (password: patchPasswordProps) => {
   const { data } = await axiosInstance.patch('/members/me/password', password);
   return data;
 };
+
+export const patchTempPassword = async (email: string) => {
+  const { data } = await axiosInstance.patch('/members/temp/password', {
+    email,
+  });
+  return data;
+};
