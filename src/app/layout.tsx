@@ -32,7 +32,7 @@ export default function RootLayout({
                 {children}
                 <FloatingButton />
                 <ChatWidget />
-                <ToastContainer />
+                <ToastContainer autoClose={1000} hideProgressBar />
               </GlobalErrorBoundary>
             </ThemeRegistry>
           </ReactQueryClientProvider>
