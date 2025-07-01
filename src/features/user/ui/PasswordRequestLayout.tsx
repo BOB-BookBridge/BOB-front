@@ -1,14 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 import styled from 'styled-components';
-import { colors, emailRule } from '@/shared/constants';
-import { InputGroup } from '@/shared/ui';
 import { useForm, useWatch } from 'react-hook-form';
 import { StyledButton } from '../../auth/ui/signup/SignUpForm.styles';
-import { useState } from 'react';
 import { ErrorIcon, SuccessIcon } from '@/shared/assets/icons';
+import { useTempPasswordMutation } from '@/entities/user';
+import { colors, emailRule } from '@/shared/constants';
 import Logo from '@/shared/assets/logo-text.svg';
+import { InputGroup } from '@/shared/ui';
 
 const PasswordRequestLayout = () => {
   const {
@@ -20,7 +21,8 @@ const PasswordRequestLayout = () => {
   });
 
   const email = useWatch({ name: 'email', control });
-  const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
+  const { mutate: tempPassword, isSuccess } = useTempPasswordMutation();
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const isDisabled = !email || Object.keys(errors).length > 0;
 
@@ -32,10 +34,8 @@ const PasswordRequestLayout = () => {
         : '해당 이메일로 가입된 계정을 찾을 수 없습니다\n이메일을 다시 확인해주세요';
 
   function handleClickConfirm() {
-    setIsSuccess((prev) => {
-      if (prev === null) return true;
-      else return !prev;
-    });
+    setIsSubmitted(true);
+    tempPassword(email);
   }
   return (
     <Container>
@@ -61,7 +61,7 @@ const PasswordRequestLayout = () => {
         register={register}
         errors={errors}
       />
-      {isSuccess !== null && (
+      {isSubmitted && (
         <div
           style={{
             display: 'flex',
