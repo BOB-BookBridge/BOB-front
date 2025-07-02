@@ -8,6 +8,5 @@ export const searchBook = async (query: string): Promise<AladinResponse> => {
     throw new Error(error.message || 'Failed to fetch search results');
   }
   const data = res.json();
-  console.log(data);
   return data;
 };
