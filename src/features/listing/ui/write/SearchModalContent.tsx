@@ -1,28 +1,67 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { SearchIcon } from '@/shared/assets/icons';
-import { data } from '@/mocks/mockBookSearch';
 import * as S from './ListingWrite.styles';
 import { Button } from '@/shared/ui';
+import { searchBook } from '@/entities/aladin';
+import { AladinItemType } from '@/entities/aladin/type';
+import { useWriteStore } from '../../model/useWriteStore';
+import { formatDate } from '@/shared/lib';
 
 interface SearchModalContentProps {
   value: string;
   onClose: () => void;
 }
-// #todo: 판매 정보 zustand로 관리
+
 const SearchModalContent = ({ value, onClose }: SearchModalContentProps) => {
   const [newValue, setNewValue] = useState(value);
-  const [selectId, setSelectId] = useState<number | null>(null);
+  const [selected, setSelected] = useState<AladinItemType | null>(null);
+  const [result, setResult] = useState<AladinItemType[] | null>();
+  const { setBook } = useWriteStore();
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      if (newValue) {
+        searchBook(newValue).then((data) => {
+          setResult(data.item);
+        });
+      }
+    }, 500);
 
-  function handleClickBook(value: number) {
-    setSelectId(value);
+    return () => clearTimeout(debounce);
+  }, [newValue]);
+
+  function handleClickBook(value: AladinItemType) {
+    setSelected(value);
   }
 
   function handleNewValueChange(e: React.ChangeEvent<HTMLInputElement>) {
     setNewValue(e.target.value);
   }
   function handleChooseBook() {
-    onClose();
+    if (selected) {
+      const {
+        isbn13: isbn,
+        title,
+        author,
+        description,
+        priceStandard,
+        cover: originCover,
+        pubDate: originPubDate,
+      } = selected;
+      const cover = originCover.replace(/cover[^/]+/, 'cover500');
+      const pubDate = formatDate(originPubDate);
+
+      setBook({
+        isbn,
+        title,
+        author,
+        description,
+        priceStandard,
+        cover,
+        pubDate,
+      });
+      onClose();
+    }
   }
   return (
     <ModalContent>
@@ -36,19 +75,23 @@ const SearchModalContent = ({ value, onClose }: SearchModalContentProps) => {
         />
       </SearchBarWrapper>
       <BookListWrapper>
-        {data.item.map((item, idx) => (
-          <BookItemWrapper
-            key={item.itemId}
-            onClick={() => handleClickBook(item.itemId)}
-            $isSelected={selectId === item.itemId}>
-            <BookImage src={item.cover} />
-            <div style={{ width: '100%' }}>
-              <TitleText>{item.title}</TitleText>
-              <InfoText>{item.author}</InfoText>
-              <InfoText>{item.pubDate}</InfoText>
-            </div>
-          </BookItemWrapper>
-        ))}
+        {result && result.length > 0 ? (
+          result.map((item) => (
+            <BookItemWrapper
+              key={item.itemId}
+              onClick={() => handleClickBook(item)}
+              $isSelected={selected?.itemId === item.itemId}>
+              <BookImage src={item.cover} />
+              <div style={{ width: '100%' }}>
+                <TitleText>{item.title}</TitleText>
+                <InfoText>{item.author}</InfoText>
+                <InfoText>{item.pubDate}</InfoText>
+              </div>
+            </BookItemWrapper>
+          ))
+        ) : (
+          <EmptyMessage>검색 결과가 없습니다.</EmptyMessage>
+        )}
       </BookListWrapper>
       <ButtonWrapper>
         <Button text='선택 완료' variant='primary' onClick={handleChooseBook} />
@@ -120,3 +163,11 @@ const InfoText = styled.div`
 `;
 
 const TitleText = styled.div``;
+
+const EmptyMessage = styled.div`
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.GRAY_600};
+`;

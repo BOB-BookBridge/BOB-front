@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { bookStatusList } from '../main/filter/FilterContent';
+import { useWriteStore } from '../../model/useWriteStore';
 import { BookStatus } from '@/entities/listing/types';
 import { HELP_MESSAGES } from '@/shared/constants';
 import PriceAndCategory from './PriceAndCategory';
+import { Button, CheckCircle } from '@/shared/ui';
 import { bookStatusMap } from '@/shared/lib';
 import SearchSection from './SearchSection';
 import * as S from './ListingWrite.styles';
-import { Button, CheckCircle } from '@/shared/ui';
 import HelpButton from './HelpButton';
 import PhotoList from './PhotoList';
 
@@ -23,9 +24,10 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
   const [images, setImages] = useState<ImageFile[]>([]);
   const [bookStatus, setBookStatus] = useState<BookStatus | null>();
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [title, setTitle] = useState<string>('파과');
+  const title = useWriteStore((state) => state.book)?.title;
   const [price, setPrice] = useState<string>('');
   const [rawPrice, setRawPrice] = useState<number | null>(null);
+  const book = useWriteStore((state) => state.book);
   const [description, setDescription] = useState<string>('');
 
   function formatNumber(value: string | number) {
@@ -80,7 +82,7 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
       <S.TitleSection>
         <S.HeaderText>제목</S.HeaderText>
         <S.InputWrapper>
-          <S.Input type='text' value={title} readOnly />
+          <S.Input type='text' value={title ?? ''} readOnly />
         </S.InputWrapper>
       </S.TitleSection>
       <S.StatusSection>
