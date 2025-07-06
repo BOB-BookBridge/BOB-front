@@ -5,6 +5,7 @@ import { BookStatus } from '@/entities/listing/types';
 import { HELP_MESSAGES } from '@/shared/constants';
 import PriceAndCategory from './PriceAndCategory';
 import { Button, CheckCircle } from '@/shared/ui';
+import { ImageFile } from '@/entities/files';
 import { bookStatusMap } from '@/shared/lib';
 import SearchSection from './SearchSection';
 import * as S from './ListingWrite.styles';
@@ -14,11 +15,6 @@ import PhotoList from './PhotoList';
 interface ListingWriteProps {
   id?: number;
 }
-
-export type ImageFile = {
-  previewUrl: string;
-  file: File;
-};
 
 const ListingWrite = ({ id }: ListingWriteProps) => {
   const [images, setImages] = useState<ImageFile[]>([]);
