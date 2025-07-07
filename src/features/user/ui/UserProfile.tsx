@@ -1,44 +1,41 @@
 import Image from 'next/image';
-import DefaultProfile from '@/shared/assets/default-profile.svg';
-import { getAreaNameById } from '../lib';
-import { ListingList } from '@/features/listing/ui';
-import styled, { useTheme } from 'styled-components';
-import { useMediaQuery } from '@/shared/model';
 import { useMemo } from 'react';
+import styled from 'styled-components';
+import DefaultProfile from '@/shared/assets/default-profile.svg';
+import { ListingList } from '@/features/listing/ui';
+import { useMediaQuery } from '@/shared/model';
+import { useUserQuery } from '@/entities/user';
+import { getAreaNameById } from '../lib';
 
-const data = {
-  memberId: '018e0df5-b7ec-7f36-b67f-80f3e4f49895',
-  nickname: 'leehs',
-  profileImageUrl: null,
-  area: {
-    emdId: 1,
-    isAuthentication: true,
-    authenticatedAt: '2025-05-20T12:00:00',
-  },
-};
 const UserProfile = ({ id }: { id: string }) => {
   const isMobile = useMediaQuery(`(max-width: 393px)`);
   const profileWidth = useMemo(() => (isMobile ? 50 : 80), [isMobile]);
+  const { data, isPending, isError } = useUserQuery(id);
+
   return (
     <Container>
-      <Profile>
-        {data.profileImageUrl ? (
-          <Image
-            src={data.profileImageUrl}
-            width={profileWidth}
-            height={profileWidth}
-            alt='프로필'
-          />
-        ) : (
-          <DefaultProfile width={profileWidth} />
-        )}
-        <div>
-          <BoldText>{data.nickname}</BoldText>
-          <AreaText>{getAreaNameById(data.area.emdId)}</AreaText>
-        </div>
-      </Profile>
-      <BoldText>[{data.nickname}]의 판매글</BoldText>
-      <ListingList isUserPage={true} id={id} />
+      {data && (
+        <>
+          <Profile>
+            {data.profileImageUrl ? (
+              <Image
+                src={data.profileImageUrl}
+                width={profileWidth}
+                height={profileWidth}
+                alt='프로필'
+              />
+            ) : (
+              <DefaultProfile width={profileWidth} />
+            )}
+            <div>
+              <BoldText>{data.nickname}</BoldText>
+              <AreaText>{getAreaNameById(data.area.emdId)}</AreaText>
+            </div>
+          </Profile>
+          <BoldText>[{data.nickname}]의 판매글</BoldText>
+          <ListingList isUserPage={true} id={id} />
+        </>
+      )}
     </Container>
   );
 };

@@ -2,11 +2,12 @@ import { toast } from 'react-toastify';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   getMyProfile,
+  getUserProfile,
   patchNickname,
   patchPassword,
   patchPasswordProps,
   patchTempPassword,
-} from './api';
+} from '.';
 import { queryClient } from '@/shared/lib';
 
 export const useMyQuery = () => {
@@ -45,5 +46,12 @@ export const useTempPasswordMutation = () => {
     onSuccess: () => {
       toast.success('임시 비밀번호를 발급했습니다. 메일함을 확인해 주세요');
     },
+  });
+};
+
+export const useUserQuery = (id: string) => {
+  return useQuery({
+    queryKey: ['user', id],
+    queryFn: ({ queryKey }) => getUserProfile(queryKey[1]),
   });
 };
