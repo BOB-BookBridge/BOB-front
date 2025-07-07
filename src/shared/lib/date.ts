@@ -35,5 +35,5 @@ export function formatDate(dateString: string) {
     String(year),
     String(month).padStart(2, '0'),
     String(day).padStart(2, '0'),
-  ].join('.');
+  ].join('-');
 }

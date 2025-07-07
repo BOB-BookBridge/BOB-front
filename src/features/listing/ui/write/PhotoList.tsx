@@ -1,6 +1,7 @@
 import styled, { useTheme } from 'styled-components';
 import { CloseIconSm, PhotoIcon } from '@/shared/assets/icons';
-import { ImageFile } from './ListingWrite';
+import { useUploadImagesMutation } from '@/entities/files';
+import { ImageFile } from '@/entities/files';
 import * as S from './ListingWrite.styles';
 
 interface PhotoListProps {
@@ -11,6 +12,8 @@ interface PhotoListProps {
 const PhotoList = ({ images, onAddImage, onDeleteImage }: PhotoListProps) => {
   const theme = useTheme();
 
+  const { mutate: uploadImage } = useUploadImagesMutation();
+
   function handleAddImage(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
     if (!files) return;
@@ -19,20 +22,16 @@ const PhotoList = ({ images, onAddImage, onDeleteImage }: PhotoListProps) => {
       return;
     }
     const fileArray = Array.from(files);
-
-    fileArray.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          const imageObj: ImageFile = {
-            previewUrl: reader.result,
-            file,
-          };
-          onAddImage(imageObj);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
+    uploadImage(
+      { domain: 'POST', images: fileArray },
+      {
+        onSuccess: (uploadedImages) => {
+          uploadedImages
+            .sort((a, b) => a.sequence - b.sequence)
+            .forEach((image) => onAddImage(image));
+        },
+      },
+    );
   }
 
   function handleDeleteImage(idx: number) {
@@ -53,12 +52,12 @@ const PhotoList = ({ images, onAddImage, onDeleteImage }: PhotoListProps) => {
       </S.AddPhoto>
       {images.map((image, idx) => (
         <div
-          key={image.previewUrl}
+          key={image.fileName}
           style={{ flexShrink: 0, position: 'relative' }}>
           <S.DeleteButton onClick={() => handleDeleteImage(idx)}>
             <CloseIconSm fill={theme.colors.WHITE} />
           </S.DeleteButton>
-          <S.StyledImage src={image.previewUrl} draggable={false} />
+          <S.StyledImage src={image.fileUrl} draggable={false} />
         </div>
       ))}
     </Container>

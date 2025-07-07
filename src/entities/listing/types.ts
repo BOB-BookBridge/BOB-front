@@ -12,6 +12,17 @@ export type DetailImage = {
   sequence: number;
   fileName: string;
 };
+
+export type BookState = {
+  isbn: string;
+  title: string;
+  author: string;
+  description: string;
+  priceStandard: number;
+  cover: string;
+  pubDate: string;
+};
+
 export interface ListingCardProps {
   postId: number;
   categoryId: number;
@@ -73,4 +84,13 @@ export interface getPostsProps {
   sort?: SortKey;
   page?: number;
   size?: number;
+}
+
+export interface postListingProps {
+  categoryId: number;
+  sellPrice: number;
+  bookStatus: '최상' | '상' | '중' | '하';
+  postDescription: string;
+  book: BookState;
+  fileNames: string[];
 }

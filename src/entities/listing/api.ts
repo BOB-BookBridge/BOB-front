@@ -1,4 +1,9 @@
-import { getPostsProps, GetPostsResponse, ListingDetailProps } from './types';
+import {
+  getPostsProps,
+  GetPostsResponse,
+  ListingDetailProps,
+  postListingProps,
+} from './types';
 import axiosInstance from '@/shared/config/axios';
 
 export const getPosts = async (
@@ -25,5 +30,10 @@ export const getFavorites = async ({
   const { data } = await axiosInstance.get('/posts/favorites', {
     params: { page, size },
   });
+  return data;
+};
+
+export const postListing = async (listing: postListingProps) => {
+  const { data } = await axiosInstance.post('/posts', listing);
   return data;
 };

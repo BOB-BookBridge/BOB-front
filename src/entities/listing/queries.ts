@@ -1,10 +1,7 @@
-import {
-  useInfiniteQuery,
-  UseInfiniteQueryOptions,
-  useQuery,
-} from '@tanstack/react-query';
-import { getFavorites, getPost, getPosts } from './api';
-import { getPostsProps } from './types';
+import { useRouter } from 'next/navigation';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { getFavorites, getPost, getPosts, postListing } from './api';
+import { getPostsProps, postListingProps } from './types';
 
 export const useListingQuery = (filter: getPostsProps) => {
   return useInfiniteQuery({
@@ -41,5 +38,17 @@ export const useFavoritesQuery = (enabled: boolean) => {
     },
     initialPageParam: 0,
     enabled: enabled,
+  });
+};
+
+type usePostType = {
+  postId: number;
+};
+export const usePostMutation = () => {
+  const router = useRouter();
+  return useMutation<usePostType, Error, postListingProps>({
+    mutationFn: (data) => postListing(data),
+    onSuccess: ({ postId }: usePostType) =>
+      router.replace(`/listings/${postId}`),
   });
 };
