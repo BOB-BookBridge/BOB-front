@@ -6,6 +6,7 @@ export const Container = styled.div`
   @media (max-width: 479px) {
     flex-direction: column;
   }
+  cursor: pointer;
 `;
 
 export const LeftSection = styled.div`

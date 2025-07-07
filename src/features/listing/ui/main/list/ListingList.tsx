@@ -12,14 +12,16 @@ import ListingCard from './ListingCard';
 
 const PAGE_SIZE = 12;
 const ListingList = ({
-  isMyPage,
+  isUserPage,
   isFavorite,
+  id,
 }: {
-  isMyPage?: boolean;
+  isUserPage?: boolean;
   isFavorite?: boolean;
+  id?: string;
 }) => {
   const { data: myData } = useMyQuery();
-  const memberId = myData?.memberId;
+  const memberId = id ? id : myData?.memberId;
   const {
     key,
     keyword,
@@ -31,7 +33,7 @@ const ListingList = ({
     sort,
   } = useFilterStore();
 
-  const filter = isMyPage
+  const filter = isUserPage
     ? { memberId, size: PAGE_SIZE }
     : {
         key: key && keyword ? key : undefined,
