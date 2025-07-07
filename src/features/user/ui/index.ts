@@ -1,4 +1,4 @@
 import My from './My';
 import PasswordRequestLayout from './PasswordRequestLayout';
-
-export { My, PasswordRequestLayout };
+import UserProfile from './UserProfile';
+export { My, PasswordRequestLayout, UserProfile };
