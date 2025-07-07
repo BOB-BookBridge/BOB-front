@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import categories from '@/shared/constants/category.json';
+import { useWriteStore } from '../../model/useWriteStore';
 import { DropdownIcon } from '@/shared/assets/icons';
 import * as S from './ListingWrite.styles';
 
@@ -19,6 +20,8 @@ const PriceAndCategory = ({
   handlePriceChange,
 }: PriceAndCategoryProps) => {
   const theme = useTheme();
+  const categoryId = useWriteStore((state) => state.categoryId);
+  const { setCategoryId } = useWriteStore();
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null,
   );
@@ -54,6 +57,7 @@ const PriceAndCategory = ({
       }));
     } else {
       setSelectedCategory(category);
+      setCategoryId(category.id);
       setDropdownState((prevState) => ({
         ...prevState,
         isOpen: false,
