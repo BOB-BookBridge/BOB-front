@@ -54,7 +54,7 @@ export interface ListingDetailProps {
   writer: {
     memberId: string;
     nickname: string;
-    activityArea: string;
+    emdId: number;
     profileUrl: string | null;
   };
   scrapCount: number;
