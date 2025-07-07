@@ -22,7 +22,6 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
   const theme = useTheme();
   const { data, isLoading } = useListingDetailQuery(id);
   const [liked, setLiked] = useState(data?.isFavorite);
-
   function handleLike() {
     setLiked((prev) => !prev);
     // 서버 전송 시 debounce 사용
@@ -34,11 +33,8 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
         <>
           <S.LeftSection>
             <ImageCarousel
-              images={
-                data.images.length > 0
-                  ? data.images
-                  : [{ sequence: 0, fileName: data.thumbnailUrl }]
-              }
+              images={data.images.length > 0 ? data.images : undefined}
+              thumbnail={data.images.length > 0 ? undefined : data.thumbnailUrl}
             />
             <UserInfo writer={data.writer} />
           </S.LeftSection>

@@ -56,7 +56,7 @@ export const uploadImagesFlow = async (
       contentType: file.type,
     });
 
-    const fileUrl = `https://bookbridge-image.s3.ap-northeast-2.amazonaws.com/${fileName}`;
+    const fileUrl = `${process.env.NEXT_PUBLIC_S3_BASE_URL}/${fileName}`;
 
     uploadedImages.push({
       sequence,
