@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { bookStatusList } from '../main/filter/FilterContent';
 import { useWriteStore } from '../../model/useWriteStore';
 import { BookStatus } from '@/entities/listing/types';
+import { usePostMutation } from '@/entities/listing';
 import { HELP_MESSAGES } from '@/shared/constants';
-import PriceAndCategory from './PriceAndCategory';
 import { Button, CheckCircle } from '@/shared/ui';
+import PriceAndCategory from './PriceAndCategory';
 import { ImageFile } from '@/entities/files';
 import { bookStatusMap } from '@/shared/lib';
 import SearchSection from './SearchSection';
@@ -18,13 +20,16 @@ interface ListingWriteProps {
 
 const ListingWrite = ({ id }: ListingWriteProps) => {
   const [images, setImages] = useState<ImageFile[]>([]);
-  const [bookStatus, setBookStatus] = useState<BookStatus | null>();
+
   const [searchTerm, setSearchTerm] = useState<string>('');
   const title = useWriteStore((state) => state.book)?.title;
   const [price, setPrice] = useState<string>('');
-  const [rawPrice, setRawPrice] = useState<number | null>(null);
   const book = useWriteStore((state) => state.book);
-  const [description, setDescription] = useState<string>('');
+  const categoryId = useWriteStore((state) => state.categoryId);
+  const [sellPrice, setSellPrice] = useState<number | null>(null);
+  const [bookStatus, setBookStatus] = useState<BookStatus | null>();
+  const [postDescription, setPostDescription] = useState('');
+  const { resetWrite } = useWriteStore();
 
   function formatNumber(value: string | number) {
     const num =
@@ -42,7 +47,7 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
 
     if (!/^\d*$/.test(numeric)) return;
 
-    setRawPrice(numeric === '' ? null : Number(numeric));
+    setSellPrice(numeric === '' ? null : Number(numeric));
     setPrice(formatNumber(numeric));
   }
 
@@ -53,7 +58,7 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
   function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     e.target.style.height = 'auto';
     e.target.style.height = `${e.target.scrollHeight}px`;
-    setDescription(e.target.value);
+    setPostDescription(e.target.value);
   }
 
   function handleAddImage(value: ImageFile) {
@@ -63,8 +68,29 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
     setImages((prev) => prev.filter((_, index) => index !== indexToRemove));
   }
 
+  const { mutate: posting } = usePostMutation();
+
   function handleClickUpload() {
-    // #todo: 업로드 후 메인 페이지로 이동
+    if (!title || !book) toast.error('판매할 책을 조회 후 선택해 주세요');
+    else if (!bookStatus) toast.error('책 상태를 선택해 주세요');
+    else if (!sellPrice) toast.error('가격을 입력해 주세요');
+    else if (!categoryId) toast.error('카테고리를 선택해 주세요');
+    else {
+      posting(
+        {
+          categoryId,
+          sellPrice,
+          bookStatus: bookStatusMap[bookStatus],
+          postDescription,
+          book,
+          fileNames: images
+            .slice()
+            .sort((a, b) => a.sequence - b.sequence)
+            .map((img) => img.fileName),
+        },
+        { onSuccess: () => resetWrite() },
+      );
+    }
   }
 
   return (
@@ -104,7 +130,7 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
         <S.HeaderText>설명</S.HeaderText>
         <S.InputWrapper>
           <S.Textarea
-            value={description}
+            value={postDescription}
             onChange={handleDescriptionChange}
             placeholder='책 상태나 특징을 자유롭게 적어주세요'
             maxLength={500}

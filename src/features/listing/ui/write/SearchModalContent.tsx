@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import { useWriteStore } from '../../model/useWriteStore';
+import { cleanHtmlText, formatDate } from '@/shared/lib';
+import { AladinItemType } from '@/entities/aladin/type';
 import { SearchIcon } from '@/shared/assets/icons';
+import { searchBook } from '@/entities/aladin';
 import * as S from './ListingWrite.styles';
 import { Button } from '@/shared/ui';
-import { searchBook } from '@/entities/aladin';
-import { AladinItemType } from '@/entities/aladin/type';
-import { useWriteStore } from '../../model/useWriteStore';
-import { formatDate } from '@/shared/lib';
 
 interface SearchModalContentProps {
   value: string;
@@ -37,17 +37,25 @@ const SearchModalContent = ({ value, onClose }: SearchModalContentProps) => {
   function handleNewValueChange(e: React.ChangeEvent<HTMLInputElement>) {
     setNewValue(e.target.value);
   }
+  function cleanDescription(input: string): string {
+    const cleaned = input.replace(/<img[^>]*>.*?<br\s*\/?>/i, '');
+
+    return cleanHtmlText(cleaned);
+  }
   function handleChooseBook() {
     if (selected) {
       const {
         isbn13: isbn,
-        title,
+        title: originTitle,
         author,
-        description,
-        priceStandard,
+        description: originDesc,
+        priceStandard: originPrice,
         cover: originCover,
         pubDate: originPubDate,
       } = selected;
+      const title = cleanHtmlText(originTitle);
+      const description = cleanDescription(originDesc);
+      const priceStandard = Number(originPrice);
       const cover = originCover.replace(/cover[^/]+/, 'cover500');
       const pubDate = formatDate(originPubDate);
 
