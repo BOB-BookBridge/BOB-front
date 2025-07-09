@@ -37,3 +37,13 @@ export const postListing = async (listing: postListingProps) => {
   const { data } = await axiosInstance.post('/posts', listing);
   return data;
 };
+
+export const postLike = async (postId: number) => {
+  const { data } = await axiosInstance.post(`/posts/${postId}/favorite`);
+  return data;
+};
+
+export const deleteLike = async (postId: number) => {
+  const { data } = await axiosInstance.delete(`/posts/${postId}/favorite`);
+  return data;
+};

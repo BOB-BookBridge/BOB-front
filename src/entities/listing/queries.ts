@@ -1,7 +1,15 @@
 import { useRouter } from 'next/navigation';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import { getFavorites, getPost, getPosts, postListing } from './api';
-import { getPostsProps, postListingProps } from './types';
+import {
+  deleteLike,
+  getFavorites,
+  getPost,
+  getPosts,
+  postLike,
+  postListing,
+  getPostsProps,
+  postListingProps,
+} from '.';
 
 export const useListingQuery = (filter: getPostsProps) => {
   return useInfiniteQuery({
@@ -20,7 +28,7 @@ export const useListingQuery = (filter: getPostsProps) => {
 
 export const useListingDetailQuery = (postId: number) => {
   return useQuery({
-    queryKey: ['listingDetail'],
+    queryKey: ['listingDetail', postId],
     queryFn: () => getPost(postId),
   });
 };
@@ -44,11 +52,25 @@ export const useFavoritesQuery = (enabled: boolean) => {
 type usePostType = {
   postId: number;
 };
+
 export const usePostMutation = () => {
   const router = useRouter();
   return useMutation<usePostType, Error, postListingProps>({
     mutationFn: (data) => postListing(data),
     onSuccess: ({ postId }: usePostType) =>
       router.replace(`/listings/${postId}`),
+  });
+};
+
+type useLikeProps = {
+  postId: number;
+  like: boolean;
+};
+
+export const useLikeMutation = () => {
+  return useMutation<void, Error, useLikeProps>({
+    mutationFn: async ({ postId, like }) => {
+      return like ? postLike(postId) : deleteLike(postId);
+    },
   });
 };
