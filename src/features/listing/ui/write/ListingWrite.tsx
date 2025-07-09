@@ -80,7 +80,7 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
         {
           categoryId,
           sellPrice,
-          bookStatus: bookStatusMap[bookStatus],
+          bookStatus,
           postDescription,
           book,
           fileNames: images

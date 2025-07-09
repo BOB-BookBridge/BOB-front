@@ -89,7 +89,7 @@ export interface getPostsProps {
 export interface postListingProps {
   categoryId: number;
   sellPrice: number;
-  bookStatus: '최상' | '상' | '중' | '하';
+  bookStatus: BookStatus;
   postDescription: string;
   book: BookState;
   fileNames: string[];
