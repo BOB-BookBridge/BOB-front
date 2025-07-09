@@ -1,22 +1,24 @@
 'use client';
 
-import { FallbackProps } from 'react-error-boundary';
-import { getErrorDataByCode } from '@/shared/lib';
-import { useRouter } from 'next/navigation';
-import Button from './Button';
 import styled from 'styled-components';
-import Link from 'next/link';
+import { FallbackProps } from 'react-error-boundary';
+import { usePathname, useRouter } from 'next/navigation';
+import { getErrorDataByCode } from '@/shared/lib';
 
 export const FallbackGlobal = ({
   error,
   resetErrorBoundary,
 }: FallbackProps) => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const navigatePage = (to: string) => {
-    // resetErrorBoundary를 호출하여 에러를 초기화
     resetErrorBoundary();
-    router.push(to);
+    if (pathname === to) {
+      window.location.reload();
+    } else {
+      router.push(to);
+    }
   };
 
   const errorData = getErrorDataByCode(error);
@@ -27,7 +29,8 @@ export const FallbackGlobal = ({
       <Wrapper>
         <CodeText>{errorData.code}!</CodeText>
         <MessageText>{errorData.message}</MessageText>
-        <StyledLink href={isLoginRequired ? '/login' : '/'}>
+        <StyledLink
+          onClick={() => navigatePage(isLoginRequired ? '/login' : '/')}>
           {isLoginRequired ? '로그인' : '메인 화면으로'}
         </StyledLink>
       </Wrapper>
@@ -64,7 +67,8 @@ const MessageText = styled.span`
   margin-bottom: 30px;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.div`
   text-decoration: underline;
   color: inherit;
+  cursor: pointer;
 `;
