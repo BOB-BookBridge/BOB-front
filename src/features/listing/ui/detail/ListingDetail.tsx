@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
 
+import { useLikeMutation, useListingDetailQuery } from '@/entities/listing';
 import { bookStatusMap, convertDiffToString } from '@/shared/lib';
-import { useListingDetailQuery } from '@/entities/listing';
 import { LikeIcon } from '@/shared/assets/icons';
 import { getCategoryNameById } from '../../lib';
 import { colors } from '@/shared/constants';
@@ -21,11 +22,49 @@ interface ListingDetailProps {
 const ListingDetail = ({ id }: ListingDetailProps) => {
   const theme = useTheme();
   const { data, isLoading } = useListingDetailQuery(id);
-  const [liked, setLiked] = useState(data?.isFavorite);
+  const [liked, setLiked] = useState<boolean | undefined>(undefined);
+  const [originalLiked, setOriginalLiked] = useState<boolean | undefined>(
+    undefined,
+  );
+  const [likeCount, setLikeCount] = useState<number | undefined>(undefined);
+  const { mutate: controlLike } = useLikeMutation();
+
   function handleLike() {
+    if (data?.isOwner) {
+      toast.info('본인의 게시글은 찜할 수 없어요');
+      return;
+    }
     setLiked((prev) => !prev);
-    // 서버 전송 시 debounce 사용
   }
+
+  useEffect(() => {
+    if (data) {
+      setLiked(data.isFavorite);
+      setOriginalLiked(data.isFavorite);
+      setLikeCount(data.scrapCount);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      if (liked !== undefined && liked !== originalLiked) {
+        controlLike(
+          { postId: id, like: liked },
+          {
+            onSuccess: () => {
+              setOriginalLiked(liked);
+              setLikeCount((prev) => {
+                const safePrev = prev ?? 0;
+                return liked ? safePrev + 1 : safePrev - 1;
+              });
+            },
+          },
+        );
+      }
+    }, 500);
+
+    return () => clearTimeout(debounce);
+  }, [liked]);
 
   return (
     <S.Container>
@@ -54,7 +93,7 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
                 {convertDiffToString(data.createdAt)}
               </S.SubText>
               <S.SubText>
-                조회 {data.viewCount} · 찜 {data.scrapCount}
+                조회 {data.viewCount} · 찜 {likeCount}
               </S.SubText>
             </S.MetaRow>
 
