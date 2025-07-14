@@ -1,13 +1,19 @@
 import React from 'react';
 import Image from 'next/image';
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 import {
   ArrowBackIcon,
   ChatMeatballsIcon,
   DropdownIcon,
 } from '@/shared/assets/icons';
-import { compareDate, formatDate, formatTime } from '@/shared/lib';
+import {
+  chatPostStatusMap,
+  compareDate,
+  formatDate,
+  formatTime,
+} from '@/shared/lib';
 import { useMyQuery } from '@/entities/user';
+import * as S from './ChatRoom.styles';
 import { Div } from './ChatWidget';
 const chats = {
   result: [
@@ -73,7 +79,7 @@ const chatData = {
     nickname: 'manager',
     profileUrl: null,
   },
-};
+} as const;
 
 const ChatRoom = () => {
   const theme = useTheme();
@@ -83,20 +89,21 @@ const ChatRoom = () => {
   const handleClickStatus = () => {
     console.log('click');
   };
+
   return (
-    <Container>
-      <Header>
-        <IconWrapper>
+    <S.Container>
+      <S.Header>
+        <S.IconWrapper>
           <ArrowBackIcon stroke={theme.colors.BLACK} strokeWidth={2} />
-        </IconWrapper>
-        <Nickname>{chatData.partner.nickname}</Nickname>
-        <IconWrapper>
+        </S.IconWrapper>
+        <S.Nickname>{chatData.partner.nickname}</S.Nickname>
+        <S.IconWrapper>
           <ChatMeatballsIcon stroke={theme.colors.BLACK} strokeWidth={2} />
-        </IconWrapper>
-      </Header>
+        </S.IconWrapper>
+      </S.Header>
       <Div />
-      <Info>
-        <ImageWrapper>
+      <S.Info>
+        <S.ImageWrapper>
           <Image
             loader={() => chatData.post.thumbnailUrl}
             src={chatData.post.thumbnailUrl}
@@ -105,22 +112,26 @@ const ChatRoom = () => {
             height={40}
             unoptimized
           />
-        </ImageWrapper>
+        </S.ImageWrapper>
         <div>
-          <InfoTop>
-            <Status
+          <S.InfoTop>
+            <S.Status
               onClick={isSeller ? handleClickStatus : undefined}
               $clickable={isSeller}>
-              <StatusText>거래완료</StatusText>
-              {isSeller && <DropdownIcon />}
-            </Status>
-            <TitleText>{chatData.post.title}</TitleText>
-          </InfoTop>
-          <InfoBottom>{chatData.post.sellPrice.toLocaleString()}원</InfoBottom>
+              <S.StatusText>
+                {chatPostStatusMap[chatData.post.status]}
+              </S.StatusText>
+              {isSeller && <DropdownIcon fill={theme.colors.BLACK} />}
+            </S.Status>
+            <S.TitleText>{chatData.post.title}</S.TitleText>
+          </S.InfoTop>
+          <S.InfoBottom>
+            {chatData.post.sellPrice.toLocaleString()}원
+          </S.InfoBottom>
         </div>
-      </Info>
+      </S.Info>
       <Div />
-      <Chats>
+      <S.Chats>
         {chats.result.map((chat, idx) => {
           const prev = idx > 0 ? chats.result[idx - 1].sentAt : null;
           const isNewDate = !prev || compareDate(chat.sentAt, prev);
@@ -128,158 +139,28 @@ const ChatRoom = () => {
           return (
             <React.Fragment key={chat.messageId}>
               {isNewDate && (
-                <NoticeWrapper>
-                  <DateText>{formatDate(chat.sentAt)}</DateText>
-                </NoticeWrapper>
+                <S.NoticeWrapper>
+                  <S.DateText>{formatDate(chat.sentAt)}</S.DateText>
+                </S.NoticeWrapper>
               )}
-
               {chat.senderId === data.memberId ? (
-                <SendChatWrapper>
-                  <TimeText>{formatTime(chat.sentAt)}</TimeText>
-                  <SendChat>{chat.content}</SendChat>
-                </SendChatWrapper>
+                <S.SendChatWrapper>
+                  <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
+                  <S.SendChat>{chat.content}</S.SendChat>
+                </S.SendChatWrapper>
               ) : (
-                <ReceiveChatWrapper>
-                  <ReceiveChat>{chat.content}</ReceiveChat>
-                  <TimeText>{formatTime(chat.sentAt)}</TimeText>
-                </ReceiveChatWrapper>
+                <S.ReceiveChatWrapper>
+                  <S.ReceiveChat>{chat.content}</S.ReceiveChat>
+                  <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
+                </S.ReceiveChatWrapper>
               )}
             </React.Fragment>
           );
         })}
-      </Chats>
-
-      <Input></Input>
-    </Container>
+      </S.Chats>
+      <S.Input />
+    </S.Container>
   );
 };
 
 export default ChatRoom;
-const Container = styled.div`
-  margin: 10px 0;
-`;
-
-const Header = styled.div`
-  display: flex;
-  margin: 0 10px;
-  justify-content: space-between;
-`;
-
-const IconWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-`;
-
-const Nickname = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 600;
-  font-size: 18px;
-`;
-
-const Info = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 10px;
-  gap: 10px;
-`;
-
-const ImageWrapper = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  overflow: hidden;
-`;
-
-const InfoTop = styled.div`
-  display: flex;
-`;
-
-const InfoBottom = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-`;
-const Status = styled.div<{ $clickable: boolean }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 5px;
-  ${({ $clickable }) => $clickable && 'cursor: pointer;'}
-`;
-
-const StatusText = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const TitleText = styled.div`
-  font-size: 15px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 200px;
-`;
-
-const Chats = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 10px;
-`;
-
-const NoticeWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const DateText = styled.div`
-  color: ${({ theme }) => theme.colors.GRAY_600};
-  font-weight: 500;
-  font-size: 11px;
-  padding: 2px 12px;
-  border-radius: 20px;
-`;
-
-const ReceiveChatWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: end;
-  gap: 5px;
-`;
-
-const ReceiveChat = styled.div`
-  background-color: ${({ theme }) => theme.colors.GRAY_300};
-  color: ${({ theme }) => theme.colors.BLACK};
-  padding: 8px 12px;
-  border-radius: 16px 16px 16px 0;
-  max-width: 60%;
-`;
-
-const SendChatWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: end;
-  gap: 5px;
-`;
-
-const SendChat = styled.div`
-  background-color: ${({ theme }) => theme.colors.SENDCHAT_BACK};
-  color: ${({ theme }) => theme.colors.SENDCHAT_TEXT};
-  padding: 8px 12px;
-  border-radius: 16px 16px 0 16px;
-  max-width: 60%;
-`;
-
-const TimeText = styled.div`
-  color: ${({ theme }) => theme.colors.GRAY_600};
-  font-size: 11px;
-  margin-bottom: 5px;
-`;
-
-const Input = styled.div``;
