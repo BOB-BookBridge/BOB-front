@@ -2,9 +2,11 @@ import React from 'react';
 import Image from 'next/image';
 import { useTheme } from 'styled-components';
 import {
+  AddIcon,
   ArrowBackIcon,
   ChatMeatballsIcon,
   DropdownIcon,
+  SendIcon,
 } from '@/shared/assets/icons';
 import {
   chatPostStatusMap,
@@ -16,45 +18,59 @@ import { useMyQuery } from '@/entities/user';
 import * as S from './ChatRoom.styles';
 import { Div } from './ChatWidget';
 const chats = {
-  result: [
+  messages: [
     {
-      messageId: 1001,
-      senderId: '0197c5e3-5422-77d7-bf9f-81723f32f20a',
-      content: '책 아직 거래 가능할까요?',
-      sentAt: '2024-03-30T13:45:00',
+      id: 85,
+      type: 'IMAGE',
+      content: null,
+      images: [
+        {
+          sequence: 0,
+          fileName: 'chat/01980c81-0c31-769e-8905-f0af3854bc90.png',
+        },
+      ],
+      sentAt: '2025-07-14T14:16:01.05171',
+      isRead: true,
+      isMine: false,
     },
     {
-      messageId: 1002,
-      senderId: '0197c5e3-5422-77d7-bf9f-81723f32f20a',
-      content: '책 아직 거래 가능할까요?',
-      sentAt: '2024-03-30T13:45:00',
+      id: 11,
+      type: 'MESSAGE',
+      content: '답장',
+      images: [],
+      sentAt: '2025-07-15T10:48:40.414037',
+      isRead: true,
+      isMine: true,
     },
     {
-      messageId: 1003,
-      senderId: '0197c5e3-5422-77d7-bf9f-81723f32f20a',
-      content: '책 아직 거래 가능할까요?',
-      sentAt: '2024-03-30T13:45:00',
+      id: 9,
+      type: 'MESSAGE',
+      content: '메시지2',
+      images: [],
+      sentAt: '2025-07-15T10:49:04.484982',
+      isRead: true,
+      isMine: false,
     },
     {
-      messageId: 1004,
-      senderId: '0197c5e3-5422-77d7-bf9f-81723f32f20a',
-      content: '책 아직 거래 가능할까요?',
-      sentAt: '2024-03-30T13:45:00',
+      id: 12,
+      type: 'MESSAGE',
+      content: '답장2',
+      images: [],
+      sentAt: '2025-07-15T10:52:40.414037',
+      isRead: false,
+      isMine: true,
     },
     {
-      messageId: 1005,
-      senderId: '0197c5e3-5422-77d7-bf9f-81723f32f20a',
-      content:
-        '책 아직 거래 가능할까요? 두 줄이 되면 어떻게 디나오 어덯더ㅓㅇ더랜ㅇ렌',
-      sentAt: '2024-03-30T13:45:00',
-    },
-    {
-      messageId: 1006,
-      senderId: '0197c5e3-5422-77d7-bf9f-81723f32f20b',
-      content: '네 가능해요!',
-      sentAt: '2024-03-31T13:46:00',
+      id: 13,
+      type: 'MESSAGE',
+      content: '답장3',
+      images: [],
+      sentAt: '2025-07-15T10:52:40.414037',
+      isRead: false,
+      isMine: true,
     },
   ],
+  hasNext: false,
 };
 
 const chatData = {
@@ -86,9 +102,15 @@ const ChatRoom = () => {
   const { data } = useMyQuery();
   const isSeller = data.memberId === chatData.post.sellerId;
 
-  const handleClickStatus = () => {
+  function handleClickStatus() {
     console.log('click');
-  };
+  }
+  function handleEnterEvent(e: React.KeyboardEvent) {
+    if (e.key === 'Enter') handleSendMessage();
+  }
+
+  function handleSendMessage() {}
+  function handleAddImages() {}
 
   return (
     <S.Container>
@@ -132,20 +154,23 @@ const ChatRoom = () => {
       </S.Info>
       <Div />
       <S.Chats>
-        {chats.result.map((chat, idx) => {
-          const prev = idx > 0 ? chats.result[idx - 1].sentAt : null;
+        {chats.messages.map((chat, idx) => {
+          const prev = idx > 0 ? chats.messages[idx - 1].sentAt : null;
           const isNewDate = !prev || compareDate(chat.sentAt, prev);
 
           return (
-            <React.Fragment key={chat.messageId}>
+            <React.Fragment key={chat.id}>
               {isNewDate && (
                 <S.NoticeWrapper>
                   <S.DateText>{formatDate(chat.sentAt)}</S.DateText>
                 </S.NoticeWrapper>
               )}
-              {chat.senderId === data.memberId ? (
+              {chat.isMine ? (
                 <S.SendChatWrapper>
-                  <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
+                  <S.MessageInfo>
+                    {!chat.isRead && <S.UnreadText>1</S.UnreadText>}
+                    <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
+                  </S.MessageInfo>
                   <S.SendChat>{chat.content}</S.SendChat>
                 </S.SendChatWrapper>
               ) : (
@@ -158,7 +183,23 @@ const ChatRoom = () => {
           );
         })}
       </S.Chats>
-      <S.Input />
+      <S.InputSection>
+        <AddIcon
+          stroke={theme.colors.GRAY_500}
+          strokeWidth={4}
+          strokeLinecap='round'
+          style={{ cursor: 'pointer' }}
+          onClick={handleAddImages}
+        />
+        <S.InputWrapper>
+          <S.Input onKeyDown={handleEnterEvent} />
+          <SendIcon
+            fill={theme.colors.PRIMARY}
+            style={{ cursor: 'pointer' }}
+            onClick={handleSendMessage}
+          />
+        </S.InputWrapper>
+      </S.InputSection>
     </S.Container>
   );
 };
