@@ -1,6 +1,6 @@
-import React from 'react';
 import Image from 'next/image';
 import { useTheme } from 'styled-components';
+import React, { useEffect, useRef } from 'react';
 import {
   AddIcon,
   ArrowBackIcon,
@@ -158,6 +158,11 @@ const ChatRoom = () => {
   const theme = useTheme();
   const { data } = useMyQuery();
   const isSeller = data.memberId === chatData.post.sellerId;
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'auto' });
+  }, [chats.messages.length]);
 
   function handleClickStatus() {
     console.log('click');
@@ -212,6 +217,7 @@ const ChatRoom = () => {
       <Div />
       <S.Chats>
         {chats.messages.map((chat, idx) => {
+          const isLast = idx === chats.messages.length - 1;
           const prev = idx > 0 ? chats.messages[idx - 1].sentAt : null;
           const isNewDate = !prev || compareDate(chat.sentAt, prev);
 
@@ -244,6 +250,7 @@ const ChatRoom = () => {
                   <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
                 </S.ReceiveChatWrapper>
               )}
+              {isLast && <div ref={bottomRef} />}
             </React.Fragment>
           );
         })}

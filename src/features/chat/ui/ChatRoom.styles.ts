@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  margin: 10px 0;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -10,7 +10,7 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  margin: 0 10px;
+  margin: 5px 10px;
   justify-content: space-between;
 `;
 
