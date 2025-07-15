@@ -16,6 +16,7 @@ import {
 } from '@/shared/lib';
 import { useMyQuery } from '@/entities/user';
 import * as S from './ChatRoom.styles';
+import ChatImages from './ChatImages';
 import { Div } from './ChatWidget';
 const chats = {
   messages: [
@@ -26,12 +27,68 @@ const chats = {
       images: [
         {
           sequence: 0,
-          fileName: 'chat/01980c81-0c31-769e-8905-f0af3854bc90.png',
+          fileName:
+            'https://i.namu.wiki/i/d1A_wD4kuLHmOOFqJdVlOXVt1TWA9NfNt_HA0CS0Y_N0zayUAX8olMuv7odG2FiDLDQZIRBqbPQwBSArXfEJlQ.webp',
+        },
+        {
+          sequence: 1,
+          fileName:
+            'https://mblogthumb-phinf.pstatic.net/MjAyMjA4MTBfMTg0/MDAxNjYwMTMyNTMzMjIx.txtlu-ga_7shsZhURoPuzfBeynckAa6ZuO_-o8rVbyUg.SobnP3coSZE-dKunc14ixPkeNmNi9LaDDOBblXnlGe0g.JPEG.happppy_/Screenshot%EF%BC%BF20220809%EF%BC%8D215510%EF%BC%BFInstagram.jpg?type=w800',
+        },
+        {
+          sequence: 2,
+          fileName:
+            'https://cdn.metavv.com/prod/uploads/thumbnail/images/10043263/167100535142741_md.png',
+        },
+        {
+          sequence: 3,
+          fileName:
+            'https://i.namu.wiki/i/qI0H3qHP6SMune3aF0Fmmu7j3q2a0kj613ndeUyB1aANfPy2I-J3bHNnMxIYCedb7YZXht0v4e6EFEjxIjTg5g.webp',
+        },
+        {
+          sequence: 4,
+          fileName:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTywyeS_VSiGo_DOI5jOAZHGoLPGNvTQYhTKA&s',
         },
       ],
       sentAt: '2025-07-14T14:16:01.05171',
       isRead: true,
       isMine: false,
+    },
+    {
+      id: 8,
+      type: 'IMAGE',
+      content: null,
+      images: [
+        {
+          sequence: 0,
+          fileName:
+            'https://i.namu.wiki/i/d1A_wD4kuLHmOOFqJdVlOXVt1TWA9NfNt_HA0CS0Y_N0zayUAX8olMuv7odG2FiDLDQZIRBqbPQwBSArXfEJlQ.webp',
+        },
+        {
+          sequence: 1,
+          fileName:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTywyeS_VSiGo_DOI5jOAZHGoLPGNvTQYhTKA&s',
+        },
+      ],
+      sentAt: '2025-07-14T14:16:01.05171',
+      isRead: true,
+      isMine: false,
+    },
+    {
+      id: 10,
+      type: 'IMAGE',
+      content: null,
+      images: [
+        {
+          sequence: 0,
+          fileName:
+            'https://i.namu.wiki/i/d1A_wD4kuLHmOOFqJdVlOXVt1TWA9NfNt_HA0CS0Y_N0zayUAX8olMuv7odG2FiDLDQZIRBqbPQwBSArXfEJlQ.webp',
+        },
+      ],
+      sentAt: '2025-07-14T14:16:01.05171',
+      isRead: true,
+      isMine: true,
     },
     {
       id: 11,
@@ -45,7 +102,7 @@ const chats = {
     {
       id: 9,
       type: 'MESSAGE',
-      content: '메시지2',
+      content: '메시지2 아니이게메세지가 길어지면 오른쪽으로 길어지지 않냐',
       images: [],
       sentAt: '2025-07-15T10:49:04.484982',
       isRead: true,
@@ -171,11 +228,19 @@ const ChatRoom = () => {
                     {!chat.isRead && <S.UnreadText>1</S.UnreadText>}
                     <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
                   </S.MessageInfo>
-                  <S.SendChat>{chat.content}</S.SendChat>
+                  {chat.type === 'IMAGE' ? (
+                    <ChatImages images={chat.images} />
+                  ) : (
+                    <S.SendChat>{chat.content}</S.SendChat>
+                  )}
                 </S.SendChatWrapper>
               ) : (
                 <S.ReceiveChatWrapper>
-                  <S.ReceiveChat>{chat.content}</S.ReceiveChat>
+                  {chat.type === 'IMAGE' ? (
+                    <ChatImages images={chat.images} />
+                  ) : (
+                    <S.ReceiveChat>{chat.content}</S.ReceiveChat>
+                  )}
                   <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
                 </S.ReceiveChatWrapper>
               )}

@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   margin: 10px 0;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 `;
@@ -76,12 +78,12 @@ export const TitleText = styled.div`
 `;
 
 export const Chats = styled.div`
+  flex: 1;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 10px;
-  overflow-y: scroll;
-  height: 70%;
 `;
 
 export const NoticeWrapper = styled.div`
@@ -110,6 +112,7 @@ export const ReceiveChat = styled.div`
   padding: 8px 12px;
   border-radius: 16px 16px 16px 0;
   max-width: 60%;
+  display: inline-block;
 `;
 
 export const SendChatWrapper = styled.div`
@@ -125,6 +128,40 @@ export const SendChat = styled.div`
   padding: 8px 12px;
   border-radius: 16px 16px 0 16px;
   max-width: 60%;
+`;
+
+export const ImageGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  gap: 4px;
+  position: relative;
+  cursor: pointer;
+`;
+
+export const ImageThumbnail = styled.img`
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 5px;
+`;
+
+export const ImageOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+`;
+
+export const OverlayText = styled.div`
+  color: white;
+  font-weight: 600;
+  font-size: 20px;
 `;
 
 export const MessageInfo = styled.div``;
@@ -144,13 +181,12 @@ export const TimeText = styled.div`
 
 export const InputSection = styled.div`
   width: 100%;
-  position: absolute;
-  bottom: 0;
   padding: 10px;
   display: flex;
   align-items: center;
   margin-bottom: 5px;
   background-color: ${({ theme }) => theme.colors.WHITE};
+  min-height: 60px;
 `;
 
 export const InputWrapper = styled.div`

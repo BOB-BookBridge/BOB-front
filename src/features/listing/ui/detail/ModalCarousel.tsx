@@ -1,5 +1,10 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { useEffect } from 'react';
+import styled from 'styled-components';
 import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { CloseIcon } from '@/shared/assets/icons';
+import { DetailImage } from '@/entities/listing';
+import { colors } from '@/shared/constants';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -10,6 +15,7 @@ interface ModalCarouselProps {
   onClose: () => void;
 }
 
+// #todo: 현재 img src가 외부 url에 맞추기 위해 설정되어 있으니 파일 API 연결 이후 다시 바꿔둬야 함
 const ModalCarousel = ({
   images,
   initialIndex,
@@ -37,7 +43,8 @@ const ModalCarousel = ({
             <SwiperSlide key={img.sequence}>
               <ImageWrapper>
                 <img
-                  src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/${img.fileName}`}
+                  // src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/${img.fileName}`}
+                  src={img.fileName}
                   alt={`Image ${img.sequence + 1}`}
                 />
               </ImageWrapper>
@@ -50,12 +57,6 @@ const ModalCarousel = ({
 };
 
 export default ModalCarousel;
-
-import styled from 'styled-components';
-import { CloseIcon } from '@/shared/assets/icons';
-import { colors } from '@/shared/constants';
-import { useEffect } from 'react';
-import { DetailImage } from '@/entities/listing';
 
 export const ModalOverlay = styled.div`
   position: fixed;
