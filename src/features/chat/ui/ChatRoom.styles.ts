@@ -84,6 +84,22 @@ export const Chats = styled.div`
   flex-direction: column;
   gap: 8px;
   padding: 10px;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => `${theme.colors.GRAY_300}`};
+    border-radius: 5px;
+    border-right: 1px solid transparent;
+    background-clip: padding-box;
+    box-sizing: border-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: ${({ theme }) => `${theme.colors.GRAY_500}`};
+  }
 `;
 
 export const NoticeWrapper = styled.div`

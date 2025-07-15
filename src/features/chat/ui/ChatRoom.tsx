@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useTheme } from 'styled-components';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   AddIcon,
   ArrowBackIcon,
@@ -159,9 +159,17 @@ const ChatRoom = () => {
   const { data } = useMyQuery();
   const isSeller = data.memberId === chatData.post.sellerId;
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'auto' });
+    const behavior = hasMounted ? 'smooth' : 'auto';
+
+    const timer = setTimeout(() => {
+      bottomRef.current?.scrollIntoView({ behavior });
+      setHasMounted(true);
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, [chats.messages.length]);
 
   function handleClickStatus() {
