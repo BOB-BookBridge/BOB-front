@@ -12,6 +12,7 @@ export const Header = styled.div`
   display: flex;
   margin: 5px 10px;
   justify-content: space-between;
+  position: relative;
 `;
 
 export const IconWrapper = styled.div`
@@ -20,6 +21,7 @@ export const IconWrapper = styled.div`
   align-items: center;
   width: 40px;
   height: 40px;
+  cursor: pointer;
 `;
 
 export const Nickname = styled.div`
@@ -28,6 +30,45 @@ export const Nickname = styled.div`
   align-items: center;
   font-weight: 600;
   font-size: 18px;
+  cursor: pointer;
+`;
+
+export const Overlay = styled.div`
+  margin-top: 10px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: ${({ theme }) => theme.zIndex.overlay};
+`;
+
+export const DropdownList = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: ${({ theme }) => theme.colors.WHITE};
+  border-radius: 10px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: ${({ theme }) => theme.zIndex.overlay};
+`;
+
+export const DropdownItem = styled.div<{ $red: boolean }>`
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 5px;
+  font-size: 13px;
+  gap: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${({ $red, theme }) =>
+    $red ? theme.colors.ERROR : theme.colors.BLACK};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.GRAY_300};
+  }
 `;
 
 export const Info = styled.div`

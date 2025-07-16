@@ -1,19 +1,14 @@
 import Image from 'next/image';
 import { useTheme } from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  AddIcon,
-  ArrowBackIcon,
-  ChatMeatballsIcon,
-  DropdownIcon,
-  SendIcon,
-} from '@/shared/assets/icons';
+import { AddIcon, DropdownIcon, SendIcon } from '@/shared/assets/icons';
 import {
   chatPostStatusMap,
   compareDate,
   formatDate,
   formatTime,
 } from '@/shared/lib';
+import ChatRoomHeader from './ChatRoomHeader';
 import { useMyQuery } from '@/entities/user';
 import * as S from './ChatRoom.styles';
 import ChatImages from './ChatImages';
@@ -160,6 +155,7 @@ const ChatRoom = () => {
   const isSeller = data.memberId === chatData.post.sellerId;
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [hasMounted, setHasMounted] = useState(false);
+  const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   useEffect(() => {
     const behavior = hasMounted ? 'smooth' : 'auto';
@@ -172,6 +168,9 @@ const ChatRoom = () => {
     return () => clearTimeout(timer);
   }, [chats.messages.length]);
 
+  function handleCloseMenu() {
+    setIsOpenMenu(false);
+  }
   function handleClickStatus() {
     console.log('click');
   }
@@ -184,15 +183,13 @@ const ChatRoom = () => {
 
   return (
     <S.Container>
-      <S.Header>
-        <S.IconWrapper>
-          <ArrowBackIcon stroke={theme.colors.BLACK} strokeWidth={2} />
-        </S.IconWrapper>
-        <S.Nickname>{chatData.partner.nickname}</S.Nickname>
-        <S.IconWrapper>
-          <ChatMeatballsIcon stroke={theme.colors.BLACK} strokeWidth={2} />
-        </S.IconWrapper>
-      </S.Header>
+      {isOpenMenu && <S.Overlay onClick={handleCloseMenu} />}
+      <ChatRoomHeader
+        id={chatData.chatroomId}
+        partner={chatData.partner}
+        isOpenMenu={isOpenMenu}
+        onClick={() => setIsOpenMenu(true)}
+      />
       <Div />
       <S.Info>
         <S.ImageWrapper>
