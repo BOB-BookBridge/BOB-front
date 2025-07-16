@@ -39,7 +39,7 @@ export const Overlay = styled.div`
   width: 100%;
   height: 100%;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: ${({ theme }) => theme.zIndex.overlay};
 `;
 
@@ -50,10 +50,10 @@ export const DropdownList = styled.div`
   background-color: ${({ theme }) => theme.colors.WHITE};
   border-radius: 10px;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: ${({ theme }) => theme.zIndex.overlay};
+  z-index: ${({ theme }) => theme.zIndex.overlay + 1};
 `;
 
-export const DropdownItem = styled.div<{ $red: boolean }>`
+export const DropdownItem = styled.div<{ $red?: boolean }>`
   padding: 5px;
   cursor: pointer;
   border-radius: 5px;
@@ -61,8 +61,9 @@ export const DropdownItem = styled.div<{ $red: boolean }>`
   font-size: 13px;
   gap: 5px;
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
+  white-space: nowrap;
   color: ${({ $red, theme }) =>
     $red ? theme.colors.ERROR : theme.colors.BLACK};
 
@@ -96,6 +97,7 @@ export const InfoBottom = styled.div`
 
 export const Status = styled.div<{ $clickable: boolean }>`
   display: flex;
+  position: relative;
   justify-content: center;
   align-items: center;
   margin-right: 5px;

@@ -1,15 +1,9 @@
-import Image from 'next/image';
 import { useTheme } from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
-import { AddIcon, DropdownIcon, SendIcon } from '@/shared/assets/icons';
-import {
-  chatPostStatusMap,
-  compareDate,
-  formatDate,
-  formatTime,
-} from '@/shared/lib';
+import { compareDate, formatDate, formatTime } from '@/shared/lib';
+import { AddIcon, SendIcon } from '@/shared/assets/icons';
 import ChatRoomHeader from './ChatRoomHeader';
-import { useMyQuery } from '@/entities/user';
+import ChatRoomInfo from './ChatRoomInfo';
 import * as S from './ChatRoom.styles';
 import ChatImages from './ChatImages';
 import { Div } from './ChatWidget';
@@ -151,11 +145,10 @@ const chatData = {
 
 const ChatRoom = () => {
   const theme = useTheme();
-  const { data } = useMyQuery();
-  const isSeller = data.memberId === chatData.post.sellerId;
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [hasMounted, setHasMounted] = useState(false);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
   useEffect(() => {
     const behavior = hasMounted ? 'smooth' : 'auto';
@@ -168,11 +161,9 @@ const ChatRoom = () => {
     return () => clearTimeout(timer);
   }, [chats.messages.length]);
 
-  function handleCloseMenu() {
+  function handleCloseOverlay() {
     setIsOpenMenu(false);
-  }
-  function handleClickStatus() {
-    console.log('click');
+    setIsOpenDropdown(false);
   }
   function handleEnterEvent(e: React.KeyboardEvent) {
     if (e.key === 'Enter') handleSendMessage();
@@ -183,7 +174,9 @@ const ChatRoom = () => {
 
   return (
     <S.Container>
-      {isOpenMenu && <S.Overlay onClick={handleCloseMenu} />}
+      {(isOpenMenu || isOpenDropdown) && (
+        <S.Overlay onClick={handleCloseOverlay} />
+      )}
       <ChatRoomHeader
         id={chatData.chatroomId}
         partner={chatData.partner}
@@ -191,34 +184,11 @@ const ChatRoom = () => {
         onClick={() => setIsOpenMenu(true)}
       />
       <Div />
-      <S.Info>
-        <S.ImageWrapper>
-          <Image
-            loader={() => chatData.post.thumbnailUrl}
-            src={chatData.post.thumbnailUrl}
-            alt='책 대표사진'
-            width={40}
-            height={40}
-            unoptimized
-          />
-        </S.ImageWrapper>
-        <div>
-          <S.InfoTop>
-            <S.Status
-              onClick={isSeller ? handleClickStatus : undefined}
-              $clickable={isSeller}>
-              <S.StatusText>
-                {chatPostStatusMap[chatData.post.status]}
-              </S.StatusText>
-              {isSeller && <DropdownIcon fill={theme.colors.BLACK} />}
-            </S.Status>
-            <S.TitleText>{chatData.post.title}</S.TitleText>
-          </S.InfoTop>
-          <S.InfoBottom>
-            {chatData.post.sellPrice.toLocaleString()}원
-          </S.InfoBottom>
-        </div>
-      </S.Info>
+      <ChatRoomInfo
+        post={chatData.post}
+        isOpenDropdown={isOpenDropdown}
+        onClick={() => setIsOpenDropdown(true)}
+      />
       <Div />
       <S.Chats>
         {chats.messages.map((chat, idx) => {
