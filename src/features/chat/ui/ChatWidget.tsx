@@ -1,25 +1,35 @@
 'use client';
 
+import React from 'react';
 import styled from 'styled-components';
 import { useChatWidgetStore } from '@/shared/model';
 import ChatList from './ChatList';
+import ChatRoom from './ChatRoom';
 
 const ChatWidget = () => {
   const isOpen = useChatWidgetStore((s) => s.isOpen);
+  const show = useChatWidgetStore((s) => s.show);
   if (!isOpen) return null;
   return (
     <Container>
-      <TitleText>채팅</TitleText>
-      <Div />
-      <ListWrapper>
-        <ChatList />
-      </ListWrapper>
+      {show === 'ROOM' ? (
+        <ChatRoom />
+      ) : (
+        <React.Fragment>
+          <TitleText>채팅</TitleText>
+          <Div />
+          <ListWrapper>
+            <ChatList />
+          </ListWrapper>
+        </React.Fragment>
+      )}
     </Container>
   );
 };
 export default ChatWidget;
 
 export const Container = styled.div`
+  padding-top: 5px;
   position: fixed;
   bottom: 100px;
   right: 20px;
@@ -35,6 +45,7 @@ export const Container = styled.div`
 export const TitleText = styled.div`
   padding-top: 20px;
   padding-left: 20px;
+  margin-bottom: 10px;
   font-size: 20px;
   font-weight: 600;
 `;
@@ -42,7 +53,6 @@ export const TitleText = styled.div`
 export const Div = styled.div`
   width: 100%;
   height: 1px;
-  margin-top: 10px;
   background-color: ${({ theme }) => theme.colors.GRAY_300};
 `;
 

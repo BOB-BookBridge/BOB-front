@@ -21,7 +21,7 @@ interface ChatRoomInfoProps {
 const ChatRoomInfo = ({ post, isOpenDropdown, onClick }: ChatRoomInfoProps) => {
   const theme = useTheme();
   const { data } = useMyQuery();
-  const isSeller = data.memberId === post.sellerId;
+  const isSeller = data?.memberId === post.sellerId;
   function handleClickStatus() {
     onClick();
   }

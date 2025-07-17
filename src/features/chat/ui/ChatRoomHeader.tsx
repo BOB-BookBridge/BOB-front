@@ -6,6 +6,8 @@ import {
   DeleteIcon,
 } from '@/shared/assets/icons';
 import * as S from './ChatRoom.styles';
+import { useChatWidgetStore } from '@/shared/model';
+import { useRouter } from 'next/navigation';
 
 type Partner = {
   id: string;
@@ -25,7 +27,16 @@ const ChatRoomHeader = ({
   onClick,
 }: ChatRoomHeaderProps) => {
   const theme = useTheme();
-  function handleBackClick() {}
+  const router = useRouter();
+  const isOpen = useChatWidgetStore((s) => s.isOpen);
+  const { setShow, setChatId } = useChatWidgetStore();
+
+  function handleBackClick() {
+    if (isOpen) {
+      setShow('LIST');
+      setChatId(null);
+    } else router.back();
+  }
   function handleMeatballClick() {
     onClick();
   }

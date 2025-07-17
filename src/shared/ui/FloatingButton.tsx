@@ -29,7 +29,7 @@ const FloatingButton = () => {
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
   const chatIsOpen = useChatWidgetStore((s) => s.isOpen);
-  const { open, close } = useChatWidgetStore();
+  const { setIsOpen: setChatIsOpen } = useChatWidgetStore();
 
   const hideHeader =
     pathname?.startsWith('/login') ||
@@ -66,13 +66,13 @@ const FloatingButton = () => {
     if (isMobile) {
       router.push('/chats');
     } else {
-      open();
+      setChatIsOpen(true);
     }
   }
 
   function handleClickToggle() {
     setIsOpen((prev) => !prev);
-    if (chatIsOpen) close();
+    if (chatIsOpen) setChatIsOpen(false);
   }
 
   return (

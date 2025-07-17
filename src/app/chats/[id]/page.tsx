@@ -3,10 +3,10 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
-import { ChatList } from '@/features/chat/ui';
 import { useIsMobile } from '@/shared/model';
+import ChatRoom from '@/features/chat/ui/ChatRoom';
 
-const ChatPage = () => {
+const ChatRoomPage = () => {
   const isMobile = useIsMobile();
   const router = useRouter();
 
@@ -21,15 +21,15 @@ const ChatPage = () => {
 
   return (
     <Container>
-      <ChatList />
+      <ChatRoom />
     </Container>
   );
 };
 
-export default ChatPage;
+export default ChatRoomPage;
 
 const Container = styled.div`
   width: 100%;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
+  height: 100vh;
+  overflow: hidden;
 `;
