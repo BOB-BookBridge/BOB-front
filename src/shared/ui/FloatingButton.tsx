@@ -29,14 +29,14 @@ const FloatingButton = () => {
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
   const chatIsOpen = useChatWidgetStore((s) => s.isOpen);
-  const { open, close } = useChatWidgetStore();
+  const { setIsOpen: setChatIsOpen } = useChatWidgetStore();
 
   const hideHeader =
     pathname?.startsWith('/login') ||
     pathname?.startsWith('/signup') ||
     pathname?.startsWith('/password') ||
-    pathname?.startsWith('/listings/write');
-
+    pathname?.startsWith('/listings/write') ||
+    pathname?.startsWith('/chats');
   if (hideHeader) return null;
 
   const menuItems = [
@@ -62,17 +62,18 @@ const FloatingButton = () => {
     router.push('/ai');
   }
 
-  function handleClickChat() {
+  function handleClickChat(e?: React.MouseEvent) {
     if (isMobile) {
       router.push('/chats');
     } else {
-      open();
+      e?.stopPropagation();
+      setChatIsOpen(true);
     }
   }
 
   function handleClickToggle() {
     setIsOpen((prev) => !prev);
-    if (chatIsOpen) close();
+    if (chatIsOpen) setChatIsOpen(false);
   }
 
   return (
@@ -113,7 +114,11 @@ const FloatingButton = () => {
                   </S.MenuItem>
                 </Link>
               ) : (
-                <S.MenuItem key={idx} onClick={item.onClick}>
+                <S.MenuItem
+                  key={idx}
+                  onClick={(e) => {
+                    item.onClick?.(e);
+                  }}>
                   <S.SmallIconWrapper>{item.icon}</S.SmallIconWrapper>
                   <span>{item.label}</span>
                   {item.badge !== undefined && (

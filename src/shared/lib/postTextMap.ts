@@ -11,6 +11,12 @@ export const bookStatusMap = {
   LOW: '하',
 } as const;
 
+export const chatPostStatusMap = {
+  READY: '판매중',
+  IN_PROGRESS: '예약중',
+  COMPLETED: '판매완료',
+} as const;
+
 export const priceRangeMap: { [key: number]: string } = {
   0: '~5,000원',
   1: '5,000원~10,000원',

@@ -37,3 +37,23 @@ export function formatDate(dateString: string) {
     String(day).padStart(2, '0'),
   ].join('-');
 }
+
+export function formatTime(dateString: string) {
+  const date = new Date(dateString);
+  const hour = date.getHours();
+  const minutes = date.getMinutes();
+
+  return [hour, minutes].join(':');
+}
+
+export function compareDate(curString: string, prevString: string) {
+  const cur = new Date(curString);
+  const prev = new Date(prevString);
+  if (
+    cur.getFullYear() === prev.getFullYear() &&
+    cur.getMonth() === prev.getMonth() &&
+    cur.getDate() === prev.getDate()
+  )
+    return false;
+  return true;
+}

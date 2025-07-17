@@ -10,6 +10,8 @@ const common = {
     MEDIUM: '#7E91A0',
     LOW: '#BDBDBD',
   },
+  SENDCHAT_BACK: '#FFE0A5',
+  SENDCHAT_TEXT: '#424242',
 };
 
 export const colors = {

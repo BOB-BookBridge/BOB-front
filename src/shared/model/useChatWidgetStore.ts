@@ -4,21 +4,24 @@ import { create } from 'zustand';
 
 interface ChatWidgetState {
   isOpen: boolean;
-  open: () => void;
-  close: () => void;
-  toggle: () => void;
+  setIsOpen: (b: boolean) => void;
+  show: 'LIST' | 'ROOM';
+  setShow: (s: 'LIST' | 'ROOM') => void;
+  chatId: number | null;
+  setChatId: (d: number | null) => void;
 }
 
 export const useChatWidgetStore = create<ChatWidgetState>((set) => ({
   isOpen: false,
-  open: () => {
-    console.log('store open() 실행');
-    set({ isOpen: true });
+  setIsOpen: (b) => {
+    set({ isOpen: b });
   },
-  close: () => set({ isOpen: false }),
-  toggle: () =>
-    set((state) => {
-      console.log('현재 isOpen 값:', state.isOpen);
-      return { isOpen: !state.isOpen };
-    }),
+  show: 'LIST',
+  setShow: (s) => {
+    set({ show: s });
+  },
+  chatId: null,
+  setChatId: (d) => {
+    set({ chatId: d });
+  },
 }));

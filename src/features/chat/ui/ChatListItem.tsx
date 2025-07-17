@@ -7,9 +7,15 @@ import { ChatListProps } from '@/entities/chat/types';
 import { convertDiffToString } from '@/shared/lib';
 import Badge from '@/shared/ui/Badge';
 
-const ChatListItem = ({ data }: { data: ChatListProps }) => {
+const ChatListItem = ({
+  data,
+  onClick,
+}: {
+  data: ChatListProps;
+  onClick: (e: number | null) => void;
+}) => {
   return (
-    <Container>
+    <Container onClick={() => onClick(data.chatroomId)}>
       <LeftSection>
         <ImagesWrapper>
           <ProfileWrapper>
