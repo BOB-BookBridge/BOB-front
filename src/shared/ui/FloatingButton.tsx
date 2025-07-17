@@ -62,10 +62,11 @@ const FloatingButton = () => {
     router.push('/ai');
   }
 
-  function handleClickChat() {
+  function handleClickChat(e?: React.MouseEvent) {
     if (isMobile) {
       router.push('/chats');
     } else {
+      e?.stopPropagation();
       setChatIsOpen(true);
     }
   }
@@ -113,7 +114,11 @@ const FloatingButton = () => {
                   </S.MenuItem>
                 </Link>
               ) : (
-                <S.MenuItem key={idx} onClick={item.onClick}>
+                <S.MenuItem
+                  key={idx}
+                  onClick={(e) => {
+                    item.onClick?.(e);
+                  }}>
                   <S.SmallIconWrapper>{item.icon}</S.SmallIconWrapper>
                   <span>{item.label}</span>
                   {item.badge !== undefined && (
