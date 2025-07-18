@@ -1,3 +1,3 @@
 import { getCategoryNameById } from './getCategoryNameById';
-
-export { getCategoryNameById };
+import { calcDistance } from './calcDistance';
+export { getCategoryNameById, calcDistance };
