@@ -1,13 +1,12 @@
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useTheme } from 'styled-components';
+import { useFABStore } from '@/shared/model';
+import * as S from './ChatRoom.styles';
 import {
   ArrowBackIcon,
   ChatMeatballsIcon,
   DeleteIcon,
 } from '@/shared/assets/icons';
-import * as S from './ChatRoom.styles';
-import { useChatWidgetStore } from '@/shared/model';
-import { useRouter } from 'next/navigation';
 
 type Partner = {
   id: string;
@@ -28,14 +27,12 @@ const ChatRoomHeader = ({
 }: ChatRoomHeaderProps) => {
   const theme = useTheme();
   const router = useRouter();
-  const isOpen = useChatWidgetStore((s) => s.isOpen);
-  const { setShow, setChatId } = useChatWidgetStore();
+  const isOpen = useFABStore((s) => s.chatIsOpen);
+  const { reset } = useFABStore();
 
   function handleBackClick() {
-    if (isOpen) {
-      setShow('LIST');
-      setChatId(null);
-    } else router.back();
+    reset();
+    if (!isOpen) router.back();
   }
   function handleMeatballClick() {
     onClick();

@@ -6,8 +6,11 @@ import { useTheme } from 'styled-components';
 
 import { useLikeMutation, useListingDetailQuery } from '@/entities/listing';
 import { bookStatusMap, convertDiffToString } from '@/shared/lib';
+import { calcDistance, getCategoryNameById } from '../../lib';
+import { useHandleOpenChat } from '@/shared/model';
+import { useChatMutation } from '@/entities/chat';
 import { LikeIcon } from '@/shared/assets/icons';
-import { getCategoryNameById } from '../../lib';
+import { useMyQuery } from '@/entities/user';
 import { colors } from '@/shared/constants';
 import * as S from './ListingDetail.styles';
 import ImageCarousel from './ImageCarousel';
@@ -21,6 +24,7 @@ interface ListingDetailProps {
 
 const ListingDetail = ({ id }: ListingDetailProps) => {
   const theme = useTheme();
+  const { data: mydata } = useMyQuery();
   const { data, isLoading } = useListingDetailQuery(id);
   const [liked, setLiked] = useState<boolean | undefined>(undefined);
   const [originalLiked, setOriginalLiked] = useState<boolean | undefined>(
@@ -28,6 +32,8 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
   );
   const [likeCount, setLikeCount] = useState<number | undefined>(undefined);
   const { mutate: controlLike } = useLikeMutation();
+  const { mutate: makeChat } = useChatMutation();
+  const handleOpenChat = useHandleOpenChat();
 
   function handleLike() {
     if (data?.isOwner) {
@@ -35,6 +41,18 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
       return;
     }
     setLiked((prev) => !prev);
+  }
+  function handleClickChat() {
+    if (!data) return;
+    const isFar = calcDistance(mydata.emdId, data.writer.emdId);
+    makeChat(
+      { postId: data.postId, isFar },
+      {
+        onSuccess: (res) => {
+          handleOpenChat({ chatId: res.chatRoomId });
+        },
+      },
+    );
   }
 
   useEffect(() => {
@@ -117,7 +135,9 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
                 />
                 찜하기
               </S.Button>
-              <S.Button variant='primary'>채팅하기</S.Button>
+              <S.Button variant='primary' onClick={handleClickChat}>
+                채팅하기
+              </S.Button>
             </S.ButtonRow>
           </S.RightSection>
         </>
