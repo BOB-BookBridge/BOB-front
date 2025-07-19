@@ -1,7 +1,10 @@
+import { useParams } from 'next/navigation';
 import { useTheme } from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
 import { compareDate, formatDate, formatTime } from '@/shared/lib';
+import { connectChat, connectChatProps } from '@/entities/chat';
 import { AddIcon, SendIcon } from '@/shared/assets/icons';
+import { useFABStore, useIsMobile } from '@/shared/model';
 import ChatRoomHeader from './ChatRoomHeader';
 import ChatRoomInfo from './ChatRoomInfo';
 import * as S from './ChatRoom.styles';
@@ -149,7 +152,23 @@ const ChatRoom = () => {
   const [hasMounted, setHasMounted] = useState(false);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
+  const isMobile = useIsMobile();
+  const chatId = useFABStore((s) => s.chatId);
+  const params = useParams<{ id: string }>();
 
+  const chatRoomId = isMobile ? params && Number(params.id) : chatId;
+  useEffect(() => {
+    if (!chatRoomId) return;
+    connectChat(chatRoomId, handleMessage, handleConnectError);
+  }, []);
+
+  function handleMessage(data: connectChatProps) {
+    console.log(data.data);
+    // chats.messages.push(data.data);
+  }
+  function handleConnectError(error: Event) {
+    console.log(error);
+  }
   useEffect(() => {
     const behavior = hasMounted ? 'smooth' : 'auto';
 
