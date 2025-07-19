@@ -1,6 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'styled-components';
-import { useFABStore } from '@/shared/model';
+import { useFABStore, useIsMobile } from '@/shared/model';
+import { useExitChatMutation } from '@/entities/chat';
 import * as S from './ChatRoom.styles';
 import {
   ArrowBackIcon,
@@ -28,8 +29,9 @@ const ChatRoomHeader = ({
   const theme = useTheme();
   const router = useRouter();
   const isOpen = useFABStore((s) => s.chatIsOpen);
-  const { reset } = useFABStore();
-
+  const { reset, setShow, setChatId } = useFABStore();
+  const isMobile = useIsMobile();
+  const { mutate: exitMutate } = useExitChatMutation();
   function handleBackClick() {
     reset();
     if (!isOpen) router.back();
@@ -37,7 +39,18 @@ const ChatRoomHeader = ({
   function handleMeatballClick() {
     onClick();
   }
-  function handleExitChat() {}
+  function handleExitChat() {
+    exitMutate(id, {
+      onSuccess: () => {
+        if (isMobile) {
+          router.back();
+        } else {
+          setShow('LIST');
+          setChatId(null);
+        }
+      },
+    });
+  }
 
   function handleClickNickname() {}
   return (

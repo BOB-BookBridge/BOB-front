@@ -33,7 +33,6 @@ export const Nickname = styled.div`
 `;
 
 export const Overlay = styled.div`
-  margin-top: 10px;
   position: absolute;
   width: 100%;
   height: 100%;
