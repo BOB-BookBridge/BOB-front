@@ -1,8 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useTheme } from 'styled-components';
 import { useRouter, usePathname } from 'next/navigation';
+import { useFABStore, useThemeStore, useHandleOpenChat } from '../model';
+import * as S from './FloatingButton.styles';
+import { colors } from '../constants';
+import Badge from './Badge';
 import {
   AIIcon,
   AIIconSm,
@@ -11,11 +15,6 @@ import {
   CloseIcon,
   FABDefaultIcon,
 } from '../assets/icons';
-import { useTheme } from 'styled-components';
-import { useChatWidgetStore, useIsMobile, useThemeStore } from '../model';
-import * as S from './FloatingButton.styles';
-import { colors } from '../constants';
-import Badge from './Badge';
 
 // #todo: isLogin zustand로 관리 예정
 const isLogin = true;
@@ -26,10 +25,9 @@ const FloatingButton = () => {
   const theme = useTheme();
   const router = useRouter();
   const pathname = usePathname();
-  const isMobile = useIsMobile();
-  const [isOpen, setIsOpen] = useState(false);
-  const chatIsOpen = useChatWidgetStore((s) => s.isOpen);
-  const { setIsOpen: setChatIsOpen } = useChatWidgetStore();
+  const isOpen = useFABStore((s) => s.isOpen);
+  const { setIsOpen, toggleIsOpen, reset } = useFABStore();
+  const handleOpenChat = useHandleOpenChat();
 
   const hideHeader =
     pathname?.startsWith('/login') ||
@@ -48,7 +46,7 @@ const FloatingButton = () => {
     {
       icon: <ChatIcon />,
       label: '채팅',
-      onClick: handleClickChat,
+      onClick: (e: React.MouseEvent) => handleOpenChat({ e }),
       badge: unReadCount,
     },
     {
@@ -62,18 +60,9 @@ const FloatingButton = () => {
     router.push('/ai');
   }
 
-  function handleClickChat(e?: React.MouseEvent) {
-    if (isMobile) {
-      router.push('/chats');
-    } else {
-      e?.stopPropagation();
-      setChatIsOpen(true);
-    }
-  }
-
   function handleClickToggle() {
-    setIsOpen((prev) => !prev);
-    if (chatIsOpen) setChatIsOpen(false);
+    if (isOpen) reset();
+    toggleIsOpen();
   }
 
   return (

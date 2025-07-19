@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useTheme } from 'styled-components';
+import { useFABStore, useIsMobile } from '@/shared/model';
+import { useExitChatMutation } from '@/entities/chat';
+import * as S from './ChatRoom.styles';
 import {
   ArrowBackIcon,
   ChatMeatballsIcon,
   DeleteIcon,
 } from '@/shared/assets/icons';
-import * as S from './ChatRoom.styles';
-import { useChatWidgetStore } from '@/shared/model';
-import { useRouter } from 'next/navigation';
 
 type Partner = {
   id: string;
@@ -28,19 +28,29 @@ const ChatRoomHeader = ({
 }: ChatRoomHeaderProps) => {
   const theme = useTheme();
   const router = useRouter();
-  const isOpen = useChatWidgetStore((s) => s.isOpen);
-  const { setShow, setChatId } = useChatWidgetStore();
-
+  const isOpen = useFABStore((s) => s.chatIsOpen);
+  const { reset, setShow, setChatId } = useFABStore();
+  const isMobile = useIsMobile();
+  const { mutate: exitMutate } = useExitChatMutation();
   function handleBackClick() {
-    if (isOpen) {
-      setShow('LIST');
-      setChatId(null);
-    } else router.back();
+    reset();
+    if (!isOpen) router.back();
   }
   function handleMeatballClick() {
     onClick();
   }
-  function handleExitChat() {}
+  function handleExitChat() {
+    exitMutate(id, {
+      onSuccess: () => {
+        if (isMobile) {
+          router.back();
+        } else {
+          setShow('LIST');
+          setChatId(null);
+        }
+      },
+    });
+  }
 
   function handleClickNickname() {}
   return (

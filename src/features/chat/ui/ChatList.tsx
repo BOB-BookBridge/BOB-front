@@ -1,15 +1,15 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useChatWidgetStore } from '@/shared/model';
+import { useFABStore } from '@/shared/model';
 import { data } from '@/mocks/mockChatList';
 import ChatListItem from './ChatListItem';
 
 const ChatList = () => {
   const router = useRouter();
-  const isOpen = useChatWidgetStore((s) => s.isOpen);
-  const setShow = useChatWidgetStore((s) => s.setShow);
-  const setChatId = useChatWidgetStore((s) => s.setChatId);
+  const isOpen = useFABStore((s) => s.chatIsOpen);
+  const setShow = useFABStore((s) => s.setShow);
+  const setChatId = useFABStore((s) => s.setChatId);
 
   function handleClickChat(id: number | null) {
     if (isOpen) {

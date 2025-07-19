@@ -1,8 +1,15 @@
 'use client';
 
-import { useIsMobile } from './useIsMobile';
+import { useHandleOpenChat } from './useHandleOpenChat';
 import { useThemeStore } from './useThemeStore';
 import { useMediaQuery } from './useMediaQuery';
-import { useChatWidgetStore } from './useChatWidgetStore';
+import { useIsMobile } from './useIsMobile';
+import { useFABStore } from './useFABStore';
 
-export { useThemeStore, useChatWidgetStore, useIsMobile, useMediaQuery };
+export {
+  useThemeStore,
+  useFABStore,
+  useHandleOpenChat,
+  useIsMobile,
+  useMediaQuery,
+};

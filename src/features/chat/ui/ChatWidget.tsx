@@ -2,13 +2,13 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { useChatWidgetStore } from '@/shared/model';
+import { useFABStore } from '@/shared/model';
 import ChatList from './ChatList';
 import ChatRoom from './ChatRoom';
 
 const ChatWidget = () => {
-  const isOpen = useChatWidgetStore((s) => s.isOpen);
-  const show = useChatWidgetStore((s) => s.show);
+  const isOpen = useFABStore((s) => s.chatIsOpen);
+  const show = useFABStore((s) => s.show);
   if (!isOpen) return null;
   return (
     <Container>

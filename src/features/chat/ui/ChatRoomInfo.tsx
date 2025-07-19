@@ -4,17 +4,10 @@ import { DropdownIcon } from '@/shared/assets/icons';
 import { chatPostStatusMap } from '@/shared/lib';
 import { useMyQuery } from '@/entities/user';
 import * as S from './ChatRoom.styles';
+import { ChatPost } from '@/entities/chat';
 
-type Post = {
-  id: number;
-  title: string;
-  thumbnailUrl: string;
-  sellPrice: number;
-  sellerId: string;
-  status: 'IN_PROGRESS';
-};
 interface ChatRoomInfoProps {
-  post: Post;
+  post: ChatPost;
   isOpenDropdown: boolean;
   onClick: () => void;
 }
