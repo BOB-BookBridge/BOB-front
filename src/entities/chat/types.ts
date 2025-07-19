@@ -1,4 +1,4 @@
-import { PostStatus } from '../listing';
+import { DetailImage, PostStatus } from '../listing';
 
 interface PartnerProps {
   partnerId: number;
@@ -16,11 +16,13 @@ export interface ChatListProps {
   unreadCount: number;
 }
 
+export type ChatType = 'MESSAGE' | 'IMAGE' | 'SYSTEM';
+
 export interface connectChatProps {
   event: string;
   data: {
     id: number;
-    type: 'TEXT' | 'IMAGE' | 'SYSTEM';
+    type: ChatType;
     content: string;
     images: string[];
     sentAt: string;
@@ -57,4 +59,26 @@ export interface ChatInfo {
   };
   post: ChatPost;
   partner: ChatPartner;
+}
+
+export interface postMessageProps {
+  chatroomId: number;
+  message: string | null;
+  fileNames: string[];
+}
+
+export interface getMessageResponse {
+  messages: ChatMessage[];
+  hasNext: boolean;
+}
+
+export interface ChatMessage {
+  id?: number;
+  type: ChatType;
+  content: string | null;
+  images: DetailImage[];
+  sentAt?: string;
+  isRead?: boolean;
+  isMine?: boolean;
+  isLoading?: boolean;
 }

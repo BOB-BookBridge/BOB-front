@@ -1,5 +1,11 @@
 import axiosInstance from '@/shared/config/axios';
-import { ChatInfo, connectChatProps, postNewChatProps } from '.';
+import {
+  ChatInfo,
+  connectChatProps,
+  getMessageResponse,
+  postMessageProps,
+  postNewChatProps,
+} from '.';
 
 export const postNewChat = async (props: postNewChatProps) => {
   const { data } = await axiosInstance.post('/chatrooms', props);
@@ -35,5 +41,24 @@ export const getChatInfo = async (chatroomId: number): Promise<ChatInfo> => {
 
 export const patchChatRoom = async (chatroomId: number) => {
   const { data } = await axiosInstance.patch(`/chatrooms/${chatroomId}`);
+  return data;
+};
+
+export const postNewMessage = async ({
+  chatroomId,
+  message,
+  fileNames,
+}: postMessageProps): Promise<{ isRead: boolean }> => {
+  const { data } = await axiosInstance.post(
+    `/chatrooms/${chatroomId}/messages`,
+    { message, fileNames },
+  );
+  return data;
+};
+
+export const getMessages = async (
+  chatroomId: number,
+): Promise<getMessageResponse> => {
+  const { data } = await axiosInstance.get(`/chatrooms/${chatroomId}/messages`);
   return data;
 };
