@@ -13,10 +13,14 @@ export const useChatMutation = () => {
   });
 };
 
-export const useChatInfoQuery = (id: number) => {
+export const useChatInfoQuery = (
+  id: number,
+  options?: { enabled: boolean },
+) => {
   return useQuery({
     queryKey: ['chat', id],
     queryFn: ({ queryKey }) => getChatInfo(queryKey[1] as number),
+    enabled: options?.enabled,
   });
 };
 
