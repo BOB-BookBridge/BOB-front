@@ -19,7 +19,9 @@ const ChatImages = ({ images }: { images: DetailImage[] }) => {
       <S.ImageGrid onClick={handleShowAllImages}>
         {topImages.map((img, idx) => (
           <div key={img.sequence} style={{ position: 'relative' }}>
-            <S.ImageThumbnail src={img.fileName} />
+            <S.ImageThumbnail
+              src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/${img.fileName}`}
+            />
             {idx === 2 && (
               <S.ImageOverlay>
                 <S.OverlayText>+{restCount}</S.OverlayText>

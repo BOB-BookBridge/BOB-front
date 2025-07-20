@@ -15,7 +15,6 @@ interface ModalCarouselProps {
   onClose: () => void;
 }
 
-// #todo: 현재 img src가 외부 url에 맞추기 위해 설정되어 있으니 파일 API 연결 이후 다시 바꿔둬야 함
 const ModalCarousel = ({
   images,
   initialIndex,
@@ -43,8 +42,7 @@ const ModalCarousel = ({
             <SwiperSlide key={img.sequence}>
               <ImageWrapper>
                 <img
-                  // src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/${img.fileName}`}
-                  src={img.fileName}
+                  src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/${img.fileName}`}
                   alt={`Image ${img.sequence + 1}`}
                 />
               </ImageWrapper>

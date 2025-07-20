@@ -148,6 +148,14 @@ export const NoticeWrapper = styled.div`
   justify-content: center;
 `;
 
+export const SystemMessage = styled.div`
+  background-color: ${({ theme }) => theme.colors.SECONDARY_100};
+  color: ${({ theme }) => theme.colors.SECONDARY};
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+`;
+
 export const DateText = styled.div`
   color: ${({ theme }) => theme.colors.GRAY_600};
   font-weight: 500;
@@ -170,6 +178,7 @@ export const ReceiveChat = styled.div`
   border-radius: 16px 16px 16px 0;
   max-width: 60%;
   display: inline-block;
+  font-size: 14px;
 `;
 
 export const SendChatWrapper = styled.div`
@@ -185,6 +194,7 @@ export const SendChat = styled.div`
   padding: 8px 12px;
   border-radius: 16px 16px 0 16px;
   max-width: 60%;
+  font-size: 14px;
 `;
 
 export const ImageGrid = styled.div`
