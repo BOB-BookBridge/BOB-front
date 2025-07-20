@@ -3,128 +3,22 @@ import { useTheme } from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
 import { compareDate, formatDate, formatTime } from '@/shared/lib';
 import {
+  ChatMessage,
   connectChat,
   connectChatProps,
   useChatInfoQuery,
+  useMessageMutate,
+  useMessageQuery,
 } from '@/entities/chat';
-import { AddIcon, SendIcon } from '@/shared/assets/icons';
+import { AddIcon, SendIcon, SendReverseIcon } from '@/shared/assets/icons';
 import { useFABStore, useIsMobile } from '@/shared/model';
 import ChatRoomHeader from './ChatRoomHeader';
 import ChatRoomInfo from './ChatRoomInfo';
 import * as S from './ChatRoom.styles';
 import ChatImages from './ChatImages';
 import { Div } from './ChatWidget';
-const chats = {
-  messages: [
-    {
-      id: 85,
-      type: 'IMAGE',
-      content: null,
-      images: [
-        {
-          sequence: 0,
-          fileName:
-            'https://i.namu.wiki/i/d1A_wD4kuLHmOOFqJdVlOXVt1TWA9NfNt_HA0CS0Y_N0zayUAX8olMuv7odG2FiDLDQZIRBqbPQwBSArXfEJlQ.webp',
-        },
-        {
-          sequence: 1,
-          fileName:
-            'https://mblogthumb-phinf.pstatic.net/MjAyMjA4MTBfMTg0/MDAxNjYwMTMyNTMzMjIx.txtlu-ga_7shsZhURoPuzfBeynckAa6ZuO_-o8rVbyUg.SobnP3coSZE-dKunc14ixPkeNmNi9LaDDOBblXnlGe0g.JPEG.happppy_/Screenshot%EF%BC%BF20220809%EF%BC%8D215510%EF%BC%BFInstagram.jpg?type=w800',
-        },
-        {
-          sequence: 2,
-          fileName:
-            'https://cdn.metavv.com/prod/uploads/thumbnail/images/10043263/167100535142741_md.png',
-        },
-        {
-          sequence: 3,
-          fileName:
-            'https://i.namu.wiki/i/qI0H3qHP6SMune3aF0Fmmu7j3q2a0kj613ndeUyB1aANfPy2I-J3bHNnMxIYCedb7YZXht0v4e6EFEjxIjTg5g.webp',
-        },
-        {
-          sequence: 4,
-          fileName:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTywyeS_VSiGo_DOI5jOAZHGoLPGNvTQYhTKA&s',
-        },
-      ],
-      sentAt: '2025-07-14T14:16:01.05171',
-      isRead: true,
-      isMine: false,
-    },
-    {
-      id: 8,
-      type: 'IMAGE',
-      content: null,
-      images: [
-        {
-          sequence: 0,
-          fileName:
-            'https://i.namu.wiki/i/d1A_wD4kuLHmOOFqJdVlOXVt1TWA9NfNt_HA0CS0Y_N0zayUAX8olMuv7odG2FiDLDQZIRBqbPQwBSArXfEJlQ.webp',
-        },
-        {
-          sequence: 1,
-          fileName:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTywyeS_VSiGo_DOI5jOAZHGoLPGNvTQYhTKA&s',
-        },
-      ],
-      sentAt: '2025-07-14T14:16:01.05171',
-      isRead: true,
-      isMine: false,
-    },
-    {
-      id: 10,
-      type: 'IMAGE',
-      content: null,
-      images: [
-        {
-          sequence: 0,
-          fileName:
-            'https://i.namu.wiki/i/d1A_wD4kuLHmOOFqJdVlOXVt1TWA9NfNt_HA0CS0Y_N0zayUAX8olMuv7odG2FiDLDQZIRBqbPQwBSArXfEJlQ.webp',
-        },
-      ],
-      sentAt: '2025-07-14T14:16:01.05171',
-      isRead: true,
-      isMine: true,
-    },
-    {
-      id: 11,
-      type: 'MESSAGE',
-      content: '답장',
-      images: [],
-      sentAt: '2025-07-15T10:48:40.414037',
-      isRead: true,
-      isMine: true,
-    },
-    {
-      id: 9,
-      type: 'MESSAGE',
-      content: '메시지2 아니이게메세지가 길어지면 오른쪽으로 길어지지 않냐',
-      images: [],
-      sentAt: '2025-07-15T10:49:04.484982',
-      isRead: true,
-      isMine: false,
-    },
-    {
-      id: 12,
-      type: 'MESSAGE',
-      content: '답장2',
-      images: [],
-      sentAt: '2025-07-15T10:52:40.414037',
-      isRead: false,
-      isMine: true,
-    },
-    {
-      id: 13,
-      type: 'MESSAGE',
-      content: '답장3',
-      images: [],
-      sentAt: '2025-07-15T10:52:40.414037',
-      isRead: false,
-      isMine: true,
-    },
-  ],
-  hasNext: false,
-};
+import { ImageFile, useUploadImagesMutation } from '@/entities/files';
+import { DetailImage } from '@/entities/listing';
 
 const ChatRoom = () => {
   const theme = useTheme();
@@ -136,10 +30,22 @@ const ChatRoom = () => {
   const chatId = useFABStore((s) => s.chatId);
   const params = useParams<{ id: string }>();
   const chatRoomId = isMobile && params ? Number(params.id) : chatId;
-
-  const { data: chatData } = useChatInfoQuery(chatRoomId!, {
+  const [message, setMessage] = useState('');
+  const { data: chatData } = useMessageQuery(chatRoomId!, {
     enabled: chatRoomId !== null,
   });
+  const { data: chatInfo } = useChatInfoQuery(chatRoomId!, {
+    enabled: chatRoomId !== null,
+  });
+  const [images, setImages] = useState<DetailImage[]>([]);
+  const [chats, setChats] = useState<ChatMessage[]>([]);
+
+  useEffect(() => {
+    if (chatData) {
+      setChats(chatData.messages);
+    }
+  }, [chatData]);
+
   useEffect(() => {
     if (!chatRoomId) return;
     connectChat(chatRoomId, handleMessage, handleConnectError);
@@ -153,6 +59,8 @@ const ChatRoom = () => {
     console.log(error);
   }
   useEffect(() => {
+    console.log('length 변경');
+    console.log(chats);
     const behavior = hasMounted ? 'smooth' : 'auto';
 
     const timer = setTimeout(() => {
@@ -161,55 +69,146 @@ const ChatRoom = () => {
     }, 0);
 
     return () => clearTimeout(timer);
-  }, [chats.messages.length]);
+  }, [chats.length]);
 
   function handleCloseOverlay() {
     setIsOpenMenu(false);
     setIsOpenDropdown(false);
   }
+  function handleInputMessage(value: string) {
+    setMessage(value);
+  }
   function handleEnterEvent(e: React.KeyboardEvent) {
-    if (e.key === 'Enter') handleSendMessage();
+    if (e.key === 'Enter' && e.nativeEvent.isComposing === false)
+      handleSendMessage();
   }
 
-  function handleSendMessage() {}
-  function handleAddImages() {}
-  if (!chatData) return;
+  const { mutate: sendMessage } = useMessageMutate();
+
+  function handleSendMessage({
+    idx,
+    images,
+  }: {
+    idx?: number;
+    images?: DetailImage[];
+  } = {}) {
+    if (!chatRoomId) return;
+    const nowIdx = idx ? idx : (chats.length ?? 0);
+    const type = message.length !== 0 ? 'TEXT' : 'IMAGE';
+    const fileNames = images && images.map(({ fileName }) => fileName);
+    setChats((prev) => [
+      ...prev,
+      {
+        type,
+        content: type === 'TEXT' ? message : null,
+        images: images ? images : [],
+        isMine: true,
+        isLoading: true,
+      },
+    ]);
+    console.log('fileNAmes', fileNames);
+    sendMessage(
+      {
+        message: type === 'TEXT' ? message : null,
+        chatroomId: chatRoomId,
+        fileNames: fileNames ? fileNames : [],
+      },
+      {
+        onSuccess: (res) => {
+          setChats((prev) => {
+            const updated = [...prev];
+            const target = updated[nowIdx];
+            if (target) {
+              updated[nowIdx] = {
+                ...target,
+                isLoading: false,
+                isRead: res.isRead,
+                sentAt: String(new Date()),
+              };
+            }
+            return updated;
+          });
+        },
+      },
+    );
+    setMessage('');
+  }
+  const { mutate: uploadImage } = useUploadImagesMutation();
+
+  function handleSelectImages(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files) return;
+    if (files.length > 5) {
+      alert('최대 5장까지 업로드 할 수 있어요');
+      e.target.value = '';
+      return;
+    }
+    const fileArray = Array.from(files);
+    uploadImage(
+      { domain: 'CHAT', images: fileArray },
+      {
+        onSuccess: (uploadedImages) => {
+          console.log(uploadedImages);
+          const sortedImages = uploadedImages.sort(
+            (a, b) => a.sequence - b.sequence,
+          );
+          console.log('uploaded', sortedImages);
+          handleSendMessage({ images: sortedImages });
+        },
+      },
+    );
+  }
+
+  if (!chatInfo || !chats) return;
   return (
     <S.Container>
       {(isOpenMenu || isOpenDropdown) && (
         <S.Overlay onClick={handleCloseOverlay} />
       )}
       <ChatRoomHeader
-        id={chatData.chatroomId}
-        partner={chatData.partner}
+        id={chatInfo.chatroomId}
+        partner={chatInfo.partner}
         isOpenMenu={isOpenMenu}
         onClick={() => setIsOpenMenu(true)}
       />
       <Div />
       <ChatRoomInfo
-        post={chatData.post}
+        post={chatInfo.post}
         isOpenDropdown={isOpenDropdown}
         onClick={() => setIsOpenDropdown(true)}
       />
       <Div />
       <S.Chats>
-        {chats.messages.map((chat, idx) => {
-          const isLast = idx === chats.messages.length - 1;
-          const prev = idx > 0 ? chats.messages[idx - 1].sentAt : null;
-          const isNewDate = !prev || compareDate(chat.sentAt, prev);
+        {chats.map((chat: ChatMessage, idx: number) => {
+          const isLast = idx === chats.length - 1;
+          const prev = idx > 0 ? chats[idx - 1].sentAt : null;
+          const isNewDate = chat.sentAt
+            ? !prev || compareDate(chat.sentAt, prev)
+            : false;
 
           return (
-            <React.Fragment key={chat.id}>
-              {isNewDate && (
+            <React.Fragment key={idx}>
+              {chat.sentAt && isNewDate && (
                 <S.NoticeWrapper>
                   <S.DateText>{formatDate(chat.sentAt)}</S.DateText>
                 </S.NoticeWrapper>
               )}
-              {chat.isMine ? (
+              {chat.type === 'SYSTEM' ? (
+                <S.NoticeWrapper>
+                  <S.SystemMessage>
+                    <b>알림 </b>
+                    {chat.content}
+                  </S.SystemMessage>
+                </S.NoticeWrapper>
+              ) : chat.isMine ? (
                 <S.SendChatWrapper>
                   <S.MessageInfo>
                     {!chat.isRead && <S.UnreadText>1</S.UnreadText>}
-                    <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
+                    {chat.sentAt ? (
+                      <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
+                    ) : (
+                      <SendReverseIcon fill={theme.colors.GRAY_500} />
+                    )}
                   </S.MessageInfo>
                   {chat.type === 'IMAGE' ? (
                     <ChatImages images={chat.images} />
@@ -224,7 +223,9 @@ const ChatRoom = () => {
                   ) : (
                     <S.ReceiveChat>{chat.content}</S.ReceiveChat>
                   )}
-                  <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
+                  {chat.sentAt && (
+                    <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
+                  )}
                 </S.ReceiveChatWrapper>
               )}
               {isLast && <div ref={bottomRef} />}
@@ -233,19 +234,29 @@ const ChatRoom = () => {
         })}
       </S.Chats>
       <S.InputSection>
-        <AddIcon
-          stroke={theme.colors.GRAY_500}
-          strokeWidth={4}
-          strokeLinecap='round'
-          style={{ cursor: 'pointer' }}
-          onClick={handleAddImages}
-        />
+        <label style={{ cursor: 'pointer' }}>
+          <AddIcon
+            stroke={theme.colors.GRAY_500}
+            strokeWidth={4}
+            strokeLinecap='round'
+          />
+          <input
+            onChange={handleSelectImages}
+            type='file'
+            multiple
+            style={{ display: 'none' }}
+          />
+        </label>
         <S.InputWrapper>
-          <S.Input onKeyDown={handleEnterEvent} />
+          <S.Input
+            onKeyDown={handleEnterEvent}
+            value={message}
+            onChange={(e) => handleInputMessage(e.target.value)}
+          />
           <SendIcon
             fill={theme.colors.PRIMARY}
             style={{ cursor: 'pointer' }}
-            onClick={handleSendMessage}
+            onClick={() => handleSendMessage()}
           />
         </S.InputWrapper>
       </S.InputSection>

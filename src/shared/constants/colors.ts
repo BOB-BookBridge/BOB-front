@@ -4,6 +4,7 @@ const common = {
   ERROR: '#FF4D4F',
   BADGE: '#FF5656',
   PRIMARY_100: '#FFF8E6',
+  SECONDARY_100: '#DFF1FF',
   BOOK_STATUS: {
     BEST: '#003867',
     HIGH: '#3F6484',

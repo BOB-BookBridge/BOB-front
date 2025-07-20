@@ -16,7 +16,7 @@ export interface ChatListProps {
   unreadCount: number;
 }
 
-export type ChatType = 'MESSAGE' | 'IMAGE' | 'SYSTEM';
+export type ChatType = 'TEXT' | 'IMAGE' | 'SYSTEM';
 
 export interface connectChatProps {
   event: string;
