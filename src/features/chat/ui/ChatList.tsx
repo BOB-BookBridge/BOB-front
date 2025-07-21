@@ -2,14 +2,15 @@
 
 import { useRouter } from 'next/navigation';
 import { useFABStore } from '@/shared/model';
-import { data } from '@/mocks/mockChatList';
 import ChatListItem from './ChatListItem';
+import { useChatQuery } from '@/entities/chat';
 
 const ChatList = () => {
   const router = useRouter();
   const isOpen = useFABStore((s) => s.chatIsOpen);
   const setShow = useFABStore((s) => s.setShow);
   const setChatId = useFABStore((s) => s.setChatId);
+  const { data } = useChatQuery();
 
   function handleClickChat(id: number | null) {
     if (isOpen) {
@@ -19,15 +20,17 @@ const ChatList = () => {
       if (id !== null) router.push(`/chats/${id}`);
     }
   }
+
   return (
     <div>
-      {data.map((chat, idx) => (
-        <ChatListItem
-          key={chat.chatroomId}
-          data={chat}
-          onClick={handleClickChat}
-        />
-      ))}
+      {data &&
+        data.map((chat, idx) => (
+          <ChatListItem
+            key={chat.chatroomId}
+            data={chat}
+            onClick={handleClickChat}
+          />
+        ))}
     </div>
   );
 };
