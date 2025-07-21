@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import DefaultProfile from '@/shared/assets/default-profile.svg';
-import { ChatListProps } from '@/entities/chat/types';
+import { Chat } from '@/entities/chat/types';
 import { convertDiffToString } from '@/shared/lib';
 import Badge from '@/shared/ui/Badge';
 
@@ -11,7 +11,7 @@ const ChatListItem = ({
   data,
   onClick,
 }: {
-  data: ChatListProps;
+  data: Chat;
   onClick: (e: number | null) => void;
 }) => {
   return (

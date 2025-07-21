@@ -5,7 +5,6 @@ import { compareDate, formatDate, formatTime } from '@/shared/lib';
 import {
   ChatMessage,
   connectChat,
-  connectChatProps,
   useChatInfoQuery,
   useMessageMutate,
   useMessageQuery,
@@ -17,7 +16,7 @@ import ChatRoomInfo from './ChatRoomInfo';
 import * as S from './ChatRoom.styles';
 import ChatImages from './ChatImages';
 import { Div } from './ChatWidget';
-import { ImageFile, useUploadImagesMutation } from '@/entities/files';
+import { useUploadImagesMutation } from '@/entities/files';
 import { DetailImage } from '@/entities/listing';
 
 const ChatRoom = () => {
@@ -37,7 +36,6 @@ const ChatRoom = () => {
   const { data: chatInfo } = useChatInfoQuery(chatRoomId!, {
     enabled: chatRoomId !== null,
   });
-  const [images, setImages] = useState<DetailImage[]>([]);
   const [chats, setChats] = useState<ChatMessage[]>([]);
 
   useEffect(() => {
@@ -51,9 +49,8 @@ const ChatRoom = () => {
     connectChat(chatRoomId, handleMessage, handleConnectError);
   }, []);
 
-  function handleMessage(data: connectChatProps) {
-    console.log(data.data);
-    // chats.messages.push(data.data);
+  function handleMessage(data: ChatMessage) {
+    setChats((prev) => [...prev, data]);
   }
   function handleConnectError(error: Event) {
     console.log(error);

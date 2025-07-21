@@ -1,7 +1,8 @@
 import axiosInstance from '@/shared/config/axios';
 import {
+  Chat,
   ChatInfo,
-  connectChatProps,
+  ChatMessage,
   getMessageResponse,
   postMessageProps,
   postNewChatProps,
@@ -14,7 +15,7 @@ export const postNewChat = async (props: postNewChatProps) => {
 
 export const connectChat = (
   chatroomId: number,
-  onMessage: (data: connectChatProps) => void,
+  onMessage: (data: ChatMessage) => void,
   onError: (error: Event) => void,
 ) => {
   const es = new EventSource(
@@ -22,10 +23,16 @@ export const connectChat = (
     { withCredentials: true },
   );
 
-  es.onmessage = (e) => {
-    const data = JSON.parse(e.data);
-    onMessage(data);
-  };
+  es.addEventListener('CHAT_MESSAGE', (e: MessageEvent) => {
+    try {
+      console.log('chatMessage', e.data);
+      const data = JSON.parse(e.data);
+      console.log('parse data', data);
+      onMessage(data);
+    } catch (err) {
+      console.error('파싱 실패', e.data);
+    }
+  });
 
   es.onerror = (e) => {
     onError(e);
@@ -60,5 +67,15 @@ export const getMessages = async (
   chatroomId: number,
 ): Promise<getMessageResponse> => {
   const { data } = await axiosInstance.get(`/chatrooms/${chatroomId}/messages`);
+  return data;
+};
+
+export const getChats = async (): Promise<Chat[]> => {
+  const { data } = await axiosInstance.get('/chatrooms');
+  return data;
+};
+
+export const getUnreadMessage = async () => {
+  const { data } = await axiosInstance.get('/chatrooms/messages/unread');
   return data;
 };
