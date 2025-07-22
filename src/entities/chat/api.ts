@@ -27,17 +27,10 @@ export const connectChat = (
   es.addEventListener('CHAT_MESSAGE', (e: MessageEvent) => {
     try {
       const data = JSON.parse(e.data);
-      onMessage(data);
+      if (data.type === 'TEXT') onMessage(data);
+      else if (data.type === 'READ_ACK') onRead();
     } catch (err) {
       console.error('파싱 실패', e.data);
-    }
-  });
-
-  es.addEventListener('READ_ACK', (e: MessageEvent) => {
-    try {
-      onRead();
-    } catch (err) {
-      console.error('SSE 실패', e.data);
     }
   });
 
