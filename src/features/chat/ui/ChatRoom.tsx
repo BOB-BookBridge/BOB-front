@@ -46,9 +46,20 @@ const ChatRoom = () => {
 
   useEffect(() => {
     if (!chatRoomId) return;
-    connectChat(chatRoomId, handleMessage, handleConnectError);
-  }, []);
+    const es = connectChat(
+      chatRoomId,
+      handleMessage,
+      handleRead,
+      handleConnectError,
+    );
+    return () => {
+      es.close();
+    };
+  }, [chatRoomId]);
 
+  function handleRead() {
+    setChats((prev) => prev.map((chat) => ({ ...chat, isRead: true })));
+  }
   function handleMessage(data: ChatMessage) {
     setChats((prev) => [...prev, data]);
   }
@@ -56,8 +67,6 @@ const ChatRoom = () => {
     console.log(error);
   }
   useEffect(() => {
-    console.log('length 변경');
-    console.log(chats);
     const behavior = hasMounted ? 'smooth' : 'auto';
 
     const timer = setTimeout(() => {
@@ -198,7 +207,9 @@ const ChatRoom = () => {
               ) : chat.isMine ? (
                 <S.SendChatWrapper>
                   <S.MessageInfo>
-                    {!chat.isRead && <S.UnreadText>1</S.UnreadText>}
+                    {!chat.isRead && !chat.isLoading && (
+                      <S.UnreadText>1</S.UnreadText>
+                    )}
                     {chat.sentAt ? (
                       <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
                     ) : (

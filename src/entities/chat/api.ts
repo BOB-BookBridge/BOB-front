@@ -16,6 +16,7 @@ export const postNewChat = async (props: postNewChatProps) => {
 export const connectChat = (
   chatroomId: number,
   onMessage: (data: ChatMessage) => void,
+  onRead: () => void,
   onError: (error: Event) => void,
 ) => {
   const es = new EventSource(
@@ -25,12 +26,18 @@ export const connectChat = (
 
   es.addEventListener('CHAT_MESSAGE', (e: MessageEvent) => {
     try {
-      console.log('chatMessage', e.data);
       const data = JSON.parse(e.data);
-      console.log('parse data', data);
       onMessage(data);
     } catch (err) {
       console.error('파싱 실패', e.data);
+    }
+  });
+
+  es.addEventListener('READ_ACK', (e: MessageEvent) => {
+    try {
+      onRead();
+    } catch (err) {
+      console.error('SSE 실패', e.data);
     }
   });
 

@@ -27,7 +27,7 @@ const FloatingButton = () => {
   const { toggleIsOpen, resetChat, resetAll } = useFABStore();
   const handleOpenChat = useHandleOpenChat();
   const isLogin = useMyStore((s) => s.isLogin);
-  const { data: unRead } = useUnreadQuery();
+  const { data: unRead } = useUnreadQuery(isLogin);
   const unReadCount = unRead ? unRead.unreadCount : 0;
 
   const hideHeader =

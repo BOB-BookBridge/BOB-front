@@ -62,9 +62,10 @@ export const useChatQuery = () => {
 };
 
 // #todo: 채팅방 입장, 알림 오면 갱신
-export const useUnreadQuery = () => {
+export const useUnreadQuery = (enabled: boolean) => {
   return useQuery({
     queryKey: ['unread'],
     queryFn: () => getUnreadMessage(),
+    enabled: enabled,
   });
 };
