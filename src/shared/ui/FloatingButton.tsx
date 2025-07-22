@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useTheme } from 'styled-components';
 import { useRouter, usePathname } from 'next/navigation';
 import { useFABStore, useThemeStore, useHandleOpenChat } from '../model';
+import { useMyStore } from '../model/useMyStore';
+import { useUnreadQuery } from '@/entities/chat';
 import * as S from './FloatingButton.styles';
 import { colors } from '../constants';
 import Badge from './Badge';
@@ -16,10 +18,6 @@ import {
   FABDefaultIcon,
 } from '../assets/icons';
 
-// #todo: isLogin zustand로 관리 예정
-const isLogin = true;
-const unReadCount = 199;
-
 const FloatingButton = () => {
   const mode = useThemeStore((state) => state.mode);
   const theme = useTheme();
@@ -28,6 +26,9 @@ const FloatingButton = () => {
   const isOpen = useFABStore((s) => s.isOpen);
   const { setIsOpen, toggleIsOpen, reset } = useFABStore();
   const handleOpenChat = useHandleOpenChat();
+  const isLogin = useMyStore((s) => s.isLogin);
+  const { data: unRead } = useUnreadQuery();
+  const unReadCount = unRead ? unRead.unreadCount : 0;
 
   const hideHeader =
     pathname?.startsWith('/login') ||
@@ -47,7 +48,7 @@ const FloatingButton = () => {
       icon: <ChatIcon />,
       label: '채팅',
       onClick: (e: React.MouseEvent) => handleOpenChat({ e }),
-      badge: unReadCount,
+      badge: unReadCount > 0 ? unReadCount : undefined,
     },
     {
       icon: <BookIcon />,
@@ -64,10 +65,13 @@ const FloatingButton = () => {
     if (isOpen) reset();
     toggleIsOpen();
   }
-
+  function handleClose() {
+    setIsOpen(false);
+    reset();
+  }
   return (
     <>
-      {isOpen && <S.Overlay onClick={() => setIsOpen(false)} />}
+      {isOpen && <S.Overlay onClick={handleClose} />}
       <S.Container onClick={isLogin ? handleClickToggle : handleClickAI}>
         <S.IconWrapper mode={mode} $isOpen={isOpen}>
           {isLogin ? (

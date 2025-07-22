@@ -1,8 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { useTheme } from 'styled-components';
 import { useRouter, usePathname } from 'next/navigation';
+import { useMyStore } from '@/shared/model/useMyStore';
 import { useThemeStore } from '../../../shared/model';
 import { colors } from '../../../shared/constants';
 import { useMyQuery } from '@/entities/user';
@@ -19,7 +21,9 @@ const Header = () => {
   const mode = useThemeStore((state) => state.mode);
   const toggleMode = useThemeStore((state) => state.toggleMode);
   const { data, isLoading, isError } = useMyQuery();
-  const isLogin = !isError && !!data?.memberId;
+  const isLogin = useMyStore((s) => s.isLogin);
+  const { setIsLogin } = useMyStore();
+
   const theme = useTheme();
   const router = useRouter();
   const pathname = usePathname();
@@ -28,6 +32,10 @@ const Header = () => {
     pathname?.startsWith('/signup') ||
     pathname?.startsWith('/password') ||
     pathname?.startsWith('/chats/');
+
+  useEffect(() => {
+    setIsLogin(!isError && !!data?.memberId);
+  }, [data, isError]);
 
   if (hideHeader) return null;
 
