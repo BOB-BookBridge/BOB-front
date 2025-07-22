@@ -28,22 +28,27 @@ const ChatRoomHeader = ({
 }: ChatRoomHeaderProps) => {
   const theme = useTheme();
   const router = useRouter();
-  const isOpen = useFABStore((s) => s.chatIsOpen);
-  const { reset, setShow, setChatId } = useFABStore();
+  const { setShow, setChatId } = useFABStore();
   const isMobile = useIsMobile();
   const { mutate: exitMutate } = useExitChatMutation();
+
   function handleBackClick() {
-    reset();
-    if (!isOpen) router.back();
+    if (isMobile) {
+      router.replace('/chats');
+    }
+    setShow('LIST');
+    setChatId(null);
   }
+
   function handleMeatballClick() {
     onClick();
   }
+
   function handleExitChat() {
     exitMutate(id, {
       onSuccess: () => {
         if (isMobile) {
-          router.back();
+          router.replace('/chats');
         } else {
           setShow('LIST');
           setChatId(null);
@@ -52,7 +57,9 @@ const ChatRoomHeader = ({
     });
   }
 
-  function handleClickNickname() {}
+  function handleClickNickname() {
+    router.push(`/profile/${partner.id}`);
+  }
   return (
     <S.Header>
       <S.IconWrapper onClick={handleBackClick}>

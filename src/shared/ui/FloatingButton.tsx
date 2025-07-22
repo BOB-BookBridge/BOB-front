@@ -24,7 +24,7 @@ const FloatingButton = () => {
   const router = useRouter();
   const pathname = usePathname();
   const isOpen = useFABStore((s) => s.isOpen);
-  const { setIsOpen, toggleIsOpen, reset } = useFABStore();
+  const { toggleIsOpen, resetChat, resetAll } = useFABStore();
   const handleOpenChat = useHandleOpenChat();
   const isLogin = useMyStore((s) => s.isLogin);
   const { data: unRead } = useUnreadQuery();
@@ -62,12 +62,11 @@ const FloatingButton = () => {
   }
 
   function handleClickToggle() {
-    if (isOpen) reset();
+    if (isOpen) resetChat();
     toggleIsOpen();
   }
   function handleClose() {
-    setIsOpen(false);
-    reset();
+    resetAll();
   }
   return (
     <>

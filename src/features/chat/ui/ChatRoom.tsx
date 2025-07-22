@@ -103,7 +103,7 @@ const ChatRoom = () => {
         isLoading: true,
       },
     ]);
-    console.log('fileNAmes', fileNames);
+
     sendMessage(
       {
         message: type === 'TEXT' ? message : null,
@@ -145,11 +145,9 @@ const ChatRoom = () => {
       { domain: 'CHAT', images: fileArray },
       {
         onSuccess: (uploadedImages) => {
-          console.log(uploadedImages);
           const sortedImages = uploadedImages.sort(
             (a, b) => a.sequence - b.sequence,
           );
-          console.log('uploaded', sortedImages);
           handleSendMessage({ images: sortedImages });
         },
       },
