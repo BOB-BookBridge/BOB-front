@@ -18,16 +18,6 @@ export interface ChatListProps {
 
 export type ChatType = 'TEXT' | 'IMAGE' | 'SYSTEM';
 
-export interface connectChatProps {
-  event: string;
-  data: {
-    id: number;
-    type: ChatType;
-    content: string;
-    images: string[];
-    sentAt: string;
-  };
-}
 export interface postNewChatResponse {
   chatRoomId: number;
 }
@@ -81,4 +71,13 @@ export interface ChatMessage {
   isRead?: boolean;
   isMine?: boolean;
   isLoading?: boolean;
+}
+
+export interface Chat {
+  chatroomId: number;
+  thumbnailUrl: string;
+  lastMessage: string;
+  lastMessageAt: string;
+  partner: ChatPartner;
+  unreadCount: number;
 }

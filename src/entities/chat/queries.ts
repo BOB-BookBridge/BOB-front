@@ -1,7 +1,9 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   getChatInfo,
+  getChats,
   getMessages,
+  getUnreadMessage,
   patchChatRoom,
   postMessageProps,
   postNewChat,
@@ -21,7 +23,7 @@ export const useChatInfoQuery = (
   options?: { enabled: boolean },
 ) => {
   return useQuery({
-    queryKey: ['chat', id],
+    queryKey: ['chatinfo', id],
     queryFn: ({ queryKey }) => getChatInfo(queryKey[1] as number),
     enabled: options?.enabled,
   });
@@ -49,5 +51,21 @@ export const useMessageQuery = (id: number, options?: { enabled: boolean }) => {
     queryKey: ['message', id],
     queryFn: ({ queryKey }) => getMessages(queryKey[1] as number),
     enabled: options?.enabled,
+  });
+};
+
+export const useChatQuery = () => {
+  return useQuery({
+    queryKey: ['chats'],
+    queryFn: () => getChats(),
+  });
+};
+
+// #todo: 채팅방 입장, 알림 오면 갱신
+export const useUnreadQuery = (enabled: boolean) => {
+  return useQuery({
+    queryKey: ['unread'],
+    queryFn: () => getUnreadMessage(),
+    enabled: enabled,
   });
 };

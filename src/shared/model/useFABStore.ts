@@ -12,7 +12,8 @@ interface FABState {
   setChatIsOpen: (b: boolean) => void;
   setShow: (s: 'LIST' | 'ROOM') => void;
   setChatId: (d: number | null) => void;
-  reset: () => void;
+  resetChat: () => void;
+  resetAll: () => void;
 }
 
 export const useFABStore = create<FABState>((set) => ({
@@ -35,7 +36,10 @@ export const useFABStore = create<FABState>((set) => ({
   setChatId: (d) => {
     set({ chatId: d });
   },
-  reset: () => {
+  resetChat: () => {
     set({ chatIsOpen: false, show: 'LIST', chatId: null });
+  },
+  resetAll: () => {
+    set({ isOpen: false, chatIsOpen: false, show: 'LIST', chatId: null });
   },
 }));

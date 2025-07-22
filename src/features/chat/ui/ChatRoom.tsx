@@ -5,7 +5,6 @@ import { compareDate, formatDate, formatTime } from '@/shared/lib';
 import {
   ChatMessage,
   connectChat,
-  connectChatProps,
   useChatInfoQuery,
   useMessageMutate,
   useMessageQuery,
@@ -17,7 +16,7 @@ import ChatRoomInfo from './ChatRoomInfo';
 import * as S from './ChatRoom.styles';
 import ChatImages from './ChatImages';
 import { Div } from './ChatWidget';
-import { ImageFile, useUploadImagesMutation } from '@/entities/files';
+import { useUploadImagesMutation } from '@/entities/files';
 import { DetailImage } from '@/entities/listing';
 
 const ChatRoom = () => {
@@ -37,7 +36,6 @@ const ChatRoom = () => {
   const { data: chatInfo } = useChatInfoQuery(chatRoomId!, {
     enabled: chatRoomId !== null,
   });
-  const [images, setImages] = useState<DetailImage[]>([]);
   const [chats, setChats] = useState<ChatMessage[]>([]);
 
   useEffect(() => {
@@ -48,19 +46,27 @@ const ChatRoom = () => {
 
   useEffect(() => {
     if (!chatRoomId) return;
-    connectChat(chatRoomId, handleMessage, handleConnectError);
-  }, []);
+    const es = connectChat(
+      chatRoomId,
+      handleMessage,
+      handleRead,
+      handleConnectError,
+    );
+    return () => {
+      es.close();
+    };
+  }, [chatRoomId]);
 
-  function handleMessage(data: connectChatProps) {
-    console.log(data.data);
-    // chats.messages.push(data.data);
+  function handleRead() {
+    setChats((prev) => prev.map((chat) => ({ ...chat, isRead: true })));
+  }
+  function handleMessage(data: ChatMessage) {
+    setChats((prev) => [...prev, data]);
   }
   function handleConnectError(error: Event) {
     console.log(error);
   }
   useEffect(() => {
-    console.log('length 변경');
-    console.log(chats);
     const behavior = hasMounted ? 'smooth' : 'auto';
 
     const timer = setTimeout(() => {
@@ -106,7 +112,7 @@ const ChatRoom = () => {
         isLoading: true,
       },
     ]);
-    console.log('fileNAmes', fileNames);
+
     sendMessage(
       {
         message: type === 'TEXT' ? message : null,
@@ -148,11 +154,9 @@ const ChatRoom = () => {
       { domain: 'CHAT', images: fileArray },
       {
         onSuccess: (uploadedImages) => {
-          console.log(uploadedImages);
           const sortedImages = uploadedImages.sort(
             (a, b) => a.sequence - b.sequence,
           );
-          console.log('uploaded', sortedImages);
           handleSendMessage({ images: sortedImages });
         },
       },
@@ -203,7 +207,9 @@ const ChatRoom = () => {
               ) : chat.isMine ? (
                 <S.SendChatWrapper>
                   <S.MessageInfo>
-                    {!chat.isRead && <S.UnreadText>1</S.UnreadText>}
+                    {!chat.isRead && !chat.isLoading && (
+                      <S.UnreadText>1</S.UnreadText>
+                    )}
                     {chat.sentAt ? (
                       <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
                     ) : (
