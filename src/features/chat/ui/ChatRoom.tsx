@@ -9,15 +9,21 @@ import {
   useMessageMutate,
   useMessageQuery,
 } from '@/entities/chat';
-import { AddIcon, SendIcon, SendReverseIcon } from '@/shared/assets/icons';
+import {
+  AddIcon,
+  ChatDeleteIcon,
+  ChatRefreshIcon,
+  SendIcon,
+  SendReverseIcon,
+} from '@/shared/assets/icons';
+import { useUploadImagesMutation } from '@/entities/files';
 import { useFABStore, useIsMobile } from '@/shared/model';
+import { DetailImage } from '@/entities/listing';
 import ChatRoomHeader from './ChatRoomHeader';
 import ChatRoomInfo from './ChatRoomInfo';
 import * as S from './ChatRoom.styles';
 import ChatImages from './ChatImages';
 import { Div } from './ChatWidget';
-import { useUploadImagesMutation } from '@/entities/files';
-import { DetailImage } from '@/entities/listing';
 
 const ChatRoom = () => {
   const theme = useTheme();
@@ -60,12 +66,15 @@ const ChatRoom = () => {
   function handleRead() {
     setChats((prev) => prev.map((chat) => ({ ...chat, isRead: true })));
   }
+
   function handleMessage(data: ChatMessage) {
     setChats((prev) => [...prev, data]);
   }
+
   function handleConnectError(error: Event) {
     console.log(error);
   }
+
   useEffect(() => {
     const behavior = hasMounted ? 'smooth' : 'auto';
 
@@ -91,33 +100,57 @@ const ChatRoom = () => {
 
   const { mutate: sendMessage } = useMessageMutate();
 
+  function handleClickRefresh(idx: number) {
+    handleSendMessage({ idx });
+  }
+  function handleClickDelete(idx: number) {
+    setChats((prev) => prev.filter((_, i) => i !== idx));
+  }
+
   function handleSendMessage({
     idx,
-    images,
+    sendImages,
   }: {
     idx?: number;
-    images?: DetailImage[];
+    sendImages?: DetailImage[];
   } = {}) {
-    if (!chatRoomId) return;
+    if (!chatRoomId || (!idx && message.length === 0)) return;
     const nowIdx = idx ? idx : (chats.length ?? 0);
-    const type = message.length !== 0 ? 'TEXT' : 'IMAGE';
-    const fileNames = images && images.map(({ fileName }) => fileName);
-    setChats((prev) => [
-      ...prev,
-      {
-        type,
-        content: type === 'TEXT' ? message : null,
-        images: images ? images : [],
-        isMine: true,
-        isLoading: true,
-      },
-    ]);
 
+    const type = idx
+      ? chats[idx].type
+      : message.length !== 0
+        ? 'TEXT'
+        : 'IMAGE';
+
+    const fileNames = idx
+      ? chats[idx].images.map(({ fileName }) => fileName)
+      : sendImages
+        ? sendImages.map(({ fileName }) => fileName)
+        : [];
+
+    const content = idx ? chats[idx].content : type === 'TEXT' ? message : null;
+
+    const images = sendImages ? sendImages : [];
+
+    if (!idx) {
+      setChats((prev) => [
+        ...prev,
+        {
+          type,
+          content,
+          images,
+          isMine: true,
+          isLoading: true,
+          sentAt: String(new Date()),
+        },
+      ]);
+    }
     sendMessage(
       {
-        message: type === 'TEXT' ? message : null,
+        message: content,
         chatroomId: chatRoomId,
-        fileNames: fileNames ? fileNames : [],
+        fileNames,
       },
       {
         onSuccess: (res) => {
@@ -130,6 +163,20 @@ const ChatRoom = () => {
                 isLoading: false,
                 isRead: res.isRead,
                 sentAt: String(new Date()),
+                isError: false,
+              };
+            }
+            return updated;
+          });
+        },
+        onError: () => {
+          setChats((prev) => {
+            const updated = [...prev];
+            const target = updated[nowIdx];
+            if (target) {
+              updated[nowIdx] = {
+                ...target,
+                isError: true,
               };
             }
             return updated;
@@ -157,7 +204,7 @@ const ChatRoom = () => {
           const sortedImages = uploadedImages.sort(
             (a, b) => a.sequence - b.sequence,
           );
-          handleSendMessage({ images: sortedImages });
+          handleSendMessage({ sendImages: sortedImages });
         },
       },
     );
@@ -207,13 +254,28 @@ const ChatRoom = () => {
               ) : chat.isMine ? (
                 <S.SendChatWrapper>
                   <S.MessageInfo>
-                    {!chat.isRead && !chat.isLoading && (
-                      <S.UnreadText>1</S.UnreadText>
-                    )}
-                    {chat.sentAt ? (
-                      <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
-                    ) : (
+                    {chat.isError ? (
+                      <S.ErrorBox>
+                        <ChatRefreshIcon
+                          stroke={theme.colors.BLACK}
+                          strokeWidth={2}
+                          strokeLinecap='round'
+                          onClick={() => handleClickRefresh(idx)}
+                        />
+                        <ChatDeleteIcon
+                          fill={theme.colors.ERROR}
+                          onClick={() => handleClickDelete(idx)}
+                        />
+                      </S.ErrorBox>
+                    ) : chat.isLoading ? (
                       <SendReverseIcon fill={theme.colors.GRAY_500} />
+                    ) : (
+                      <>
+                        {!chat.isRead && <S.UnreadText>1</S.UnreadText>}
+                        {chat.sentAt && (
+                          <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
+                        )}
+                      </>
                     )}
                   </S.MessageInfo>
                   {chat.type === 'IMAGE' ? (

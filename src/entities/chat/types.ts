@@ -71,6 +71,7 @@ export interface ChatMessage {
   isRead?: boolean;
   isMine?: boolean;
   isLoading?: boolean;
+  isError?: boolean;
 }
 
 export interface Chat {
