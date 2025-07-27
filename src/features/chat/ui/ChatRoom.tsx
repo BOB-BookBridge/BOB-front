@@ -16,6 +16,7 @@ import {
   SendIcon,
   SendReverseIcon,
 } from '@/shared/assets/icons';
+import { useFailedChatStore } from '../model/useFailedChatStore';
 import { useUploadImagesMutation } from '@/entities/files';
 import { useFABStore, useIsMobile } from '@/shared/model';
 import { DetailImage } from '@/entities/listing';
@@ -43,12 +44,15 @@ const ChatRoom = () => {
     enabled: chatRoomId !== null,
   });
   const [chats, setChats] = useState<ChatMessage[]>([]);
+  const failedChats = useFailedChatStore((state) => state.failedChats);
+  const { addFailedChat, deleteFailedChat } = useFailedChatStore();
 
   useEffect(() => {
-    if (chatData) {
-      setChats(chatData.messages);
+    if (!chatData || !chatRoomId) return;
+    if (chatData && failedChats[chatRoomId]) {
+      setChats([...chatData.messages, ...failedChats[chatRoomId]]);
     }
-  }, [chatData]);
+  }, [chatData, chatRoomId]);
 
   useEffect(() => {
     if (!chatRoomId) return;
@@ -101,9 +105,13 @@ const ChatRoom = () => {
   const { mutate: sendMessage } = useMessageMutate();
 
   function handleClickRefresh(idx: number) {
+    if (!chats[idx].clientId || !chatRoomId) return;
+    deleteFailedChat(chatRoomId, chats[idx].clientId);
     handleSendMessage({ idx });
   }
   function handleClickDelete(idx: number) {
+    if (!chats[idx].clientId || !chatRoomId) return;
+    deleteFailedChat(chatRoomId, chats[idx].clientId);
     setChats((prev) => prev.filter((_, i) => i !== idx));
   }
 
@@ -115,7 +123,7 @@ const ChatRoom = () => {
     sendImages?: DetailImage[];
   } = {}) {
     if (!chatRoomId || (!idx && message.length === 0)) return;
-    const nowIdx = idx ? idx : (chats.length ?? 0);
+    const nowIdx = typeof idx === 'number' ? idx : chats.length;
 
     const type = idx
       ? chats[idx].type
@@ -168,6 +176,8 @@ const ChatRoom = () => {
             }
             return updated;
           });
+          if (chats[nowIdx].clientId)
+            deleteFailedChat(chatRoomId, chats[nowIdx].clientId);
         },
         onError: () => {
           setChats((prev) => {
@@ -178,6 +188,11 @@ const ChatRoom = () => {
                 ...target,
                 isError: true,
               };
+              addFailedChat(chatRoomId, {
+                ...target,
+                isError: true,
+                clientId: target.clientId ?? crypto.randomUUID(),
+              });
             }
             return updated;
           });

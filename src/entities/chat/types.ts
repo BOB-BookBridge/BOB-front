@@ -72,6 +72,7 @@ export interface ChatMessage {
   isMine?: boolean;
   isLoading?: boolean;
   isError?: boolean;
+  clientId?: string;
 }
 
 export interface Chat {
