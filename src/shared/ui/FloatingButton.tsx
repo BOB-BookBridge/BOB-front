@@ -30,13 +30,14 @@ const FloatingButton = () => {
   const { data: unRead } = useUnreadQuery(isLogin);
   const unReadCount = unRead ? unRead.unreadCount : 0;
 
-  const hideHeader =
+  const hideButton =
     pathname?.startsWith('/login') ||
     pathname?.startsWith('/signup') ||
     pathname?.startsWith('/password') ||
     pathname?.startsWith('/listings/write') ||
-    pathname?.startsWith('/chats');
-  if (hideHeader) return null;
+    pathname?.startsWith('/chats') ||
+    pathname?.startsWith('/ai');
+  if (hideButton) return null;
 
   const menuItems = [
     {
