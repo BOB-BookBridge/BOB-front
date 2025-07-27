@@ -188,6 +188,16 @@ export const SendChatWrapper = styled.div`
   gap: 5px;
 `;
 
+export const ErrorBox = styled.div`
+  position: relative;
+  display: flex;
+  gap: 3px;
+  background-color: ${({ theme }) => theme.colors.GRAY_300};
+  padding: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+`;
+
 export const SendChat = styled.div`
   background-color: ${({ theme }) => theme.colors.SENDCHAT_BACK};
   color: ${({ theme }) => theme.colors.SENDCHAT_TEXT};

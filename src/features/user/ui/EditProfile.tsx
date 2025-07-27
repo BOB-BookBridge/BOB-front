@@ -5,12 +5,15 @@ import EditNickname from './EditNickname';
 import EditPassword from './EditPassword';
 import * as S from './EditProfile.styles';
 import EditArea from './EditArea';
+import { useFailedChatStore } from '@/features/chat/model/useFailedChatStore';
 
 const EditProfile = () => {
   const { data } = useMyQuery();
   const { mutate: logout } = useLogoutMutation();
+  const { reset } = useFailedChatStore();
   function handleLogout() {
     logout();
+    reset();
   }
   function handleDeleteAccount() {}
   return (

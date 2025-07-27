@@ -32,6 +32,7 @@ import RawArrowBack from './arrow-back.svg';
 import RawAdd from './add.svg';
 import RawSend from './send.svg';
 import RawSendReverse from './send-reverse.svg';
+import RawRefresh from './refresh.svg';
 
 export const UserIcon = withIconSize(RawUserIcon);
 export const NotiIcon = withIconSize(RawNotiIcon);
@@ -73,3 +74,5 @@ export const ChatMeatballsIcon = withIconSize(RawMeatballsIcon, 24);
 export const AddIcon = withIconSize(RawAdd, 20);
 export const SendIcon = withIconSize(RawSend, 18);
 export const SendReverseIcon = withIconSize(RawSendReverse, 12);
+export const ChatRefreshIcon = withIconSize(RawRefresh, 18);
+export const ChatDeleteIcon = withIconSize(RawCloseIcon, 18);
