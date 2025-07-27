@@ -52,7 +52,7 @@ const ChatRoom = () => {
     if (chatData && failedChats[chatRoomId]) {
       setChats([...chatData.messages, ...failedChats[chatRoomId]]);
     }
-  }, [chatData, chatRoomId]);
+  }, [chatData, chatRoomId, failedChats]);
 
   useEffect(() => {
     if (!chatRoomId) return;
@@ -88,7 +88,7 @@ const ChatRoom = () => {
     }, 0);
 
     return () => clearTimeout(timer);
-  }, [chats.length]);
+  }, [chats.length, hasMounted]);
 
   function handleCloseOverlay() {
     setIsOpenMenu(false);
