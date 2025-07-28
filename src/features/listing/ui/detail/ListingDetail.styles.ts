@@ -6,7 +6,6 @@ export const Container = styled.div`
   @media (max-width: 479px) {
     flex-direction: column;
   }
-  cursor: pointer;
 `;
 
 export const LeftSection = styled.div`
@@ -51,6 +50,7 @@ export const UserInfo = styled.div`
   justify-content: flex-start;
   gap: 10px;
   margin-top: 10px;
+  cursor: pointer;
 `;
 
 export const UserText = styled.div`
