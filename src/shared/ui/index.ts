@@ -6,7 +6,9 @@ import { SelectAreaSection } from './SelectAreaSection';
 import CheckBox from './CheckBox';
 import CheckCircle from './CheckCircle';
 import ModalLayout from './ModalLayout';
+import { LoadingIndicator } from './LoadingIndicator';
 import { FallbackGlobal } from './FallbackGlobal';
+
 export {
   Button,
   CheckBox,
@@ -16,5 +18,6 @@ export {
   InputGroup,
   ModalLayout,
   FallbackGlobal,
+  LoadingIndicator,
   SelectAreaSection,
 };

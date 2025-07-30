@@ -3,7 +3,7 @@ import { parseStringPromise } from 'xml2js';
 
 export async function GET(req: NextRequest) {
   const query = req.nextUrl.searchParams.get('query');
-  const apiKey = process.env.NEXT_PUBLIC_ALADIN_TTB_KEY;
+  const apiKey = process.env.ALADIN_TTB_KEY;
 
   try {
     const response = await fetch(

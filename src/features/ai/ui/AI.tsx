@@ -1,6 +1,8 @@
 import { useTheme } from 'styled-components';
 import React, { useState, useEffect, useRef } from 'react';
+import { ChatRole, sendChatToAI } from '@/entities/ai';
 import { SendIcon } from '@/shared/assets/icons';
+import { LoadingIndicator } from '@/shared/ui';
 import {
   ReceiveChat,
   ReceiveChatWrapper,
@@ -12,8 +14,8 @@ import * as S from './AI.styles';
 interface AIMessage {
   id?: string;
   content: string;
+  role: ChatRole;
   sentAt?: string;
-  isMine?: boolean;
   isLoading?: boolean;
   isError?: boolean;
 }
@@ -21,7 +23,7 @@ const AI = () => {
   const theme = useTheme();
   const [message, setMessage] = useState('');
   const bottomRef = useRef<HTMLDivElement | null>(null);
-  const [chats, setChats] = useState<AIMessage[]>([]);
+  const [messages, setMessages] = useState<AIMessage[]>([]);
 
   useEffect(() => {
     const behavior = 'smooth';
@@ -31,7 +33,7 @@ const AI = () => {
     }, 0);
 
     return () => clearTimeout(timer);
-  }, [chats.length]);
+  }, [messages.length]);
 
   function handleInputMessage(value: string) {
     setMessage(value);
@@ -39,37 +41,73 @@ const AI = () => {
 
   function handleSendMessage() {
     if (message.length === 0) return;
-    setChats((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        content: message,
-        sentAt: String(new Date()),
-        isMine: true,
-        isLoading: true,
-        isError: false,
-      },
-      {
-        id: crypto.randomUUID(),
-        content:
-          '떠나는 길에 네가 내게 말했지 너는 바라는 게 너무나 많아 아냐, 내가 늘 바란 건 하나야 한 개뿐이야, 달디단, 밤양갱 달디달고, 달디달고, 달디단, 밤양갱, 밤양갱 내가 먹고 싶었던 건, 달디단, 밤양갱, 밤양갱이야 상다리가 부러지고 둘이서 먹다 하나가 쓰러져버려도 나라는 사람을 몰랐던 넌 떠나가다가 돌아서서 말했지 너는 바라는 게 너무나 많아 아냐, 내가 늘 바란 건 하나야 한 개뿐이야, 달디단, 밤양갱',
-        sentAt: String(new Date()),
-        isMine: false,
-        isLoading: true,
-        isError: false,
-      },
-    ]);
+    setMessages((prev) => {
+      const updated = [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          content: message,
+          sentAt: String(new Date()),
+          role: 'user' as const,
+          isLoading: true,
+          isError: false,
+        },
+      ];
+      fetchAIResponse(updated);
+      return updated;
+    });
     setMessage('');
+  }
+
+  async function fetchAIResponse(updated: AIMessage[]) {
+    try {
+      const res = await sendChatToAI({
+        messages: updated.map(({ role, content }) => ({ role, content })),
+      });
+
+      setMessages((prev) => [
+        ...prev.map((m) =>
+          m.role === 'user' && m.isLoading ? { ...m, isLoading: false } : m,
+        ),
+        {
+          id: crypto.randomUUID(),
+          content: res.reply,
+          sentAt: new Date().toISOString(),
+          role: 'assistant',
+          isLoading: false,
+          isError: res.error,
+        },
+      ]);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev.map((m) =>
+          m.role === 'user' && m.isLoading
+            ? { ...m, isLoading: false, isError: true }
+            : m,
+        ),
+        {
+          id: crypto.randomUUID(),
+          content: '네트워크 오류가 발생했어요. 다시 시도해주세요.',
+          sentAt: new Date().toISOString(),
+          role: 'assistant',
+          isLoading: false,
+          isError: true,
+        },
+      ]);
+    }
   }
 
   function handleEnterEvent(e: React.KeyboardEvent) {
     if (e.key === 'Enter' && e.nativeEvent.isComposing === false)
       handleSendMessage();
   }
+  function splitMessage(text: string) {
+    return text.replace(/\r\n/g, '\n').replace(/\\n/g, '\n').split('\n');
+  }
 
   return (
     <S.Container>
-      {chats.length === 0 ? (
+      {messages.length === 0 ? (
         <S.Notice>
           <div style={{ fontSize: 24, fontWeight: 600 }}>
             책 속 길잡이, 당신만의 AI 북메이트
@@ -89,17 +127,36 @@ const AI = () => {
       ) : (
         <S.ChatScrollWrapper>
           <S.Chats>
-            {chats.map((chat, idx) => {
-              const isLast = idx === chats.length - 1;
+            {messages.map((chat, idx) => {
+              const isLast = idx === messages.length - 1;
               return (
                 <React.Fragment key={chat.id}>
-                  {chat.isMine ? (
+                  {chat.role === 'user' ? (
                     <SendChatWrapper>
-                      <SendChat>{chat.content}</SendChat>
+                      <SendChat>
+                        {splitMessage(chat.content).map((line, idx) => (
+                          <React.Fragment key={idx}>
+                            <span>{line}</span>
+                            <br />
+                          </React.Fragment>
+                        ))}
+                      </SendChat>
                     </SendChatWrapper>
                   ) : (
                     <ReceiveChatWrapper>
-                      <ReceiveChat>{chat.content}</ReceiveChat>
+                      <ReceiveChat>
+                        {splitMessage(chat.content).map((line, idx) => (
+                          <React.Fragment key={idx}>
+                            <span>{line}</span>
+                            <br />
+                          </React.Fragment>
+                        ))}
+                      </ReceiveChat>
+                    </ReceiveChatWrapper>
+                  )}
+                  {chat.isLoading && (
+                    <ReceiveChatWrapper>
+                      <LoadingIndicator text='생각중...' />
                     </ReceiveChatWrapper>
                   )}
                   {isLast && <div ref={bottomRef} />}
@@ -109,7 +166,7 @@ const AI = () => {
           </S.Chats>
         </S.ChatScrollWrapper>
       )}
-      <S.InputWrapper $isActivate={chats.length > 0 ? true : false}>
+      <S.InputWrapper $isActivate={messages.length > 0 ? true : false}>
         <S.Input
           onKeyDown={handleEnterEvent}
           value={message}

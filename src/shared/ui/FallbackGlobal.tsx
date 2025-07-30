@@ -2,23 +2,22 @@
 
 import styled from 'styled-components';
 import { FallbackProps } from 'react-error-boundary';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { getErrorDataByCode } from '@/shared/lib';
 
 export const FallbackGlobal = ({
   error,
   resetErrorBoundary,
 }: FallbackProps) => {
-  const router = useRouter();
   const pathname = usePathname();
 
   const navigatePage = (to: string) => {
-    resetErrorBoundary();
     if (pathname === to) {
       window.location.reload();
     } else {
-      router.push(to);
+      window.location.href = to;
     }
+    resetErrorBoundary();
   };
 
   const errorData = getErrorDataByCode(error);

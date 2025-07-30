@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
+import { LoadingIndicator } from '@/shared/ui';
 import { useWriteStore } from '../../model/useWriteStore';
 import { cleanHtmlText, formatDate } from '@/shared/lib';
 import { AladinItemType } from '@/entities/aladin/type';
@@ -18,11 +19,14 @@ const SearchModalContent = ({ value, onClose }: SearchModalContentProps) => {
   const [selected, setSelected] = useState<AladinItemType | null>(null);
   const [result, setResult] = useState<AladinItemType[] | null>();
   const { setBook } = useWriteStore();
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
+    setIsLoading(true);
     const debounce = setTimeout(() => {
       if (newValue) {
         searchBook(newValue).then((data) => {
           setResult(data.item);
+          setIsLoading(false);
         });
       }
     }, 500);
@@ -83,7 +87,11 @@ const SearchModalContent = ({ value, onClose }: SearchModalContentProps) => {
         />
       </SearchBarWrapper>
       <BookListWrapper>
-        {result && result.length > 0 ? (
+        {isLoading ? (
+          <LoadingContainer>
+            <LoadingIndicator text='찾는중...' />
+          </LoadingContainer>
+        ) : result && result.length > 0 ? (
           result.map((item) => (
             <BookItemWrapper
               key={item.itemId}
@@ -178,4 +186,11 @@ const EmptyMessage = styled.div`
   margin: 20px 0;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.GRAY_600};
+`;
+
+const LoadingContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 `;
