@@ -9,6 +9,7 @@ import {
 } from '@/features/chat/ui/ChatRoom.styles';
 import * as S from './AI.styles';
 import { ChatRole, sendChatToAI } from '@/entities/ai';
+import { ThinkingIndicator } from './ThinkingIndicator';
 
 interface AIMessage {
   id?: string;
@@ -154,7 +155,9 @@ const AI = () => {
                     </ReceiveChatWrapper>
                   )}
                   {chat.isLoading && (
-                    <ReceiveChatWrapper>생각중</ReceiveChatWrapper>
+                    <ReceiveChatWrapper>
+                      <ThinkingIndicator />
+                    </ReceiveChatWrapper>
                   )}
                   {isLast && <div ref={bottomRef} />}
                 </React.Fragment>
