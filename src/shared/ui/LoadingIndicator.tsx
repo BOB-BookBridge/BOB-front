@@ -1,10 +1,9 @@
-import React from 'react';
+'use client';
 import styled, { keyframes } from 'styled-components';
 
-export const ThinkingIndicator = () => {
-  const text = '생각 중…';
+export const LoadingIndicator = ({ text }: { text: string }) => {
   return (
-    <Container aria-label='생각 중'>
+    <Container aria-label='로딩'>
       {Array.from(text).map((char, idx) => (
         <Char key={idx} delay={idx * 0.1}>
           {char}

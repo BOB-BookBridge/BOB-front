@@ -1,6 +1,8 @@
 import { useTheme } from 'styled-components';
 import React, { useState, useEffect, useRef } from 'react';
+import { ChatRole, sendChatToAI } from '@/entities/ai';
 import { SendIcon } from '@/shared/assets/icons';
+import { LoadingIndicator } from '@/shared/ui';
 import {
   ReceiveChat,
   ReceiveChatWrapper,
@@ -8,8 +10,6 @@ import {
   SendChatWrapper,
 } from '@/features/chat/ui/ChatRoom.styles';
 import * as S from './AI.styles';
-import { ChatRole, sendChatToAI } from '@/entities/ai';
-import { ThinkingIndicator } from './ThinkingIndicator';
 
 interface AIMessage {
   id?: string;
@@ -156,7 +156,7 @@ const AI = () => {
                   )}
                   {chat.isLoading && (
                     <ReceiveChatWrapper>
-                      <ThinkingIndicator />
+                      <LoadingIndicator text='생각중...' />
                     </ReceiveChatWrapper>
                   )}
                   {isLast && <div ref={bottomRef} />}
