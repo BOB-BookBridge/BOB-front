@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useTheme } from 'styled-components';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useFABStore, useThemeStore, useHandleOpenChat } from '../model';
 import { useMyStore } from '../model/useMyStore';
@@ -18,6 +19,18 @@ import {
   FABDefaultIcon,
 } from '../assets/icons';
 
+interface Sender {
+  id: string;
+  nickname: string;
+  profile: string | null;
+}
+interface NotiType {
+  type: 'CHAT' | 'TRADE';
+  refId: number;
+  body: string;
+  sender: Sender | null;
+  sentAt: string;
+}
 const FloatingButton = () => {
   const mode = useThemeStore((state) => state.mode);
   const theme = useTheme();
@@ -29,6 +42,42 @@ const FloatingButton = () => {
   const isLogin = useMyStore((s) => s.isLogin);
   const { data: unRead } = useUnreadQuery(isLogin);
   const unReadCount = unRead ? unRead.unreadCount : 0;
+
+  const [visibleNoti, setVisibleNoti] = useState<NotiType | null>(null);
+  const [dismissing, setDismissing] = useState<boolean>(false);
+  const timers = useRef<{ fade?: number; clear?: number }>({});
+
+  const onNoti = useCallback((newNoti: NotiType) => {
+    clearTimeout(timers.current.fade);
+    clearTimeout(timers.current.clear);
+
+    setVisibleNoti(newNoti);
+    setDismissing(false);
+
+    timers.current.fade = window.setTimeout(() => {
+      setDismissing(true);
+    }, 2500);
+
+    timers.current.clear = window.setTimeout(() => {
+      setVisibleNoti(null);
+    }, 3000);
+  }, []);
+
+  const noti = {
+    type: 'CHAT' as const,
+    refId: 1,
+    body: '메시지만 보낼래',
+    sender: {
+      id: '0197f9e2-7654-7e9a-98dc-70e7fd1a69b9',
+      nickname: 'manager',
+      profile: null,
+    },
+    sentAt: '2025-07-13T03:39:41.978509',
+  };
+
+  useEffect(() => {
+    onNoti(noti);
+  }, []);
 
   const hideButton =
     pathname?.startsWith('/login') ||
@@ -73,6 +122,13 @@ const FloatingButton = () => {
     <>
       {isOpen && <S.Overlay onClick={handleClose} />}
       <S.Container onClick={isLogin ? handleClickToggle : handleClickAI}>
+        {visibleNoti && (
+          <S.Noti $dismiss={dismissing}>
+            {noti.type === 'CHAT'
+              ? `${noti.sender.nickname}: ${noti.body}`
+              : noti.body}
+          </S.Noti>
+        )}
         <S.IconWrapper mode={mode} $isOpen={isOpen}>
           {isLogin ? (
             isOpen ? (
