@@ -1,4 +1,20 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const fadeOut = keyframes`
+  from { opacity: 1; }
+  to   { opacity: 0; }
+`;
 
 export const Overlay = styled.div`
   position: fixed;
@@ -19,6 +35,33 @@ export const Container = styled.div`
   z-index: ${({ theme }) => theme.zIndex.fab};
   flex-direction: column;
   align-items: flex-end;
+`;
+
+export const Noti = styled.div<{ $dismiss: boolean }>`
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  padding: 10px;
+  border-radius: 15px;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: ${({ theme }) => theme.colors.GRAY_200};
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+  animation: ${({ $dismiss }) =>
+    $dismiss
+      ? css`
+          ${fadeOut} 0.3s ease-in forwards
+        `
+      : css`
+          ${fadeInUp} 0.2s ease-out forwards
+        `};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.GRAY_300};
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 interface IconWrapperProps {
