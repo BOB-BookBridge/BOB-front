@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { useTheme } from 'styled-components';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useFABStore, useThemeStore, useHandleOpenChat } from '../model';
+import { connectNoti, Notification } from '../model/connectNoti';
 import { useMyStore } from '../model/useMyStore';
 import { useUnreadQuery } from '@/entities/chat';
 import * as S from './FloatingButton.styles';
@@ -19,18 +20,6 @@ import {
   FABDefaultIcon,
 } from '../assets/icons';
 
-interface Sender {
-  id: string;
-  nickname: string;
-  profile: string | null;
-}
-interface NotiType {
-  type: 'CHAT' | 'TRADE';
-  refId: number;
-  body: string;
-  sender: Sender | null;
-  sentAt: string;
-}
 const FloatingButton = () => {
   const mode = useThemeStore((state) => state.mode);
   const theme = useTheme();
@@ -43,11 +32,11 @@ const FloatingButton = () => {
   const { data: unRead } = useUnreadQuery(isLogin);
   const unReadCount = unRead ? unRead.unreadCount : 0;
 
-  const [visibleNoti, setVisibleNoti] = useState<NotiType | null>(null);
+  const [visibleNoti, setVisibleNoti] = useState<Notification | null>(null);
   const [dismissing, setDismissing] = useState<boolean>(false);
   const timers = useRef<{ fade?: number; clear?: number }>({});
 
-  const onNoti = useCallback((newNoti: NotiType) => {
+  const onNoti = useCallback((newNoti: Notification) => {
     clearTimeout(timers.current.fade);
     clearTimeout(timers.current.clear);
 
@@ -63,20 +52,10 @@ const FloatingButton = () => {
     }, 3000);
   }, []);
 
-  const noti = {
-    type: 'CHAT' as const,
-    refId: 1,
-    body: '메시지만 보낼래',
-    sender: {
-      id: '0197f9e2-7654-7e9a-98dc-70e7fd1a69b9',
-      nickname: 'manager',
-      profile: null,
-    },
-    sentAt: '2025-07-13T03:39:41.978509',
-  };
-
   useEffect(() => {
-    onNoti(noti);
+    connectNoti(onNoti, () => {
+      console.log('error');
+    });
   }, []);
 
   const hideButton =
@@ -115,18 +94,28 @@ const FloatingButton = () => {
     if (isOpen) resetChat();
     toggleIsOpen();
   }
+
   function handleClose() {
     resetAll();
+  }
+
+  function handleNoti() {
+    if (!visibleNoti) return;
+    if (visibleNoti.type === 'CHAT') {
+      handleOpenChat({ chatId: visibleNoti.refId });
+    } else if (visibleNoti.type === 'TRADE') {
+      router.push(`/listings/${visibleNoti.refId}`);
+    }
   }
   return (
     <>
       {isOpen && <S.Overlay onClick={handleClose} />}
       <S.Container onClick={isLogin ? handleClickToggle : handleClickAI}>
         {visibleNoti && (
-          <S.Noti $dismiss={dismissing}>
-            {noti.type === 'CHAT'
-              ? `${noti.sender.nickname}: ${noti.body}`
-              : noti.body}
+          <S.Noti $dismiss={dismissing} onClick={handleNoti}>
+            {visibleNoti.type === 'CHAT' && visibleNoti.sender
+              ? `${visibleNoti.sender.nickname}: ${visibleNoti.body}`
+              : visibleNoti.body}
           </S.Noti>
         )}
         <S.IconWrapper mode={mode} $isOpen={isOpen}>
