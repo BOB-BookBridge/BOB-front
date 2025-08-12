@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
 import { useIsMobile } from '@/shared/model';
 import ChatRoom from '@/features/chat/ui/ChatRoom';
+import { LocalErrorBoundary } from '@/shared/lib';
 
 const ChatRoomPage = () => {
   const isMobile = useIsMobile();
@@ -21,7 +22,9 @@ const ChatRoomPage = () => {
 
   return (
     <Container>
-      <ChatRoom />
+      <LocalErrorBoundary>
+        <ChatRoom />
+      </LocalErrorBoundary>
     </Container>
   );
 };

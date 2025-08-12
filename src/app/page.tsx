@@ -7,6 +7,7 @@ import {
   ListingList,
 } from '@/features/listing/ui';
 import { FilterSidebar } from '@/features/listing/ui';
+import { LocalErrorBoundary } from '@/shared/lib';
 
 const Home = () => {
   return (
@@ -15,7 +16,9 @@ const Home = () => {
       <ControlsMobile />
       <div style={{ display: 'flex' }}>
         <FilterSidebar />
-        <ListingList />
+        <LocalErrorBoundary>
+          <ListingList />
+        </LocalErrorBoundary>
       </div>
     </Container>
   );

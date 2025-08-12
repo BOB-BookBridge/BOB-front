@@ -7,6 +7,7 @@ import {
   useListingQuery,
 } from '@/entities/listing';
 import { useFilterStore } from '@/features/listing/model';
+import { LoadingIndicator } from '@/shared/ui';
 import { useMyQuery } from '@/entities/user';
 import ListingCard from './ListingCard';
 
@@ -51,28 +52,41 @@ const ListingList = ({
     data: listingData,
     fetchNextPage: fetchListingNext,
     hasNextPage: hasListingNext,
+    isPending: isListingPending,
+    isError: isListingError,
   } = useListingQuery(filter);
 
   const {
     data: favoriteData,
     fetchNextPage: fetchFavoriteNext,
     hasNextPage: hasFavoriteNext,
+    isPending: isFavoritePending,
+    isError: isFavoriteError,
   } = useFavoritesQuery(isFavorite ? true : false);
 
   const data = isFavorite ? favoriteData : listingData;
   const fetchNextPage = isFavorite ? fetchFavoriteNext : fetchListingNext;
   const hasNextPage = isFavorite ? hasFavoriteNext : hasListingNext;
+  const isPending = isListingPending || isFavoritePending;
+  const isError = isListingError || isFavoriteError;
 
   const listings = data?.pages.flatMap((page) => page.posts) ?? [];
-
   function handleLoadMore() {
     fetchNextPage();
   }
 
   return (
     <Container>
-      {listings.length === 0 ? (
-        <EmptyMessage>판매글이 없습니다.</EmptyMessage>
+      {isPending ? (
+        <LoadingIndicator text='불러오는중' />
+      ) : isError ? (
+        <></>
+      ) : listings.length === 0 ? (
+        <EmptyMessage>
+          판매글이 없습니다.
+          <br />
+          판매글을 올려 보세요!
+        </EmptyMessage>
       ) : (
         <ListWrapper>
           {listings.map((listing) => (
@@ -97,6 +111,7 @@ export const Container = styled.div`
   height: 90%;
 `;
 export const EmptyMessage = styled.div`
+  text-align: center;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.GRAY_600};
 `;

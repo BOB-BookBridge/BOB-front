@@ -4,10 +4,10 @@ import localFont from 'next/font/local';
 import { ToastContainer } from 'react-toastify';
 import StyledComponentsRegistry from '@/shared/lib/StyledComponentsRegistry';
 import { ReactQueryClientProvider, ThemeRegistry } from '@/shared/providers';
-import { FloatingButton } from '@/shared/ui';
-import { ChatWidget } from '@/features/chat/ui';
 import { GlobalErrorBoundary } from '@/shared/lib';
+import { ChatWidget } from '@/features/chat/ui';
 import { Header } from '@/features/header/ui';
+import { FloatingButton } from '@/shared/ui';
 
 const pretendard = localFont({
   src: '../shared/assets/fonts/PretendardVariable.woff2',

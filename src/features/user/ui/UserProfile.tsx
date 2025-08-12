@@ -6,11 +6,12 @@ import { ListingList } from '@/features/listing/ui';
 import { useMediaQuery } from '@/shared/model';
 import { useUserQuery } from '@/entities/user';
 import { getAreaNameById } from '../lib';
+import { LocalErrorBoundary } from '@/shared/lib';
 
 const UserProfile = ({ id }: { id: string }) => {
   const isMobile = useMediaQuery(`(max-width: 393px)`);
   const profileWidth = useMemo(() => (isMobile ? 50 : 80), [isMobile]);
-  const { data, isPending, isError } = useUserQuery(id);
+  const { data } = useUserQuery(id);
 
   return (
     <Container>
@@ -33,7 +34,9 @@ const UserProfile = ({ id }: { id: string }) => {
             </div>
           </Profile>
           <BoldText>[{data.nickname}]의 판매글</BoldText>
-          <ListingList isUserPage={true} id={id} />
+          <LocalErrorBoundary>
+            <ListingList isUserPage={true} id={id} />
+          </LocalErrorBoundary>
         </>
       )}
     </Container>

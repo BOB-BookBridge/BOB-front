@@ -20,7 +20,7 @@ import {
 const Header = () => {
   const mode = useThemeStore((state) => state.mode);
   const toggleMode = useThemeStore((state) => state.toggleMode);
-  const { data, isLoading, isError } = useMyQuery();
+  const { data, isPending, isError } = useMyQuery();
   const isLogin = useMyStore((s) => s.isLogin);
   const { setIsLogin } = useMyStore();
 
@@ -57,7 +57,7 @@ const Header = () => {
             <LightModeIcon fill={colors.dark.PRIMARY} />
           )}
         </div>
-        {!isLoading && isLogin ? (
+        {!isPending && isLogin ? (
           <S.IconGroup>
             <Link
               href='/my'
@@ -74,7 +74,7 @@ const Header = () => {
             </Link>
             <NotiIcon stroke={theme.colors.BLACK} strokeWidth={2} fill='none' />
           </S.IconGroup>
-        ) : !isLoading && !isLogin ? (
+        ) : !isPending && !isLogin ? (
           <S.LoginButton onClick={() => router.push('/login')}>
             로그인
           </S.LoginButton>
