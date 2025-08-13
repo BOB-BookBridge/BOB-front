@@ -23,7 +23,7 @@ export const connectNoti = (
   es.addEventListener('NOTIFICATION', (e: MessageEvent) => {
     try {
       const data = JSON.parse(e.data);
-      onNoti(data);
+      if (data.type === 'CHAT') onNoti(data);
     } catch (err) {
       console.error('파싱 실패', e.data);
     }

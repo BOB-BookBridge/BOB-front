@@ -22,7 +22,8 @@ export const FallbackGlobal = ({
 
   const errorData = getErrorDataByCode(error);
   const isLoginRequired =
-    'requireLogin' in errorData && errorData.requireLogin === true;
+    ('requireLogin' in errorData && errorData.requireLogin === true) ||
+    errorData.code === 'E003';
   return (
     <Container>
       <Wrapper>

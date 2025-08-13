@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import { LocalErrorBoundary } from '@/shared/lib';
 import { useFABStore } from '@/shared/model';
 import ChatList from './ChatList';
 import ChatRoom from './ChatRoom';
@@ -13,13 +14,17 @@ const ChatWidget = () => {
   return (
     <Container>
       {show === 'ROOM' ? (
-        <ChatRoom />
+        <LocalErrorBoundary>
+          <ChatRoom />
+        </LocalErrorBoundary>
       ) : (
         <React.Fragment>
           <TitleText>채팅</TitleText>
           <Div />
           <ListWrapper>
-            <ChatList />
+            <LocalErrorBoundary>
+              <ChatList />
+            </LocalErrorBoundary>
           </ListWrapper>
         </React.Fragment>
       )}

@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
+import { LocalErrorBoundary } from '@/shared/lib';
 import { ChatList } from '@/features/chat/ui';
 import { useIsMobile } from '@/shared/model';
 
@@ -21,7 +22,9 @@ const ChatPage = () => {
 
   return (
     <Container>
-      <ChatList />
+      <LocalErrorBoundary>
+        <ChatList />
+      </LocalErrorBoundary>
     </Container>
   );
 };

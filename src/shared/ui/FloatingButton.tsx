@@ -53,10 +53,11 @@ const FloatingButton = () => {
   }, []);
 
   useEffect(() => {
+    if (!isLogin) return;
     connectNoti(onNoti, () => {
       console.log('error');
     });
-  }, []);
+  }, [isLogin, onNoti]);
 
   const hideButton =
     pathname?.startsWith('/login') ||
@@ -101,11 +102,7 @@ const FloatingButton = () => {
 
   function handleNoti() {
     if (!visibleNoti) return;
-    if (visibleNoti.type === 'CHAT') {
-      handleOpenChat({ chatId: visibleNoti.refId });
-    } else if (visibleNoti.type === 'TRADE') {
-      router.push(`/listings/${visibleNoti.refId}`);
-    }
+    handleOpenChat({ chatId: visibleNoti.refId });
   }
   return (
     <>

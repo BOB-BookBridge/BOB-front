@@ -10,6 +10,7 @@ import { calcDistance, getCategoryNameById } from '../../lib';
 import { useHandleOpenChat } from '@/shared/model';
 import { useChatMutation } from '@/entities/chat';
 import { LikeIcon } from '@/shared/assets/icons';
+import { LoadingIndicator } from '@/shared/ui';
 import { useMyQuery } from '@/entities/user';
 import { colors } from '@/shared/constants';
 import * as S from './ListingDetail.styles';
@@ -25,7 +26,7 @@ interface ListingDetailProps {
 const ListingDetail = ({ id }: ListingDetailProps) => {
   const theme = useTheme();
   const { data: mydata } = useMyQuery();
-  const { data, isLoading } = useListingDetailQuery(id);
+  const { data, isPending } = useListingDetailQuery(id);
   const [liked, setLiked] = useState<boolean | undefined>(undefined);
   const [originalLiked, setOriginalLiked] = useState<boolean | undefined>(
     undefined,
@@ -86,7 +87,7 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
 
   return (
     <S.Container>
-      {data && !isLoading ? (
+      {data && !isPending ? (
         <>
           <S.LeftSection>
             <ImageCarousel
@@ -142,7 +143,9 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
           </S.RightSection>
         </>
       ) : (
-        <></>
+        <S.LoadingContainer>
+          <LoadingIndicator text='불러오는중' />
+        </S.LoadingContainer>
       )}
     </S.Container>
   );
