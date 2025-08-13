@@ -67,8 +67,8 @@ const ListingList = ({
   const data = isFavorite ? favoriteData : listingData;
   const fetchNextPage = isFavorite ? fetchFavoriteNext : fetchListingNext;
   const hasNextPage = isFavorite ? hasFavoriteNext : hasListingNext;
-  const isPending = isListingPending || isFavoritePending;
-  const isError = isListingError || isFavoriteError;
+  const isPending = isFavorite ? isFavoritePending : isListingPending;
+  const isError = isFavorite ? isFavoriteError : isListingError;
 
   const listings = data?.pages.flatMap((page) => page.posts) ?? [];
   function handleLoadMore() {
