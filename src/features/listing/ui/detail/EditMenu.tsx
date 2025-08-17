@@ -1,5 +1,10 @@
+import { useTheme } from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
+import { TradeStatus, useTradeMutation, useTradeQuery } from '@/entities/trade';
+import { CancelTradeForm, SelectBuyerForm } from '@/features/trade/ui';
 import { PostStatus } from '@/entities/listing/types';
+import * as S from './ListingDetail.styles';
+import { ModalLayout } from '@/shared/ui';
 import {
   CancelIcon,
   CompleteIcon,
@@ -7,32 +12,27 @@ import {
   EditIcon,
   MeatballsIcon,
 } from '@/shared/assets/icons';
-import { useTheme } from 'styled-components';
-import * as S from './ListingDetail.styles';
-import { ModalLayout } from '@/shared/ui';
-import CancelTradeForm from './CancelTradeForm';
-import SelectBuyerForm from './SelectBuyerForm';
 
 const editOptions = [
   { value: 'EDIT', label: '수정하기' },
-  { value: 'RESERVATION', label: '거래 예약' },
-  { value: 'CANCEL', label: '거래 취소' },
-  { value: 'COMPLETE', label: '거래 완료' },
+  { value: 'RESERVED', label: '거래 예약' },
+  { value: 'CANCELED', label: '거래 취소' },
+  { value: 'COMPLETED', label: '거래 완료' },
   { value: 'DELETE', label: '삭제하기' },
 ];
 
 const EDIT_TITLE = {
-  RESERVATION: '예약자 선택',
-  CANCEL: '거래 취소',
-  COMPLETE: '거래자 선택',
+  RESERVED: '예약자 선택',
+  CANCELED: '거래 취소',
+  COMPLETED: '거래자 선택',
 } as const;
 
 type EditModalType = keyof typeof EDIT_TITLE;
 
 const tradeStatusOptionMap: Record<string, string[]> = {
-  READY: ['EDIT', 'RESERVATION', 'COMPLETE', 'DELETE'],
-  IN_PROGRESS: ['EDIT', 'CANCEL', 'COMPLETE', 'DELETE'],
-  COMPLETE: ['EDIT', 'DELETE'],
+  READY: ['EDIT', 'RESERVED', 'COMPLETED', 'DELETE'],
+  IN_PROGRESS: ['EDIT', 'CANCELED', 'COMPLETED', 'DELETE'],
+  COMPLETED: ['EDIT', 'DELETE'],
 };
 
 function getFilteredOptions(tradeStatus: string) {
@@ -50,7 +50,7 @@ export type CancelSubmitData = {
 
 export type SelectBuyerSubmitData = {
   tradeId: number;
-  type: 'RESERVATION' | 'COMPLETE';
+  status: TradeStatus;
 };
 
 type ModalSubmitData = CancelSubmitData | SelectBuyerSubmitData;
@@ -93,9 +93,9 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
   function handleEditOptionClick(option: string) {
     if (option === 'EDIT') console.log(postId);
     else if (
-      option === 'CANCEL' ||
-      option === 'RESERVATION' ||
-      option == 'COMPLETE'
+      option === 'CANCELED' ||
+      option === 'RESERVED' ||
+      option == 'COMPLETED'
     )
       setOpenModalType(option);
     else if (option === 'DELETE') console.log('delete', postId);
@@ -106,13 +106,21 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
     setOpenModalType(null);
   }
 
+  const { mutate: changeTradeStatus } = useTradeMutation(postId);
+  const { data: tradeData } = useTradeQuery(postId);
   function handleModalSubmit(data: ModalSubmitData) {
     if ('reason' in data) {
-      // 거래 취소 처리
-      console.log(data.reason);
+      console.log(tradeData?.trades);
+      if (
+        !tradeData?.trades ||
+        (tradeData.trades[0].tradeStatus !== 'COMPLETED' &&
+          tradeData.trades[0].tradeStatus !== 'RESERVED')
+      )
+        return;
+      const tradeId = tradeData.trades[0].tradeId;
+      changeTradeStatus({ tradeId, status: 'CANCELED' });
     } else {
-      // 예약자 선택 or 거래 완료 처리
-      console.log(data.tradeId, data.type);
+      changeTradeStatus({ tradeId: data.tradeId, status: data.status });
     }
 
     setOpenModalType(null);
@@ -120,9 +128,9 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
 
   function getMatchIcon(option: string) {
     if (option === 'EDIT') return <EditIcon fill={theme.colors.BLACK} />;
-    if (option === 'CANCEL' || option === 'RESERVATION')
+    if (option === 'CANCELED' || option === 'RESERVED')
       return <CancelIcon fill={theme.colors.BLACK} />;
-    if (option === 'COMPLETE')
+    if (option === 'COMPLETED')
       return <CompleteIcon fill={theme.colors.BLACK} />;
     if (option === 'DELETE') return <DeleteIcon fill={theme.colors.ERROR} />;
   }
@@ -158,13 +166,14 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
           isOpen={true}
           title={EDIT_TITLE[openModalType]}
           onClose={handleCloseModal}>
-          {openModalType === 'CANCEL' ? (
+          {openModalType === 'CANCELED' ? (
             <CancelTradeForm
               onClose={handleCloseModal}
               onSubmit={handleModalSubmit}
             />
           ) : (
             <SelectBuyerForm
+              postId={postId}
               mode={openModalType}
               onSubmit={handleModalSubmit}
               onClose={handleCloseModal}

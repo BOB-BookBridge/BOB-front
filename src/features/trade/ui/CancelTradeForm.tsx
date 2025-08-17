@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { CancelSubmitData } from './EditMenu';
+import { CancelSubmitData } from '../../listing/ui/detail/EditMenu';
 import { Button } from '@/shared/ui';
 
 interface CancelTradeFormProps {
@@ -20,7 +20,7 @@ const CancelTradeForm = ({ onSubmit, onClose }: CancelTradeFormProps) => {
         rows={4}
       />
       <Footer>
-        <Notice>*제출 시 구매자에게 사유가 전달돼요</Notice>
+        <Notice>*제출 시 예약자/구매자에게 사유가 전달돼요</Notice>
         <ButtonGroup>
           <Button size='sm' variant='cancel' text='취소' onClick={onClose} />
           <Button

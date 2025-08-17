@@ -1,24 +1,31 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { SelectBuyerSubmitData } from '../../listing/ui/detail/EditMenu';
 import DefaultProfile from '@/shared/assets/default-profile.svg';
-import { SelectBuyerSubmitData } from './EditMenu';
-import { Button } from '@/shared/ui';
-import { colors } from '@/shared/constants';
+import { TradeStatus, useTradeQuery } from '@/entities/trade';
+import { Button, LoadingIndicator } from '@/shared/ui';
 import { SelectIcon } from '@/shared/assets/icons';
-import { data } from '@/mocks/mockBuyerList';
+import { colors } from '@/shared/constants';
 
 interface SelectBuyerFormProps {
+  postId: number;
   onSubmit: (data: SelectBuyerSubmitData) => void;
-  mode: 'COMPLETE' | 'RESERVATION';
+  mode: TradeStatus;
   onClose: () => void;
 }
-const SelectBuyerForm = ({ onSubmit, mode, onClose }: SelectBuyerFormProps) => {
+const SelectBuyerForm = ({
+  postId,
+  onSubmit,
+  mode,
+  onClose,
+}: SelectBuyerFormProps) => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const { data, isPending } = useTradeQuery(postId);
   function handleClickApply() {
     if (selectedId) {
       onSubmit({
         tradeId: selectedId,
-        type: mode,
+        status: mode,
       });
     }
   }
@@ -29,25 +36,30 @@ const SelectBuyerForm = ({ onSubmit, mode, onClose }: SelectBuyerFormProps) => {
   return (
     <Container>
       <ListWrapper>
-        {data.map((trade) => {
-          const isSelected = selectedId === trade.tradeId;
-          return (
-            <ListItem
-              key={trade.tradeId}
-              $isSelected={isSelected}
-              onClick={() => handleClickItem(trade.tradeId)}>
-              <ItemLeftSection>
-                {trade.buyer.profileUrl ? (
-                  <img src={trade.buyer.profileUrl} />
-                ) : (
-                  <DefaultProfile width={30} />
-                )}
-                <NicknameText>{trade.buyer.nickname}</NicknameText>
-              </ItemLeftSection>
-              {isSelected && <SelectIcon />}
-            </ListItem>
-          );
-        })}
+        {isPending ? (
+          <LoadingIndicator text='불러오는중' />
+        ) : (
+          data &&
+          data.trades.map((trade) => {
+            const isSelected = selectedId === trade.tradeId;
+            return (
+              <ListItem
+                key={trade.tradeId}
+                $isSelected={isSelected}
+                onClick={() => handleClickItem(trade.tradeId)}>
+                <ItemLeftSection>
+                  {trade.buyer.profile ? (
+                    <img src={trade.buyer.profile} />
+                  ) : (
+                    <DefaultProfile width={30} />
+                  )}
+                  <NicknameText>{trade.buyer.nickname}</NicknameText>
+                </ItemLeftSection>
+                {isSelected && <SelectIcon />}
+              </ListItem>
+            );
+          })
+        )}
       </ListWrapper>
       <ButtonGroup>
         <div style={{ width: '30%', maxWidth: 150 }}>
