@@ -1,7 +1,9 @@
+import { useRouter } from 'next/navigation';
 import { useTheme } from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
 import { TradeStatus, useTradeMutation, useTradeQuery } from '@/entities/trade';
 import { CancelTradeForm, SelectBuyerForm } from '@/features/trade/ui';
+import { useDeleteListingMutation } from '@/entities/listing';
 import { PostStatus } from '@/entities/listing/types';
 import * as S from './ListingDetail.styles';
 import { ModalLayout } from '@/shared/ui';
@@ -57,6 +59,7 @@ type ModalSubmitData = CancelSubmitData | SelectBuyerSubmitData;
 
 const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
   const theme = useTheme();
+  const router = useRouter();
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [openModalType, setOpenModalType] = useState<EditModalType | null>(
     null,
@@ -89,16 +92,19 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
   function handleOpenEdit() {
     setIsOpenEdit((prev) => !prev);
   }
-
+  const { mutate: deleteMutate } = useDeleteListingMutation();
   function handleEditOptionClick(option: string) {
-    if (option === 'EDIT') console.log(postId);
+    if (option === 'EDIT') router.push(`/listings/${postId}/edit`);
     else if (
       option === 'CANCELED' ||
       option === 'RESERVED' ||
       option == 'COMPLETED'
     )
       setOpenModalType(option);
-    else if (option === 'DELETE') console.log('delete', postId);
+    else if (option === 'DELETE') {
+      deleteMutate(postId);
+      router.back();
+    }
     setIsOpenEdit(false);
   }
 

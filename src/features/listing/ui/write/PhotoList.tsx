@@ -26,9 +26,7 @@ const PhotoList = ({ images, onAddImage, onDeleteImage }: PhotoListProps) => {
       { domain: 'POST', images: fileArray },
       {
         onSuccess: (uploadedImages) => {
-          uploadedImages
-            .sort((a, b) => a.sequence - b.sequence)
-            .forEach((image) => onAddImage(image));
+          uploadedImages.forEach((image) => onAddImage(image));
         },
       },
     );
@@ -57,7 +55,14 @@ const PhotoList = ({ images, onAddImage, onDeleteImage }: PhotoListProps) => {
           <S.DeleteButton onClick={() => handleDeleteImage(idx)}>
             <CloseIconSm fill={theme.colors.WHITE} />
           </S.DeleteButton>
-          <S.StyledImage src={image.fileUrl} draggable={false} />
+          <S.StyledImage
+            src={
+              image.fileUrl
+                ? image.fileUrl
+                : `${process.env.NEXT_PUBLIC_S3_BASE_URL}/${image.fileName}`
+            }
+            draggable={false}
+          />
         </div>
       ))}
     </Container>

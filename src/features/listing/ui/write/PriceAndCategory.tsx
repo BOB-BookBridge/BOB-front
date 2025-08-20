@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import categories from '@/shared/constants/category.json';
 import { useWriteStore } from '../../model/useWriteStore';
@@ -8,6 +8,7 @@ import * as S from './ListingWrite.styles';
 interface PriceAndCategoryProps {
   price: string;
   handlePriceChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  categoryId?: number | null;
 }
 
 type Category = {
@@ -18,13 +19,17 @@ type Category = {
 const PriceAndCategory = ({
   price,
   handlePriceChange,
+  categoryId,
 }: PriceAndCategoryProps) => {
   const theme = useTheme();
-  const categoryId = useWriteStore((state) => state.categoryId);
   const { setCategoryId } = useWriteStore();
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null,
-  );
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>();
+  useEffect(() => {
+    if (categoryId) {
+      const found = categories.find((c) => c.id === categoryId) ?? null;
+      setSelectedCategory(found);
+    }
+  }, [categoryId]);
   const [dropdownState, setDropdownState] = useState<{
     isOpen: boolean;
     options: Category[];
@@ -78,7 +83,9 @@ const PriceAndCategory = ({
         />
       </S.InputWrapper>
       <div style={{ width: 150 }}>
-        <S.DropdownBox onClick={handleClickDropdown}>
+        <S.DropdownBox
+          onClick={handleClickDropdown}
+          disabled={categoryId ? true : false}>
           <p
             style={{
               fontSize: 14,
