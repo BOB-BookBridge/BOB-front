@@ -94,3 +94,10 @@ export interface postListingProps {
   book: BookState;
   fileNames: string[];
 }
+
+export interface patchListingProps {
+  sellPrice?: number;
+  bookStatus?: BookStatus;
+  description?: string;
+  fileNames?: string[];
+}
