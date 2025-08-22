@@ -15,8 +15,10 @@ const PhotoList = ({ images, onAddImage, onDeleteImage }: PhotoListProps) => {
   const { mutate: uploadImage } = useUploadImagesMutation();
 
   function handleAddImage(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = e.target.files;
-    if (!files) return;
+    const inputEl = e.currentTarget;
+    const files = inputEl.files;
+
+    if (!files || files.length === 0) return;
     if (images.length + files.length > 5) {
       alert('최대 5장까지 업로드 할 수 있어요');
       return;
@@ -26,9 +28,11 @@ const PhotoList = ({ images, onAddImage, onDeleteImage }: PhotoListProps) => {
       { domain: 'POST', images: fileArray },
       {
         onSuccess: (uploadedImages) => {
-          uploadedImages
-            .sort((a, b) => a.sequence - b.sequence)
-            .forEach((image) => onAddImage(image));
+          uploadedImages.forEach((image) => onAddImage(image));
+          inputEl.value = '';
+        },
+        onError: () => {
+          inputEl.value = '';
         },
       },
     );
@@ -57,7 +61,14 @@ const PhotoList = ({ images, onAddImage, onDeleteImage }: PhotoListProps) => {
           <S.DeleteButton onClick={() => handleDeleteImage(idx)}>
             <CloseIconSm fill={theme.colors.WHITE} />
           </S.DeleteButton>
-          <S.StyledImage src={image.fileUrl} draggable={false} />
+          <S.StyledImage
+            src={
+              image.fileUrl
+                ? image.fileUrl
+                : `${process.env.NEXT_PUBLIC_S3_BASE_URL}/${image.fileName}`
+            }
+            draggable={false}
+          />
         </div>
       ))}
     </Container>

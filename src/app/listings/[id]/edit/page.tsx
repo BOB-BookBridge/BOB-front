@@ -1,12 +1,14 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import styled from 'styled-components';
 import { ListingWrite } from '@/features/listing/ui';
 
 const ListingWritePage = () => {
+  const params = useParams<{ id: string }>();
   return (
     <Container>
-      <ListingWrite />
+      <ListingWrite id={Number(params?.id)} />
     </Container>
   );
 };

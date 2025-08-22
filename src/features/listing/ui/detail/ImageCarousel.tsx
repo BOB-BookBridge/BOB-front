@@ -28,12 +28,12 @@ const ImageCarousel = ({ images, thumbnail }: ImageCarouselProps) => {
         speed={400}
         slidesPerView={1}>
         {images
-          ? images.map((image) => (
-              <SwiperSlide key={image.sequence}>
+          ? images.map((image, idx) => (
+              <SwiperSlide key={idx}>
                 <img
                   alt='등록된 책 사진'
                   onClick={() => {
-                    setSelectedIndex(image.sequence);
+                    setSelectedIndex(idx);
                     setIsModalOpen(true);
                   }}
                   src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/${image.fileName}`}

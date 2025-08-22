@@ -1,5 +1,5 @@
 import axiosInstance from '@/shared/config/axios';
-import { ImageFile, postFilesProps, postUrlsProps } from '.';
+import { editFilesProps, ImageFile, postFilesProps, postUrlsProps } from '.';
 
 const postUrls = async (files: postUrlsProps) => {
   const { data } = await axiosInstance.post('/files/urls', files);
@@ -34,9 +34,15 @@ const postFiles = async (files: postFilesProps) => {
   return data;
 };
 
+export const editFiles = async (files: editFilesProps) => {
+  const { data } = await axiosInstance.put('/files', files);
+  return data;
+};
+
 export const uploadImagesFlow = async (
   images: File[],
   domain: 'POST' | 'CHAT',
+  referenceId?: number,
 ): Promise<ImageFile[]> => {
   const urlRes = await postUrls({
     domain: domain,
@@ -44,7 +50,7 @@ export const uploadImagesFlow = async (
   });
 
   const uploadedImages: ImageFile[] = [];
-  const urls = urlRes.urls;
+  const urls = [...urlRes.urls].sort((a, b) => a.sequence - b.sequence);
 
   for (const urlInfo of urls) {
     const { sequence, fileUploadUrl, fileName } = urlInfo;
@@ -59,17 +65,17 @@ export const uploadImagesFlow = async (
     const fileUrl = `${process.env.NEXT_PUBLIC_S3_BASE_URL}/${fileName}`;
 
     uploadedImages.push({
-      sequence,
       file,
       fileName,
       fileUrl,
     });
   }
-
-  await postFiles({
-    domain: domain,
-    fileNames: uploadedImages.map((img) => img.fileName!),
-  });
+  if (!referenceId) {
+    await postFiles({
+      domain,
+      fileNames: uploadedImages.map((img) => img.fileName!),
+    });
+  }
 
   return uploadedImages;
 };

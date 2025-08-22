@@ -8,9 +8,14 @@ export interface postFilesProps {
   fileNames: string[];
 }
 
+export interface editFilesProps {
+  domain: 'POST' | 'CHAT';
+  fileNames: string[];
+  referenceId: string;
+}
+
 export type ImageFile = {
-  sequence: number;
-  file: File;
+  file?: File;
   fileName: string;
-  fileUrl: string;
+  fileUrl?: string;
 };

@@ -2,8 +2,9 @@ import {
   getPostsProps,
   GetPostsResponse,
   ListingDetailProps,
+  patchListingProps,
   postListingProps,
-} from './types';
+} from '.';
 import axiosInstance from '@/shared/config/axios';
 
 export const getPosts = async (
@@ -35,6 +36,22 @@ export const getFavorites = async ({
 
 export const postListing = async (listing: postListingProps) => {
   const { data } = await axiosInstance.post('/posts', listing);
+  return data;
+};
+
+export const patchListing = async ({
+  postId,
+  listing,
+}: {
+  postId: number;
+  listing: patchListingProps;
+}) => {
+  const { data } = await axiosInstance.patch(`/posts/${postId}`, listing);
+  return data;
+};
+
+export const deleteListing = async (postId: number) => {
+  const { data } = await axiosInstance.delete(`/posts/${postId}`);
   return data;
 };
 

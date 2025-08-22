@@ -217,10 +217,7 @@ const ChatRoom = () => {
       { domain: 'CHAT', images: fileArray },
       {
         onSuccess: (uploadedImages) => {
-          const sortedImages = uploadedImages.sort(
-            (a, b) => a.sequence - b.sequence,
-          );
-          handleSendMessage({ sendImages: sortedImages });
+          handleSendMessage({ sendImages: uploadedImages });
         },
       },
     );

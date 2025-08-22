@@ -9,7 +9,11 @@ import {
   postListing,
   getPostsProps,
   postListingProps,
+  deleteListing,
+  patchListingProps,
+  patchListing,
 } from '.';
+import { queryClient } from '@/shared/lib';
 
 export const useListingQuery = (filter: getPostsProps) => {
   return useInfiniteQuery({
@@ -26,10 +30,11 @@ export const useListingQuery = (filter: getPostsProps) => {
   });
 };
 
-export const useListingDetailQuery = (postId: number) => {
+export const useListingDetailQuery = (postId?: number) => {
   return useQuery({
     queryKey: ['listingDetail', postId],
-    queryFn: () => getPost(postId),
+    queryFn: () => getPost(postId!),
+    enabled: !!postId,
   });
 };
 
@@ -71,6 +76,28 @@ export const useLikeMutation = () => {
   return useMutation<void, Error, useLikeProps>({
     mutationFn: async ({ postId, like }) => {
       return like ? postLike(postId) : deleteLike(postId);
+    },
+  });
+};
+
+type usePatchListingProps = {
+  postId: number;
+  listing: patchListingProps;
+};
+export const usePatchListingMutation = () => {
+  const router = useRouter();
+  return useMutation<void, Error, usePatchListingProps>({
+    mutationFn: (data) => patchListing(data),
+    onSuccess: (_data, variables) =>
+      router.replace(`/listings/${variables.postId}`),
+  });
+};
+
+export const useDeleteListingMutation = () => {
+  return useMutation<void, Error, number>({
+    mutationFn: (data) => deleteListing(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['listing', 'all'] });
     },
   });
 };

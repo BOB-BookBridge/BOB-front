@@ -9,7 +9,6 @@ export type GetPostsResponse = {
 };
 
 export type DetailImage = {
-  sequence: number;
   fileName: string;
 };
 
@@ -93,4 +92,11 @@ export interface postListingProps {
   postDescription: string;
   book: BookState;
   fileNames: string[];
+}
+
+export interface patchListingProps {
+  sellPrice?: number;
+  bookStatus?: BookStatus;
+  description?: string;
+  fileNames?: string[];
 }
