@@ -38,12 +38,12 @@ const ModalCarousel = ({
           slidesPerView={1}
           navigation
           modules={[Navigation]}>
-          {images.map((img) => (
-            <SwiperSlide key={img.sequence}>
+          {images.map((img, idx) => (
+            <SwiperSlide key={idx}>
               <ImageWrapper>
                 <img
                   src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/${img.fileName}`}
-                  alt={`Image ${img.sequence + 1}`}
+                  alt={`Image ${idx + 1}`}
                 />
               </ImageWrapper>
             </SwiperSlide>

@@ -9,7 +9,6 @@ export type GetPostsResponse = {
 };
 
 export type DetailImage = {
-  sequence: number;
   fileName: string;
 };
 

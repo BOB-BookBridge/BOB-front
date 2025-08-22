@@ -6,9 +6,7 @@ import { colors } from '@/shared/constants';
 import * as S from './ChatRoom.styles';
 
 const ChatImages = ({ images }: { images: DetailImage[] }) => {
-  const sortedImages = [...images].sort((a, b) => a.sequence - b.sequence);
-
-  const topImages = images.length > 3 ? sortedImages.slice(0, 3) : sortedImages;
+  const topImages = images.length > 3 ? images.slice(0, 3) : images;
   const restCount = images.length > 3 ? images.length - 3 : 0;
   const [isOpen, setIsOpen] = useState(false);
   function handleShowAllImages() {
@@ -18,7 +16,7 @@ const ChatImages = ({ images }: { images: DetailImage[] }) => {
     <Container>
       <S.ImageGrid onClick={handleShowAllImages}>
         {topImages.map((img, idx) => (
-          <div key={img.sequence} style={{ position: 'relative' }}>
+          <div key={img.fileName + idx} style={{ position: 'relative' }}>
             <S.ImageThumbnail
               src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/${img.fileName}`}
             />
