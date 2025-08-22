@@ -15,8 +15,10 @@ const PhotoList = ({ images, onAddImage, onDeleteImage }: PhotoListProps) => {
   const { mutate: uploadImage } = useUploadImagesMutation();
 
   function handleAddImage(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = e.target.files;
-    if (!files) return;
+    const inputEl = e.currentTarget;
+    const files = inputEl.files;
+
+    if (!files || files.length === 0) return;
     if (images.length + files.length > 5) {
       alert('최대 5장까지 업로드 할 수 있어요');
       return;
@@ -27,6 +29,10 @@ const PhotoList = ({ images, onAddImage, onDeleteImage }: PhotoListProps) => {
       {
         onSuccess: (uploadedImages) => {
           uploadedImages.forEach((image) => onAddImage(image));
+          inputEl.value = '';
+        },
+        onError: () => {
+          inputEl.value = '';
         },
       },
     );
