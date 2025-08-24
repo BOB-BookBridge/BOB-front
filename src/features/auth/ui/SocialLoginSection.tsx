@@ -1,7 +1,5 @@
-import styled from 'styled-components';
-import NaverLogin from '@/shared/assets/naver.png';
-import GoogleLogin from '@/shared/assets/google.png';
 import Link from 'next/link';
+import styled from 'styled-components';
 
 const SocialLoginSection = () => {
   return (
@@ -13,10 +11,10 @@ const SocialLoginSection = () => {
       </DividerWithText>
       <SocialLoginContainer>
         <Link href={'https://api.bookbridge.kr/oauth2/authorization/naver'}>
-          <Icon src={NaverLogin.src} alt='네이버 로그인' />
+          <Icon src='/naver.png' alt='네이버 로그인' />
         </Link>
         <Link href={'https://api.bookbridge.kr/oauth2/authorization/google'}>
-          <Icon src={GoogleLogin.src} alt='구글 로그인' />
+          <Icon src='/google.png' alt='구글 로그인' />
         </Link>
       </SocialLoginContainer>
     </Wrapper>

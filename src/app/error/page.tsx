@@ -1,10 +1,8 @@
 'use client';
 
-import Image from 'next/image';
-import styled, { useTheme } from 'styled-components';
-import ErrorLogo from '@/shared/assets/error-logo.png';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import styled, { useTheme } from 'styled-components';
 const ErrorPage = () => {
   const theme = useTheme();
   const searchParams = useSearchParams();
@@ -12,7 +10,7 @@ const ErrorPage = () => {
 
   return (
     <Container>
-      <Image src={ErrorLogo.src} width={150} height={150} alt={'logo'} />
+      <img src='/error-logo.png' width={150} height={150} alt={'logo'} />
       <TextContainer>
         <div style={{ marginBottom: 10 }}>
           <div>로그인 과정에서 문제가 발생했습니다</div>
