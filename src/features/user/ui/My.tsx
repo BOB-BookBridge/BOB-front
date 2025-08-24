@@ -1,14 +1,27 @@
-import { useState } from 'react';
-import MyTab from './MyTab';
+'use client';
+
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import EditProfile from './EditProfile';
 import MyFavorite from './MyFavorite';
 import MyBook from './MyBook';
-import styled from 'styled-components';
+import MyTab from './MyTab';
+
+const SESSION_KEY = 'my-tab-selected';
 
 const My = () => {
   const [selected, setSelected] = useState(0);
+
+  useEffect(() => {
+    const stored = sessionStorage.getItem(SESSION_KEY);
+    if (stored !== null) {
+      setSelected(Number(stored));
+    }
+  }, []);
+
   function handleClickTab(value: number) {
     setSelected(value);
+    sessionStorage.setItem(SESSION_KEY, value.toString());
   }
   return (
     <Container>
