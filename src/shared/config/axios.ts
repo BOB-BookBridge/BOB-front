@@ -9,6 +9,8 @@ const axiosInstance = axios.create({
 
 let refreshInFlight: Promise<void> | null = null;
 const isRefresh = (url?: string) => url?.includes('/auth/token/refresh');
+const isAuthRequest = (url?: string) =>
+  url?.includes('/login') || url?.includes('/signup');
 
 axiosInstance.interceptors.response.use(
   (r) => r,
@@ -17,12 +19,12 @@ axiosInstance.interceptors.response.use(
 
     const code = error.response.data?.code as string | undefined;
     const cfg = (error.config || {}) as Cfg;
-
+    if (isAuthRequest(cfg.url)) return Promise.reject(error);
     if (isRefresh(cfg.url) || cfg._retry) return Promise.reject(error);
 
     const nonLogin = code === 'E001';
     const tryRefresh = code === 'E002';
-    console.log(code);
+
     if (nonLogin) {
       return;
     } else if (!tryRefresh) {
@@ -31,9 +33,9 @@ axiosInstance.interceptors.response.use(
 
     cfg._retry = true;
     if (!refreshInFlight) {
-      refreshInFlight = axiosInstance.post('/auth/token/refresh').then(() => {
-        console.log('refresh');
-      });
+      refreshInFlight = axiosInstance
+        .post('/auth/token/refresh')
+        .then(() => {});
       refreshInFlight.finally(() => (refreshInFlight = null));
     }
 

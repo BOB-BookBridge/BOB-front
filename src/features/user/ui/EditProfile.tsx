@@ -11,9 +11,11 @@ const EditProfile = () => {
   const { data } = useMyQuery();
   const { mutate: logout } = useLogoutMutation();
   const { reset } = useFailedChatStore();
+
   function handleLogout() {
     logout();
     reset();
+    sessionStorage.removeItem('my-tab-selected');
   }
   function handleDeleteAccount() {}
   return (
