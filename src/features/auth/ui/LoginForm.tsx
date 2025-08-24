@@ -1,10 +1,11 @@
 'use client';
 
-import { useForm, useWatch } from 'react-hook-form';
-import { InputGroup, Button } from '@/shared/ui';
-import { emailRule, passwordBasicRule } from '@/shared/constants';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
+import { useForm, useWatch } from 'react-hook-form';
+import { emailRule, passwordBasicRule } from '@/shared/constants';
 import { useLoginMutation } from '@/entities/auth/queries';
+import { InputGroup, Button } from '@/shared/ui';
 
 interface LoginFormValues {
   email: string;
@@ -25,6 +26,12 @@ const LoginForm = () => {
 
   const { mutate: login } = useLoginMutation();
   function handleClickLogin() {
+    if (!email) {
+      return toast.error('이메일을 입력해 주세요');
+    }
+    if (!password) {
+      return toast.error('비밀번호를 입력해 주세요');
+    }
     login({ email, password });
   }
   return (
@@ -46,6 +53,7 @@ const LoginForm = () => {
         ]}
         register={register}
         errors={errors}
+        onEnter={handleClickLogin}
       />
       <Button
         text='로그인'
