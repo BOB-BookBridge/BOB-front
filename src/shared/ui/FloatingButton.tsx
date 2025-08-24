@@ -65,7 +65,8 @@ const FloatingButton = () => {
     pathname?.startsWith('/password') ||
     pathname?.startsWith('/listings/write') ||
     pathname?.startsWith('/chats') ||
-    pathname?.startsWith('/ai');
+    pathname?.startsWith('/ai') ||
+    pathname?.startsWith('/error');
   if (hideButton) return null;
 
   const menuItems = [

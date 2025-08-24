@@ -31,7 +31,8 @@ const Header = () => {
     pathname?.startsWith('/login') ||
     pathname?.startsWith('/signup') ||
     pathname?.startsWith('/password') ||
-    pathname?.startsWith('/chats/');
+    pathname?.startsWith('/chats/') ||
+    pathname?.startsWith('/error');
 
   useEffect(() => {
     setIsLogin(!isError && !!data?.memberId);
