@@ -41,7 +41,9 @@ const Header = () => {
 
   return (
     <S.Container>
-      <Link href='/'>
+      <Link
+        href='/'
+        onClick={() => sessionStorage.removeItem('my-tab-selected')}>
         <Logo width={60} />
       </Link>
       <S.RightSection>
