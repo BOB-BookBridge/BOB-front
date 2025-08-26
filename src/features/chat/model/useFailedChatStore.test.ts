@@ -10,7 +10,6 @@ describe('sendMessage 실패 흐름 테스트', () => {
 
   it('sendMessage 실패 시 실패 메시지가 store와 localStorage에 저장된다', () => {
     const mockFailedChat = {
-      id: 1,
       clientId: 'test-id',
       content: '실패 메시지',
       type: 'TEXT',
@@ -19,6 +18,7 @@ describe('sendMessage 실패 흐름 테스트', () => {
       isError: true,
       images: [] as DetailImage[],
       isRead: false,
+      sentAt: String(new Date()),
     } as const;
 
     useFailedChatStore.getState().addFailedChat(2, mockFailedChat);
@@ -35,7 +35,6 @@ describe('sendMessage 실패 흐름 테스트', () => {
   it('재전송 시 실패 메시지가 store와 localStorage에서 삭제된다', () => {
     const clientId = 'to-be-deleted';
     const failChat = {
-      id: 2,
       clientId,
       content: '삭제될 메시지',
       type: 'TEXT',
@@ -44,6 +43,7 @@ describe('sendMessage 실패 흐름 테스트', () => {
       isError: true,
       images: [] as DetailImage[],
       isRead: false,
+      sentAt: String(new Date()),
     } as const;
 
     useFailedChatStore.getState().addFailedChat(1, failChat);

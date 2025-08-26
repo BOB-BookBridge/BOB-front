@@ -62,18 +62,24 @@ export interface getMessageResponse {
   hasNext: boolean;
 }
 
-export interface ChatMessage {
-  id?: number;
+interface BasicChat {
   type: ChatType;
   content: string | null;
   images: DetailImage[];
-  sentAt?: string;
-  isRead?: boolean;
-  isMine?: boolean;
-  isLoading?: boolean;
-  isError?: boolean;
-  clientId?: string;
+  sentAt: string;
+  isMine: boolean;
 }
+export interface ServerChat extends BasicChat {
+  id: number;
+  isRead: boolean;
+}
+export interface LocalChat extends BasicChat {
+  clientId: string;
+  isLoading: boolean;
+  isError: boolean;
+}
+
+export type ChatMessage = ServerChat | LocalChat;
 
 export interface Chat {
   chatroomId: number;

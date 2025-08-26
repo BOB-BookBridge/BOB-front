@@ -5,6 +5,8 @@ import { compareDate, formatDate, formatTime } from '@/shared/lib';
 import {
   ChatMessage,
   connectChat,
+  LocalChat,
+  ServerChat,
   useChatInfoQuery,
   useMessageMutate,
   useMessageQuery,
@@ -37,48 +39,30 @@ const ChatRoom = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [chats, setChats] = useState<ChatMessage[]>([]);
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
-  const [hasInitialized, setHasInitialized] = useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const chatRoomId = isMobile && params ? Number(params.id) : chatId;
-  const { data: chatData } = useMessageQuery(chatRoomId!, {
-    enabled: chatRoomId !== null,
-  });
+  const { data: chatData, refetch: refetchChatData } = useMessageQuery(
+    chatRoomId!,
+    {
+      enabled: chatRoomId !== null,
+    },
+  );
   const { data: chatInfo } = useChatInfoQuery(chatRoomId!, {
     enabled: chatRoomId !== null,
   });
   const failedChats = useFailedChatStore((state) => state.failedChats);
   const { addFailedChat, deleteFailedChat } = useFailedChatStore();
-  const { refetch } = useUnreadQuery(!!chatId);
+  const { refetch: refetchUnread } = useUnreadQuery(!!chatId);
 
   useEffect(() => {
-    if (!hasInitialized && chatData && chatRoomId) {
-      const failed = failedChats[chatRoomId] ?? [];
-      const messagesWithId = chatData.messages.map((chat) => ({
-        ...chat,
-        clientId: crypto.randomUUID(),
-      }));
-      setChats([...messagesWithId, ...failed]);
-      setHasInitialized(true);
-    }
-  }, [chatData, chatRoomId, failedChats, hasInitialized]);
-
-  useEffect(() => {
-    if (!hasInitialized) return;
-    if (chats.length === 0) return;
-
-    const behavior = hasMounted ? 'smooth' : 'auto';
-
-    const timer = setTimeout(() => {
-      bottomRef.current?.scrollIntoView({ behavior });
-      setHasMounted(true);
-    }, 50);
-
-    return () => clearTimeout(timer);
-  }, [chats.length, hasInitialized]);
+    if (!chatData || !chatRoomId) return;
+    const failed = failedChats[chatRoomId] ?? [];
+    setChats([...chatData.messages, ...failed]);
+  }, [chatData, chatRoomId, failedChats]);
 
   useEffect(() => {
     if (!chatRoomId) return;
-    refetch();
+    refetchUnread();
     const es = connectChat(
       chatRoomId,
       handleMessage,
@@ -88,14 +72,31 @@ const ChatRoom = () => {
     return () => {
       es.close();
     };
-  }, [chatRoomId]);
+  }, [chatRoomId, refetchUnread]);
+
+  useEffect(() => {
+    if (chats.length === 0) return;
+
+    const behavior = hasMounted ? 'smooth' : 'auto';
+    const timer = setTimeout(() => {
+      bottomRef.current?.scrollIntoView({ behavior });
+      setHasMounted(true);
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, [chats.length, hasMounted]);
 
   function handleRead() {
     setChats((prev) => prev.map((chat) => ({ ...chat, isRead: true })));
   }
 
   function handleMessage(data: ChatMessage) {
-    setChats((prev) => [...prev, { ...data, clientId: crypto.randomUUID() }]);
+    setChats((prev) => [
+      ...prev,
+      {
+        ...data,
+      },
+    ]);
   }
 
   function handleConnectError(error: Event) {
@@ -106,9 +107,11 @@ const ChatRoom = () => {
     setIsOpenMenu(false);
     setIsOpenDropdown(false);
   }
+
   function handleInputMessage(value: string) {
     setMessage(value);
   }
+
   function handleEnterEvent(e: React.KeyboardEvent) {
     if (e.key === 'Enter' && e.nativeEvent.isComposing === false)
       handleSendMessage();
@@ -117,14 +120,21 @@ const ChatRoom = () => {
   const { mutate: sendMessage } = useMessageMutate();
 
   function handleClickRefresh(idx: number) {
-    if (!chats[idx].clientId || !chatRoomId) return;
-    deleteFailedChat(chatRoomId, chats[idx].clientId);
-    handleSendMessage({ idx });
+    const chat = chats[idx];
+    if (!chatRoomId) return;
+    if ('clientId' in chat) {
+      deleteFailedChat(chatRoomId, chat.clientId);
+      handleSendMessage({ idx });
+    }
   }
+
   function handleClickDelete(idx: number) {
-    if (!chats[idx].clientId || !chatRoomId) return;
-    deleteFailedChat(chatRoomId, chats[idx].clientId);
-    setChats((prev) => prev.filter((_, i) => i !== idx));
+    const chat = chats[idx];
+    if (!chatRoomId) return;
+    if ('clientId' in chat) {
+      deleteFailedChat(chatRoomId, chat.clientId);
+      setChats((prev) => prev.filter((_, i) => i !== idx));
+    }
   }
 
   function handleSendMessage({
@@ -152,7 +162,7 @@ const ChatRoom = () => {
 
     const images = sendImages ? sendImages : [];
 
-    const nowChat = {
+    const nowChat: LocalChat = {
       type,
       content,
       images,
@@ -160,7 +170,10 @@ const ChatRoom = () => {
       isLoading: true,
       sentAt: String(new Date()),
       clientId:
-        typeof idx === 'number' ? chats[idx].clientId! : crypto.randomUUID(),
+        typeof idx === 'number' && 'clientId' in chats[idx]
+          ? chats[idx].clientId!
+          : crypto.randomUUID(),
+      isError: false,
     };
     if (!idx) {
       setChats((prev) => [...prev, nowChat]);
@@ -173,25 +186,30 @@ const ChatRoom = () => {
       },
       {
         onSuccess: (res) => {
+          const serverChat: ServerChat = {
+            id: res.id,
+            type: 'TEXT',
+            content: message,
+            images: [],
+            isMine: true,
+            isRead: res.isRead,
+            sentAt: res.sentAt,
+          };
           setChats((prev) =>
             prev.map((chat) =>
-              chat.clientId === nowChat.clientId
-                ? {
-                    ...chat,
-                    isLoading: false,
-                    isRead: res.isRead,
-                    sentAt: String(new Date()),
-                    isError: false,
-                  }
+              'clientId' in chat && chat.clientId === nowChat.clientId
+                ? serverChat
                 : chat,
             ),
           );
-          deleteFailedChat(chatRoomId, nowChat.clientId);
+          refetchChatData();
+          if (typeof idx === 'number')
+            deleteFailedChat(chatRoomId, nowChat.clientId);
         },
         onError: () => {
           setChats((prev) =>
             prev.map((chat) =>
-              chat.clientId === nowChat.clientId
+              'clientId' in chat && chat.clientId === nowChat.clientId
                 ? { ...chat, isError: true }
                 : chat,
             ),
@@ -254,7 +272,7 @@ const ChatRoom = () => {
             : false;
 
           return (
-            <React.Fragment key={chat.clientId}>
+            <React.Fragment key={'id' in chat ? chat.id : chat.clientId}>
               {chat.sentAt && isNewDate && (
                 <S.NoticeWrapper>
                   <S.DateText>{formatDate(chat.sentAt)}</S.DateText>
@@ -270,7 +288,7 @@ const ChatRoom = () => {
               ) : chat.isMine ? (
                 <S.SendChatWrapper>
                   <S.MessageInfo>
-                    {chat.isError ? (
+                    {'isError' in chat && chat.isError ? (
                       <S.ErrorBox>
                         <ChatRefreshIcon
                           stroke={theme.colors.BLACK}
@@ -283,11 +301,13 @@ const ChatRoom = () => {
                           onClick={() => handleClickDelete(idx)}
                         />
                       </S.ErrorBox>
-                    ) : chat.isLoading ? (
+                    ) : 'isLoading' in chat && chat.isLoading ? (
                       <SendReverseIcon fill={theme.colors.GRAY_500} />
                     ) : (
                       <>
-                        {!chat.isRead && <S.UnreadText>1</S.UnreadText>}
+                        {'isRead' in chat && !chat.isRead && (
+                          <S.UnreadText>1</S.UnreadText>
+                        )}
                         {chat.sentAt && (
                           <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
                         )}

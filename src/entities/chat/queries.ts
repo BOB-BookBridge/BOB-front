@@ -41,6 +41,8 @@ export const useExitChatMutation = () => {
 
 interface useMessageMutationResponse {
   isRead: boolean;
+  id: number;
+  sentAt: string;
 }
 
 export const useMessageMutate = () => {
