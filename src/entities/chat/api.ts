@@ -55,7 +55,7 @@ export const postNewMessage = async ({
   chatroomId,
   message,
   fileNames,
-}: postMessageProps): Promise<{ isRead: boolean }> => {
+}: postMessageProps) => {
   const { data } = await axiosInstance.post(
     `/chatrooms/${chatroomId}/messages`,
     { message, fileNames },

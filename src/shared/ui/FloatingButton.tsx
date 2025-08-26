@@ -29,34 +29,42 @@ const FloatingButton = () => {
   const { toggleIsOpen, resetChat, resetAll } = useFABStore();
   const handleOpenChat = useHandleOpenChat();
   const isLogin = useMyStore((s) => s.isLogin);
-  const { data: unRead } = useUnreadQuery(isLogin);
+  const { data: unRead, refetch: unReadRefetch } = useUnreadQuery(isLogin);
   const unReadCount = unRead ? unRead.unreadCount : 0;
 
   const [visibleNoti, setVisibleNoti] = useState<Notification | null>(null);
   const [dismissing, setDismissing] = useState<boolean>(false);
   const timers = useRef<{ fade?: number; clear?: number }>({});
 
-  const onNoti = useCallback((newNoti: Notification) => {
-    clearTimeout(timers.current.fade);
-    clearTimeout(timers.current.clear);
+  const onNoti = useCallback(
+    (newNoti: Notification) => {
+      clearTimeout(timers.current.fade);
+      clearTimeout(timers.current.clear);
 
-    setVisibleNoti(newNoti);
-    setDismissing(false);
+      setVisibleNoti(newNoti);
+      setDismissing(false);
 
-    timers.current.fade = window.setTimeout(() => {
-      setDismissing(true);
-    }, 2500);
+      timers.current.fade = window.setTimeout(() => {
+        setDismissing(true);
+      }, 2500);
 
-    timers.current.clear = window.setTimeout(() => {
-      setVisibleNoti(null);
-    }, 3000);
-  }, []);
+      timers.current.clear = window.setTimeout(() => {
+        setVisibleNoti(null);
+      }, 3000);
+
+      unReadRefetch();
+    },
+    [unReadRefetch],
+  );
 
   useEffect(() => {
     if (!isLogin) return;
-    connectNoti(onNoti, () => {
+    const es = connectNoti(onNoti, () => {
       console.log('error');
     });
+    return () => {
+      es.close();
+    };
   }, [isLogin, onNoti]);
 
   const hideButton =

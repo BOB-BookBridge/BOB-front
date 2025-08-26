@@ -27,7 +27,9 @@ export const useFailedChatStore = create<FailedChatStore>()(
         set({
           failedChats: {
             ...get().failedChats,
-            [chatroomId]: prev.filter((chat) => chat.clientId !== clientId),
+            [chatroomId]: prev.filter(
+              (chat) => 'clientId' in chat && chat.clientId !== clientId,
+            ),
           },
         });
       },
