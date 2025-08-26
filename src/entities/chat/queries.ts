@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { queryClient } from '@/shared/lib';
 import {
   getChatInfo,
   getChats,
@@ -29,10 +30,12 @@ export const useChatInfoQuery = (
   });
 };
 
-// #todo: 채팅 목록 refetch
 export const useExitChatMutation = () => {
   return useMutation<void, Error, number>({
     mutationFn: (data) => patchChatRoom(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['chats'] });
+    },
   });
 };
 
@@ -61,7 +64,6 @@ export const useChatQuery = () => {
   });
 };
 
-// #todo: 채팅방 입장, 알림 오면 갱신
 export const useUnreadQuery = (enabled: boolean) => {
   return useQuery({
     queryKey: ['unread'],

@@ -8,6 +8,7 @@ import {
   useChatInfoQuery,
   useMessageMutate,
   useMessageQuery,
+  useUnreadQuery,
 } from '@/entities/chat';
 import {
   AddIcon,
@@ -47,6 +48,7 @@ const ChatRoom = () => {
   });
   const failedChats = useFailedChatStore((state) => state.failedChats);
   const { addFailedChat, deleteFailedChat } = useFailedChatStore();
+  const { refetch } = useUnreadQuery(!!chatId);
 
   useEffect(() => {
     if (!hasInitialized && chatData && chatRoomId) {
@@ -76,6 +78,7 @@ const ChatRoom = () => {
 
   useEffect(() => {
     if (!chatRoomId) return;
+    refetch();
     const es = connectChat(
       chatRoomId,
       handleMessage,
