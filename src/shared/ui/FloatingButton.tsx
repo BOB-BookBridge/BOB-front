@@ -59,9 +59,12 @@ const FloatingButton = () => {
 
   useEffect(() => {
     if (!isLogin) return;
-    connectNoti(onNoti, () => {
+    const es = connectNoti(onNoti, () => {
       console.log('error');
     });
+    return () => {
+      es.close();
+    };
   }, [isLogin, onNoti]);
 
   const hideButton =

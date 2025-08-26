@@ -31,7 +31,7 @@ export const connectNoti = (
 
   es.onerror = (e) => {
     onError(e);
-    es.close();
   };
+
   return es;
 };
