@@ -116,7 +116,6 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
   const { data: tradeData } = useTradeQuery(postId);
   function handleModalSubmit(data: ModalSubmitData) {
     if ('reason' in data) {
-      console.log(tradeData?.trades);
       if (
         !tradeData?.trades ||
         (tradeData.trades[0].tradeStatus !== 'COMPLETED' &&
@@ -124,9 +123,13 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
       )
         return;
       const tradeId = tradeData.trades[0].tradeId;
-      changeTradeStatus({ tradeId, status: 'CANCELED' });
+      changeTradeStatus({ tradeId, status: 'CANCELED', reason: data.reason });
     } else {
-      changeTradeStatus({ tradeId: data.tradeId, status: data.status });
+      changeTradeStatus({
+        tradeId: data.tradeId,
+        status: data.status,
+        reason: null,
+      });
     }
 
     setOpenModalType(null);

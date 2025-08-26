@@ -9,10 +9,15 @@ export const getTrades = async (postId: number): Promise<GetTradeRes> => {
 export const patchTrade = async ({
   tradeId,
   status,
+  reason,
 }: {
   tradeId: number;
   status: TradeStatus;
+  reason: string | null;
 }) => {
-  const { data } = await axiosInstance.patch(`/trades/${tradeId}`, { status });
+  const { data } = await axiosInstance.patch(`/trades/${tradeId}`, {
+    status,
+    reason,
+  });
   return data;
 };

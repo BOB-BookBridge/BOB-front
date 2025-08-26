@@ -17,4 +17,5 @@ export interface TradeRes {
 export interface TradeProps {
   tradeId: number;
   status: TradeStatus;
+  reason: string | null;
 }
