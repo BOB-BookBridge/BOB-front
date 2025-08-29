@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [develop]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+env:
+  NODE_VERSION: 20
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  type-check:
+    name: Type Check
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm run type-check
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - uses: actions/cache@v4
+        with:
+          path: .eslintcache
+          key: eslint-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            eslint-${{ runner.os }}-
+      - name: Get changed TS files
+        id: changed
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            **/*.ts
+            **/*.tsx
+      - name: Run ESLint on changed files
+        if: ${{ steps.changed.outputs.any_changed == 'true' }}
+        run: |
+          echo "${{ steps.changed.outputs.all_changed_files }}" > files.txt
+          npx eslint $(cat files.txt) --cache --cache-location .eslintcache
+      - name: Skip ESLint (no TS changes)
+        if: ${{ steps.changed.outputs.any_changed != 'true' }}
+        run: echo "No changed .ts/.tsx files. Skipping ESLint."
+
+  build:
+    name: Build
+    runs-on: ubuntu-22.04
+    needs: [type-check, lint]
+    env:
+      ENV_PRODUCTION: ${{ secrets.ENV_PRODUCTION }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare .env.production
+        if: ${{ env.ENV_PRODUCTION != '' }}
+        run: |
+          echo "$ENV_PRODUCTION" > .env.production
+          chmod 644 .env.production
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm run build:ci
