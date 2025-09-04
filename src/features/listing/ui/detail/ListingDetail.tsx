@@ -44,8 +44,8 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
     setLiked((prev) => !prev);
   }
   function handleClickChat() {
-    if (!data) return;
-    const isFar = calcDistance(mydata.emdId, data.writer.emdId);
+    if (!data || !mydata) return;
+    const isFar = calcDistance(mydata.area.emdId, data.writer.emdId);
     makeChat(
       { postId: data.postId, isFar },
       {
