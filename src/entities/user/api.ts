@@ -1,7 +1,7 @@
 import axiosInstance from '@/shared/config/axios';
 import { UserProfileProps } from '.';
 
-export const getMyProfile = async () => {
+export const getMyProfile = async (): Promise<UserProfileProps> => {
   const { data } = await axiosInstance.get('/members/me');
   return data;
 };
