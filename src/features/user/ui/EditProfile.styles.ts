@@ -13,11 +13,14 @@ export const Container = styled.div`
     margin-top: 10px;
   }
 `;
-
-export const AccountButton = styled.div`
+export const AccountText = styled.div<{
+  $isButton?: boolean;
+  $isGray?: boolean;
+}>`
   font-size: 14px;
-  text-decoration: underline;
-  cursor: pointer;
+  color: ${({ $isGray, theme }) =>
+    $isGray ? theme.colors.GRAY_600 : 'inherit'};
+  cursor: ${({ $isButton }) => ($isButton ? 'pointer' : 'default')};
 `;
 
 export const NicknameSection = styled.div`

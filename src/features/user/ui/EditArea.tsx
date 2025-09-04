@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { toast } from 'react-toastify';
 import emd_areas from '@/shared/constants/emd_areas.json';
 import { formatDate, queryClient } from '@/shared/lib';
