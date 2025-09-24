@@ -14,7 +14,6 @@ const EditArea = (area: EditAreaProps) => {
   const emdName = emd_areas.find((area) => area.id === defaultEmdId)?.name;
 
   function handleEditArea() {
-    toast.success('활동 지역 변경 완료!');
     queryClient.invalidateQueries({ queryKey: ['my'] });
   }
   return (
