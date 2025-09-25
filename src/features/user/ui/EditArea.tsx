@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import emd_areas from '@/shared/constants/emd_areas.json';
 import { formatDate, queryClient } from '@/shared/lib';
 import { SelectAreaSection } from '@/shared/ui';
@@ -14,15 +13,16 @@ const EditArea = (area: EditAreaProps) => {
   const emdName = emd_areas.find((area) => area.id === defaultEmdId)?.name;
 
   function handleEditArea() {
-    toast.success('활동 지역 변경 완료!');
     queryClient.invalidateQueries({ queryKey: ['my'] });
   }
   return (
     <S.EditAreaContainer>
       <div style={{ marginBottom: 10 }}>
-        <span style={{ fontWeight: 600 }}>활동 지역 변경</span>
-        <S.InfoText>
-          *{emdName} 인증됨 ({formatDate(area.authenticatedAt)})
+        <span style={{ fontWeight: 600 }}>활동 지역</span>
+        <S.InfoText $isAuthentication={area.isAuthentication}>
+          {area.isAuthentication
+            ? `*${emdName} 인증됨 (${formatDate(area.authenticatedAt)})`
+            : `*위치 인증이 필요합니다`}
         </S.InfoText>
       </div>
       <SelectAreaSection purpose='CHANGE_AREA' onSuccess={handleEditArea} />

@@ -45,9 +45,10 @@ export const AreaInfoBar = styled.div`
   align-items: center;
 `;
 
-export const InfoText = styled.span`
+export const InfoText = styled.span<{ $isAuthentication: boolean }>`
   margin-left: 10px;
-  color: ${({ theme }) => theme.colors.GRAY_600};
+  color: ${({ theme, $isAuthentication }) =>
+    $isAuthentication ? theme.colors.GRAY_600 : theme.colors.BADGE};
   font-size: 14px;
 `;
 
