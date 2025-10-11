@@ -2,7 +2,7 @@ import axiosInstance from '@/shared/config/axios';
 import { GetTradeRes, TradeStatus } from '.';
 
 export const getTrades = async (postId: number): Promise<GetTradeRes> => {
-  const { data } = await axiosInstance.get('/trades', { params: { postId } });
+  const { data } = await axiosInstance.get(`/posts/${postId}/trades`);
   return data;
 };
 

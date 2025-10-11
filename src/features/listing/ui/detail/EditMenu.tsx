@@ -118,11 +118,11 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
     if ('reason' in data) {
       if (
         !tradeData?.trades ||
-        (tradeData.trades[0].tradeStatus !== 'COMPLETED' &&
-          tradeData.trades[0].tradeStatus !== 'RESERVED')
+        (tradeData.trades[0].status !== 'COMPLETED' &&
+          tradeData.trades[0].status !== 'RESERVED')
       )
         return;
-      const tradeId = tradeData.trades[0].tradeId;
+      const tradeId = tradeData.trades[0].id;
       changeTradeStatus({ tradeId, status: 'CANCELED', reason: data.reason });
     } else {
       changeTradeStatus({

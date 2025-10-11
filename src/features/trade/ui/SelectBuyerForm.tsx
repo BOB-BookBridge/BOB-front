@@ -41,12 +41,12 @@ const SelectBuyerForm = ({
         ) : (
           data &&
           data.trades.map((trade) => {
-            const isSelected = selectedId === trade.tradeId;
+            const isSelected = selectedId === trade.id;
             return (
               <ListItem
-                key={trade.tradeId}
+                key={trade.id}
                 $isSelected={isSelected}
-                onClick={() => handleClickItem(trade.tradeId)}>
+                onClick={() => handleClickItem(trade.id)}>
                 <ItemLeftSection>
                   {trade.buyer.profile ? (
                     <img src={trade.buyer.profile} />
