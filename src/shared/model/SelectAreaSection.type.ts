@@ -1,5 +1,3 @@
-import { PURPOSE_AREA } from '@/entities/auth';
-
 export const AreaType: Record<number, string> = {
   1: 'sido',
   2: 'sigg',
@@ -16,7 +14,6 @@ export interface SelectAreaSectionProps {
   showVerifyButton?: boolean;
   onSuccess?: (emdId: number) => void;
   onChange?: () => void;
-  purpose?: PURPOSE_AREA;
 }
 
 export interface SelectAreaSectionRef {

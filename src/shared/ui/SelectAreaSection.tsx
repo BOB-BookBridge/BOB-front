@@ -22,12 +22,7 @@ export const SelectAreaSection = forwardRef<
   SelectAreaSectionProps
 >(
   (
-    {
-      showVerifyButton = true,
-      onSuccess,
-      onChange,
-      purpose,
-    }: SelectAreaSectionProps,
+    { showVerifyButton = true, onSuccess, onChange }: SelectAreaSectionProps,
     ref,
   ) => {
     const {
@@ -77,7 +72,7 @@ export const SelectAreaSection = forwardRef<
     }
 
     function handleAreaVerify() {
-      if (!onSuccess || !purpose) return;
+      if (!onSuccess) return;
       if (!emdId) {
         console.log('위치 정보를 전부 입력해 주세요');
         return;
@@ -95,7 +90,6 @@ export const SelectAreaSection = forwardRef<
               emdId,
               lat: pos.coords.latitude,
               lon: pos.coords.longitude,
-              purpose,
             },
             {
               onSuccess: () => {

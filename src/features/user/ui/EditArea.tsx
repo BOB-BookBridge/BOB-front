@@ -25,7 +25,7 @@ const EditArea = (area: EditAreaProps) => {
             : `*위치 인증이 필요합니다`}
         </S.InfoText>
       </div>
-      <SelectAreaSection purpose='CHANGE_AREA' onSuccess={handleEditArea} />
+      <SelectAreaSection onSuccess={handleEditArea} />
     </S.EditAreaContainer>
   );
 };
