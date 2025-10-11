@@ -16,7 +16,7 @@ export const connectNoti = (
   onError: (error: Event) => void,
 ) => {
   const es = new EventSource(
-    `${process.env.NEXT_PUBLIC_API_URL}notifications/subscribe`,
+    `${process.env.NEXT_PUBLIC_API_URL}/notifications/subscribe`,
     { withCredentials: true },
   );
 
