@@ -187,7 +187,6 @@ const SignUpForm = () => {
         }}
       />
       <SelectAreaSection
-        purpose='SIGN_UP'
         onSuccess={handleAreaVerified}
         onChange={handleAreaChange}
       />

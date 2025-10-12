@@ -5,8 +5,8 @@ export interface GetTradeRes {
 }
 
 export interface TradeRes {
-  tradeId: 9;
-  tradeStatus: TradeStatus;
+  id: 9;
+  status: TradeStatus;
   buyer: {
     id: string;
     nickname: string;

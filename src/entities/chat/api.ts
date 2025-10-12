@@ -20,7 +20,7 @@ export const connectChat = (
   onError: (error: Event) => void,
 ) => {
   const es = new EventSource(
-    `${process.env.NEXT_PUBLIC_API_URL}chatrooms/${chatroomId}/subscribe`,
+    `${process.env.NEXT_PUBLIC_API_URL}/chatrooms/${chatroomId}/subscribe`,
     { withCredentials: true },
   );
 
