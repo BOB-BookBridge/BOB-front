@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import EditProfile from './EditProfile';
 import MyFavorite from './MyFavorite';
+import MyTrade from './MyTrade';
 import MyBook from './MyBook';
 import MyTab from './MyTab';
 
@@ -29,6 +30,8 @@ const My = () => {
       {selected === 0 ? (
         <EditProfile />
       ) : selected === 1 ? (
+        <MyTrade />
+      ) : selected === 2 ? (
         <MyFavorite />
       ) : (
         <MyBook />
