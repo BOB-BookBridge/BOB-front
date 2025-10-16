@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import EditProfile from './EditProfile';
+import Profile from './Profile';
 import MyFavorite from './MyFavorite';
 import MyTrade from './MyTrade';
 import MyBook from './MyBook';
@@ -28,7 +28,7 @@ const My = () => {
     <Container>
       <MyTab selected={selected} onClick={handleClickTab} />
       {selected === 0 ? (
-        <EditProfile />
+        <Profile />
       ) : selected === 1 ? (
         <MyTrade />
       ) : selected === 2 ? (

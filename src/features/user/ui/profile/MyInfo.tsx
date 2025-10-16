@@ -2,12 +2,12 @@ import { useFailedChatStore } from '@/features/chat/model/useFailedChatStore';
 import DefaultProfile from '@/shared/assets/default-profile.svg';
 import { useLogoutMutation } from '@/entities/auth/queries';
 import { useMyQuery } from '@/entities/user';
-import EditNickname from './EditNickname';
-import EditPassword from './EditPassword';
-import * as S from './EditProfile.styles';
-import EditArea from './EditArea';
+import EditNickname from '../EditNickname';
+import EditPassword from '../EditPassword';
+import * as S from '../Profile.styles';
+import EditArea from '../EditArea';
 
-const EditProfile = () => {
+const MyInfo = () => {
   const { data } = useMyQuery();
   const { mutate: logout } = useLogoutMutation();
   const { reset } = useFailedChatStore();
@@ -20,8 +20,9 @@ const EditProfile = () => {
   function handleDeleteAccount() {}
   return (
     <>
+      {' '}
       {data ? (
-        <S.Container>
+        <div>
           <DefaultProfile width={80} />
           <EditNickname defaultNickname={data.nickname} />
           <EditArea {...data.area} />
@@ -40,12 +41,11 @@ const EditProfile = () => {
               탈퇴하기
             </S.AccountText>
           </S.AccountRow>
-        </S.Container>
+        </div>
       ) : (
         <div></div>
       )}
     </>
   );
 };
-
-export default EditProfile;
+export default MyInfo;

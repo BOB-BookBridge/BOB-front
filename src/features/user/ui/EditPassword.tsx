@@ -1,5 +1,5 @@
 import { useForm, useWatch } from 'react-hook-form';
-import * as S from './EditProfile.styles';
+import * as S from './Profile.styles';
 import { Button, InputGroup } from '@/shared/ui';
 import { passwordConfirmRule, passwordSignupRule } from '@/shared/constants';
 import { useState } from 'react';

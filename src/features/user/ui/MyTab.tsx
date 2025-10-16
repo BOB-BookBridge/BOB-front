@@ -5,7 +5,7 @@ interface MyTabProps {
   onClick: (v: number) => void;
 }
 const MyTab = ({ selected, onClick }: MyTabProps) => {
-  const tabs = ['내 프로필', '내 거래', '내가 찜한 책', '내 판매글'];
+  const tabs = ['프로필', '거래', '찜한 책', '게시글'];
   return (
     <Container>
       <ListWrapper>
@@ -47,7 +47,7 @@ const ListWrapper = styled.ul`
     list-style: none;
     margin: 0;
     padding: 0;
-    border-bottom: 5px solid ${({ theme }) => theme.colors.GRAY_300};
+    border-bottom: 3px solid ${({ theme }) => theme.colors.GRAY_300};
     &::-webkit-scrollbar {
       display: none;
     }

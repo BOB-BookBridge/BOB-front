@@ -3,14 +3,12 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 100%;
   max-width: 450px;
-  margin-top: 50px;
-  padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 30px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    margin-top: 10px;
+    margin-top: 0;
   }
 `;
 export const AccountText = styled.div<{
