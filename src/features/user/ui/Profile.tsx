@@ -40,6 +40,6 @@ const Container = styled.div`
   gap: 30px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    margin-top: 0;
+    margin: 0;
   }
 `;

@@ -8,7 +8,7 @@ interface EditAreaProps {
   isAuthentication: boolean;
   authenticatedAt: string;
 }
-const EditArea = (area: EditAreaProps) => {
+const EditArea = ({ area }: { area: EditAreaProps }) => {
   const defaultEmdId = area.emdId;
   const emdName = emd_areas.find((area) => area.id === defaultEmdId)?.name;
 
@@ -17,15 +17,12 @@ const EditArea = (area: EditAreaProps) => {
   }
   return (
     <S.EditAreaContainer>
-      <div style={{ marginBottom: 10 }}>
-        <span style={{ fontWeight: 600 }}>활동 지역</span>
-        <S.InfoText $isAuthentication={area.isAuthentication}>
-          {area.isAuthentication
-            ? `*${emdName} 인증됨 (${formatDate(area.authenticatedAt)})`
-            : `*위치 인증이 필요합니다`}
-        </S.InfoText>
-      </div>
       <SelectAreaSection onSuccess={handleEditArea} />
+      <S.InfoText $isAuthentication={area.isAuthentication}>
+        {area.isAuthentication
+          ? `*${emdName} 인증됨 (${formatDate(area.authenticatedAt)})`
+          : `*위치 인증이 필요합니다`}
+      </S.InfoText>
     </S.EditAreaContainer>
   );
 };

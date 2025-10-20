@@ -1,11 +1,9 @@
 import { useFailedChatStore } from '@/features/chat/model/useFailedChatStore';
-import DefaultProfile from '@/shared/assets/default-profile.svg';
 import { useLogoutMutation } from '@/entities/auth/queries';
+import ProfileInfoSection from './ProfileInfoSection';
 import { useMyQuery } from '@/entities/user';
-import EditNickname from '../EditNickname';
 import EditPassword from '../EditPassword';
 import * as S from '../Profile.styles';
-import EditArea from '../EditArea';
 
 const MyInfo = () => {
   const { data } = useMyQuery();
@@ -22,10 +20,12 @@ const MyInfo = () => {
     <>
       {' '}
       {data ? (
-        <div>
-          <DefaultProfile width={80} />
-          <EditNickname defaultNickname={data.nickname} />
-          <EditArea {...data.area} />
+        <S.Container>
+          <ProfileInfoSection
+            nickname={data.nickname}
+            area={data.area}
+            profileImageUrl={data.profileImageUrl}
+          />
           {!data.isSocial && <EditPassword />}
           <S.AccountRow>
             <div style={{ fontWeight: 600 }}>계정</div>
@@ -41,7 +41,7 @@ const MyInfo = () => {
               탈퇴하기
             </S.AccountText>
           </S.AccountRow>
-        </div>
+        </S.Container>
       ) : (
         <div></div>
       )}

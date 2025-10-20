@@ -2,15 +2,29 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   width: 100%;
-  max-width: 450px;
+  padding: 10px;
+  margin-right: 10px;
   display: flex;
   flex-direction: column;
   gap: 30px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    margin-top: 0;
+    margin: 0;
   }
 `;
+
+export const SectionContainer = styled.div`
+  width: 100%;
+  padding: 20px;
+  max-width: 800px;
+  border-radius: 20px;
+  border: ${({ theme }) => `1px ${theme.colors.GRAY_500} solid`};
+`;
+
+export const RowSectionContainer = styled(SectionContainer)`
+  display: flex;
+`;
+
 export const AccountText = styled.div<{
   $isButton?: boolean;
   $isGray?: boolean;
