@@ -11,7 +11,7 @@ export const Container = styled.div`
 `;
 
 export const InputContainer = styled.div`
-  border: 1px solid ${colors.light.GRAY_500};
+  border: 1px solid ${colors.light.GRAY_400};
   border-radius: 12px;
   width: 100%;
 `;
@@ -22,7 +22,7 @@ export const InputWrapper = styled.div<InputWrapperProps>`
   width: 100%;
   height: 50px;
   border-top: ${({ idx }) =>
-    idx === 0 ? 'none' : `1px solid ${colors.light.GRAY_500}`};
+    idx === 0 ? 'none' : `1px solid ${colors.light.GRAY_400}`};
   padding: 10px;
 `;
 

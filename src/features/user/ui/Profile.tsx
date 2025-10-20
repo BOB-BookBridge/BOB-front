@@ -1,10 +1,9 @@
 import { useState } from 'react';
-
-import SubTab from './SubTab';
 import styled from 'styled-components';
-import MyInfo from './profile/MyInfo';
-import Bookcase from './profile/Bookcase';
 import WishList from './profile/Wishlist';
+import Bookcase from './profile/Bookcase';
+import MyInfo from './profile/MyInfo';
+import SubTab from './SubTab';
 
 const Profile = () => {
   const tabs = ['내 정보', '책장', '희망 도서'];
@@ -41,5 +40,6 @@ const Container = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     margin: 0;
+    gap: 0;
   }
 `;

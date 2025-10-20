@@ -41,7 +41,7 @@ const Container = styled.div`
 `;
 
 const ListWrapper = styled.ul`
-  display: flex;
+  display: inline-flex;
   flex-wrap: nowrap;
   width: fit-content;
   height: auto;

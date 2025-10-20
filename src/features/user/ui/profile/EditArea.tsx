@@ -1,7 +1,7 @@
 import emd_areas from '@/shared/constants/emd_areas.json';
 import { formatDate, queryClient } from '@/shared/lib';
 import { SelectAreaSection } from '@/shared/ui';
-import * as S from './Profile.styles';
+import * as S from '../Profile.styles';
 
 interface EditAreaProps {
   emdId: number;

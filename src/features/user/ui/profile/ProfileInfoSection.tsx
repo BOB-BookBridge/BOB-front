@@ -1,9 +1,9 @@
 import DefaultProfile from '@/shared/assets/default-profile.svg';
 import { UserProfileProps } from '@/entities/user';
-import EditNickname from '../EditNickname';
-import EditArea from '../EditArea';
+import EditNickname from './EditNickname';
 import * as S from '../Profile.styles';
 import styled from 'styled-components';
+import EditArea from './EditArea';
 
 type ProfileInfoProps = Pick<
   UserProfileProps,
@@ -16,7 +16,7 @@ const ProfileInfoSection = ({
   profileImageUrl,
 }: ProfileInfoProps) => {
   return (
-    <S.RowSectionContainer>
+    <S.PriofileSectionContainer>
       {profileImageUrl === null && (
         <DefaultProfile width={80} height={80} style={{ flexShrink: 0 }} />
       )}
@@ -24,7 +24,7 @@ const ProfileInfoSection = ({
         <EditNickname defaultNickname={nickname} />
         <EditArea area={area} />
       </RightSection>
-    </S.RowSectionContainer>
+    </S.PriofileSectionContainer>
   );
 };
 
@@ -34,5 +34,4 @@ const RightSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 0 10px;
 `;

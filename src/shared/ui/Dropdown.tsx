@@ -105,10 +105,10 @@ export default Dropdown;
 
 const Container = styled.div<{ $isResponsive: boolean }>`
   width: 145px;
-  ${({ $isResponsive }) =>
+  ${({ $isResponsive, theme }) =>
     $isResponsive &&
     `
-      @media (max-width: 479px) {
+      @media (max-width: ${theme.breakpoints.tablet}) {
         width: 100px;
       }
     `}
@@ -120,7 +120,7 @@ const DropdownBox = styled.button`
   padding: 10px;
   justify-content: space-between;
   align-items: center;
-  border: ${({ theme }) => `1px solid ${theme.colors.GRAY_500}`};
+  border: ${({ theme }) => `1px solid ${theme.colors.GRAY_400}`};
   border-radius: 10px;
   cursor: pointer;
   background-color: ${({ theme }) => `${theme.colors.WHITE}`};
@@ -147,7 +147,7 @@ const OptionBox = styled.div<{ $disabled?: boolean }>`
 const OptionsWrapper = styled.div<{ $isResponsive: boolean }>`
   padding: 2px;
   margin-top: 5px;
-  max-height: 100px;
+  max-height: 200px;
   overflow-y: scroll;
   position: absolute;
   width: 145px;
@@ -155,14 +155,6 @@ const OptionsWrapper = styled.div<{ $isResponsive: boolean }>`
   z-index: ${({ theme }) => theme.zIndex.dropdown};
   background-color: ${({ theme }) => `${theme.colors.WHITE}`};
   border: ${({ theme }) => `1px solid ${theme.colors.GRAY_500}`};
-
-  ${({ $isResponsive }) =>
-    $isResponsive &&
-    `
-      @media (max-width: 479px) {
-        width: 100px;
-      }
-    `}
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -184,5 +176,17 @@ const OptionsWrapper = styled.div<{ $isResponsive: boolean }>`
 
   &::-webkit-scrollbar-thumb:hover {
     background-color: ${({ theme }) => `${theme.colors.GRAY_500}`};
+  }
+
+  ${({ $isResponsive, theme }) =>
+    $isResponsive &&
+    `
+      @media (max-width: ${theme.breakpoints.tablet}) {
+        width: 100px;
+      }
+    `}
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    max-height: 100px;
   }
 `;

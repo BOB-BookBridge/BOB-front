@@ -2,7 +2,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { useMyInfoMutation } from '@/entities/user';
 import { nicknameRule } from '@/shared/constants';
 import { Button, InputGroup } from '@/shared/ui';
-import * as S from './Profile.styles';
+import * as S from '../Profile.styles';
 
 interface EditNicknameValues {
   nickname: string;
