@@ -5,7 +5,7 @@ interface MyTabProps {
   onClick: (v: number) => void;
 }
 const MyTab = ({ selected, onClick }: MyTabProps) => {
-  const tabs = ['내 프로필', '내가 찜한 책', '내 판매글'];
+  const tabs = ['프로필', '거래', '찜한 책', '게시글'];
   return (
     <Container>
       <ListWrapper>
@@ -39,37 +39,45 @@ const ListWrapper = styled.ul`
   list-style: inside;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
     height: auto;
     list-style: none;
     margin: 0;
     padding: 0;
-    border-bottom: 5px solid ${({ theme }) => theme.colors.GRAY_300};
+    border-bottom: 3px solid ${({ theme }) => theme.colors.GRAY_300};
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 `;
 
 interface ListItemProps {
   $isSelect: boolean;
 }
+
 const ListItem = styled.li<ListItemProps>`
   cursor: pointer;
   font-size: 20px;
   font-weight: 600;
   padding: 20px 0;
   color: ${({ $isSelect, theme }) =>
-    $isSelect ? theme.colors.BLACK : theme.colors.GRAY_500};
+    $isSelect ? theme.colors.PRIMARY : theme.colors.GRAY_500};
 
   &::marker {
     color: ${({ $isSelect, theme }) =>
-      $isSelect ? theme.colors.PRIMARY : theme.colors.BLACK};
+      $isSelect ? theme.colors.PRIMARY : theme.colors.GRAY_500};
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     font-size: 16px;
     text-align: center;
-    padding: 10px;
+    padding: 8px 28px;
+    white-space: nowrap;
     border-bottom: ${({ $isSelect, theme }) =>
       $isSelect ? `4px solid ${theme.colors.PRIMARY}` : 'none'};
+    flex-shrink: 0;
   }
 `;

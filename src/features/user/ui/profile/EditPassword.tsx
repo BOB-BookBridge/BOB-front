@@ -1,9 +1,9 @@
-import { useForm, useWatch } from 'react-hook-form';
-import * as S from './EditProfile.styles';
-import { Button, InputGroup } from '@/shared/ui';
-import { passwordConfirmRule, passwordSignupRule } from '@/shared/constants';
 import { useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
+import { passwordConfirmRule, passwordSignupRule } from '@/shared/constants';
 import { usePasswordMutation } from '@/entities/user';
+import { Button, InputGroup } from '@/shared/ui';
+import * as S from '../Profile.styles';
 
 interface EditPasswordValues {
   nowPwd: string;
@@ -46,23 +46,13 @@ const EditPassword = () => {
   }
 
   return (
-    <div style={{ marginTop: 20 }}>
-      <div style={{ width: 150 }}>
-        <Button
-          text='비밀번호 재설정'
-          onClick={handleClickEditPwd}
-          variant='secondary'
-        />
-      </div>
+    <div style={{ display: 'flex' }}>
+      <S.AccountTitleText $isButton={true} onClick={handleClickEditPwd}>
+        {`비밀번호 재설정 >`}
+      </S.AccountTitleText>
+
       {isOpen && (
-        <div
-          style={{
-            marginTop: 20,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 20,
-            maxWidth: 450,
-          }}>
+        <S.PasswordForm>
           <InputGroup
             inputs={[
               {
@@ -92,25 +82,25 @@ const EditPassword = () => {
             register={register}
             errors={errors}
           />
-          <div
-            style={{
-              display: 'flex',
-              width: '100%',
-              maxWidth: 450,
-              justifyContent: 'end',
-            }}>
+          <S.Actions>
             <S.ButtonWrapper>
-              <Button text='취소' variant='cancel' onClick={handleCancelEdit} />
+              <Button
+                text='취소'
+                variant='cancel'
+                onClick={handleCancelEdit}
+                size='sm'
+              />
             </S.ButtonWrapper>
             <S.ButtonWrapper>
               <Button
                 text='저장'
                 variant={disabled ? 'disabled' : 'primary'}
+                size='sm'
                 onClick={handleEditPassword}
               />
             </S.ButtonWrapper>
-          </div>
-        </div>
+          </S.Actions>
+        </S.PasswordForm>
       )}
     </div>
   );

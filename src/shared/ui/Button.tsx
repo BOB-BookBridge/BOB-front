@@ -23,7 +23,11 @@ const Button = ({
   onClick: () => void;
 }) => {
   return (
-    <StyledButton variant={variant} size={size} onClick={onClick}>
+    <StyledButton
+      disabled={variant === 'disabled'}
+      variant={variant}
+      size={size}
+      onClick={onClick}>
       {text}
     </StyledButton>
   );
@@ -39,6 +43,13 @@ interface ButtonProps {
 }
 
 const StyledButton = styled.button<ButtonProps>`
+  width: 100%;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+
   ${({ size = 'md' }) => {
     const style = BUTTON_STYLE[size];
     return `
@@ -54,7 +65,6 @@ const StyledButton = styled.button<ButtonProps>`
         return `
           background-color: transparent;
           color: ${theme.colors.GRAY_600};
-          border: 1px solid ${theme.colors.GRAY_400};
         `;
       case 'disabled':
         return `
@@ -75,10 +85,4 @@ const StyledButton = styled.button<ButtonProps>`
         `;
     }
   }}
-  width: 100%;
-  font-weight: 700;
-  text-align: center;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
 `;

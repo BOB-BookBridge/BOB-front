@@ -13,7 +13,7 @@ const MyPage = () => {
 export default MyPage;
 
 const Container = styled.div`
-  margin-right: 100px;
+  margin-right: 50px;
   @media (max-width: 744px) {
     margin-right: 0;
   }

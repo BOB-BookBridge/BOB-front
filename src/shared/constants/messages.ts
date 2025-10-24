@@ -7,6 +7,11 @@ export const VALIDATION_MESSAGES = {
   nickname: {
     tooLong: '닉네임은 12자 이하로 입력해주세요',
   },
+  interest: {
+    mixed: '영어 또는 한글 중 한 가지만 사용해 주세요',
+    tooLong: '영어는 20자, 한글은 10자 이하로 입력해 주세요',
+    invalidChar: '특수문자, 초성 또는 연속된 공백은 사용할 수 없어요',
+  },
 };
 
 export const HELP_MESSAGES = {

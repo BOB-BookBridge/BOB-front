@@ -1,0 +1,193 @@
+import { useState } from 'react';
+import styled from 'styled-components';
+import { useForm, useWatch } from 'react-hook-form';
+import { CloseIconXs, AddHeartIcon } from '@/shared/assets/icons';
+import { ModalLayout, Button, InputGroup } from '@/shared/ui';
+import { interestRule } from '@/shared/constants';
+
+const Interests = ({ interests }: { interests: string[] }) => {
+  const mockInterests = ['잠', '김 영한', '소설', 'abc', 'dsfsd', 'sadfafd'];
+  const [isRemove, setIsRemove] = useState<undefined | string>(undefined);
+  const [addInterest, setAddInterest] = useState(false);
+
+  const {
+    register,
+    control,
+    formState: { errors },
+    reset,
+  } = useForm<{ interest: string }>({
+    mode: 'onChange',
+  });
+  const newInterest = useWatch({ name: 'interest', control });
+
+  function handleClickRemove() {
+    console.log(isRemove, '삭제');
+    setIsRemove(undefined);
+  }
+
+  function handleAddInterest() {
+    const trimmed = newInterest.trim();
+    console.log(trimmed);
+    reset();
+    setAddInterest(false);
+  }
+
+  const disabled = !newInterest || Object.keys(errors).length > 0;
+
+  return (
+    <>
+      <InterestsWrapper>
+        {mockInterests.map((interest) => (
+          <div key={interest} style={{ position: 'relative' }}>
+            <Interest>{interest}</Interest>
+            <CloseButtonWrapper onClick={() => setIsRemove(interest)}>
+              <CloseButton>
+                <CloseIconXs />
+              </CloseButton>
+            </CloseButtonWrapper>
+          </div>
+        ))}
+        <AddInterestButton onClick={() => setAddInterest(true)}>
+          <AddHeartIcon strokeWidth={2} />
+          관심사 등록
+        </AddInterestButton>
+      </InterestsWrapper>
+
+      {isRemove && (
+        <ModalLayout
+          isOpen={!!isRemove}
+          onClose={() => setIsRemove(undefined)}
+          title={'관심사 삭제'}>
+          <RemoveModalContent>
+            <div>{`'${isRemove}' 을/를 삭제하시겠습니까?`}</div>
+            <div style={{ width: 120 }} onClick={handleClickRemove}>
+              <Button
+                text='삭제'
+                variant='primary'
+                size='sm'
+                onClick={() => setIsRemove(undefined)}
+              />
+            </div>
+          </RemoveModalContent>
+        </ModalLayout>
+      )}
+      {addInterest && (
+        <ModalLayout
+          isOpen={addInterest}
+          onClose={() => setAddInterest(false)}
+          title={'관심사 등록'}>
+          <AddInterestContent>
+            <InputGroup
+              inputs={[
+                {
+                  name: 'interest',
+                  placeholder: '관심사를 입력해 주세요',
+                  rules: interestRule,
+                },
+              ]}
+              register={register}
+              errors={errors}
+            />
+            <div style={{ width: 120 }}>
+              <Button
+                text='등록'
+                variant={disabled ? 'disabled' : 'primary'}
+                size='sm'
+                onClick={handleAddInterest}
+              />
+            </div>
+          </AddInterestContent>
+        </ModalLayout>
+      )}
+    </>
+  );
+};
+
+export default Interests;
+
+const InterestsWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+`;
+
+const BaseInterest = styled.div`
+  height: 40px;
+  padding: 0 12px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  font-size: 14px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: 12px;
+  }
+`;
+
+const Interest = styled(BaseInterest)`
+  background-color: ${({ theme }) => theme.colors.BLACK};
+  color: ${({ theme }) => theme.colors.WHITE};
+`;
+
+const CloseButtonWrapper = styled.div`
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  padding: 8px;
+  cursor: pointer;
+`;
+
+const CloseButton = styled.div`
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.WHITE};
+  border: 1px ${({ theme }) => theme.colors.GRAY_500} solid;
+  border-radius: 50%;
+  cursor: pointer;
+
+  svg {
+    fill: ${({ theme }) => theme.colors.GRAY_700};
+  }
+`;
+
+const AddInterestButton = styled(BaseInterest)`
+  cursor: pointer;
+  gap: 4px;
+  border: 1px ${({ theme }) => theme.colors.GRAY_400} solid;
+  color: ${({ theme }) => theme.colors.GRAY_800};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.GRAY_200};
+  }
+  &:active {
+    background-color: ${({ theme }) => theme.colors.GRAY_300};
+  }
+  svg {
+    stroke: currentColor;
+  }
+`;
+
+const RemoveModalContent = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  gap: 28px;
+`;
+
+const AddInterestContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 30px;
+  gap: 10px;
+`;
