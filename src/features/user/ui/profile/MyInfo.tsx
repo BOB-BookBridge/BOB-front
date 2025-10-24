@@ -14,6 +14,7 @@ const MyInfo = () => {
             nickname={data.nickname}
             area={data.area}
             profileImageUrl={data.profileImageUrl}
+            interests={data.interests}
           />
           <AccountInfoSection isSocial={data.isSocial} email={data.email} />
         </S.Container>
