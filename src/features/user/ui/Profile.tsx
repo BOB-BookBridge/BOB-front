@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import WishList from './profile/Wishlist';
+import WishList from './profile/WishList';
 import Bookcase from './profile/Bookcase';
 import MyInfo from './profile/MyInfo';
 import SubTab from './SubTab';
