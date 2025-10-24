@@ -26,7 +26,8 @@ const Interests = ({ interests }: { interests: string[] }) => {
   }
 
   function handleAddInterest() {
-    console.log(newInterest);
+    const trimmed = newInterest.trim();
+    console.log(trimmed);
     reset();
     setAddInterest(false);
   }
