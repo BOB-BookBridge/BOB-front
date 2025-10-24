@@ -1,6 +1,10 @@
 import { RegisterOptions } from 'react-hook-form';
 import { VALIDATION_MESSAGES } from '.';
 
+export const required = (label: string) => ({
+  required: VALIDATION_MESSAGES.required(label),
+});
+
 export const emailRule = {
   required: VALIDATION_MESSAGES.required('이메일'),
   pattern: {
@@ -44,6 +48,29 @@ export const nicknameRule = {
   },
 };
 
-export const required = (label: string) => ({
-  required: VALIDATION_MESSAGES.required(label),
-});
+export const interestRule: RegisterOptions<{ interest: string }, 'interest'> = {
+  required: VALIDATION_MESSAGES.required('관심사'),
+  pattern: {
+    value: /^(?!.*\s{2,})[A-Za-z가-힣0-9\s]+$/,
+    message: VALIDATION_MESSAGES.interest.invalidChar,
+  },
+  validate: {
+    mixed: (value) => {
+      const hasKorean = /[가-힣]/.test(value);
+      const hasEnglish = /[A-Za-z]/.test(value);
+      if (hasKorean && hasEnglish) {
+        return VALIDATION_MESSAGES.interest.mixed;
+      }
+      return true;
+    },
+    tooLong: (value) => {
+      if (/^[A-Za-z]+$/.test(value) && value.length > 20) {
+        return VALIDATION_MESSAGES.interest.tooLong;
+      }
+      if (/^[가-힣]+$/.test(value) && value.length > 10) {
+        return VALIDATION_MESSAGES.interest.tooLong;
+      }
+      return true;
+    },
+  },
+};
