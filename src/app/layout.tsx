@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import { ToastContainer } from 'react-toastify';
 import StyledComponentsRegistry from '@/shared/lib/StyledComponentsRegistry';
 import { ReactQueryClientProvider, ThemeRegistry } from '@/shared/providers';
+import { NotificationWidget } from '@/features/notification/ui';
 import { GlobalErrorBoundary } from '@/shared/lib';
 import { ChatWidget } from '@/features/chat/ui';
 import { Header } from '@/features/header/ui';
@@ -32,6 +33,7 @@ export default function RootLayout({
                 {children}
                 <FloatingButton />
                 <ChatWidget />
+                <NotificationWidget />
                 <ToastContainer autoClose={1000} hideProgressBar />
               </GlobalErrorBoundary>
             </ThemeRegistry>
