@@ -7,7 +7,6 @@ import { useTheme } from 'styled-components';
 import { useLikeMutation, useListingDetailQuery } from '@/entities/listing';
 import { bookStatusMap, convertDiffToString } from '@/shared/lib';
 import { calcDistance, getCategoryNameById } from '../../lib';
-import { useHandleOpenChat } from '@/shared/model';
 import { useChatMutation } from '@/entities/chat';
 import { LikeIcon } from '@/shared/assets/icons';
 import { LoadingIndicator } from '@/shared/ui';
@@ -34,7 +33,6 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
   const [likeCount, setLikeCount] = useState<number | undefined>(undefined);
   const { mutate: controlLike } = useLikeMutation();
   const { mutate: makeChat } = useChatMutation();
-  const handleOpenChat = useHandleOpenChat();
 
   function handleLike() {
     if (data?.isOwner) {
@@ -43,6 +41,8 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
     }
     setLiked((prev) => !prev);
   }
+
+  // #todo: 채팅 -> 거래로 변경
   function handleClickChat() {
     if (!data || !mydata) return;
     const isFar = calcDistance(mydata.area.emdId, data.writer.emdId);
@@ -50,7 +50,7 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
       { postId: data.postId, isFar },
       {
         onSuccess: (res) => {
-          handleOpenChat({ chatId: res.chatRoomId });
+          console.log(res);
         },
       },
     );
