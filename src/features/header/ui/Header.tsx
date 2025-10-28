@@ -5,7 +5,7 @@ import { useTheme } from 'styled-components';
 import { useRouter, usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMyStore } from '@/shared/model/useMyStore';
-import { useThemeStore } from '../../../shared/model';
+import { useHandleOpenWidget, useThemeStore } from '../../../shared/model';
 import { colors } from '../../../shared/constants';
 import { useMyQuery } from '@/entities/user';
 import Logo from '@/shared/assets/logo.svg';
@@ -20,6 +20,7 @@ import {
 const Header = () => {
   const mode = useThemeStore((state) => state.mode);
   const toggleMode = useThemeStore((state) => state.toggleMode);
+  const handleOpenWidget = useHandleOpenWidget();
   const { data, isPending, isError } = useMyQuery();
   const isLogin = useMyStore((s) => s.isLogin);
   const { setIsLogin } = useMyStore();
@@ -68,6 +69,10 @@ const Header = () => {
 
   if (hideHeader) return null;
 
+  function handleNoti() {
+    handleOpenWidget({ type: 'notification' });
+  }
+
   return (
     <S.Container>
       <Link
@@ -109,7 +114,13 @@ const Header = () => {
                 />
               )}
             </Link>
-            <NotiIcon stroke={theme.colors.BLACK} strokeWidth={2} fill='none' />
+            <NotiIcon
+              stroke={theme.colors.BLACK}
+              strokeWidth={2}
+              fill='none'
+              style={{ cursor: 'pointer' }}
+              onClick={handleNoti}
+            />
           </S.IconGroup>
         ) : !isPending && !isLogin ? (
           <S.LoginButton onClick={() => router.push('/login')}>

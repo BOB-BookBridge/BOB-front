@@ -1,20 +1,20 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useFABStore, useWidgetStore } from '@/shared/model';
 import { useChatQuery } from '@/entities/chat';
 import { LoadingIndicator } from '@/shared/ui';
-import { useFABStore } from '@/shared/model';
 import ChatListItem from './ChatListItem';
 
 const ChatList = () => {
   const router = useRouter();
-  const isOpen = useFABStore((s) => s.chatIsOpen);
+  const activeWidget = useWidgetStore((s) => s.activeWidget);
   const setShow = useFABStore((s) => s.setShow);
   const setChatId = useFABStore((s) => s.setChatId);
   const { data, isPending } = useChatQuery();
 
   function handleClickChat(id: number | null) {
-    if (isOpen) {
+    if (activeWidget === 'chat') {
       setShow('ROOM');
       setChatId(id);
     } else {

@@ -5,6 +5,8 @@ const common = {
   BADGE: '#FF5656',
   PRIMARY_100: '#FFF8E6',
   SECONDARY_100: '#DFF1FF',
+  SECONDARY_200: '#D6E8F6',
+  SECONDARY_300: '#D1E1EE',
   BOOK_STATUS: {
     BEST: '#003867',
     HIGH: '#3F6484',

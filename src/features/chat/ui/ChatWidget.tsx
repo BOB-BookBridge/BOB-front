@@ -2,15 +2,16 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import { useFABStore, useWidgetStore } from '@/shared/model';
 import { LocalErrorBoundary } from '@/shared/lib';
-import { useFABStore } from '@/shared/model';
 import ChatList from './ChatList';
 import ChatRoom from './ChatRoom';
 
 const ChatWidget = () => {
-  const isOpen = useFABStore((s) => s.chatIsOpen);
+  const activeWidget = useWidgetStore((s) => s.activeWidget);
   const show = useFABStore((s) => s.show);
-  if (!isOpen) return null;
+  if (activeWidget !== 'chat') return null;
+
   return (
     <Container>
       {show === 'ROOM' ? (

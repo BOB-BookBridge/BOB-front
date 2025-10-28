@@ -4,12 +4,10 @@ import { create } from 'zustand';
 
 interface FABState {
   isOpen: boolean;
-  chatIsOpen: boolean;
   show: 'LIST' | 'ROOM';
   chatId: number | null;
   setIsOpen: (b: boolean) => void;
   toggleIsOpen: () => void;
-  setChatIsOpen: (b: boolean) => void;
   setShow: (s: 'LIST' | 'ROOM') => void;
   setChatId: (d: number | null) => void;
   resetChat: () => void;
@@ -25,9 +23,6 @@ export const useFABStore = create<FABState>((set) => ({
     set((s) => ({ isOpen: !s.isOpen }));
   },
   chatIsOpen: false,
-  setChatIsOpen: (b) => {
-    set({ chatIsOpen: b });
-  },
   show: 'LIST',
   setShow: (s) => {
     set({ show: s });
@@ -37,9 +32,9 @@ export const useFABStore = create<FABState>((set) => ({
     set({ chatId: d });
   },
   resetChat: () => {
-    set({ chatIsOpen: false, show: 'LIST', chatId: null });
+    set({ show: 'LIST', chatId: null });
   },
   resetAll: () => {
-    set({ isOpen: false, chatIsOpen: false, show: 'LIST', chatId: null });
+    set({ isOpen: false, show: 'LIST', chatId: null });
   },
 }));

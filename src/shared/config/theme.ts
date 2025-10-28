@@ -15,6 +15,8 @@ export const shared = {
     tooltip: 300,
     fabOverlay: 400,
     fab: 500,
+    notiOverlay: 600,
+    noti: 700,
     overlay: 1000,
     modal: 1200,
     toast: 2000,

@@ -4,7 +4,12 @@ import Link from 'next/link';
 import { useTheme } from 'styled-components';
 import { useRouter, usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useFABStore, useThemeStore, useHandleOpenChat } from '../model';
+import {
+  useFABStore,
+  useThemeStore,
+  useHandleOpenWidget,
+  useWidgetStore,
+} from '../model';
 import { connectNoti, Notification } from '../model/connectNoti';
 import { useMyStore } from '../model/useMyStore';
 import { useUnreadQuery } from '@/entities/chat';
@@ -27,7 +32,8 @@ const FloatingButton = () => {
   const pathname = usePathname();
   const isOpen = useFABStore((s) => s.isOpen);
   const { toggleIsOpen, resetChat, resetAll } = useFABStore();
-  const handleOpenChat = useHandleOpenChat();
+  const { setActiveWidget } = useWidgetStore();
+  const handleOpenWidget = useHandleOpenWidget();
   const isLogin = useMyStore((s) => s.isLogin);
   const { data: unRead, refetch: unReadRefetch } = useUnreadQuery(isLogin);
   const unReadCount = unRead ? unRead.unreadCount : 0;
@@ -86,7 +92,7 @@ const FloatingButton = () => {
     {
       icon: <ChatIcon />,
       label: '채팅',
-      onClick: (e: React.MouseEvent) => handleOpenChat({ e }),
+      onClick: (e: React.MouseEvent) => handleOpenWidget({ e, type: 'chat' }),
       badge: unReadCount > 0 ? unReadCount : undefined,
     },
     {
@@ -101,17 +107,21 @@ const FloatingButton = () => {
   }
 
   function handleClickToggle() {
-    if (isOpen) resetChat();
+    if (isOpen) {
+      resetChat();
+      setActiveWidget(null);
+    }
     toggleIsOpen();
   }
 
   function handleClose() {
     resetAll();
+    setActiveWidget(null);
   }
 
   function handleNoti() {
     if (!visibleNoti) return;
-    handleOpenChat({ chatId: visibleNoti.refId });
+    handleOpenWidget({ chatId: visibleNoti.refId, type: 'chat' });
   }
   return (
     <>
