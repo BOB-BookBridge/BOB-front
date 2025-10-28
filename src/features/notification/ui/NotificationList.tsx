@@ -43,7 +43,7 @@ const NotificationList = () => {
     setSelectTab(value);
   }
   return (
-    <div style={{ width: '100%' }}>
+    <Container>
       <TabWrapper>
         {tabs.map((tab) => (
           <TabItem
@@ -54,14 +54,24 @@ const NotificationList = () => {
           </TabItem>
         ))}
       </TabWrapper>
-      {filteredNotifications.map((noti) => (
-        <Notification key={noti.id} notification={noti} />
-      ))}
-    </div>
+      <NotificationWrapper>
+        {filteredNotifications.map((noti) => (
+          <Notification key={noti.id} notification={noti} />
+        ))}
+      </NotificationWrapper>
+      <ReadAll>모두 읽음 표시</ReadAll>
+    </Container>
   );
 };
 
 export default NotificationList;
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
 
 const TabWrapper = styled.ul`
   display: inline-flex;
@@ -91,4 +101,28 @@ const TabItem = styled.li<TabItemProps>`
     $isSelect ? theme.colors.BLACK : theme.colors.GRAY_500};
   border-bottom: 3px solid
     ${({ $isSelect, theme }) => ($isSelect ? theme.colors.BLACK : 'none')};
+`;
+
+const NotificationWrapper = styled.div`
+  overflow-y: auto;
+  flex: 1;
+`;
+
+const ReadAll = styled.div`
+  flex-shrink: 0;
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  cursor: pointer;
+  border-top: 1px solid ${({ theme }) => theme.colors.GRAY_300};
+  font-size: 13px;
+  background-color: ${({ theme }) => theme.colors.WHITE};
+  color: ${({ theme }) => theme.colors.SECONDARY};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.GRAY_200};
+  }
+  &:active {
+    transform: scale(0.97);
+  }
 `;

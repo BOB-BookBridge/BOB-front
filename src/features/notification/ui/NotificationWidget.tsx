@@ -19,9 +19,11 @@ const NotificationWidget = () => {
       <Container>
         <Header>
           <div>알림</div>
-          <CloseIcon />
+          <CloseIcon onClick={handleClose} style={{ cursor: 'pointer' }} />
         </Header>
-        <NotificationList />
+        <NotificationListContainer>
+          <NotificationList />
+        </NotificationListContainer>
       </Container>
     </>
   );
@@ -49,15 +51,23 @@ export const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.WHITE};
   border-radius: 20px;
   height: 640px;
+  display: flex;
+  flex-direction: column;
   z-index: ${({ theme }) => theme.zIndex.noti};
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 `;
 
 const Header = styled.div`
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 8px 20px;
   font-size: 20px;
   font-weight: 600;
+`;
+
+const NotificationListContainer = styled.div`
+  flex: 1;
+  overflow-y: auto;
 `;

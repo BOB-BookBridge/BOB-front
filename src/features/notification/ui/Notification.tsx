@@ -40,7 +40,7 @@ const Container = styled.div<{ $isRead: boolean }>`
     $isRead ? 'none' : theme.colors.SECONDARY_100};
   color: ${({ $isRead, theme }) =>
     $isRead ? theme.colors.GRAY_500 : theme.colors.BLACK};
-  font-size: 12px;
+  font-size: 13px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.GRAY_200};
   cursor: pointer;
   transition: background-color 0.15s ease;
