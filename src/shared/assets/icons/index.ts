@@ -34,6 +34,7 @@ import RawSend from './send.svg';
 import RawSendReverse from './send-reverse.svg';
 import RawRefresh from './refresh.svg';
 import RawAddHeart from './add-heart.svg';
+import RawNotiTrade from './noti-trade.svg';
 
 export const UserIcon = withIconSize(RawUserIcon);
 export const NotiIcon = withIconSize(RawNotiIcon);
@@ -80,3 +81,4 @@ export const SendReverseIcon = withIconSize(RawSendReverse, 12);
 export const ChatRefreshIcon = withIconSize(RawRefresh, 18);
 export const ChatDeleteIcon = withIconSize(RawCloseIcon, 18);
 export const AddHeartIcon = withIconSize(RawAddHeart, 18);
+export const NotiTradeIcon = withIconSize(RawNotiTrade, 18);
