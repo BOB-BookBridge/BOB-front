@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
-import { Notifications } from '@/features/notification/ui';
+import { NotificationList } from '@/features/notification/ui';
 import { LocalErrorBoundary } from '@/shared/lib';
 import { useIsMobile } from '@/shared/model';
 
@@ -23,7 +23,7 @@ const NotiPage = () => {
   return (
     <Container>
       <LocalErrorBoundary>
-        <Notifications />
+        <NotificationList />
       </LocalErrorBoundary>
     </Container>
   );

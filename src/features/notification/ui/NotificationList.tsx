@@ -1,27 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import styled from 'styled-components';
-const { notifications } = {
-  notifications: [
-    {
-      id: 7,
-      type: 'TRADE',
-      refId: '3', // 게시글 ID
-      body: "[가면 산장 살인 사건]의 거래 상태가 '완료'(으)로 변경되었습니다.",
-      isRead: false,
-      createdAt: '2025-07-23T17:49:44.117573',
-    },
-    {
-      id: 8,
-      type: 'TRADE',
-      refId: '4',
-      body: "[파쇄]의 거래 상태가 '예약'(으)로 변경되었습니다.",
-      isRead: false,
-      createdAt: '2025-07-23T17:49:51.690796',
-    },
-  ],
-};
+import Notification from './Notification';
+
+const notifications = [
+  {
+    id: 7,
+    type: 'TRADE',
+    refId: 3,
+    body: "[가면 산장 살인 사건]의 거래 상태가 '완료'(으)로 변경되었습니다.",
+    isRead: false,
+    createdAt: '2025-10-28T20:02:44.117573',
+  },
+  {
+    id: 8,
+    type: 'TRADE',
+    refId: 4,
+    body: "[파쇄]의 거래 상태가 '예약'(으)로 변경되었습니다.",
+    isRead: true,
+    createdAt: '2025-07-23T17:49:51.690796',
+  },
+] as const;
 
 const tabs = [
   { value: 'ALL', label: '전체' },
@@ -30,8 +30,14 @@ const tabs = [
 
 type TabOption = (typeof tabs)[number]['value'];
 
-const Notifications = () => {
+const NotificationList = () => {
   const [selectTab, setSelectTab] = useState<TabOption>('ALL');
+
+  const filteredNotifications = useMemo(() => {
+    return selectTab === 'ALL'
+      ? notifications
+      : notifications.filter((noti) => !noti.isRead);
+  }, [selectTab]);
 
   function handleClickTab(value: TabOption) {
     setSelectTab(value);
@@ -48,11 +54,14 @@ const Notifications = () => {
           </TabItem>
         ))}
       </TabWrapper>
+      {filteredNotifications.map((noti) => (
+        <Notification key={noti.id} notification={noti} />
+      ))}
     </div>
   );
 };
 
-export default Notifications;
+export default NotificationList;
 
 const TabWrapper = styled.ul`
   display: inline-flex;

@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import { CloseIcon } from '@/shared/assets/icons';
 import { useWidgetStore } from '@/shared/model';
+import NotificationList from './NotificationList';
 
 const NotificationWidget = () => {
   const activeWidget = useWidgetStore((s) => s.activeWidget);
@@ -20,6 +21,7 @@ const NotificationWidget = () => {
           <div>알림</div>
           <CloseIcon />
         </Header>
+        <NotificationList />
       </Container>
     </>
   );

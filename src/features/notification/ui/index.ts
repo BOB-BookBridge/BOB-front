@@ -1,3 +1,3 @@
-import Notifications from './Notifications';
+import NotificationList from './NotificationList';
 import NotificationWidget from './NotificationWidget';
-export { Notifications, NotificationWidget };
+export { NotificationList, NotificationWidget };
