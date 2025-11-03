@@ -35,6 +35,7 @@ import RawSendReverse from './send-reverse.svg';
 import RawRefresh from './refresh.svg';
 import RawAddHeart from './add-heart.svg';
 import RawNotiTrade from './noti-trade.svg';
+import RawAddBook from './add-book.svg';
 
 export const UserIcon = withIconSize(RawUserIcon);
 export const NotiIcon = withIconSize(RawNotiIcon);
@@ -51,6 +52,7 @@ export const ArrowIConLg = withIconSize(RawArrowICon, 30);
 export const CloseIcon = withIconSize(RawCloseIcon);
 export const CloseIconSm = withIconSize(RawCloseIcon, 18);
 export const CloseIconXs = withIconSize(RawCloseIcon, 14);
+export const AddBook = withIconSize(RawAddBook, 18);
 
 export const LikeIcon = withIconSize(RawLikeIcon);
 export const MeatballsIcon = withIconSize(RawMeatballsIcon, 18);
