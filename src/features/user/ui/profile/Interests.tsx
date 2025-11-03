@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useForm, useWatch } from 'react-hook-form';
-import { CloseIconXs, AddHeartIcon } from '@/shared/assets/icons';
+import { AddHeartIcon } from '@/shared/assets/icons';
 import { ModalLayout, Button, InputGroup } from '@/shared/ui';
 import { interestRule } from '@/shared/constants';
+import CloseButton from './CloseButton';
 
 const Interests = ({ interests }: { interests: string[] }) => {
   const mockInterests = ['잠', '김 영한', '소설', 'abc', 'dsfsd', 'sadfafd'];
@@ -40,11 +41,7 @@ const Interests = ({ interests }: { interests: string[] }) => {
         {mockInterests.map((interest) => (
           <div key={interest} style={{ position: 'relative' }}>
             <Interest>{interest}</Interest>
-            <CloseButtonWrapper onClick={() => setIsRemove(interest)}>
-              <CloseButton>
-                <CloseIconXs />
-              </CloseButton>
-            </CloseButtonWrapper>
+            <CloseButton handleClick={() => setIsRemove(interest)} size='xs' />
           </div>
         ))}
         <AddInterestButton onClick={() => setAddInterest(true)}>
@@ -129,30 +126,6 @@ const BaseInterest = styled.div`
 const Interest = styled(BaseInterest)`
   background-color: ${({ theme }) => theme.colors.BLACK};
   color: ${({ theme }) => theme.colors.WHITE};
-`;
-
-const CloseButtonWrapper = styled.div`
-  position: absolute;
-  top: -12px;
-  right: -12px;
-  padding: 8px;
-  cursor: pointer;
-`;
-
-const CloseButton = styled.div`
-  width: 18px;
-  height: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ theme }) => theme.colors.WHITE};
-  border: 1px ${({ theme }) => theme.colors.GRAY_500} solid;
-  border-radius: 50%;
-  cursor: pointer;
-
-  svg {
-    fill: ${({ theme }) => theme.colors.GRAY_700};
-  }
 `;
 
 const AddInterestButton = styled(BaseInterest)`
