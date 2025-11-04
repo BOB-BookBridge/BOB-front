@@ -1,8 +1,12 @@
 import Image from 'next/image';
+import { useState } from 'react';
 import styled from 'styled-components';
+import { Button, ModalLayout } from '@/shared/ui';
 import { Bookcase, Book } from '@/entities/user';
 import { bookStatusMap } from '@/shared/lib';
 import CloseButton from './CloseButton';
+
+type Modal = 'DELETE' | 'ADD' | 'STATUS';
 
 const BookItem = ({
   book,
@@ -11,29 +15,79 @@ const BookItem = ({
   book: Bookcase | Book;
   editMode: boolean;
 }) => {
+  const [activeModal, setActiveModal] = useState<Modal | undefined>();
+
+  function handleClickClose() {
+    setActiveModal('DELETE');
+  }
+
+  function handleCompleteClose() {
+    console.log(book.id);
+    setActiveModal(undefined);
+  }
+
+  function handleReset() {
+    setActiveModal(undefined);
+  }
   return (
-    <Container>
-      {editMode && <CloseButton handleClick={() => console.log('click')} />}
-      <ImageWrapper>
-        {'available' in book && !book.available && (
-          <Overlay>
-            <OverlayText>거래에 이용 중</OverlayText>
-          </Overlay>
-        )}
-        <Image
-          src={book.cover}
-          alt={book.title}
-          fill
-          style={{ objectFit: 'cover' }}
-        />
-      </ImageWrapper>
-      <Title $available={'available' in book ? book.available : undefined}>
-        {book.title}
-      </Title>
-      <Meta>
-        {book.author} {'status' in book && ` | ${bookStatusMap[book.status]}`}
-      </Meta>
-    </Container>
+    <>
+      <Container>
+        {editMode &&
+          (!('available' in book) ||
+            ('available' in book && book.available)) && (
+            <CloseButton onClick={handleClickClose} />
+          )}
+        <ImageWrapper>
+          {'available' in book && !book.available && (
+            <Overlay>
+              <OverlayText>{`거래에\n이용 중`}</OverlayText>
+            </Overlay>
+          )}
+          <Image
+            src={book.cover}
+            alt={book.title}
+            fill
+            style={{ objectFit: 'cover' }}
+          />
+        </ImageWrapper>
+        <Title $available={'available' in book ? book.available : undefined}>
+          {book.title}
+        </Title>
+        <Meta>
+          {book.author} {'status' in book && ` | ${bookStatusMap[book.status]}`}
+        </Meta>
+      </Container>
+      {activeModal && activeModal === 'DELETE' ? (
+        <ModalLayout
+          isOpen={activeModal === 'DELETE'}
+          onClose={() => setActiveModal(undefined)}
+          title={book.title}>
+          <DeleteModal>
+            <ModalText>해당 도서를 삭제하시겠습니까?</ModalText>
+            <ButtonWrapper>
+              <div style={{ width: '25%' }}>
+                <Button
+                  variant='cancel'
+                  text='취소'
+                  size='sm'
+                  onClick={handleReset}
+                />
+              </div>
+              <div style={{ width: '40%' }}>
+                <Button
+                  variant='primary'
+                  text='삭제'
+                  size='sm'
+                  onClick={handleCompleteClose}
+                />
+              </div>
+            </ButtonWrapper>
+          </DeleteModal>
+        </ModalLayout>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 
@@ -79,6 +133,8 @@ const OverlayText = styled.div`
   color: #fafafa;
   font-weight: 600;
   font-size: 12px;
+  white-space: pre-wrap;
+  text-align: center;
 `;
 
 const Title = styled.div<{ $available?: boolean }>`
@@ -91,4 +147,27 @@ const Title = styled.div<{ $available?: boolean }>`
 const Meta = styled.div`
   font-size: 12px;
   color: ${({ theme }) => theme.colors.GRAY_500};
+`;
+
+const DeleteModal = styled.div`
+  position: relative;
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+`;
+
+const ModalText = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  width: 70%;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
 `;

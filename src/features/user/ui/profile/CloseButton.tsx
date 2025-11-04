@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import { CloseIconSm, CloseIconXs } from '@/shared/assets/icons';
 const CloseButton = ({
-  handleClick,
+  onClick,
   size,
 }: {
-  handleClick: () => void;
+  onClick: () => void;
   size?: 'xs' | 'default';
 }) => {
   return (
-    <Container onClick={handleClick}>
+    <Container onClick={onClick}>
       <Button>{size === 'xs' ? <CloseIconXs /> : <CloseIconSm />}</Button>
     </Container>
   );
@@ -22,12 +22,10 @@ const Container = styled.div`
   right: -12px;
   padding: 8px;
   cursor: pointer;
-  z-index: ${({ theme }) => theme.zIndex.overlayAction};
+  z-index: ${({ theme }) => theme.zIndex.button};
 `;
 
 const Button = styled.div`
-  // width: 18px;
-  // height: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
