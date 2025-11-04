@@ -6,8 +6,6 @@ import { Bookcase, Book } from '@/entities/user';
 import { bookStatusMap } from '@/shared/lib';
 import CloseButton from './CloseButton';
 
-type Modal = 'DELETE' | 'ADD' | 'STATUS';
-
 const BookItem = ({
   book,
   editMode,
@@ -15,19 +13,19 @@ const BookItem = ({
   book: Bookcase | Book;
   editMode: boolean;
 }) => {
-  const [activeModal, setActiveModal] = useState<Modal | undefined>();
+  const [activeModal, setActiveModal] = useState(false);
 
   function handleClickClose() {
-    setActiveModal('DELETE');
+    setActiveModal(true);
   }
 
   function handleCompleteClose() {
     console.log(book.id);
-    setActiveModal(undefined);
+    setActiveModal(false);
   }
 
   function handleReset() {
-    setActiveModal(undefined);
+    setActiveModal(false);
   }
   return (
     <>
@@ -57,10 +55,10 @@ const BookItem = ({
           {book.author} {'status' in book && ` | ${bookStatusMap[book.status]}`}
         </Meta>
       </Container>
-      {activeModal && activeModal === 'DELETE' ? (
+      {activeModal && (
         <ModalLayout
-          isOpen={activeModal === 'DELETE'}
-          onClose={() => setActiveModal(undefined)}
+          isOpen={activeModal}
+          onClose={() => setActiveModal(false)}
           title={book.title}>
           <DeleteModal>
             <ModalText>해당 도서를 삭제하시겠습니까?</ModalText>
@@ -84,8 +82,6 @@ const BookItem = ({
             </ButtonWrapper>
           </DeleteModal>
         </ModalLayout>
-      ) : (
-        <></>
       )}
     </>
   );

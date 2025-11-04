@@ -1,9 +1,9 @@
 import { AddBook } from '@/shared/assets/icons';
 import styled from 'styled-components';
 
-const AddBookItem = () => {
+const AddBookItem = ({ onClick }: { onClick: () => void }) => {
   return (
-    <Container>
+    <Container onClick={onClick}>
       <BoxWrapper>
         <AddBook />
         <Text>등록</Text>
