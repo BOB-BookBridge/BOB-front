@@ -1,26 +1,36 @@
+'use client';
+
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { LoadingIndicator } from '@/shared/ui';
-import { useWriteStore } from '../../model/useWriteStore';
 import { cleanHtmlText, formatDate } from '@/shared/lib';
 import { AladinItemType } from '@/entities/aladin/type';
+import { LoadingIndicator, Button } from '@/shared/ui';
 import { SearchIcon } from '@/shared/assets/icons';
+import { BookState } from '@/entities/listing';
 import { searchBook } from '@/entities/aladin';
-import * as S from './ListingWrite.styles';
-import { Button } from '@/shared/ui';
 
 interface SearchModalContentProps {
-  value: string;
+  value?: string;
   onClose: () => void;
+  onSelectBook: (book: BookState) => void;
 }
 
-const SearchModalContent = ({ value, onClose }: SearchModalContentProps) => {
+const SearchModalContent = ({
+  value,
+  onClose,
+  onSelectBook,
+}: SearchModalContentProps) => {
   const [newValue, setNewValue] = useState(value);
   const [selected, setSelected] = useState<AladinItemType | null>(null);
   const [result, setResult] = useState<AladinItemType[] | null>();
-  const { setBook } = useWriteStore();
   const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
+    if (!newValue || newValue.trim().length === 0) {
+      setIsLoading(false);
+      setResult(null);
+      return;
+    }
     setIsLoading(true);
     const debounce = setTimeout(() => {
       if (newValue) {
@@ -63,7 +73,7 @@ const SearchModalContent = ({ value, onClose }: SearchModalContentProps) => {
       const cover = originCover.replace(/cover[^/]+/, 'cover500');
       const pubDate = formatDate(originPubDate);
 
-      setBook({
+      onSelectBook({
         isbn,
         title,
         author,
@@ -72,15 +82,14 @@ const SearchModalContent = ({ value, onClose }: SearchModalContentProps) => {
         cover,
         pubDate,
       });
-      onClose();
     }
   }
   return (
     <ModalContent>
       <SearchBarWrapper>
         <SearchIcon />
-        <S.Input
-          value={newValue}
+        <Input
+          value={newValue || ''}
           type='text'
           placeholder='책 제목이나 ISBN을 입력해 주세요'
           onChange={handleNewValueChange}
@@ -105,12 +114,18 @@ const SearchModalContent = ({ value, onClose }: SearchModalContentProps) => {
               </div>
             </BookItemWrapper>
           ))
+        ) : !newValue ? (
+          <EmptyMessage>검색어를 입력해 주세요</EmptyMessage>
         ) : (
-          <EmptyMessage>검색 결과가 없습니다.</EmptyMessage>
+          <EmptyMessage>검색 결과가 없습니다</EmptyMessage>
         )}
       </BookListWrapper>
       <ButtonWrapper>
-        <Button text='선택 완료' variant='primary' onClick={handleChooseBook} />
+        <Button
+          text='선택 완료'
+          variant={selected ? 'primary' : 'disabled'}
+          onClick={handleChooseBook}
+        />
       </ButtonWrapper>
     </ModalContent>
   );
@@ -193,4 +208,38 @@ const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   padding: 20px;
+`;
+
+export const Input = styled.input`
+  width: 100%;
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.BLACK};
+  background-color: transparent;
+  caret-color: ${({ theme }) => theme.colors.BLACK};
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.GRAY_500};
+  }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.BLACK};
+    -webkit-box-shadow: 0 0 0px 1000px ${({ theme }) => theme.colors.WHITE}
+      inset;
+    box-shadow: 0 0 0px 1000px ${({ theme }) => theme.colors.WHITE} inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  -moz-appearance: textfield;
 `;

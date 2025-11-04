@@ -18,6 +18,7 @@ export const shared = {
     notiOverlay: 600,
     noti: 700,
     overlay: 1000,
+    overlayAction: 1100,
     modal: 1200,
     toast: 2000,
   },

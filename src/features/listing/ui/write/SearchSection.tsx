@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import styled, { useTheme } from 'styled-components';
-import SearchModalContent from './SearchModalContent';
+import { useWriteStore } from '../../model/useWriteStore';
+import { SearchModalContent } from '@/features/search/ui';
 import { ArrowIConLg } from '@/shared/assets/icons';
 import { HELP_MESSAGES } from '@/shared/constants';
+import { BookState } from '@/entities/listing';
 import * as S from './ListingWrite.styles';
 import { ModalLayout } from '@/shared/ui';
 import HelpButton from './HelpButton';
@@ -15,15 +17,21 @@ interface SearchSectionProps {
 const SearchSection = ({ value, onChange }: SearchSectionProps) => {
   const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const { setBook } = useWriteStore();
 
   function handleSearchBook() {
     if (value.length == 0) return;
     setIsOpen(true);
   }
+
   function handleEnterEvent(e: React.KeyboardEvent) {
     if (e.key === 'Enter') handleSearchBook();
   }
 
+  function handleSelectBook(book: BookState) {
+    setBook(book);
+    setIsOpen(false);
+  }
   return (
     <Container>
       <S.HeaderWrapper>
@@ -47,7 +55,11 @@ const SearchSection = ({ value, onChange }: SearchSectionProps) => {
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           title='책 조회하기'>
-          <SearchModalContent value={value} onClose={() => setIsOpen(false)} />
+          <SearchModalContent
+            value={value}
+            onClose={() => setIsOpen(false)}
+            onSelectBook={handleSelectBook}
+          />
         </ModalLayout>
       )}
     </Container>
