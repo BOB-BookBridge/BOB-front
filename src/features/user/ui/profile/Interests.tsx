@@ -41,7 +41,7 @@ const Interests = ({ interests }: { interests: string[] }) => {
         {mockInterests.map((interest) => (
           <div key={interest} style={{ position: 'relative' }}>
             <Interest>{interest}</Interest>
-            <CloseButton handleClick={() => setIsRemove(interest)} size='xs' />
+            <CloseButton onClick={() => setIsRemove(interest)} size='xs' />
           </div>
         ))}
         <AddInterestButton onClick={() => setAddInterest(true)}>
