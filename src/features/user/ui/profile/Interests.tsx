@@ -102,7 +102,7 @@ const Interests = ({ interests }: { interests: string[] }) => {
 
 export default Interests;
 
-const InterestsWrapper = styled.div`
+export const InterestsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -123,7 +123,7 @@ const BaseInterest = styled.div`
   }
 `;
 
-const Interest = styled(BaseInterest)`
+export const Interest = styled(BaseInterest)`
   background-color: ${({ theme }) => theme.colors.BLACK};
   color: ${({ theme }) => theme.colors.WHITE};
 `;
