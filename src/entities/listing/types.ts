@@ -92,6 +92,7 @@ export interface postListingProps {
   postDescription: string;
   book: BookState;
   fileNames: string[];
+  wishOnly: boolean;
 }
 
 export interface patchListingProps {

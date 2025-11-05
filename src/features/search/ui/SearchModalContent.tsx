@@ -31,6 +31,7 @@ const SearchModalContent = ({
       setResult(null);
       return;
     }
+    setSelected(null);
     setIsLoading(true);
     const debounce = setTimeout(() => {
       if (newValue) {
@@ -95,31 +96,31 @@ const SearchModalContent = ({
           onChange={handleNewValueChange}
         />
       </SearchBarWrapper>
-      <BookListWrapper>
-        {isLoading ? (
-          <LoadingContainer>
-            <LoadingIndicator text='찾는중...' />
-          </LoadingContainer>
-        ) : result && result.length > 0 ? (
-          result.map((item) => (
+      {isLoading ? (
+        <LoadingContainer>
+          <LoadingIndicator text='찾는중...' />
+        </LoadingContainer>
+      ) : result && result.length > 0 ? (
+        <BookListWrapper>
+          {result.map((item) => (
             <BookItemWrapper
               key={item.itemId}
               onClick={() => handleClickBook(item)}
               $isSelected={selected?.itemId === item.itemId}>
               <BookImage src={item.cover} />
-              <div style={{ width: '100%' }}>
+              <div style={{ flex: 1 }}>
                 <TitleText>{item.title}</TitleText>
                 <InfoText>{item.author}</InfoText>
-                <InfoText>{item.pubDate}</InfoText>
+                <InfoText>{formatDate(item.pubDate)} 발행</InfoText>
               </div>
             </BookItemWrapper>
-          ))
-        ) : !newValue ? (
-          <EmptyMessage>검색어를 입력해 주세요</EmptyMessage>
-        ) : (
-          <EmptyMessage>검색 결과가 없습니다</EmptyMessage>
-        )}
-      </BookListWrapper>
+          ))}
+        </BookListWrapper>
+      ) : !newValue ? (
+        <EmptyMessage>검색어를 입력해 주세요</EmptyMessage>
+      ) : (
+        <EmptyMessage>검색 결과가 없습니다</EmptyMessage>
+      )}
       <ButtonWrapper>
         <Button
           text='선택 완료'
@@ -169,6 +170,7 @@ interface BookItemWrapperProps {
 }
 const BookItemWrapper = styled.div<BookItemWrapperProps>`
   display: flex;
+  align-items: flex-start;
   gap: 10px;
   margin: 10px 5px;
   border-radius: 10px;
@@ -184,16 +186,19 @@ const BookItemWrapper = styled.div<BookItemWrapperProps>`
 const BookImage = styled.img`
   width: 80px;
   aspect-ratio: 1 / 1;
+  flex-shrink: 0;
   object-fit: cover;
   border-radius: 10px;
 `;
 
-const InfoText = styled.div`
-  color: ${({ theme }) => theme.colors.GRAY_600};
-  font-size: 12px;
+const TitleText = styled.div`
+  font-size: 14px;
 `;
 
-const TitleText = styled.div``;
+const InfoText = styled.div`
+  color: ${({ theme }) => theme.colors.GRAY_600};
+  font-size: 11px;
+`;
 
 const EmptyMessage = styled.div`
   width: 100%;
