@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components';
 import { useLikeMutation, useListingDetailQuery } from '@/entities/listing';
 import { bookStatusMap, convertDiffToString } from '@/shared/lib';
 import { calcDistance, getCategoryNameById } from '../../lib';
+import BookItem from '@/features/user/ui/profile/BookItem';
 import { useChatMutation } from '@/entities/chat';
 import { LikeIcon } from '@/shared/assets/icons';
 import { LoadingIndicator } from '@/shared/ui';
@@ -17,12 +18,12 @@ import ImageCarousel from './ImageCarousel';
 import UserInfo from './UserInfo';
 import EditMenu from './EditMenu';
 import BookInfo from './BookInfo';
+import {
+  Interest,
+  InterestsWrapper,
+} from '@/features/user/ui/profile/Interests';
 
-interface ListingDetailProps {
-  id: number;
-}
-
-const ListingDetail = ({ id }: ListingDetailProps) => {
+const ListingDetail = ({ id }: { id: number }) => {
   const theme = useTheme();
   const { data: mydata } = useMyQuery();
   const { data, isPending } = useListingDetailQuery(id);
@@ -42,7 +43,6 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
     setLiked((prev) => !prev);
   }
 
-  // #todo: 채팅 -> 거래로 변경
   function handleClickChat() {
     if (!data || !mydata) return;
     const isFar = calcDistance(mydata.area.emdId, data.writer.emdId);
@@ -86,68 +86,99 @@ const ListingDetail = ({ id }: ListingDetailProps) => {
   }, [liked]);
 
   return (
-    <S.Container>
+    <>
       {data && !isPending ? (
-        <>
-          <S.LeftSection>
-            <ImageCarousel
-              images={data.images.length > 0 ? data.images : undefined}
-              thumbnail={data.images.length > 0 ? undefined : data.thumbnailUrl}
-            />
-            <UserInfo writer={data.writer} />
-          </S.LeftSection>
+        <S.Container>
+          <S.TopSection>
+            <S.LeftSection>
+              <ImageCarousel
+                images={data.images.length > 0 ? data.images : undefined}
+                thumbnail={
+                  data.images.length > 0 ? undefined : data.thumbnailUrl
+                }
+              />
+              <UserInfo writer={data.writer} />
+            </S.LeftSection>
 
-          <S.RightSection>
-            <S.HeaderRow>
-              <S.HeadingText>{data.book.title}</S.HeadingText>
-              {data.isOwner && (
-                <EditMenu postStatus={data.postStatus} postId={data.postId} />
+            <S.RightSection>
+              <S.HeaderRow>
+                <S.HeadingText>{data.book.title}</S.HeadingText>
+                {data.isOwner && (
+                  <EditMenu postStatus={data.postStatus} postId={data.postId} />
+                )}
+              </S.HeaderRow>
+
+              <S.MetaRow>
+                <S.SubText>
+                  #{getCategoryNameById(data.category)} · #
+                  {bookStatusMap[data.bookStatus]} ·{' '}
+                  {convertDiffToString(data.createdAt)}
+                </S.SubText>
+                <S.SubText>
+                  조회 {data.viewCount} · 찜 {likeCount}
+                </S.SubText>
+              </S.MetaRow>
+
+              <S.HeadingText>{data.sellPrice.toLocaleString()}원</S.HeadingText>
+              <S.Description>{data.description}</S.Description>
+
+              <BookInfo
+                author={data.book.author}
+                pubDate={data.book.pubDate}
+                priceStandard={data.book.priceStandard}
+                description={data.book.description}
+              />
+              <S.ButtonRow>
+                <S.Button
+                  variant={liked ? 'outline-primary' : 'outline-gray'}
+                  onClick={handleLike}>
+                  <LikeIcon
+                    fill={liked ? colors.light.PRIMARY : 'none'}
+                    stroke={
+                      !liked ? theme.colors.GRAY_500 : theme.colors.PRIMARY
+                    }
+                    strokeWidth={1.5}
+                  />
+                  찜하기
+                </S.Button>
+                <S.Button variant='primary' onClick={handleClickChat}>
+                  제안하기
+                </S.Button>
+              </S.ButtonRow>
+              {data.wishOnly && (
+                <S.InfoText>
+                  *판매자의 희망 도서만 제안할 수 있습니다
+                </S.InfoText>
               )}
-            </S.HeaderRow>
-
-            <S.MetaRow>
-              <S.SubText>
-                #{getCategoryNameById(data.category)} · #
-                {bookStatusMap[data.bookStatus]} ·{' '}
-                {convertDiffToString(data.createdAt)}
-              </S.SubText>
-              <S.SubText>
-                조회 {data.viewCount} · 찜 {likeCount}
-              </S.SubText>
-            </S.MetaRow>
-
-            <S.HeadingText>{data.sellPrice.toLocaleString()}원</S.HeadingText>
-            <S.Description>{data.description}</S.Description>
-
-            <BookInfo
-              author={data.book.author}
-              pubDate={data.book.pubDate}
-              priceStandard={data.book.priceStandard}
-              description={data.book.description}
-            />
-            <S.ButtonRow>
-              <S.Button
-                variant={liked ? 'outline-primary' : 'outline-gray'}
-                onClick={handleLike}>
-                <LikeIcon
-                  fill={liked ? colors.light.PRIMARY : 'none'}
-                  stroke={!liked ? theme.colors.GRAY_500 : theme.colors.PRIMARY}
-                  strokeWidth={1.5}
-                />
-                찜하기
-              </S.Button>
-              <S.Button variant='primary' onClick={handleClickChat}>
-                채팅하기
-              </S.Button>
-            </S.ButtonRow>
-          </S.RightSection>
-        </>
+              {data.writer.interests.length > 0 && (
+                <div>
+                  <S.SectionTitle>판매자의 관심사</S.SectionTitle>
+                  <InterestsWrapper>
+                    {data.writer.interests.map((interest, idx) => (
+                      <Interest key={idx}>{interest}</Interest>
+                    ))}
+                  </InterestsWrapper>
+                </div>
+              )}
+            </S.RightSection>
+          </S.TopSection>
+          {data.writer.wishes.length > 0 && (
+            <div style={{ paddingLeft: 20 }}>
+              <S.SectionTitle>판매자의 희망 도서</S.SectionTitle>
+              <S.BookList>
+                {data.writer.wishes.map((book) => (
+                  <BookItem key={book.id} book={book} editMode={false} />
+                ))}
+              </S.BookList>
+            </div>
+          )}
+        </S.Container>
       ) : (
         <S.LoadingContainer>
           <LoadingIndicator text='불러오는중' />
         </S.LoadingContainer>
       )}
-    </S.Container>
+    </>
   );
 };
 

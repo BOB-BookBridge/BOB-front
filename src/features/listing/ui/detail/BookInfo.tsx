@@ -19,7 +19,9 @@ const BookInfo = ({
   }
   return (
     <div>
-      <S.SectionTitle onClick={handleInfoToggle}>책 정보 더보기</S.SectionTitle>
+      <S.InfoSectionTitle onClick={handleInfoToggle}>
+        책 정보 더보기
+      </S.InfoSectionTitle>
       {isOpenInfo && (
         <S.InfoGrid>
           <S.Text>저자</S.Text>

@@ -2,8 +2,15 @@ import { colors } from '@/shared/constants';
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding-bottom: 70px;
+  }
+`;
+
+export const TopSection = styled.div`
   display: flex;
-  @media (max-width: 479px) {
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     flex-direction: column;
   }
 `;
@@ -72,7 +79,7 @@ export const MetaRow = styled.div`
   margin: 10px 0;
 `;
 
-export const SectionTitle = styled.div`
+export const InfoSectionTitle = styled.div`
   margin-top: 20px;
   text-decoration: underline;
   font-size: 14px;
@@ -241,4 +248,23 @@ export const LoadingContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+`;
+
+export const InfoText = styled.div`
+  font-size: 12px;
+  font-weight: 500;
+`;
+
+export const SectionTitle = styled.div`
+  margin: 20px 0 10px 0;
+  font-size: 16px;
+  font-weight: 600;
+`;
+
+export const BookList = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 8px;
 `;

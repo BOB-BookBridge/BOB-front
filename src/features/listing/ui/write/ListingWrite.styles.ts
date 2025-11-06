@@ -204,3 +204,7 @@ export const OptionsWrapper = styled.div`
     background-color: ${({ theme }) => `${theme.colors.GRAY_500}`};
   }
 `;
+
+export const WishOnlySection = styled.div`
+  width: 100%;
+`;

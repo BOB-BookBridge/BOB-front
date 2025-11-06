@@ -1,3 +1,5 @@
+import { Book } from '../user';
+
 export type BookStatus = 'BEST' | 'HIGH' | 'MEDIUM' | 'LOW';
 export type PostStatus = 'READY' | 'IN_PROGRESS' | 'COMPLETED';
 export type SortKey = 'RECENT' | 'OLD' | 'LOW_PRICE' | 'HIGH_PRICE';
@@ -41,6 +43,7 @@ export interface ListingDetailProps {
   bookStatus: BookStatus;
   postStatus: PostStatus;
   category: number;
+  sellerBookId: number;
   book: {
     title: string;
     author: string;
@@ -55,11 +58,14 @@ export interface ListingDetailProps {
     nickname: string;
     emdId: number;
     profileUrl: string | null;
+    interests: string[];
+    wishes: Book[];
   };
   scrapCount: number;
   viewCount: number;
   isFavorite: boolean;
   isOwner: boolean;
+  wishOnly: boolean;
   createdAt: string;
 }
 
@@ -92,6 +98,7 @@ export interface postListingProps {
   postDescription: string;
   book: BookState;
   fileNames: string[];
+  wishOnly: boolean;
 }
 
 export interface patchListingProps {
