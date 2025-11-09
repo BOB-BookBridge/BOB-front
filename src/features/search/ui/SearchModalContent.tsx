@@ -11,7 +11,7 @@ import { searchBook } from '@/entities/aladin';
 
 interface SearchModalContentProps {
   value?: string;
-  onClose: () => void;
+  onClose?: () => void;
   onSelectBook: (book: BookState) => void;
 }
 

@@ -32,6 +32,7 @@ const SearchSection = ({ value, onChange }: SearchSectionProps) => {
     setBook(book);
     setIsOpen(false);
   }
+
   return (
     <Container>
       <S.HeaderWrapper>

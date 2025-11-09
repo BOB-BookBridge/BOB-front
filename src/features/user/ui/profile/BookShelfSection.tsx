@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Button, CheckCircle, ModalLayout } from '@/shared/ui';
-import { bookStatusList } from '@/features/listing/ui/main/filter/FilterContent';
+import { ModalLayout } from '@/shared/ui';
 import { BookState, BookStatus } from '@/entities/listing';
 import { SearchModalContent } from '@/features/search/ui';
-import { HELP_MESSAGES } from '@/shared/constants';
 import { Book, Bookcase } from '@/entities/user';
-import { bookStatusMap } from '@/shared/lib';
 import AddBookItem from './AddBookItem';
 import BookItem from './BookItem';
+import SelectBookStatus from './SelectBookStatus';
 
 type Modal = 'STATUS' | 'ADD';
 const BookShelfSection = ({
@@ -20,7 +18,6 @@ const BookShelfSection = ({
 }) => {
   const [editMode, setEditMode] = useState(false);
   const [activeModal, setActiveModal] = useState<Modal | undefined>();
-  const [bookStatus, setBookStatus] = useState<BookStatus | undefined>();
 
   function handleEditMode() {
     setEditMode((prev) => !prev);
@@ -32,7 +29,6 @@ const BookShelfSection = ({
   }
 
   function handleReset() {
-    setBookStatus(undefined);
     setActiveModal(undefined);
   }
 
@@ -44,7 +40,7 @@ const BookShelfSection = ({
     } else handleReset();
   }
 
-  function handleSelectBookStatus() {
+  function handleSelectBookStatus(bookStatus: BookStatus) {
     console.log(bookStatus);
     setActiveModal(undefined);
     handleReset();
@@ -85,32 +81,7 @@ const BookShelfSection = ({
             isOpen={activeModal === 'STATUS'}
             onClose={handleReset}
             title='책 상태 입력'>
-            <StatusSection>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: 8,
-                }}>
-                {bookStatusList.map((status) => (
-                  <CheckCircle
-                    key={status}
-                    id={bookStatusMap[status]}
-                    checked={bookStatus === status}
-                    onChange={() => setBookStatus(status)}
-                    label={
-                      <OptionText>{bookStatusMap[status]}</OptionText>
-                    }></CheckCircle>
-                ))}
-              </div>
-              <Button
-                text='완료'
-                onClick={handleSelectBookStatus}
-                variant={bookStatus ? 'primary' : 'disabled'}
-              />
-              <HelpText>{HELP_MESSAGES.state}</HelpText>
-            </StatusSection>
+            <SelectBookStatus onSelect={handleSelectBookStatus} />
           </ModalLayout>
         ))}
     </Container>
@@ -161,17 +132,4 @@ const EditButton = styled.div<{ $editMode: boolean }>`
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     font-size: 12px;
   }
-`;
-
-const StatusSection = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-`;
-
-const OptionText = styled.div`
-  margin: 0 5px;
 `;
