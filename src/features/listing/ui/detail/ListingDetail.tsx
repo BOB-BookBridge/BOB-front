@@ -6,12 +6,12 @@ import { useTheme } from 'styled-components';
 
 import { useLikeMutation, useListingDetailQuery } from '@/entities/listing';
 import { bookStatusMap, convertDiffToString } from '@/shared/lib';
+import { calcDistance, getCategoryNameById } from '../../lib';
 import { LoadingIndicator, ModalLayout } from '@/shared/ui';
 import BookItem from '@/features/user/ui/profile/BookItem';
 import { TradeRequest } from '@/features/trade/ui';
 import { useChatMutation } from '@/entities/chat';
 import { LikeIcon } from '@/shared/assets/icons';
-import { getCategoryNameById } from '../../lib';
 import { useMyQuery } from '@/entities/user';
 import { colors } from '@/shared/constants';
 import * as S from './ListingDetail.styles';
@@ -50,17 +50,7 @@ const ListingDetail = ({ id }: { id: number }) => {
       toast.info('로그인 후 이용해 주세요');
       return;
     }
-
     setOpenTradeRequest(true);
-    // const isFar = calcDistance(mydata.area.emdId, data.writer.emdId);
-    // makeChat(
-    //   { postId: data.postId, isFar },
-    //   {
-    //     onSuccess: (res) => {
-    //       console.log(res);
-    //     },
-    //   },
-    // );
   }
 
   useEffect(() => {
@@ -185,12 +175,16 @@ const ListingDetail = ({ id }: { id: number }) => {
           <LoadingIndicator text='불러오는중' />
         </S.LoadingContainer>
       )}
-      {openTradeRequest && (
+      {openTradeRequest && mydata && data && (
         <ModalLayout
           isOpen={openTradeRequest}
           title='교환할 책을 선택해 주세요'
           onClose={() => setOpenTradeRequest(false)}>
-          <TradeRequest />
+          <TradeRequest
+            isFar={calcDistance(mydata.area.emdId, data.writer.emdId)}
+            postId={id}
+            onClose={() => setOpenTradeRequest(false)}
+          />
         </ModalLayout>
       )}
     </>

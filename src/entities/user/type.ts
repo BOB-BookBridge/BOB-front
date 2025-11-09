@@ -1,4 +1,4 @@
-import { BookStatus } from '../listing';
+import { BookState, BookStatus } from '../listing';
 
 export interface UserProfileProps {
   isSocial: boolean;
@@ -22,7 +22,12 @@ export interface Book {
   author: string;
   cover: string;
 }
+
 export interface Bookcase extends Book {
   status: BookStatus;
   available: boolean;
+}
+
+export interface BookcaseRequest extends BookState {
+  status: BookStatus;
 }

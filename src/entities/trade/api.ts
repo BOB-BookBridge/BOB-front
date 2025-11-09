@@ -21,3 +21,14 @@ export const patchTrade = async ({
   });
   return data;
 };
+
+export interface PostTradeProps {
+  postId: number;
+  itemIds: number[];
+  isFar: boolean;
+}
+
+export const postTrade = async (prop: PostTradeProps) => {
+  const { data } = await axiosInstance.post('trades', prop);
+  return data;
+};

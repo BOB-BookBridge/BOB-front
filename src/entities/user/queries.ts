@@ -1,12 +1,16 @@
 import { toast } from 'react-toastify';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
+  BookcaseRequest,
+  getBookcase,
+  GetBookcaseProps,
   getMyProfile,
   getUserProfile,
   patchNickname,
   patchPassword,
   patchPasswordProps,
   patchTempPassword,
+  postUserBookcase,
 } from '.';
 import { queryClient } from '@/shared/lib';
 
@@ -53,5 +57,32 @@ export const useUserQuery = (id: string) => {
   return useQuery({
     queryKey: ['user', id],
     queryFn: ({ queryKey }) => getUserProfile(queryKey[1]),
+  });
+};
+
+export const useBookcaseMutation = () => {
+  return useMutation<void, Error, BookcaseRequest>({
+    mutationFn: (data) => postUserBookcase(data),
+    onSuccess: () => {
+      const myData = queryClient.getQueryData<{ memberId: string }>(['my']);
+      const myId = myData?.memberId;
+      toast.success('책 등록 완료');
+      if (myId) {
+        queryClient.invalidateQueries({ queryKey: ['bookcase', myId] });
+      } else {
+        queryClient.invalidateQueries({ queryKey: ['bookcase'] });
+      }
+    },
+  });
+};
+
+export const useBookcaseQuery = (
+  prop: GetBookcaseProps,
+  options?: { enabled?: boolean },
+) => {
+  return useQuery({
+    queryKey: ['bookcase', prop.memberId],
+    queryFn: () => getBookcase(prop),
+    enabled: options?.enabled ?? !!prop.memberId,
   });
 };

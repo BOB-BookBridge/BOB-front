@@ -5,28 +5,13 @@ import { bookStatusMap } from '@/shared/lib';
 import { Bookcase } from '@/entities/user';
 import { Button } from '@/shared/ui';
 
-const bookcase: Bookcase[] = [
-  {
-    id: 13,
-    status: 'BEST',
-    title: '파쇄',
-    author: '구병모 지음',
-    cover:
-      'https://image.aladin.co.kr/product/31273/29/cover500/k592832565_1.jpg',
-    available: true,
-  },
-  {
-    id: 15,
-    status: 'HIGH',
-    title: '안녕! 보노보노 컬러링 엽서북 - 애니메이션 원화로 그리는',
-    author: '미르북컴퍼니 편집부 지음',
-    cover:
-      'https://image.aladin.co.kr/product/34116/30/cover500/k712931484_1.jpg',
-    available: true,
-  },
-];
-
-const SelectBook = () => {
+const SelectBook = ({
+  books,
+  onTradeRequest,
+}: {
+  books: Bookcase[];
+  onTradeRequest: (selected: Bookcase[]) => void;
+}) => {
   const [selected, setSelected] = useState<Bookcase[]>([]);
 
   function handleClickItem(book: Bookcase) {
@@ -40,13 +25,10 @@ const SelectBook = () => {
     });
   }
 
-  function handleClickTradeRequest() {
-    console.log('request');
-  }
   return (
     <Container>
       <BookList>
-        {bookcase.map((book) => (
+        {books.map((book) => (
           <ItemWrapper
             key={book.id}
             $isSelected={!!selected.find((b) => b.id === book.id)}
@@ -76,7 +58,7 @@ const SelectBook = () => {
         <div style={{ width: '25%' }}>
           <Button
             text='교환 신청'
-            onClick={handleClickTradeRequest}
+            onClick={() => onTradeRequest(selected)}
             size='sm'
           />
         </div>

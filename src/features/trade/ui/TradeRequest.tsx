@@ -1,40 +1,95 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import Tab from './Tab';
-import { SearchModalContent } from '@/features/search/ui';
-import { BookState, BookStatus } from '@/entities/listing';
-import { ModalLayout } from '@/shared/ui';
 import SelectBookStatus from '@/features/user/ui/profile/SelectBookStatus';
+import { LoadingIndicator, ModalLayout } from '@/shared/ui';
+import { BookState, BookStatus } from '@/entities/listing';
+import { SearchModalContent } from '@/features/search/ui';
+import { usePostTradeMutation } from '@/entities/trade';
 import SelectBook from './SelectBook';
+import {
+  Bookcase,
+  useBookcaseMutation,
+  useBookcaseQuery,
+  useMyQuery,
+} from '@/entities/user';
+import Tab from './Tab';
 
-const TradeRequest = () => {
+const TradeRequest = ({
+  postId,
+  isFar,
+  onClose,
+}: {
+  postId: number;
+  isFar: boolean;
+  onClose: () => void;
+}) => {
   const tabs = ['책 선택', '책 등록'];
   const [selectedTab, setSelectedTab] = useState(0);
   const [openStatusModal, setOpenStatusModal] = useState(false);
+  const [selectedBook, setSelectedBook] = useState<BookState | null>(null);
+  const { data: mydata } = useMyQuery();
+  const { data: bookcaseData, isLoading } = useBookcaseQuery(
+    { memberId: mydata?.memberId ?? '', key: 'AVAILABLE' },
+    { enabled: !!mydata?.memberId },
+  );
+  const { mutate: enterBookcaseBook } = useBookcaseMutation();
+  const { mutate: requestTrade } = usePostTradeMutation();
+
+  if (isLoading || !bookcaseData) {
+    return <LoadingIndicator text='로딩중' />;
+  }
 
   function handleChangeTab(v: number) {
     setSelectedTab(v);
   }
 
   function handleSelectAddBook(book: BookState) {
-    console.log(book);
+    setSelectedBook(book);
     setOpenStatusModal(true);
   }
 
   function handleSelectBookStatus(bookStatus: BookStatus) {
-    console.log(bookStatus);
+    if (!selectedBook) return;
+
+    const bookWithStatus = {
+      ...selectedBook,
+      status: bookStatus,
+    };
+    enterBookcaseBook(bookWithStatus);
     setOpenStatusModal(false);
     setSelectedTab(0);
+  }
+
+  function handleTradeRequest(selected: Bookcase[]) {
+    const itemIds = selected.map((book) => book.id);
+    requestTrade(
+      { postId, itemIds, isFar },
+      {
+        onSuccess: () => {
+          onClose();
+        },
+      },
+    );
   }
 
   return (
     <Container>
       <Tab tabs={tabs} selected={selectedTab} onChange={handleChangeTab} />
       {selectedTab === 0 ? (
-        <SelectBook />
+        bookcaseData.length === 0 ? (
+          <EmptyText>
+            등록된 책이 없습니다. 책 등록 탭에서 추가하세요.
+          </EmptyText>
+        ) : (
+          <SelectBook
+            books={bookcaseData}
+            onTradeRequest={handleTradeRequest}
+          />
+        )
       ) : (
         <SearchModalContent onSelectBook={handleSelectAddBook} />
       )}
+
       {openStatusModal && (
         <ModalLayout
           isOpen={openStatusModal}
@@ -51,4 +106,9 @@ export default TradeRequest;
 
 const Container = styled.div`
   width: 100%;
+`;
+
+const EmptyText = styled.div`
+  text-align: center;
+  margin: 10px;
 `;
