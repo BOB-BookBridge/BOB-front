@@ -78,7 +78,7 @@ const TradeRequest = ({
       {selectedTab === 0 ? (
         bookcaseData.length === 0 ? (
           <EmptyText>
-            등록된 책이 없습니다. 책 등록 탭에서 추가하세요.
+            {`거래에 이용 가능한 책이 없습니다 \n 책 등록 탭에서 추가해 주세요`}
           </EmptyText>
         ) : (
           <SelectBook
@@ -111,4 +111,7 @@ const Container = styled.div`
 const EmptyText = styled.div`
   text-align: center;
   margin: 10px;
+  color: ${({ theme }) => theme.colors.GRAY_600};
+  white-space: pre-wrap;
+  font-size: 14px;
 `;
