@@ -1,10 +1,5 @@
 import styled from 'styled-components';
 
-export type SubTab = {
-  value: number;
-  label: string;
-};
-
 interface SubTabsProps {
   tabs: string[];
   selected: number;
