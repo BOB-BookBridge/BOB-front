@@ -46,6 +46,7 @@ const BookItem = ({
             alt={book.title}
             fill
             style={{ objectFit: 'cover' }}
+            unoptimized
           />
         </ImageWrapper>
         <Title $available={'available' in book ? book.available : undefined}>
