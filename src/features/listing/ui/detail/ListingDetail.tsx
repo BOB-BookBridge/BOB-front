@@ -10,7 +10,6 @@ import { calcDistance, getCategoryNameById } from '../../lib';
 import { LoadingIndicator, ModalLayout } from '@/shared/ui';
 import BookItem from '@/features/user/ui/profile/BookItem';
 import { TradeRequest } from '@/features/trade/ui';
-import { useChatMutation } from '@/entities/chat';
 import { LikeIcon } from '@/shared/assets/icons';
 import { useMyQuery } from '@/entities/user';
 import { colors } from '@/shared/constants';
@@ -34,10 +33,13 @@ const ListingDetail = ({ id }: { id: number }) => {
   );
   const [likeCount, setLikeCount] = useState<number | undefined>(undefined);
   const { mutate: controlLike } = useLikeMutation();
-  const { mutate: makeChat } = useChatMutation();
   const [openTradeRequest, setOpenTradeRequest] = useState(false);
 
   function handleLike() {
+    if (!data || !mydata) {
+      toast.info('로그인 후 이용해 주세요');
+      return;
+    }
     if (data?.isOwner) {
       toast.info('본인의 게시글은 찜할 수 없어요');
       return;
@@ -48,6 +50,10 @@ const ListingDetail = ({ id }: { id: number }) => {
   function handleClickExchange() {
     if (!data || !mydata) {
       toast.info('로그인 후 이용해 주세요');
+      return;
+    }
+    if (data.isOwner) {
+      toast.info('자신의 게시글에는 교환을 신청할 수 없어요');
       return;
     }
     setOpenTradeRequest(true);
@@ -125,23 +131,25 @@ const ListingDetail = ({ id }: { id: number }) => {
                 priceStandard={data.book.priceStandard}
                 description={data.book.description}
               />
-              <S.ButtonRow>
-                <S.Button
-                  variant={liked ? 'outline-primary' : 'outline-gray'}
-                  onClick={handleLike}>
-                  <LikeIcon
-                    fill={liked ? colors.light.PRIMARY : 'none'}
-                    stroke={
-                      !liked ? theme.colors.GRAY_500 : theme.colors.PRIMARY
-                    }
-                    strokeWidth={1.5}
-                  />
-                  찜하기
-                </S.Button>
-                <S.Button variant='primary' onClick={handleClickExchange}>
-                  교환 신청
-                </S.Button>
-              </S.ButtonRow>
+              {!data.isOwner && (
+                <S.ButtonRow>
+                  <S.Button
+                    variant={liked ? 'outline-primary' : 'outline-gray'}
+                    onClick={handleLike}>
+                    <LikeIcon
+                      fill={liked ? colors.light.PRIMARY : 'none'}
+                      stroke={
+                        !liked ? theme.colors.GRAY_500 : theme.colors.PRIMARY
+                      }
+                      strokeWidth={1.5}
+                    />
+                    찜하기
+                  </S.Button>
+                  <S.Button variant='primary' onClick={handleClickExchange}>
+                    교환 신청
+                  </S.Button>
+                </S.ButtonRow>
+              )}
               {data.wishOnly && (
                 <S.InfoText>
                   *판매자의 희망 도서만 제안할 수 있습니다
