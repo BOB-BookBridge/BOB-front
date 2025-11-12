@@ -1,10 +1,16 @@
-export type TradeStatus = 'REQUESTED' | 'RESERVED' | 'COMPLETED' | 'CANCELED';
+export type TradeStatus =
+  | 'REQUESTED'
+  | 'RESERVED'
+  | 'COMPLETED'
+  | 'CANCELED'
+  | 'REJECTED'
+  | 'REQUESTED';
 
-export interface GetTradeRes {
-  trades: TradeRes[];
+export interface GetPostTradeRes {
+  trades: PostTradeRes[];
 }
 
-export interface TradeRes {
+export interface PostTradeRes {
   id: 9;
   status: TradeStatus;
   buyer: {
@@ -14,8 +20,38 @@ export interface TradeRes {
   };
 }
 
-export interface TradeProps {
+export interface ChangeTradeStatusReq {
   tradeId: number;
   status: TradeStatus;
   reason: string | null;
+}
+
+export interface PostTradeReq {
+  postId: number;
+  itemIds: number[];
+  isFar: boolean;
+}
+
+export interface GetTradeListRes {
+  totalCount: number;
+  trades: TradeListItem[];
+}
+
+export interface TradeListItem {
+  id: number;
+  status: TradeStatus;
+  seller: TradeParticipant;
+  buyer: TradeParticipant;
+}
+
+interface TradeParticipant {
+  id: string;
+  nickname: string;
+  item: TradeMainItem;
+}
+
+export interface TradeMainItem {
+  title: string;
+  cover: string;
+  size: number;
 }

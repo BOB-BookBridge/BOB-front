@@ -1,23 +1,23 @@
 import { toast } from 'react-toastify';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
-  getTrades,
+  getPostTrades,
   patchTrade,
   postTrade,
-  PostTradeProps,
-  TradeProps,
+  PostTradeReq,
+  ChangeTradeStatusReq,
 } from '.';
 import { queryClient } from '@/shared/lib';
 
 export const useTradeQuery = (postId: number) => {
   return useQuery({
     queryKey: ['trade', postId],
-    queryFn: () => getTrades(postId),
+    queryFn: () => getPostTrades(postId),
   });
 };
 
 export const useTradeMutation = (postId: number) => {
-  return useMutation<void, Error, TradeProps>({
+  return useMutation<void, Error, ChangeTradeStatusReq>({
     mutationFn: (data) => patchTrade(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -30,10 +30,17 @@ export const useTradeMutation = (postId: number) => {
 };
 
 export const usePostTradeMutation = () => {
-  return useMutation<void, Error, PostTradeProps>({
+  return useMutation<void, Error, PostTradeReq>({
     mutationFn: (data) => postTrade(data),
     onSuccess: () => {
+      const myData = queryClient.getQueryData<{ memberId: string }>(['my']);
+      const myId = myData?.memberId;
       toast.success('거래 요청이 완료되었습니다');
+      if (myId) {
+        queryClient.invalidateQueries({ queryKey: ['bookcase', myId] });
+      } else {
+        queryClient.invalidateQueries({ queryKey: ['bookcase'] });
+      }
     },
   });
 };
