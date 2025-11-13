@@ -10,7 +10,8 @@ const BUTTON_STYLE = {
   lg: { width: '370px', height: '50px', fontSize: '18px' },
 } as const;
 
-type Variant = 'primary' | 'secondary' | 'cancel' | 'disabled';
+type Variant = 'primary' | 'secondary' | 'cancel' | 'disabled' | 'reject';
+export type Size = 'xs' | 'sm' | 'md' | 'lg';
 
 const Button = ({
   text,
@@ -35,8 +36,6 @@ const Button = ({
 };
 
 export default Button;
-
-type Size = 'xs' | 'sm' | 'md' | 'lg';
 
 interface ButtonProps {
   variant: Variant;
@@ -66,6 +65,11 @@ const StyledButton = styled.button<ButtonProps>`
         return `
           background-color: transparent;
           color: ${theme.colors.GRAY_600};
+        `;
+      case 'reject':
+        return `
+          background-color: ${theme.colors.GRAY_500};
+          color: ${colors.light.WHITE};
         `;
       case 'disabled':
         return `
