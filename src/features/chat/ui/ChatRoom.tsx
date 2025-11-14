@@ -1,7 +1,7 @@
 import { useParams } from 'next/navigation';
 import { useTheme } from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
-import { compareDate, formatDate, formatTime } from '@/shared/lib';
+import { compareDate, formatDate, formatTime, queryClient } from '@/shared/lib';
 import {
   ChatMessage,
   connectChat,
@@ -53,6 +53,12 @@ const ChatRoom = () => {
   const failedChats = useFailedChatStore((state) => state.failedChats);
   const { addFailedChat, deleteFailedChat } = useFailedChatStore();
   const { refetch: refetchUnread } = useUnreadQuery(!!chatId);
+
+  useEffect(() => {
+    if (chatInfo) {
+      queryClient.invalidateQueries({ queryKey: ['unread'] });
+    }
+  });
 
   useEffect(() => {
     if (!chatData || !chatRoomId) return;
