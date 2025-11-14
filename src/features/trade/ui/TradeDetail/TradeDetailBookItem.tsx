@@ -5,9 +5,12 @@ import { useState } from 'react';
 import { bookStatusMap, formatYear } from '@/shared/lib';
 import { DropdownIconSm } from '@/shared/assets/icons';
 import { BookStatus } from '@/entities/listing';
+import { LoadingIndicator } from '@/shared/ui';
+import { sendChatToAI } from '@/entities/ai';
 import {
   AITrigger,
   BookContainer,
+  FeedbackWrapper,
   ImageWrapper,
   Meta,
   Price,
@@ -34,9 +37,24 @@ const TradeDetailBookItem = ({
   book: TradeDetailBookItem;
 }) => {
   const [openAISummary, setOpenAISummary] = useState(false);
+  const [summary, setSummary] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
-  function handleClickAITrigger() {
+  async function handleClickAITrigger() {
     setOpenAISummary((prev) => !prev);
+    if (!summary) {
+      setIsLoading(true);
+      try {
+        const res = await sendChatToAI({
+          messages: [{ role: 'user', content: `${book.title}을 요약해줘` }],
+        });
+        setSummary(res.reply);
+        setIsLoading(false);
+      } catch (err) {
+        setIsError(true);
+      }
+    }
   }
   return (
     <div>
@@ -68,12 +86,17 @@ const TradeDetailBookItem = ({
       </BookContainer>
       {openAISummary && (
         <Summary>
-          『파쇄』는 구병모 작가의 소설로, 현대인의 내면적 고뇌와 소외를
-          다룹니다. 이야기는 다양한 인물의 삶을 통해 인간 존재의 부조리함과
-          상처를 조명하며, 개인이 겪는 고통과 그 속에서 찾는 구원에 대한 사유를
-          담고 있습니다. 각 인물은 서로 연결되며, 그들의 이야기가 하나의 거대한
-          파편처럼 엮여져 있음을 보여줍니다. 이 책은 서늘한 분위기를
-          유지하면서도 깊은 감정적 공감을 불러일으킵니다.
+          {isLoading ? (
+            <FeedbackWrapper>
+              <LoadingIndicator text='요약 중' />
+            </FeedbackWrapper>
+          ) : isError ? (
+            <FeedbackWrapper>
+              문제가 발생했습니다. 창을 닫고 다시 실행해 주세요
+            </FeedbackWrapper>
+          ) : (
+            summary && summary
+          )}
         </Summary>
       )}
     </div>

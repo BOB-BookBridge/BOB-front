@@ -131,3 +131,10 @@ export const Summary = styled.div`
   margin: 10px;
   font-size: 12px;
 `;
+
+export const FeedbackWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

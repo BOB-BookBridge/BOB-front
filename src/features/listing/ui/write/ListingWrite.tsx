@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { useListingWrite } from '../../hooks/useListingWrite';
 import { bookStatusList } from '../main/filter/FilterContent';

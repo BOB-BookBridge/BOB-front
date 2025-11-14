@@ -36,12 +36,15 @@ export const postTrade = async (prop: PostTradeReq) => {
   return data;
 };
 
-export const getTrades = async ({
-  key,
-  status,
-}: GetTradesReq): Promise<GetTradeListRes> => {
+export const getTrades = async (
+  params?: GetTradesReq,
+): Promise<GetTradeListRes> => {
+  const { key, status } = params || {};
   const { data } = await axiosInstance.get('/trades', {
-    params: { ...(key && { key }), ...(status && { status }) },
+    params: {
+      key: key ? key : undefined,
+      status: status ? status : undefined,
+    },
   });
   return data;
 };

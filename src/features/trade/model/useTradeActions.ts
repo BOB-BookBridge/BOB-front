@@ -1,18 +1,39 @@
 'use client';
 
 import { useCallback } from 'react';
+import { GetTradesReq, useTradeMutation } from '@/entities/trade';
+import { useHandleOpenWidget } from '@/shared/model';
 
-export function useTradeActions(tradeId: number) {
+interface useTradeActionsParams extends GetTradesReq {
+  tradeId: number;
+}
+export function useTradeActions({
+  tradeId,
+  key,
+  status,
+}: useTradeActionsParams) {
+  const { mutate } = useTradeMutation({ postId: undefined, key, status });
+  const handleOpenWidget = useHandleOpenWidget();
+
   const handleAccept = useCallback(() => {
-    console.log('accept', tradeId);
+    mutate(
+      { tradeId, status: 'ACCEPTED', reason: null },
+      {
+        onSuccess: (res) => {
+          if (res.chatroomId) {
+            handleOpenWidget({ chatId: res.chatroomId, type: 'chat' });
+          }
+        },
+      },
+    );
   }, [tradeId]);
 
   const handleReject = useCallback(() => {
-    console.log('reject', tradeId);
+    mutate({ tradeId, status: 'REJECTED', reason: null });
   }, [tradeId]);
 
-  const handleDelete = useCallback(() => {
-    console.log('delete', tradeId);
+  const handleCancel = useCallback(() => {
+    mutate({ tradeId, status: 'CANCELED', reason: null });
   }, [tradeId]);
 
   const handleEdit = useCallback(() => {
@@ -22,7 +43,7 @@ export function useTradeActions(tradeId: number) {
   return {
     handleAccept,
     handleReject,
-    handleDelete,
+    handleCancel,
     handleEdit,
   };
 }

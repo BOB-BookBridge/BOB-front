@@ -6,10 +6,14 @@ export type TradeStatus =
   | 'COMPLETED'
   | 'CANCELED'
   | 'REJECTED'
-  | 'REQUESTED';
+  | 'ACCEPTED';
 
 export interface GetPostTradeRes {
   trades: PostTradeRes[];
+}
+
+export interface PatchTradeRes {
+  chatroomId?: number;
 }
 
 export interface PostTradeRes {
@@ -83,7 +87,9 @@ export interface GetTradeDetailRes {
   buyer: TradeUser;
 }
 
+export type TradeKey = 'SENT' | 'RECEIVED';
+
 export interface GetTradesReq {
-  key?: 'SENT' | 'RECEIVED';
-  status?: TradeStatus[];
+  key: TradeKey;
+  status: TradeStatus[];
 }

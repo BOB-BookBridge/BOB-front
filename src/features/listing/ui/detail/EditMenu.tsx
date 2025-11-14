@@ -1,11 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
-import {
-  TradeStatus,
-  usePostTradeQuery,
-  useTradeMutation,
-} from '@/entities/trade';
 import { CancelTradeForm, SelectBuyerForm } from '@/features/trade/ui';
 import { useDeleteListingMutation } from '@/entities/listing';
 import { PostStatus } from '@/entities/listing/types';
@@ -18,6 +13,11 @@ import {
   EditIcon,
   MeatballsIcon,
 } from '@/shared/assets/icons';
+import {
+  TradeStatus,
+  usePostTradeQuery,
+  useTradeMutation,
+} from '@/entities/trade';
 
 const editOptions = [
   { value: 'EDIT', label: '수정하기' },
@@ -116,7 +116,7 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
     setOpenModalType(null);
   }
 
-  const { mutate: changeTradeStatus } = useTradeMutation(postId);
+  const { mutate: changeTradeStatus } = useTradeMutation({ postId });
   const { data: tradeData } = usePostTradeQuery(postId);
   function handleModalSubmit(data: ModalSubmitData) {
     if ('reason' in data) {

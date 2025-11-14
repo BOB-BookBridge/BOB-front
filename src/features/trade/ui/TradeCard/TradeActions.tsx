@@ -1,7 +1,6 @@
-import { Button } from '@/shared/ui';
-
-import * as S from './styles';
 import { Size } from '@/shared/ui/Button';
+import { Button } from '@/shared/ui';
+import * as S from './styles';
 
 interface TradeActionsProps {
   type: 'RESPONSE' | 'REQUEST';
@@ -9,7 +8,7 @@ interface TradeActionsProps {
   onAccept: () => void;
   onReject: () => void;
   onEdit: () => void;
-  onDelete: () => void;
+  onCancel: () => void;
   stopParentClick?: boolean;
   onAfterAction?: () => void;
 }
@@ -20,7 +19,7 @@ const TradeActions = ({
   onAccept,
   onReject,
   onEdit,
-  onDelete,
+  onCancel,
   stopParentClick,
   onAfterAction,
 }: TradeActionsProps) => {
@@ -36,11 +35,11 @@ const TradeActions = ({
     <>
       <S.ButtonWrapper>
         <Button
-          text={type === 'RESPONSE' ? '거절' : '삭제'}
+          text={type === 'RESPONSE' ? '거절' : '취소'}
           size={size}
           variant='reject'
           onClick={(e: React.MouseEvent) =>
-            handleClick(e, type === 'RESPONSE' ? onReject : onDelete)
+            handleClick(e, type === 'RESPONSE' ? onReject : onCancel)
           }
         />
       </S.ButtonWrapper>

@@ -22,11 +22,20 @@ export const Container = styled.div`
   }
 `;
 
+export const TitleSection = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export const Title = styled.div`
   font-size: 14px;
   font-weight: 600;
 `;
 
+export const RejectText = styled.div`
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.GRAY_500};
+`;
 export const Books = styled.div`
   display: flex;
   align-items: center;
@@ -75,6 +84,9 @@ export const ButtonSection = styled.div`
   align-self: end;
   width: 50%;
   gap: 4px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    width: 70%;
+  }
 `;
 
 export const ButtonWrapper = styled.div`
