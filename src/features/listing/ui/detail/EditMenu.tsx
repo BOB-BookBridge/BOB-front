@@ -1,7 +1,11 @@
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
-import { TradeStatus, useTradeMutation, useTradeQuery } from '@/entities/trade';
+import {
+  TradeStatus,
+  usePostTradeQuery,
+  useTradeMutation,
+} from '@/entities/trade';
 import { CancelTradeForm, SelectBuyerForm } from '@/features/trade/ui';
 import { useDeleteListingMutation } from '@/entities/listing';
 import { PostStatus } from '@/entities/listing/types';
@@ -113,7 +117,7 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
   }
 
   const { mutate: changeTradeStatus } = useTradeMutation(postId);
-  const { data: tradeData } = useTradeQuery(postId);
+  const { data: tradeData } = usePostTradeQuery(postId);
   function handleModalSubmit(data: ModalSubmitData) {
     if ('reason' in data) {
       if (

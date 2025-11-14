@@ -6,10 +6,14 @@ import {
   postTrade,
   PostTradeReq,
   ChangeTradeStatusReq,
+  getTrades,
+  getTradeDetail,
+  deleteTrade,
+  GetTradesReq,
 } from '.';
 import { queryClient } from '@/shared/lib';
 
-export const useTradeQuery = (postId: number) => {
+export const usePostTradeQuery = (postId: number) => {
   return useQuery({
     queryKey: ['trade', postId],
     queryFn: () => getPostTrades(postId),
@@ -41,6 +45,29 @@ export const usePostTradeMutation = () => {
       } else {
         queryClient.invalidateQueries({ queryKey: ['bookcase'] });
       }
+    },
+  });
+};
+
+export const useTradeQuery = ({ key, status }: GetTradesReq) => {
+  return useQuery({
+    queryKey: ['tradelist', key],
+    queryFn: () => getTrades({ key, status }),
+  });
+};
+
+export const useTradeDetailQuery = (tradeId: number) => {
+  return useQuery({
+    queryKey: ['tradeDetail', tradeId],
+    queryFn: () => getTradeDetail(tradeId),
+  });
+};
+
+export const useDeleteTradeMutation = () => {
+  return useMutation({
+    mutationFn: (tradeId: number) => deleteTrade(tradeId),
+    onSuccess: () => {
+      toast.success('거래가 삭제되었습니다.');
     },
   });
 };

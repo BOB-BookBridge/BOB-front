@@ -5,6 +5,21 @@ type Cfg = InternalAxiosRequestConfig & { _retry?: boolean };
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
+  paramsSerializer: (params) => {
+    const query = Object.entries(params)
+      .flatMap(([key, value]) => {
+        if (value === undefined || value === null) return [];
+
+        if (Array.isArray(value)) {
+          return value.map((v) => `${key}=${encodeURIComponent(v)}`);
+        }
+
+        return `${key}=${encodeURIComponent(value)}`;
+      })
+      .join('&');
+
+    return query;
+  },
 });
 
 let refreshInFlight: Promise<void> | null = null;

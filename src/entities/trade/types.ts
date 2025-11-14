@@ -1,3 +1,5 @@
+import { Bookcase } from '../user';
+
 export type TradeStatus =
   | 'REQUESTED'
   | 'RESERVED'
@@ -54,4 +56,34 @@ export interface TradeMainItem {
   title: string;
   cover: string;
   size: number;
+}
+
+interface PostSum {
+  id: number;
+  title: string;
+  cover: string;
+}
+
+interface TradeBook extends Bookcase {
+  priceStandard: number;
+  pubDate: string;
+}
+
+interface TradeUser {
+  id: string;
+  nickname: string;
+  worth: number;
+  item: TradeBook[];
+}
+export interface GetTradeDetailRes {
+  id: number;
+  status: TradeStatus;
+  post: PostSum;
+  seller: TradeUser;
+  buyer: TradeUser;
+}
+
+export interface GetTradesReq {
+  key?: 'SENT' | 'RECEIVED';
+  status?: TradeStatus[];
 }
