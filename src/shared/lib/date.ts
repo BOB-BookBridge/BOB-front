@@ -26,6 +26,12 @@ export function convertDiffToString(dateString: string) {
   }
 }
 
+export function formatYear(dateString: string) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  return year;
+}
+
 export function formatDate(dateString: string) {
   const date = new Date(dateString);
   const year = date.getFullYear();

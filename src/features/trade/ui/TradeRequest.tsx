@@ -4,8 +4,11 @@ import SelectBookStatus from '@/features/user/ui/profile/SelectBookStatus';
 import { LoadingIndicator, ModalLayout } from '@/shared/ui';
 import { BookState, BookStatus } from '@/entities/listing';
 import { SearchModalContent } from '@/features/search/ui';
-import { usePostTradeMutation } from '@/entities/trade';
 import SelectBook from './SelectBook';
+import {
+  usePatchTradeItemsMutation,
+  usePostTradeMutation,
+} from '@/entities/trade';
 import {
   Bookcase,
   useBookcaseMutation,
@@ -17,10 +20,14 @@ import Tab from './Tab';
 const TradeRequest = ({
   postId,
   isFar,
+  prevItems,
+  tradeId,
   onClose,
 }: {
-  postId: number;
-  isFar: boolean;
+  postId?: number;
+  isFar?: boolean;
+  prevItems?: number[];
+  tradeId?: number;
   onClose: () => void;
 }) => {
   const tabs = ['책 선택', '책 등록'];
@@ -29,11 +36,12 @@ const TradeRequest = ({
   const [selectedBook, setSelectedBook] = useState<BookState | null>(null);
   const { data: mydata } = useMyQuery();
   const { data: bookcaseData, isLoading } = useBookcaseQuery(
-    { memberId: mydata?.memberId ?? '', key: 'AVAILABLE' },
+    { memberId: mydata?.memberId ?? '', key: 'AVAILABLE', require: prevItems },
     { enabled: !!mydata?.memberId },
   );
   const { mutate: enterBookcaseBook } = useBookcaseMutation();
   const { mutate: requestTrade } = usePostTradeMutation();
+  const { mutate: changeTradeItems } = usePatchTradeItemsMutation();
 
   if (isLoading || !bookcaseData) {
     return <LoadingIndicator text='로딩중' />;
@@ -62,14 +70,27 @@ const TradeRequest = ({
 
   function handleTradeRequest(selected: Bookcase[]) {
     const itemIds = selected.map((book) => book.id);
-    requestTrade(
-      { postId, itemIds, isFar },
-      {
-        onSuccess: () => {
-          onClose();
+
+    if (postId && isFar !== undefined) {
+      requestTrade(
+        { postId, itemIds, isFar },
+        {
+          onSuccess: () => {
+            onClose();
+          },
         },
-      },
-    );
+      );
+    }
+    if (prevItems && tradeId) {
+      changeTradeItems(
+        { tradeId, itemIds },
+        {
+          onSuccess: () => {
+            onClose();
+          },
+        },
+      );
+    }
   }
 
   return (
@@ -84,6 +105,7 @@ const TradeRequest = ({
           <SelectBook
             books={bookcaseData}
             onTradeRequest={handleTradeRequest}
+            prevItems={prevItems}
           />
         )
       ) : (

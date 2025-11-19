@@ -1,7 +1,17 @@
 import axiosInstance from '@/shared/config/axios';
-import { GetTradeRes, TradeStatus } from '.';
+import {
+  GetPostTradeRes,
+  GetTradeDetailRes,
+  GetTradeListRes,
+  GetTradesReq,
+  PatchTradeItemsReq,
+  PostTradeReq,
+  TradeStatus,
+} from '.';
 
-export const getTrades = async (postId: number): Promise<GetTradeRes> => {
+export const getPostTrades = async (
+  postId: number,
+): Promise<GetPostTradeRes> => {
   const { data } = await axiosInstance.get(`/posts/${postId}/trades`);
   return data;
 };
@@ -22,13 +32,42 @@ export const patchTrade = async ({
   return data;
 };
 
-export interface PostTradeProps {
-  postId: number;
-  itemIds: number[];
-  isFar: boolean;
-}
-
-export const postTrade = async (prop: PostTradeProps) => {
+export const postTrade = async (prop: PostTradeReq) => {
   const { data } = await axiosInstance.post('trades', prop);
+  return data;
+};
+
+export const getTrades = async (
+  params?: GetTradesReq,
+): Promise<GetTradeListRes> => {
+  const { key, status } = params || {};
+  const { data } = await axiosInstance.get('/trades', {
+    params: {
+      key: key ? key : undefined,
+      status: status ? status : undefined,
+    },
+  });
+  return data;
+};
+
+export const getTradeDetail = async (
+  tradeId: number,
+): Promise<GetTradeDetailRes> => {
+  const { data } = await axiosInstance.get(`/trades/${tradeId}`);
+  return data;
+};
+
+export const deleteTrade = async (tradeId: number) => {
+  const { data } = await axiosInstance.delete(`/trades/${tradeId}`);
+  return data;
+};
+
+export const patchTradeItems = async ({
+  tradeId,
+  itemIds,
+}: PatchTradeItemsReq) => {
+  const { data } = await axiosInstance.patch(`/trades/${tradeId}/items`, {
+    itemIds,
+  });
   return data;
 };

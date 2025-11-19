@@ -4,12 +4,14 @@ import styled from 'styled-components';
 import { colors } from '../constants';
 
 const BUTTON_STYLE = {
+  xs: { width: '100px', height: '30px', fontSize: '12px' },
   sm: { width: '180px', height: '45px', fontSize: '14px' },
   md: { width: '300px', height: '50px', fontSize: '16px' },
   lg: { width: '370px', height: '50px', fontSize: '18px' },
 } as const;
 
-type Variant = 'primary' | 'secondary' | 'cancel' | 'disabled';
+type Variant = 'primary' | 'secondary' | 'cancel' | 'disabled' | 'reject';
+export type Size = 'xs' | 'sm' | 'md' | 'lg';
 
 const Button = ({
   text,
@@ -20,7 +22,7 @@ const Button = ({
   text: string;
   variant?: Variant;
   size?: Size;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
 }) => {
   return (
     <StyledButton
@@ -34,8 +36,6 @@ const Button = ({
 };
 
 export default Button;
-
-type Size = 'sm' | 'md' | 'lg';
 
 interface ButtonProps {
   variant: Variant;
@@ -65,6 +65,11 @@ const StyledButton = styled.button<ButtonProps>`
         return `
           background-color: transparent;
           color: ${theme.colors.GRAY_600};
+        `;
+      case 'reject':
+        return `
+          background-color: ${theme.colors.GRAY_500};
+          color: ${colors.light.WHITE};
         `;
       case 'disabled':
         return `

@@ -69,14 +69,6 @@ export interface ListingDetailProps {
   createdAt: string;
 }
 
-export interface TradeProps {
-  tradeId: number;
-  buyer: {
-    nickname: string;
-    profileUrl: string | null;
-  };
-}
-
 export interface getPostsProps {
   key?: SearchKey;
   keyword?: string;

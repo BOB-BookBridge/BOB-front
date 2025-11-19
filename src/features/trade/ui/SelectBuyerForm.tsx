@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { SelectBuyerSubmitData } from '../../listing/ui/detail/EditMenu';
 import DefaultProfile from '@/shared/assets/default-profile.svg';
-import { TradeStatus, useTradeQuery } from '@/entities/trade';
+import { TradeStatus, usePostTradeQuery } from '@/entities/trade';
 import { Button, LoadingIndicator } from '@/shared/ui';
 import { SelectIcon } from '@/shared/assets/icons';
 import { colors } from '@/shared/constants';
@@ -20,7 +20,7 @@ const SelectBuyerForm = ({
   onClose,
 }: SelectBuyerFormProps) => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const { data, isPending } = useTradeQuery(postId);
+  const { data, isPending } = usePostTradeQuery(postId);
   function handleClickApply() {
     if (selectedId) {
       onSubmit({
