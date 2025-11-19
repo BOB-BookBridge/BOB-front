@@ -4,6 +4,7 @@ import {
   GetTradeDetailRes,
   GetTradeListRes,
   GetTradesReq,
+  PatchTradeItemsReq,
   PostTradeReq,
   TradeStatus,
 } from '.';
@@ -58,5 +59,15 @@ export const getTradeDetail = async (
 
 export const deleteTrade = async (tradeId: number) => {
   const { data } = await axiosInstance.delete(`/trades/${tradeId}`);
+  return data;
+};
+
+export const patchTradeItems = async ({
+  tradeId,
+  itemIds,
+}: PatchTradeItemsReq) => {
+  const { data } = await axiosInstance.patch(`/trades/${tradeId}/items`, {
+    itemIds,
+  });
   return data;
 };

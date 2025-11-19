@@ -8,11 +8,19 @@ import { Button } from '@/shared/ui';
 const SelectBook = ({
   books,
   onTradeRequest,
+  prevItems,
 }: {
   books: Bookcase[];
   onTradeRequest: (selected: Bookcase[]) => void;
+  prevItems?: number[];
 }) => {
   const [selected, setSelected] = useState<Bookcase[]>([]);
+
+  const selectedSet = new Set(selected.map((book) => book.id));
+  const isSamePrevItems =
+    prevItems &&
+    prevItems.length === selected.length &&
+    prevItems.every((i) => selectedSet.has(i));
 
   function handleClickItem(book: Bookcase) {
     setSelected((prev) => {
@@ -54,12 +62,17 @@ const SelectBook = ({
         ))}
       </SelectedBook>
       <Footer>
-        <InfoText>⚠️ 이전 신청과 같은 조합으로는 신청이 불가능합니다</InfoText>
+        {isSamePrevItems && (
+          <InfoText>
+            ⚠️ 이전 신청과 같은 조합으로는 신청이 불가능합니다
+          </InfoText>
+        )}
         <div style={{ width: '25%' }}>
           <Button
             text='교환 신청'
             onClick={() => onTradeRequest(selected)}
             size='sm'
+            variant={isSamePrevItems ? 'disabled' : 'primary'}
           />
         </div>
       </Footer>
@@ -146,4 +159,8 @@ const Footer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  > :only-child {
+    margin-left: auto;
+  }
 `;

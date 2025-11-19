@@ -13,6 +13,8 @@ import {
   TradeStatus,
   TradeKey,
   PatchTradeRes,
+  patchTradeItems,
+  PatchTradeItemsReq,
 } from '.';
 import { queryClient } from '@/shared/lib';
 
@@ -92,6 +94,24 @@ export const useDeleteTradeMutation = () => {
       toast.success('거래가 삭제되었습니다.');
       await queryClient.invalidateQueries({
         queryKey: ['tradelist', 'SENT', ['REQUESTED', 'REJECTED']],
+      });
+    },
+  });
+};
+
+export const usePatchTradeItemsMutation = () => {
+  return useMutation({
+    mutationFn: ({ tradeId, itemIds }: PatchTradeItemsReq) =>
+      patchTradeItems({ tradeId, itemIds }),
+    onSuccess: async (_, variables) => {
+      const { tradeId } = variables;
+
+      toast.success('거래 물품이 변경되었어요');
+      await queryClient.invalidateQueries({
+        queryKey: ['tradelist', 'SENT', ['REQUESTED', 'REJECTED']],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ['tradeDetail', tradeId],
       });
     },
   });

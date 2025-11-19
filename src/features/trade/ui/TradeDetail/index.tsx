@@ -1,8 +1,12 @@
-import { GetTradesReq, useTradeDetailQuery } from '@/entities/trade';
 import { useTradeActions } from '../../model/useTradeActions';
 import TradeDetailBookItem from './TradeDetailBookItem';
 import TradeActions from '../TradeCard/TradeActions';
 import { SwitchIcon } from '@/shared/assets/icons';
+import {
+  GetTradesReq,
+  TradeStatus,
+  useTradeDetailQuery,
+} from '@/entities/trade';
 import {
   ButtonSection,
   BooksSection,
@@ -18,12 +22,16 @@ const TradeDetail = ({
   type,
   query,
   tradeId,
+  status,
+  handleEdit,
 }: {
   type: 'REQUEST' | 'RESPONSE';
   query: GetTradesReq;
   tradeId: number;
+  status: TradeStatus;
+  handleEdit: () => void;
 }) => {
-  const { handleAccept, handleReject, handleCancel, handleEdit } =
+  const { handleAccept, handleReject, handleCancel, handleDelete } =
     useTradeActions({
       tradeId,
       ...query,
@@ -60,10 +68,12 @@ const TradeDetail = ({
       <ButtonSection>
         <TradeActions
           type={type}
+          status={status}
           onAccept={handleAccept}
           onReject={handleReject}
           onCancel={handleCancel}
           onEdit={handleEdit}
+          onDelete={handleDelete}
         />
       </ButtonSection>
       {type === 'RESPONSE' && (

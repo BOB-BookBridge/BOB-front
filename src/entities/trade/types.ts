@@ -93,3 +93,8 @@ export interface GetTradesReq {
   key: TradeKey;
   status: TradeStatus[];
 }
+
+export interface PatchTradeItemsReq {
+  tradeId: number;
+  itemIds: number[];
+}

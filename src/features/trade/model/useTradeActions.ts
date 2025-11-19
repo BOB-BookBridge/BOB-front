@@ -1,7 +1,11 @@
 'use client';
 
 import { useCallback } from 'react';
-import { GetTradesReq, useTradeMutation } from '@/entities/trade';
+import {
+  GetTradesReq,
+  useDeleteTradeMutation,
+  useTradeMutation,
+} from '@/entities/trade';
 import { useHandleOpenWidget } from '@/shared/model';
 
 interface useTradeActionsParams extends GetTradesReq {
@@ -13,6 +17,7 @@ export function useTradeActions({
   status,
 }: useTradeActionsParams) {
   const { mutate } = useTradeMutation({ postId: undefined, key, status });
+  const { mutate: deleteTrade } = useDeleteTradeMutation();
   const handleOpenWidget = useHandleOpenWidget();
 
   const handleAccept = useCallback(() => {
@@ -36,14 +41,14 @@ export function useTradeActions({
     mutate({ tradeId, status: 'CANCELED', reason: null });
   }, [tradeId]);
 
-  const handleEdit = useCallback(() => {
-    console.log('edit', tradeId);
+  const handleDelete = useCallback(() => {
+    deleteTrade(tradeId);
   }, [tradeId]);
 
   return {
     handleAccept,
     handleReject,
     handleCancel,
-    handleEdit,
+    handleDelete,
   };
 }
