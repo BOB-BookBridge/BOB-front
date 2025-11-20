@@ -1,4 +1,8 @@
-export interface NotificationData {
+export interface NotificationsRes {
+  notifications: NotificationItem[];
+}
+
+export interface NotificationItem {
   id: number;
   type: NotificationType;
   refId: number;
