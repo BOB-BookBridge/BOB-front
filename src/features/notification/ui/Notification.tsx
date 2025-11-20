@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { NotificationData } from '@/entities/notification';
+import { NotificationItem } from '@/entities/notification';
 import { NotiTradeIcon } from '@/shared/assets/icons';
 import { convertDiffToString } from '@/shared/lib';
 
@@ -10,11 +10,15 @@ const NotiTitle = {
   },
 } as const;
 
-const Notification = ({ notification }: { notification: NotificationData }) => {
+interface NotificationProps {
+  notification: NotificationItem;
+  onClick: () => void;
+}
+const Notification = ({ notification, onClick }: NotificationProps) => {
   const Icon = NotiTitle[notification.type].icon;
 
   return (
-    <Container $isRead={notification.isRead}>
+    <Container $isRead={notification.isRead} onClick={onClick}>
       <Icon />
       <Content>
         <div>{NotiTitle[notification.type].label}</div>
@@ -71,9 +75,14 @@ const Content = styled.div`
   }
 
   div:last-child {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;
+    word-break: break-word;
   }
 `;
 
