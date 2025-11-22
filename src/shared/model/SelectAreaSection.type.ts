@@ -11,11 +11,8 @@ export interface AreaState {
 }
 
 export interface SelectAreaSectionProps {
-  showVerifyButton?: boolean;
-  onSuccess?: (emdId: number) => void;
-  onChange?: () => void;
-}
-
-export interface SelectAreaSectionRef {
-  getSelection: () => AreaState;
+  defaultValue?: number;
+  isResponsive?: boolean;
+  onChange?: (selection: AreaState) => void;
+  editMode?: boolean;
 }

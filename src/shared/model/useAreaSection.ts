@@ -1,44 +1,44 @@
 import { useState } from 'react';
+import { AreaState } from './SelectAreaSection.type';
 
-export function useAreaSection(onChange?: () => void) {
+export function useAreaSection(onChange?: (selection: AreaState) => void) {
   const [sidoId, setSidoId] = useState<number | undefined>(undefined);
   const [siggId, setSiggId] = useState<number | undefined>(undefined);
   const [emdId, setEmdId] = useState<number | undefined>(undefined);
-  const [isVerify, setIsVerify] = useState(false);
 
   // 상위 지역이 변경되면 하위 지역은 리셋되어야 함
   function handleSelectSido(value: number) {
     if (sidoId && value !== sidoId) {
-      setIsVerify(false);
+      const next = { sidoId: value, siggId: undefined, emdId: undefined };
       setSiggId(undefined);
       setEmdId(undefined);
-      if (onChange) onChange();
+      onChange?.(next);
     }
     setSidoId(value);
   }
 
   function handleSelectSigg(value: number) {
     if (siggId && value !== siggId) {
-      setIsVerify(false);
+      const next = { sidoId, siggId: value, emdId: undefined };
       setEmdId(undefined);
-      if (onChange) onChange();
+      onChange?.(next);
     }
     setSiggId(value);
   }
 
   function handleSelectEmd(value: number) {
+    const next = { sidoId, siggId, emdId: value };
     setEmdId(value);
+    onChange?.(next);
   }
 
   return {
     sidoId,
     siggId,
     emdId,
-    isVerify,
     setSidoId,
     setSiggId,
     setEmdId,
-    setIsVerify,
     handleSelectSido,
     handleSelectSigg,
     handleSelectEmd,

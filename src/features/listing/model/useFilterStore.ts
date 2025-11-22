@@ -1,10 +1,10 @@
-import { BookStatus, SearchKey, SortKey } from '@/entities/listing/types';
 import { create } from 'zustand';
+import { BookStatus, SearchKey, SortKey } from '@/entities/listing/types';
 
 type FilterState = {
   key: SearchKey;
   keyword: string | null;
-  emdId: number | null;
+  emdId: number | undefined;
   isAvailableOnly: boolean;
   categoryId: number | null;
   bookStatus: BookStatus | null;
@@ -12,7 +12,7 @@ type FilterState = {
   sort: SortKey;
   setKey: (e: SearchKey) => void;
   setKeyword: (e: string | null) => void;
-  setEmdId: (e: number | null) => void;
+  setEmdId: (e: number | undefined) => void;
   setIsAvailableOnly: (b: boolean) => void;
   toggleIsAvailableOnly: () => void;
   setCategoryId: (c: number | null) => void;
@@ -25,7 +25,7 @@ type FilterState = {
 export const useFilterStore = create<FilterState>((set) => ({
   key: '통합',
   keyword: null,
-  emdId: null,
+  emdId: undefined,
   isAvailableOnly: false,
   categoryId: null,
   bookStatus: null,

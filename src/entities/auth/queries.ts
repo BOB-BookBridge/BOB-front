@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
+import { queryClient } from '@/shared/lib';
 import {
   patchArea,
   postCodeVerify,
@@ -12,7 +13,6 @@ import {
   postLoginProps,
   postSignUpProps,
 } from '.';
-import { queryClient } from '@/shared/lib';
 
 export const useSignupMutation = () => {
   const login = useLoginMutation();
@@ -47,8 +47,9 @@ export const useCodeVerifyMutation = () => {
 export const useAreaMutation = () => {
   return useMutation<void, Error, patchAreaProps>({
     mutationFn: (data) => patchArea(data),
-    onSuccess: () => {
-      toast.success('인증 완료! 계속 진행해 주세요');
+    onSuccess: async () => {
+      toast.success('인증 완료');
+      await queryClient.invalidateQueries({ queryKey: ['my'] });
     },
   });
 };

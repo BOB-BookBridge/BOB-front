@@ -2,7 +2,7 @@ import Button from './Button';
 import Dropdown from './Dropdown';
 import FloatingButton from './FloatingButton';
 import InputGroup from './InputGroup';
-import { SelectAreaSection } from './SelectAreaSection';
+import SelectAreaSection from './SelectAreaSection';
 import CheckBox from './CheckBox';
 import CheckCircle from './CheckCircle';
 import ModalLayout from './ModalLayout';

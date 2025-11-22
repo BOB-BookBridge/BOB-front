@@ -21,6 +21,7 @@ const Dropdown = ({
   onClose,
   selectedId,
   isResponsive = false,
+  isEditable = true,
 }: {
   options: AreaOptionsProps[];
   onSelect: (value: number) => void;
@@ -31,6 +32,7 @@ const Dropdown = ({
   onClose: () => void;
   selectedId: number | undefined;
   isResponsive?: boolean;
+  isEditable?: boolean;
 }) => {
   const theme = useTheme();
   const [isSelected, setIsSelected] = useState(false);
@@ -42,8 +44,15 @@ const Dropdown = ({
     if (!selectedId) {
       setSelectItem('');
       setIsSelected(false);
+      return;
     }
-  }, [selectedId]);
+
+    const match = options.find((opt) => opt.id === selectedId);
+    if (match) {
+      setSelectItem(match.name);
+      setIsSelected(true);
+    }
+  }, [selectedId, options]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -68,9 +77,13 @@ const Dropdown = ({
     onToggle(category);
     onSelect(id);
   }
+
   return (
     <Container $isResponsive={isResponsive} ref={ref}>
-      <DropdownBox onClick={handleClickDropdown}>
+      <DropdownBox
+        onClick={handleClickDropdown}
+        $isEditable={isEditable}
+        disabled={!isEditable}>
         <p
           style={{
             fontSize: 12,
@@ -78,7 +91,7 @@ const Dropdown = ({
           }}>
           {isSelected ? selectItem : placeholder}
         </p>
-        <DropdownIcon fill={theme.colors.GRAY_500} />
+        {isEditable && <DropdownIcon fill={theme.colors.GRAY_500} />}
       </DropdownBox>
       {isOpen && (
         <OptionsWrapper $isResponsive={isResponsive}>
@@ -113,7 +126,7 @@ const Container = styled.div<{ $isResponsive: boolean }>`
       }
     `}
 `;
-const DropdownBox = styled.button`
+const DropdownBox = styled.button<{ $isEditable: boolean }>`
   width: 100%;
   height: 50px;
   display: flex;
@@ -122,7 +135,7 @@ const DropdownBox = styled.button`
   align-items: center;
   border: ${({ theme }) => `1px solid ${theme.colors.GRAY_400}`};
   border-radius: 10px;
-  cursor: pointer;
+  cursor: ${({ $isEditable }) => ($isEditable ? 'pointer' : 'auto')};
   background-color: ${({ theme }) => `${theme.colors.WHITE}`};
 `;
 
@@ -187,6 +200,6 @@ const OptionsWrapper = styled.div<{ $isResponsive: boolean }>`
     `}
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    max-height: 100px;
+    max-height: 150px;
   }
 `;

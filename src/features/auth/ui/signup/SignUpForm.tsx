@@ -1,12 +1,5 @@
 import { useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import {
-  codeBasicRule,
-  emailRule,
-  passwordConfirmRule,
-  passwordSignupRule,
-  nicknameRule,
-} from '@/shared/constants';
 import { Button, InputGroup, SelectAreaSection } from '@/shared/ui';
 import { useEmailVerify } from '../../model/useEmailVerify';
 import { useAreaVerify } from '../../model/useAreaVerify';
@@ -20,6 +13,13 @@ import {
   useEmailVerifyMutation,
   useSignupMutation,
 } from '@/entities/auth/queries';
+import {
+  codeBasicRule,
+  emailRule,
+  passwordConfirmRule,
+  passwordSignupRule,
+  nicknameRule,
+} from '@/shared/constants';
 
 interface SignUpFormValues {
   email: string;
@@ -45,7 +45,7 @@ const SignUpForm = () => {
   const passwordConfirm = useWatch({ name: 'passwordConfirm', control });
   const nickname = useWatch({ name: 'nickname', control });
 
-  const { emdId, isVerifiedArea, handleAreaChange, handleAreaVerified } =
+  const { emdId, isVerifiedArea, handleAreaChange, handleAreaVerify } =
     useAreaVerify();
   const { agreements, isCheckedAll, handleToggle, handleToggleAll } =
     useAgreement();
@@ -186,9 +186,11 @@ const SignUpForm = () => {
           nickname: errors.nickname,
         }}
       />
-      <SelectAreaSection
-        onSuccess={handleAreaVerified}
-        onChange={handleAreaChange}
+      <SelectAreaSection onChange={handleAreaChange} />
+      <Button
+        text={isVerifiedArea ? '인증 완료' : '위치 인증'}
+        onClick={() => handleAreaVerify()}
+        variant={isVerifiedArea ? 'disabled' : 'primary'}
       />
       <AgreementSection
         agreements={agreements}
