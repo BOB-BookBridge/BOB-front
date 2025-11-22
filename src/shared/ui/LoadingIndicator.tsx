@@ -30,3 +30,11 @@ const Char = styled.span<{ delay: number }>`
   animation: ${wave} 1s infinite ease-in-out;
   animation-delay: ${({ delay }) => `${delay}s`};
 `;
+
+export const LoadingContainer = styled.div`
+  width:100%;
+  height: 100%;
+  display:flex:
+  justify-content:center;
+  align-items: center;
+`;

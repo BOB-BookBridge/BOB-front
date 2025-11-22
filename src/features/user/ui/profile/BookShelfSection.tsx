@@ -3,10 +3,15 @@ import styled from 'styled-components';
 import { ModalLayout } from '@/shared/ui';
 import { BookState, BookStatus } from '@/entities/listing';
 import { SearchModalContent } from '@/features/search/ui';
-import { Book, Bookcase } from '@/entities/user';
+import SelectBookStatus from './SelectBookStatus';
 import AddBookItem from './AddBookItem';
 import BookItem from './BookItem';
-import SelectBookStatus from './SelectBookStatus';
+import {
+  Book,
+  Bookcase,
+  useBookcaseMutation,
+  usePostWishItemMutation,
+} from '@/entities/user';
 
 type Modal = 'STATUS' | 'ADD';
 const BookShelfSection = ({
@@ -14,17 +19,19 @@ const BookShelfSection = ({
   type,
 }: {
   books: Book[] | Bookcase[];
-  type: 'bookcase' | 'wish';
+  type: 'BOOKCASE' | 'WISH';
 }) => {
   const [editMode, setEditMode] = useState(false);
   const [activeModal, setActiveModal] = useState<Modal | undefined>();
+  const [selectedBook, setSelectedBook] = useState<BookState>();
+  const { mutate: postBookcaseItem } = useBookcaseMutation();
+  const { mutate: postWishItem } = usePostWishItemMutation();
 
   function handleEditMode() {
     setEditMode((prev) => !prev);
   }
 
   function handleClickAdd() {
-    console.log('add');
     setActiveModal('ADD');
   }
 
@@ -33,15 +40,18 @@ const BookShelfSection = ({
   }
 
   function handleSelectAddBook(book: BookState) {
-    console.log(book);
-    if (type === 'bookcase') {
-      console.log('status');
+    if (type === 'BOOKCASE') {
+      setSelectedBook(book);
       setActiveModal('STATUS');
-    } else handleReset();
+    } else {
+      postWishItem(book);
+      handleReset();
+    }
   }
 
-  function handleSelectBookStatus(bookStatus: BookStatus) {
-    console.log(bookStatus);
+  function handleSelectBookStatus(status: BookStatus) {
+    if (!selectedBook) return;
+    postBookcaseItem({ ...selectedBook, status });
     setActiveModal(undefined);
     handleReset();
   }
@@ -49,8 +59,8 @@ const BookShelfSection = ({
     <Container>
       <EditMode
         onClick={handleEditMode}
-        $hasHelpText={type === 'bookcase' && editMode}>
-        {type === 'bookcase' && editMode && (
+        $hasHelpText={type === 'BOOKCASE' && editMode}>
+        {type === 'BOOKCASE' && editMode && (
           <HelpText>
             *거래에 이용 중인 책은 거래가 완료 시 자동으로 삭제됩니다
           </HelpText>
@@ -61,7 +71,7 @@ const BookShelfSection = ({
       </EditMode>
       <BookList>
         {books.map((book) => (
-          <BookItem key={book.id} book={book} editMode={editMode} />
+          <BookItem key={book.id} book={book} editMode={editMode} type={type} />
         ))}
         <AddBookItem onClick={handleClickAdd} />
       </BookList>

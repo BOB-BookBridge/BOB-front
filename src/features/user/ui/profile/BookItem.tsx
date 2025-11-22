@@ -2,25 +2,36 @@ import Image from 'next/image';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Button, ModalLayout } from '@/shared/ui';
-import { Bookcase, Book } from '@/entities/user';
 import { bookStatusMap } from '@/shared/lib';
 import CloseButton from './CloseButton';
+import {
+  Book,
+  Bookcase,
+  useDeleteWishesItemMutation,
+  useDeleteBookcaseItemMutation,
+} from '@/entities/user';
 
 const BookItem = ({
   book,
   editMode,
+  type,
 }: {
   book: Bookcase | Book;
   editMode: boolean;
+  type?: 'BOOKCASE' | 'WISH';
 }) => {
   const [activeModal, setActiveModal] = useState(false);
+  const { mutate: deleteBookcaseItem } = useDeleteBookcaseItemMutation();
+  const { mutate: deleteWishItem } = useDeleteWishesItemMutation();
 
   function handleClickClose() {
     setActiveModal(true);
   }
 
-  function handleCompleteClose() {
-    console.log(book.id);
+  function handleDelteItem() {
+    if (!type) return;
+    if (type === 'BOOKCASE') deleteBookcaseItem(book.id);
+    else if (type === 'WISH') deleteWishItem(book.id);
     setActiveModal(false);
   }
 
@@ -77,7 +88,7 @@ const BookItem = ({
                   variant='primary'
                   text='삭제'
                   size='sm'
-                  onClick={handleCompleteClose}
+                  onClick={handleDelteItem}
                 />
               </div>
             </ButtonWrapper>

@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import DefaultProfile from '@/shared/assets/default-profile.svg';
-import { UserProfileProps } from '@/entities/user';
+import { UserProfileReq } from '@/entities/user';
 import EditNickname from './EditNickname';
 import * as S from '../Profile.styles';
 import Interests from './Interests';
 import EditArea from './EditArea';
 
 type ProfileInfoProps = Pick<
-  UserProfileProps,
+  UserProfileReq,
   'nickname' | 'area' | 'profileImageUrl' | 'interests'
 >;
 
