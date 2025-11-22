@@ -1,18 +1,24 @@
 import { toast } from 'react-toastify';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { queryClient } from '@/shared/lib';
+import { BookState } from '../listing';
 import {
-  BookcaseRequest,
+  PostBookcaseReq,
   getBookcase,
-  GetBookcaseProps,
+  GetBookcaseReq,
   getMyProfile,
   getUserProfile,
   patchNickname,
   patchPassword,
-  patchPasswordProps,
+  patchPasswordReq,
   patchTempPassword,
-  postUserBookcase,
+  postBookcaseItem,
+  getWishes,
+  deleteBookcaseItem,
+  postWishItem,
+  deleteWishItem,
+  deleteUser,
 } from '.';
-import { queryClient } from '@/shared/lib';
 
 export const useMyQuery = () => {
   return useQuery({
@@ -36,7 +42,7 @@ export const useMyInfoMutation = () => {
 };
 
 export const usePasswordMutation = () => {
-  return useMutation<void, Error, patchPasswordProps>({
+  return useMutation<void, Error, patchPasswordReq>({
     mutationFn: (data) => patchPassword(data),
     onSuccess: () => {
       toast.success('비밀번호 변경 완료');
@@ -53,6 +59,13 @@ export const useTempPasswordMutation = () => {
   });
 };
 
+export const useDeleteUserMutation = () => {
+  return useMutation({
+    mutationFn: () => deleteUser(),
+    onSuccess: () => {},
+  });
+};
+
 export const useUserQuery = (id: string) => {
   return useQuery({
     queryKey: ['user', id],
@@ -61,13 +74,14 @@ export const useUserQuery = (id: string) => {
 };
 
 export const useBookcaseMutation = () => {
-  return useMutation<void, Error, BookcaseRequest>({
-    mutationFn: (data) => postUserBookcase(data),
+  return useMutation<void, Error, PostBookcaseReq>({
+    mutationFn: (data) => postBookcaseItem(data),
     onSuccess: () => {
       const myData = queryClient.getQueryData<{ memberId: string }>(['my']);
       const myId = myData?.memberId;
       toast.success('책 등록 완료');
       if (myId) {
+        queryClient.invalidateQueries({ queryKey: ['my'] });
         queryClient.invalidateQueries({ queryKey: ['bookcase', myId] });
       } else {
         queryClient.invalidateQueries({ queryKey: ['bookcase'] });
@@ -77,12 +91,48 @@ export const useBookcaseMutation = () => {
 };
 
 export const useBookcaseQuery = (
-  prop: GetBookcaseProps,
+  prop: GetBookcaseReq,
   options?: { enabled?: boolean },
 ) => {
   return useQuery({
     queryKey: ['bookcase', prop.memberId],
     queryFn: () => getBookcase(prop),
     enabled: options?.enabled ?? !!prop.memberId,
+  });
+};
+
+export const useDeleteBookcaseItemMutation = () => {
+  return useMutation({
+    mutationFn: (id: number) => deleteBookcaseItem(id),
+    onSuccess: () => {
+      toast.success('삭제 완료');
+      queryClient.invalidateQueries({ queryKey: ['my'] });
+    },
+  });
+};
+
+export const useWishesQuery = (memberId: string) => {
+  return useQuery({
+    queryKey: ['wishes', memberId],
+    queryFn: () => getWishes(memberId),
+  });
+};
+
+export const usePostWishItemMutation = () => {
+  return useMutation({
+    mutationFn: (req: BookState) => postWishItem(req),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['my'] });
+    },
+  });
+};
+
+export const useDeleteWishesItemMutation = () => {
+  return useMutation({
+    mutationFn: (id: number) => deleteWishItem(id),
+    onSuccess: () => {
+      toast.success('삭제 완료');
+      queryClient.invalidateQueries({ queryKey: ['my'] });
+    },
   });
 };

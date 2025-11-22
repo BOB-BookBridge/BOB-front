@@ -1,6 +1,6 @@
 import { BookState, BookStatus } from '../listing';
 
-export interface UserProfileProps {
+export interface UserProfileReq {
   isSocial: boolean;
   email: string;
   interests: string[];
@@ -16,6 +16,11 @@ export interface UserProfileProps {
   wishes: Book[];
 }
 
+export interface patchPasswordReq {
+  oldPassword: string;
+  newPassword: string;
+}
+
 export interface Book {
   id: number;
   title: string;
@@ -28,6 +33,12 @@ export interface Bookcase extends Book {
   available: boolean;
 }
 
-export interface BookcaseRequest extends BookState {
+export interface PostBookcaseReq extends BookState {
   status: BookStatus;
+}
+
+export interface GetBookcaseReq {
+  memberId: string;
+  key?: 'AVAILABLE' | 'UNAVAILABLE';
+  require?: number[];
 }
