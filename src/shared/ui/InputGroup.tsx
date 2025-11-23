@@ -16,6 +16,7 @@ export interface InputItem<T extends FieldValues> {
   type?: React.HTMLInputTypeAttribute;
   rules?: RegisterOptions<T, Path<T>>;
   rightElement?: React.ReactNode;
+  disabled?: boolean;
 }
 
 interface InputGroupProps<T extends FieldValues> {
@@ -44,6 +45,7 @@ const InputGroup = <T extends FieldValues>({
             <S.InputWrapper idx={idx}>
               <S.Input
                 type={input.type ?? 'text'}
+                disabled={input.disabled}
                 {...register(input.name, input.rules)}
                 placeholder={input.placeholder}
                 ref={(el) => {

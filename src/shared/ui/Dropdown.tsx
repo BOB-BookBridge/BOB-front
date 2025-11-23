@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { DropdownIcon } from '../assets/icons';
 
@@ -21,6 +21,7 @@ const Dropdown = ({
   onClose,
   selectedId,
   isResponsive = false,
+  isEditable = true,
 }: {
   options: AreaOptionsProps[];
   onSelect: (value: number) => void;
@@ -31,19 +32,12 @@ const Dropdown = ({
   onClose: () => void;
   selectedId: number | undefined;
   isResponsive?: boolean;
+  isEditable?: boolean;
 }) => {
   const theme = useTheme();
-  const [isSelected, setIsSelected] = useState(false);
-  const [selectItem, setSelectItem] = useState('');
+  const name = options.find((opt) => opt.id === selectedId)?.name;
 
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!selectedId) {
-      setSelectItem('');
-      setIsSelected(false);
-    }
-  }, [selectedId]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -62,23 +56,25 @@ const Dropdown = ({
     onToggle(category);
   }
 
-  function handleClickItem(id: number, itemName: string) {
-    setIsSelected(true);
-    setSelectItem(itemName);
-    onToggle(category);
+  function handleClickItem(id: number) {
     onSelect(id);
+    onToggle(category);
   }
+
   return (
     <Container $isResponsive={isResponsive} ref={ref}>
-      <DropdownBox onClick={handleClickDropdown}>
+      <DropdownBox
+        onClick={handleClickDropdown}
+        $isEditable={isEditable}
+        disabled={!isEditable}>
         <p
           style={{
             fontSize: 12,
-            color: isSelected ? theme.colors.BLACK : theme.colors.GRAY_500,
+            color: name ? theme.colors.BLACK : theme.colors.GRAY_500,
           }}>
-          {isSelected ? selectItem : placeholder}
+          {name ? name : placeholder}
         </p>
-        <DropdownIcon fill={theme.colors.GRAY_500} />
+        {isEditable && <DropdownIcon fill={theme.colors.GRAY_500} />}
       </DropdownBox>
       {isOpen && (
         <OptionsWrapper $isResponsive={isResponsive}>
@@ -86,7 +82,7 @@ const Dropdown = ({
             options.map((option) => (
               <OptionBox
                 key={option.id}
-                onClick={() => handleClickItem(option.id, option.name)}>
+                onClick={() => handleClickItem(option.id)}>
                 {option.name}
               </OptionBox>
             ))
@@ -113,7 +109,7 @@ const Container = styled.div<{ $isResponsive: boolean }>`
       }
     `}
 `;
-const DropdownBox = styled.button`
+const DropdownBox = styled.button<{ $isEditable: boolean }>`
   width: 100%;
   height: 50px;
   display: flex;
@@ -122,7 +118,7 @@ const DropdownBox = styled.button`
   align-items: center;
   border: ${({ theme }) => `1px solid ${theme.colors.GRAY_400}`};
   border-radius: 10px;
-  cursor: pointer;
+  cursor: ${({ $isEditable }) => ($isEditable ? 'pointer' : 'auto')};
   background-color: ${({ theme }) => `${theme.colors.WHITE}`};
 `;
 
@@ -187,6 +183,6 @@ const OptionsWrapper = styled.div<{ $isResponsive: boolean }>`
     `}
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    max-height: 100px;
+    max-height: 150px;
   }
 `;

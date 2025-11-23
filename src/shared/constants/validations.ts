@@ -43,7 +43,7 @@ export const passwordConfirmRule = (
 export const nicknameRule = {
   required: VALIDATION_MESSAGES.required('별명'),
   pattern: {
-    value: /^.{1,12}$/,
+    value: /^[^\s]{1,12}$/,
     message: VALIDATION_MESSAGES.nickname.tooLong,
   },
 };

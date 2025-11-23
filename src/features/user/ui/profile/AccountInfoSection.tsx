@@ -1,21 +1,33 @@
 import { useFailedChatStore } from '@/features/chat/model/useFailedChatStore';
 import { useLogoutMutation } from '@/entities/auth/queries';
-import { UserProfileProps } from '@/entities/user';
+import { useDeleteUserMutation, UserProfileReq } from '@/entities/user';
 import EditPassword from './EditPassword';
 import * as S from '../Profile.styles';
+import { useRouter } from 'next/navigation';
 
-type AccountInfoProps = Pick<UserProfileProps, 'isSocial' | 'email'>;
+type AccountInfoProps = Pick<UserProfileReq, 'isSocial' | 'email'>;
 
 const AccountInfoSection = ({ isSocial, email }: AccountInfoProps) => {
   const { mutate: logout } = useLogoutMutation();
+  const { mutate: deleteUser } = useDeleteUserMutation();
   const { reset } = useFailedChatStore();
+  const router = useRouter();
 
   function handleLogout() {
     logout();
     reset();
     sessionStorage.removeItem('my-tab-selected');
   }
-  function handleDeleteAccount() {}
+
+  function handleDeleteAccount() {
+    const ok = window.confirm('정말 탈퇴하시겠습니까?');
+    if (ok) {
+      reset();
+      sessionStorage.removeItem('my-tab-selected');
+      deleteUser(undefined, { onSuccess: () => router.push('/') });
+    }
+  }
+
   return (
     <div>
       <S.SectionContainer>

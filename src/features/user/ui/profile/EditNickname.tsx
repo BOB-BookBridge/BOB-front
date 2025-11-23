@@ -1,35 +1,15 @@
-import { useForm, useWatch } from 'react-hook-form';
-import { useMyInfoMutation } from '@/entities/user';
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { EditNicknameValues } from './ProfileInfoSection';
 import { nicknameRule } from '@/shared/constants';
-import { Button, InputGroup } from '@/shared/ui';
+import { InputGroup } from '@/shared/ui';
 import * as S from '../Profile.styles';
 
-interface EditNicknameValues {
-  nickname: string;
-}
-
 interface EditNicknameProps {
-  defaultNickname: string;
+  register: UseFormRegister<EditNicknameValues>;
+  errors: FieldErrors<EditNicknameValues>;
+  editMode: boolean;
 }
-const EditNickname = ({ defaultNickname }: EditNicknameProps) => {
-  const {
-    register,
-    control,
-    formState: { errors },
-  } = useForm<EditNicknameValues>({
-    defaultValues: {
-      nickname: defaultNickname,
-    },
-    mode: 'onChange',
-  });
-
-  const nickname = useWatch({ name: 'nickname', control });
-  const disabled = !nickname || errors.nickname || nickname === defaultNickname;
-
-  const { mutate: changeNickname } = useMyInfoMutation();
-  function handleEditNickname() {
-    changeNickname(nickname);
-  }
+const EditNickname = ({ register, errors, editMode }: EditNicknameProps) => {
   return (
     <S.NicknameSection>
       <InputGroup
@@ -39,18 +19,12 @@ const EditNickname = ({ defaultNickname }: EditNicknameProps) => {
             placeholder: '별명',
             type: 'text',
             rules: nicknameRule,
+            disabled: !editMode,
           },
         ]}
         register={register}
         errors={errors}
       />
-      <S.ButtonWrapper>
-        <Button
-          text='수정'
-          variant={disabled ? 'disabled' : 'primary'}
-          onClick={handleEditNickname}
-        />
-      </S.ButtonWrapper>
     </S.NicknameSection>
   );
 };
