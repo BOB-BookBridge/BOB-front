@@ -63,7 +63,6 @@ export const useTempPasswordMutation = () => {
 export const useDeleteUserMutation = () => {
   return useMutation({
     mutationFn: () => deleteUser(),
-    onSuccess: () => {},
   });
 };
 
