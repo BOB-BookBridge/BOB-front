@@ -13,6 +13,6 @@ export interface AreaState {
 export interface SelectAreaSectionProps {
   defaultValue?: number;
   isResponsive?: boolean;
-  onChange?: (selection: AreaState) => void;
+  onChange?: (emdId: number) => void;
   editMode?: boolean;
 }

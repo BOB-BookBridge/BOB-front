@@ -16,6 +16,15 @@ export interface UserProfileReq {
   wishes: Book[];
 }
 
+export interface patchMyInfoReq {
+  nickname: string;
+  emdId: number;
+  areaAuthenticate: boolean;
+  lat?: number;
+  lon?: number;
+  interests: string[];
+}
+
 export interface patchPasswordReq {
   oldPassword: string;
   newPassword: string;

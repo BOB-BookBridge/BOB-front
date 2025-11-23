@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { DropdownIcon } from '../assets/icons';
 
@@ -35,24 +35,9 @@ const Dropdown = ({
   isEditable?: boolean;
 }) => {
   const theme = useTheme();
-  const [isSelected, setIsSelected] = useState(false);
-  const [selectItem, setSelectItem] = useState('');
+  const name = options.find((opt) => opt.id === selectedId)?.name;
 
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!selectedId) {
-      setSelectItem('');
-      setIsSelected(false);
-      return;
-    }
-
-    const match = options.find((opt) => opt.id === selectedId);
-    if (match) {
-      setSelectItem(match.name);
-      setIsSelected(true);
-    }
-  }, [selectedId, options]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -71,11 +56,9 @@ const Dropdown = ({
     onToggle(category);
   }
 
-  function handleClickItem(id: number, itemName: string) {
-    setIsSelected(true);
-    setSelectItem(itemName);
-    onToggle(category);
+  function handleClickItem(id: number) {
     onSelect(id);
+    onToggle(category);
   }
 
   return (
@@ -87,9 +70,9 @@ const Dropdown = ({
         <p
           style={{
             fontSize: 12,
-            color: isSelected ? theme.colors.BLACK : theme.colors.GRAY_500,
+            color: name ? theme.colors.BLACK : theme.colors.GRAY_500,
           }}>
-          {isSelected ? selectItem : placeholder}
+          {name ? name : placeholder}
         </p>
         {isEditable && <DropdownIcon fill={theme.colors.GRAY_500} />}
       </DropdownBox>
@@ -99,7 +82,7 @@ const Dropdown = ({
             options.map((option) => (
               <OptionBox
                 key={option.id}
-                onClick={() => handleClickItem(option.id, option.name)}>
+                onClick={() => handleClickItem(option.id)}>
                 {option.name}
               </OptionBox>
             ))

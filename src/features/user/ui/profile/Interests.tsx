@@ -1,15 +1,27 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useForm, useWatch } from 'react-hook-form';
-import { AddHeartIcon } from '@/shared/assets/icons';
 import { ModalLayout, Button, InputGroup } from '@/shared/ui';
+import { AddHeartIcon } from '@/shared/assets/icons';
 import { interestRule } from '@/shared/constants';
 import CloseButton from './CloseButton';
 
-const Interests = ({ interests }: { interests: string[] }) => {
-  const mockInterests = ['잠', '김 영한', '소설', 'abc', 'dsfsd', 'sadfafd'];
+interface InterestsProps {
+  interests: string[];
+  editMode: boolean;
+  addInterest: (value: string) => boolean;
+  removeInterest: (value: string) => void;
+  handleEnterEditMode: () => void;
+}
+const Interests = ({
+  interests,
+  editMode,
+  addInterest,
+  removeInterest,
+  handleEnterEditMode,
+}: InterestsProps) => {
   const [isRemove, setIsRemove] = useState<undefined | string>(undefined);
-  const [addInterest, setAddInterest] = useState(false);
+  const [isAddInterest, setIsAddInterest] = useState(false);
 
   const {
     register,
@@ -19,18 +31,27 @@ const Interests = ({ interests }: { interests: string[] }) => {
   } = useForm<{ interest: string }>({
     mode: 'onChange',
   });
+
   const newInterest = useWatch({ name: 'interest', control });
 
+  function handleClickAddButton() {
+    if (!editMode) handleEnterEditMode();
+    setIsAddInterest(true);
+  }
   function handleClickRemove() {
-    console.log(isRemove, '삭제');
+    if (!isRemove) return;
+    removeInterest(isRemove);
     setIsRemove(undefined);
   }
 
   function handleAddInterest() {
     const trimmed = newInterest.trim();
-    console.log(trimmed);
-    reset();
-    setAddInterest(false);
+    if (!trimmed) return;
+    const flag = addInterest(trimmed);
+    if (flag) {
+      reset();
+      setIsAddInterest(false);
+    }
   }
 
   const disabled = !newInterest || Object.keys(errors).length > 0;
@@ -38,13 +59,15 @@ const Interests = ({ interests }: { interests: string[] }) => {
   return (
     <>
       <InterestsWrapper>
-        {mockInterests.map((interest) => (
+        {interests.map((interest) => (
           <div key={interest} style={{ position: 'relative' }}>
             <Interest>{interest}</Interest>
-            <CloseButton onClick={() => setIsRemove(interest)} size='xs' />
+            {editMode && (
+              <CloseButton onClick={() => setIsRemove(interest)} size='xs' />
+            )}
           </div>
         ))}
-        <AddInterestButton onClick={() => setAddInterest(true)}>
+        <AddInterestButton onClick={handleClickAddButton}>
           <AddHeartIcon strokeWidth={2} />
           관심사 등록
         </AddInterestButton>
@@ -68,10 +91,10 @@ const Interests = ({ interests }: { interests: string[] }) => {
           </RemoveModalContent>
         </ModalLayout>
       )}
-      {addInterest && (
+      {isAddInterest && (
         <ModalLayout
-          isOpen={addInterest}
-          onClose={() => setAddInterest(false)}
+          isOpen={isAddInterest}
+          onClose={() => setIsAddInterest(false)}
           title={'관심사 등록'}>
           <AddInterestContent>
             <InputGroup

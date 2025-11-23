@@ -8,7 +8,7 @@ import {
   GetBookcaseReq,
   getMyProfile,
   getUserProfile,
-  patchNickname,
+  patchMyInfo,
   patchPassword,
   patchPasswordReq,
   patchTempPassword,
@@ -18,6 +18,7 @@ import {
   postWishItem,
   deleteWishItem,
   deleteUser,
+  patchMyInfoReq,
 } from '.';
 
 export const useMyQuery = () => {
@@ -32,10 +33,10 @@ export const useMyQuery = () => {
 };
 
 export const useMyInfoMutation = () => {
-  return useMutation<void, Error, string>({
-    mutationFn: (data) => patchNickname(data),
+  return useMutation<void, Error, patchMyInfoReq>({
+    mutationFn: (data) => patchMyInfo(data),
     onSuccess: () => {
-      toast.success('닉네임 변경 완료');
+      toast.success('내 정보 수정 완료');
       queryClient.invalidateQueries({ queryKey: ['my'] });
     },
   });

@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { AreaState } from '@/shared/model/SelectAreaSection.type';
 import { DropdownIconSm, PinIcon } from '@/shared/assets/icons';
 import { ModalLayout, SelectAreaSection } from '@/shared/ui';
 import emd_areas from '@/shared/constants/emd_areas.json';
@@ -15,7 +14,7 @@ const ListingAreaButton = () => {
   const { data: myData } = useMyQuery();
   const emdId = useFilterStore((state) => state.emdId);
   const { setEmdId } = useFilterStore();
-  const [selection, setSelection] = useState<AreaState>();
+  const [selectedEmdId, setSelectedEmdId] = useState<number>();
 
   const selectedName = useMemo(() => {
     const match = emd_areas.find((e) => e.id === emdId);
@@ -26,14 +25,10 @@ const ListingAreaButton = () => {
     if (myData) setEmdId(myData.area.emdId);
   }, [myData]);
 
-  // function resetArea() {
-  //   setEmdId(null);
-  // }
   function handleApply() {
-    if (selection?.sidoId && selection?.siggId && selection?.emdId) {
-      setEmdId(selection.emdId);
-      setIsOpen(false);
-    }
+    if (!selectedEmdId) return;
+    setEmdId(selectedEmdId);
+    setIsOpen(false);
   }
 
   function handleButtonToggle() {
@@ -52,7 +47,7 @@ const ListingAreaButton = () => {
           isOpen={isOpen}
           onClose={handleButtonToggle}
           title='지역 변경'>
-          <SelectAreaSection defaultValue={emdId} onChange={setSelection} />
+          <SelectAreaSection defaultValue={emdId} onChange={setSelectedEmdId} />
           <S.ConfirmButton onClick={handleApply}>적용</S.ConfirmButton>
         </ModalLayout>
       )}

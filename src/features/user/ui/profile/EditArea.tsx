@@ -1,7 +1,4 @@
-import { useState } from 'react';
 import styled from 'styled-components';
-import { useAreaVerify } from '@/features/auth/model/useAreaVerify';
-import { AreaState } from '@/shared/model/SelectAreaSection.type';
 import emd_areas from '@/shared/constants/emd_areas.json';
 import { SelectAreaSection } from '@/shared/ui';
 import { colors } from '@/shared/constants';
@@ -13,21 +10,18 @@ interface EditAreaProps {
   isAuthentication: boolean;
   authenticatedAt: string;
   editMode: boolean;
+  onRecertification: () => void;
+  onChange: (value: number) => void;
 }
 const EditArea = ({
   emdId,
   isAuthentication,
   authenticatedAt,
   editMode,
+  onRecertification,
+  onChange,
 }: EditAreaProps) => {
   const emdName = emd_areas.find((area) => area.id === emdId)?.name;
-  const [selection, setSelection] = useState<AreaState>();
-  const { handleAreaVerify } = useAreaVerify();
-
-  async function handleRecertification() {
-    if (!emdId) return;
-    handleAreaVerify(emdId);
-  }
 
   return (
     <S.EditAreaContainer>
@@ -38,8 +32,9 @@ const EditArea = ({
           alignItems: 'end',
         }}>
         <SelectAreaSection
+          key={editMode ? 'editing' : `reset-${emdId}`}
           defaultValue={emdId}
-          onChange={setSelection}
+          onChange={onChange}
           editMode={editMode}
         />
       </div>
@@ -55,7 +50,7 @@ const EditArea = ({
             : `*위치 인증이 필요합니다`}
         </S.InfoText>
         {!editMode && (
-          <RecertificationButton onClick={handleRecertification}>
+          <RecertificationButton onClick={onRecertification}>
             재인증
           </RecertificationButton>
         )}

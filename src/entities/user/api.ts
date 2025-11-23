@@ -6,6 +6,7 @@ import {
   PostBookcaseReq,
   patchPasswordReq,
   UserProfileReq,
+  patchMyInfoReq,
 } from '.';
 
 export const getMyProfile = async (): Promise<UserProfileReq> => {
@@ -13,8 +14,8 @@ export const getMyProfile = async (): Promise<UserProfileReq> => {
   return data;
 };
 
-export const patchNickname = async (nickname: string) => {
-  const { data } = await axiosInstance.patch('/members/me', { nickname });
+export const patchMyInfo = async (req: patchMyInfoReq) => {
+  const { data } = await axiosInstance.patch('/members/me', req);
   return data;
 };
 

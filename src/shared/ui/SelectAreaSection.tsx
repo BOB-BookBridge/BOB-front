@@ -45,7 +45,7 @@ const SelectAreaSection = ({
       setSiggId(defaultSiggId);
       setSidoId(defaultSidoId);
     }
-  }, [defaultValue]);
+  }, []);
 
   const dropdownOptions = [
     {

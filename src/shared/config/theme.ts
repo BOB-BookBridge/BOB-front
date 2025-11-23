@@ -10,8 +10,8 @@ export const shared = {
     desktop: '1440px',
   },
   zIndex: {
-    dropdown: 100,
-    button: 200,
+    button: 100,
+    dropdown: 200,
     tooltip: 300,
     fabOverlay: 400,
     fab: 500,
