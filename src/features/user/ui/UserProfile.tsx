@@ -19,7 +19,7 @@ const UserProfile = ({ id }: { id: string }) => {
   const profileWidth = useMemo(() => (isMobile ? 50 : 80), [isMobile]);
   const { data, isPending } = useUserQuery(id);
   const filteredBookcase = data?.bookcase.filter((book) => book.available);
-  const intereststttt = ['잠', ' sleep'];
+
   return (
     <Container>
       {isPending ? (
@@ -48,8 +48,8 @@ const UserProfile = ({ id }: { id: string }) => {
             <section>
               <SectionTitle>관심사</SectionTitle>
               <InterestsWrapper>
-                {intereststttt.length > 0 ? (
-                  intereststttt.map((interest, idx) => (
+                {data.interests.length > 0 ? (
+                  data.interests.map((interest, idx) => (
                     <Interest key={idx}>{interest}</Interest>
                   ))
                 ) : (
