@@ -1,7 +1,11 @@
 'use client';
 import styled, { keyframes } from 'styled-components';
 
-export const LoadingIndicator = ({ text }: { text: string }) => {
+export const LoadingIndicator = ({
+  text = '불러오는중',
+}: {
+  text?: string;
+}) => {
   return (
     <Container aria-label='로딩'>
       {Array.from(text).map((char, idx) => (

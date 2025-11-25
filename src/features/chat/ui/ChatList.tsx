@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { LoadingContainer } from '@/shared/ui/LoadingIndicator';
 import { useFABStore, useWidgetStore } from '@/shared/model';
 import { useChatQuery } from '@/entities/chat';
 import { LoadingIndicator } from '@/shared/ui';
@@ -33,15 +34,9 @@ const ChatList = () => {
           />
         ))
       ) : (
-        <div
-          style={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            paddingTop: 20,
-          }}>
+        <LoadingContainer>
           <LoadingIndicator text='로딩중' />
-        </div>
+        </LoadingContainer>
       )}
     </div>
   );

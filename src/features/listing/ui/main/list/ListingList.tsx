@@ -78,15 +78,11 @@ const ListingList = ({
   return (
     <Container>
       {isPending ? (
-        <LoadingIndicator text='불러오는중' />
+        <LoadingIndicator />
       ) : isError ? (
         <></>
       ) : listings.length === 0 ? (
-        <EmptyMessage>
-          판매글이 없습니다.
-          <br />
-          판매글을 올려 보세요!
-        </EmptyMessage>
+        <EmptyMessage>게시글이 존재하지 않습니다.</EmptyMessage>
       ) : (
         <ListWrapper>
           {listings.map((listing) => (

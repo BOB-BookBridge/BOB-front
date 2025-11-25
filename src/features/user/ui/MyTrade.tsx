@@ -37,7 +37,7 @@ const MyTrade = () => {
       <LocalErrorBoundary>
         {isPending ? (
           <ContentsContainer>
-            <LoadingIndicator text='불러오는중' />
+            <LoadingIndicator />
           </ContentsContainer>
         ) : data && data.trades.length <= 0 ? (
           <ContentsContainer>

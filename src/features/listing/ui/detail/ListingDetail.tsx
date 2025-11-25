@@ -6,6 +6,7 @@ import { useTheme } from 'styled-components';
 
 import { useLikeMutation, useListingDetailQuery } from '@/entities/listing';
 import { bookStatusMap, convertDiffToString } from '@/shared/lib';
+import { LoadingContainer } from '@/shared/ui/LoadingIndicator';
 import { calcDistance, getCategoryNameById } from '../../lib';
 import { LoadingIndicator, ModalLayout } from '@/shared/ui';
 import BookItem from '@/features/user/ui/profile/BookItem';
@@ -179,9 +180,9 @@ const ListingDetail = ({ id }: { id: number }) => {
           )}
         </S.Container>
       ) : (
-        <S.LoadingContainer>
-          <LoadingIndicator text='불러오는중' />
-        </S.LoadingContainer>
+        <LoadingContainer>
+          <LoadingIndicator />
+        </LoadingContainer>
       )}
       {openTradeRequest && mydata && data && (
         <ModalLayout
