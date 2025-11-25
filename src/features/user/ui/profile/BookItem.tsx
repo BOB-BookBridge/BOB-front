@@ -104,6 +104,7 @@ export default BookItem;
 const Container = styled.div`
   position: relative;
   width: 15%;
+  min-width: 100px;
   display: flex;
   flex-direction: column;
   gap: 8px;

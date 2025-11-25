@@ -5,11 +5,11 @@ import {
   GetBookcaseReq,
   PostBookcaseReq,
   patchPasswordReq,
-  UserProfileReq,
+  UserProfileRes,
   patchMyInfoReq,
 } from '.';
 
-export const getMyProfile = async (): Promise<UserProfileReq> => {
+export const getMyProfile = async (): Promise<UserProfileRes> => {
   const { data } = await axiosInstance.get('/members/me');
   return data;
 };
@@ -36,7 +36,7 @@ export const deleteUser = async () => {
   return data;
 };
 
-export const getUserProfile = async (id: string): Promise<UserProfileReq> => {
+export const getUserProfile = async (id: string): Promise<UserProfileRes> => {
   const { data } = await axiosInstance.get(`/members/${id}`);
   return data;
 };
