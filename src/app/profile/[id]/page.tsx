@@ -1,6 +1,7 @@
 'use client';
 
 import { UserProfile } from '@/features/user/ui';
+import { LocalErrorBoundary } from '@/shared/lib';
 import { useParams } from 'next/navigation';
 import styled from 'styled-components';
 
@@ -9,7 +10,9 @@ const UserProfilePage = () => {
   if (!params || !params.id) return null;
   return (
     <Container>
-      <UserProfile id={params.id} />
+      <LocalErrorBoundary>
+        <UserProfile id={params.id} />
+      </LocalErrorBoundary>
     </Container>
   );
 };

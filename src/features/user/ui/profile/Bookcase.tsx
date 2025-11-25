@@ -12,7 +12,7 @@ const Bookcase = () => {
     <Container>
       {isPending ? (
         <LoadingContainer>
-          <LoadingIndicator text='불러오는중' />
+          <LoadingIndicator />
         </LoadingContainer>
       ) : (
         data && <BookShelfSection books={data.bookcase} type='BOOKCASE' />

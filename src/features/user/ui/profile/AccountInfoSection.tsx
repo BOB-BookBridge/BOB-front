@@ -1,11 +1,11 @@
 import { useFailedChatStore } from '@/features/chat/model/useFailedChatStore';
 import { useLogoutMutation } from '@/entities/auth/queries';
-import { useDeleteUserMutation, UserProfileReq } from '@/entities/user';
+import { useDeleteUserMutation, UserProfileRes } from '@/entities/user';
 import EditPassword from './EditPassword';
 import * as S from '../Profile.styles';
 import { useRouter } from 'next/navigation';
 
-type AccountInfoProps = Pick<UserProfileReq, 'isSocial' | 'email'>;
+type AccountInfoProps = Pick<UserProfileRes, 'isSocial' | 'email'>;
 
 const AccountInfoSection = ({ isSocial, email }: AccountInfoProps) => {
   const { mutate: logout } = useLogoutMutation();

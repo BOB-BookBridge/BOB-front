@@ -37,7 +37,7 @@ const SelectBuyerForm = ({
     <Container>
       <ListWrapper>
         {isPending ? (
-          <LoadingIndicator text='불러오는중' />
+          <LoadingIndicator />
         ) : (
           data &&
           data.trades.map((trade) => {

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
+import { LoadingContainer } from '@/shared/ui/LoadingIndicator';
 import { useIsMobile, useWidgetStore } from '@/shared/model';
 import { NotificationItem } from '@/entities/notification';
 import { NotiTabOption } from './NotificationSection';
@@ -37,9 +38,9 @@ const NotificationList = ({ selectTab }: NotificationListProps) => {
   return (
     <NotificationWrapper>
       {isLoading ? (
-        <LoadingWrapper>
-          <LoadingIndicator text='불러오는중' />
-        </LoadingWrapper>
+        <LoadingContainer>
+          <LoadingIndicator />
+        </LoadingContainer>
       ) : (
         filteredNotifications.map((noti) => (
           <Notification
@@ -58,11 +59,4 @@ export default NotificationList;
 const NotificationWrapper = styled.div`
   overflow-y: auto;
   flex: 1;
-`;
-
-const LoadingWrapper = styled.div`
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
 `;

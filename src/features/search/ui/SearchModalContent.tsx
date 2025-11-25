@@ -2,6 +2,7 @@
 
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
+import { LoadingContainer } from '@/shared/ui/LoadingIndicator';
 import { cleanHtmlText, formatDate } from '@/shared/lib';
 import { AladinItemType } from '@/entities/aladin/type';
 import { LoadingIndicator, Button } from '@/shared/ui';
@@ -206,13 +207,6 @@ const EmptyMessage = styled.div`
   margin: 20px 0;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.GRAY_600};
-`;
-
-const LoadingContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 20px;
 `;
 
 export const Input = styled.input`

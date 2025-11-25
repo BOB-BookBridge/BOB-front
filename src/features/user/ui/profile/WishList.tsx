@@ -12,7 +12,7 @@ const WishList = () => {
     <Container>
       {isPending ? (
         <LoadingContainer>
-          <LoadingIndicator text='불러오는중' />
+          <LoadingIndicator />
         </LoadingContainer>
       ) : (
         data &&

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { useForm, useWatch } from 'react-hook-form';
-import { useMyInfoMutation, UserProfileReq } from '@/entities/user';
+import { useMyInfoMutation, UserProfileRes } from '@/entities/user';
 import { useAreaVerify } from '@/features/auth/model/useAreaVerify';
 import DefaultProfile from '@/shared/assets/default-profile.svg';
 import { getCurrentPosition } from '@/shared/lib';
@@ -13,7 +13,7 @@ import Interests from './Interests';
 import EditArea from './EditArea';
 
 type ProfileInfoProps = Pick<
-  UserProfileReq,
+  UserProfileRes,
   'nickname' | 'area' | 'profileImageUrl' | 'interests'
 >;
 

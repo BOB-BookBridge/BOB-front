@@ -1,6 +1,6 @@
 import { BookState, BookStatus } from '../listing';
 
-export interface UserProfileReq {
+export interface UserProfileRes {
   isSocial: boolean;
   email: string;
   interests: string[];
