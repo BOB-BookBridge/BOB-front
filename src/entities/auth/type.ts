@@ -1,4 +1,4 @@
-export interface patchAreaProps {
+export interface postAreaReq {
   emdId: number;
   lat: number;
   lon: number;

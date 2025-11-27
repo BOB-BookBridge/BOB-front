@@ -40,6 +40,7 @@ export interface Book {
 export interface Bookcase extends Book {
   status: BookStatus;
   available: boolean;
+  isbn: string;
 }
 
 export interface PostBookcaseReq extends BookModel {

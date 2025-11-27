@@ -3,13 +3,13 @@ import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/shared/lib';
 import {
-  patchArea,
+  postArea,
   postCodeVerify,
   postEmailVerify,
   postLogin,
   postLogout,
   postSignUp,
-  patchAreaProps,
+  postAreaReq,
   postLoginProps,
   postSignUpProps,
 } from '.';
@@ -45,8 +45,8 @@ export const useCodeVerifyMutation = () => {
 };
 
 export const useAreaMutation = () => {
-  return useMutation<void, Error, patchAreaProps>({
-    mutationFn: (data) => patchArea(data),
+  return useMutation<void, Error, postAreaReq>({
+    mutationFn: (data) => postArea(data),
     onSuccess: async () => {
       toast.success('인증 완료');
       await queryClient.invalidateQueries({ queryKey: ['my'] });
