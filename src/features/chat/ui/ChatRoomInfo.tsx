@@ -3,8 +3,8 @@ import { useTheme } from 'styled-components';
 import { DropdownIcon } from '@/shared/assets/icons';
 import { chatPostStatusMap } from '@/shared/lib';
 import { useMyQuery } from '@/entities/user';
-import * as S from './ChatRoom.styles';
 import { ChatPost } from '@/entities/chat';
+import * as S from './ChatRoom.styles';
 
 interface ChatRoomInfoProps {
   post: ChatPost;
@@ -14,7 +14,7 @@ interface ChatRoomInfoProps {
 const ChatRoomInfo = ({ post, isOpenDropdown, onClick }: ChatRoomInfoProps) => {
   const theme = useTheme();
   const { data } = useMyQuery();
-  const isSeller = data?.memberId === post.sellerId;
+  const isSeller = data?.id === post.sellerId;
   function handleClickStatus() {
     onClick();
   }

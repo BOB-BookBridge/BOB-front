@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
 import { LoadingContainer } from '@/shared/ui/LoadingIndicator';
 import { useIsMobile, useWidgetStore } from '@/shared/model';
-import { NotificationItem } from '@/entities/notification';
+import { NotificationModel } from '@/entities/notification';
 import { NotiTabOption } from './NotificationSection';
 import { LoadingIndicator } from '@/shared/ui';
 import Notification from './Notification';
@@ -21,14 +21,14 @@ const NotificationList = ({ selectTab }: NotificationListProps) => {
   const router = useRouter();
   const { setActiveWidget } = useWidgetStore();
   const isMobile = useIsMobile();
-  const notifications = data?.notifications ?? [];
+  const notifications = data ?? [];
 
   const reversed = [...notifications].reverse();
 
   const filteredNotifications =
     selectTab === 'ALL' ? reversed : reversed.filter((noti) => !noti.isRead);
 
-  function handleClickItem(noti: NotificationItem) {
+  function handleClickItem(noti: NotificationModel) {
     if (!noti.isRead) {
       readMutate(noti.id);
     }

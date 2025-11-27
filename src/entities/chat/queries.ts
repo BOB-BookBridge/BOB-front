@@ -7,17 +7,8 @@ import {
   getUnreadMessage,
   patchChatRoom,
   postMessageProps,
-  postNewChat,
-  postNewChatProps,
-  postNewChatResponse,
   postNewMessage,
 } from '.';
-
-export const useChatMutation = () => {
-  return useMutation<postNewChatResponse, Error, postNewChatProps>({
-    mutationFn: (data) => postNewChat(data),
-  });
-};
 
 export const useChatInfoQuery = (
   id: number,

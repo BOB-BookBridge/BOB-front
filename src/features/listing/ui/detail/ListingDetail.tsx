@@ -108,13 +108,13 @@ const ListingDetail = ({ id }: { id: number }) => {
               <S.HeaderRow>
                 <S.HeadingText>{data.book.title}</S.HeadingText>
                 {data.isOwner && (
-                  <EditMenu postStatus={data.postStatus} postId={data.postId} />
+                  <EditMenu postStatus={data.tradeStatus} postId={data.id} />
                 )}
               </S.HeaderRow>
 
               <S.MetaRow>
                 <S.SubText>
-                  #{getCategoryNameById(data.category)} · #
+                  #{getCategoryNameById(data.categoryId)} · #
                   {bookStatusMap[data.bookStatus]} ·{' '}
                   {convertDiffToString(data.createdAt)}
                 </S.SubText>
@@ -123,13 +123,12 @@ const ListingDetail = ({ id }: { id: number }) => {
                 </S.SubText>
               </S.MetaRow>
 
-              <S.HeadingText>{data.sellPrice.toLocaleString()}원</S.HeadingText>
+              <S.HeadingText>{data.price.toLocaleString()}원</S.HeadingText>
               <S.Description>{data.description}</S.Description>
 
               <BookInfo
                 author={data.book.author}
                 pubDate={data.book.pubDate}
-                priceStandard={data.book.priceStandard}
                 description={data.book.description}
               />
               {!data.isOwner && (

@@ -36,8 +36,8 @@ const TradeRequest = ({
   const [selectedBook, setSelectedBook] = useState<BookModel | null>(null);
   const { data: mydata } = useMyQuery();
   const { data: bookcaseData, isLoading } = useBookcaseQuery(
-    { memberId: mydata?.memberId ?? '', key: 'AVAILABLE', require: prevItems },
-    { enabled: !!mydata?.memberId },
+    { memberId: mydata?.id ?? '', key: 'AVAILABLE', require: prevItems },
+    { enabled: !!mydata?.id },
   );
   const { mutate: enterBookcaseBook } = useBookcaseMutation();
   const { mutate: requestTrade } = usePostTradeMutation();

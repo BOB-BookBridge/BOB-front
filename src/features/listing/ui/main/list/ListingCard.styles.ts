@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { colors } from '../../../../../shared/constants';
-import { PostStatus } from '@/entities/listing/types';
 import Link from 'next/link';
+import styled from 'styled-components';
+import { PostTradeStatus } from '@/entities/listing/types';
+import { colors } from '@/shared/constants';
 
 const Z_OVERLAY_BASE = 10;
 const Z_OVERLAY_DIM = 11;
@@ -9,7 +9,7 @@ const Z_OVERLAY_STATUS = 13;
 const Z_TAG_WRAPPER = 10;
 
 interface OverlayProps {
-  status: PostStatus;
+  status: PostTradeStatus;
 }
 
 export const CardContainer = styled(Link)`

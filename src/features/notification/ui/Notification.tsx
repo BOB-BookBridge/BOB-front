@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { NotificationItem } from '@/entities/notification';
+import { NotificationModel } from '@/entities/notification';
 import { NotiTradeIcon } from '@/shared/assets/icons';
 import { convertDiffToString } from '@/shared/lib';
 
@@ -11,7 +11,7 @@ const NotiTitle = {
 } as const;
 
 interface NotificationProps {
-  notification: NotificationItem;
+  notification: NotificationModel;
   onClick: () => void;
 }
 const Notification = ({ notification, onClick }: NotificationProps) => {

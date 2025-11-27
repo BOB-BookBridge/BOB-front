@@ -4,15 +4,9 @@ import * as S from './ListingDetail.styles';
 interface BookInfoProps {
   author: string;
   pubDate: string;
-  priceStandard: number;
   description: string;
 }
-const BookInfo = ({
-  author,
-  pubDate,
-  priceStandard,
-  description,
-}: BookInfoProps) => {
+const BookInfo = ({ author, pubDate, description }: BookInfoProps) => {
   const [isOpenInfo, setIsOpenInfo] = useState(false);
   function handleInfoToggle() {
     setIsOpenInfo((prev) => !prev);
@@ -29,9 +23,6 @@ const BookInfo = ({
 
           <S.Text>출간일</S.Text>
           <S.Text>{pubDate}</S.Text>
-
-          <S.Text>정가</S.Text>
-          <S.Text>{priceStandard}</S.Text>
 
           <S.Text>책소개</S.Text>
           <S.Text>{description}</S.Text>

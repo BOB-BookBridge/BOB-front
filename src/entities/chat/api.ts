@@ -5,13 +5,7 @@ import {
   ChatMessage,
   getMessageResponse,
   postMessageProps,
-  postNewChatProps,
 } from '.';
-
-export const postNewChat = async (props: postNewChatProps) => {
-  const { data } = await axiosInstance.post('/chatrooms', props);
-  return data;
-};
 
 export const connectChat = (
   chatroomId: number,

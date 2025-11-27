@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import DefaultProfile from '@/shared/assets/default-profile.svg';
-import { Chat } from '@/entities/chat/types';
 import { convertDiffToString } from '@/shared/lib';
+import { Chat } from '@/entities/chat/types';
 import Badge from '@/shared/ui/Badge';
 
 const ChatListItem = ({
@@ -15,13 +15,13 @@ const ChatListItem = ({
   onClick: (e: number | null) => void;
 }) => {
   return (
-    <Container onClick={() => onClick(data.chatroomId)}>
+    <Container onClick={() => onClick(data.id)}>
       <LeftSection>
         <ImagesWrapper>
           <ProfileWrapper>
-            {data.partner.profileUrl ? (
+            {data.partner.profileImageUrl ? (
               <Image
-                src={data.partner.profileUrl}
+                src={data.partner.profileImageUrl}
                 width={35}
                 height={35}
                 alt='프로필'
