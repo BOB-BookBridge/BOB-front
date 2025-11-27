@@ -1,7 +1,13 @@
 import axiosInstance from '@/shared/config/axios';
-import { editFilesProps, ImageFile, postFilesProps, postUrlsProps } from '.';
+import {
+  editFilesReq,
+  ImageFile,
+  postFilesReq,
+  postUrlsReq,
+  postUrlsRes,
+} from '.';
 
-const postUrls = async (files: postUrlsProps) => {
+const postUrls = async (files: postUrlsReq): Promise<postUrlsRes[]> => {
   const { data } = await axiosInstance.post('/files/urls', files);
   return data;
 };
@@ -29,12 +35,12 @@ const uploadFilesToS3 = async ({
   }
 };
 
-const postFiles = async (files: postFilesProps) => {
+const postFiles = async (files: postFilesReq) => {
   const { data } = await axiosInstance.post('/files', files);
   return data;
 };
 
-export const editFiles = async (files: editFilesProps) => {
+export const editFiles = async (files: editFilesReq) => {
   const { data } = await axiosInstance.put('/files', files);
   return data;
 };
@@ -50,15 +56,15 @@ export const uploadImagesFlow = async (
   });
 
   const uploadedImages: ImageFile[] = [];
-  const urls = [...urlRes.urls].sort((a, b) => a.sequence - b.sequence);
+  const urls = urlRes.sort((a, b) => a.sequence - b.sequence);
 
   for (const urlInfo of urls) {
-    const { sequence, fileUploadUrl, fileName } = urlInfo;
+    const { sequence, uploadUrl, fileName } = urlInfo;
     const file = images[sequence];
 
     await uploadFilesToS3({
       file,
-      uploadUrl: fileUploadUrl,
+      uploadUrl,
       contentType: file.type,
     });
 

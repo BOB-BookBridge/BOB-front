@@ -7,15 +7,15 @@ import {
   getPosts,
   postLike,
   postListing,
-  getPostsProps,
-  postListingProps,
+  getPostsReq,
+  postListingReq,
   deleteListing,
-  patchListingProps,
+  patchListingReq,
   patchListing,
 } from '.';
 import { queryClient } from '@/shared/lib';
 
-export const useListingQuery = (filter: getPostsProps) => {
+export const useListingQuery = (filter: getPostsReq) => {
   return useInfiniteQuery({
     queryKey: ['listing', filter.memberId ?? 'all', filter],
     queryFn: ({ pageParam = 0 }) => getPosts({ ...filter, page: pageParam }),
@@ -55,15 +55,14 @@ export const useFavoritesQuery = (enabled: boolean) => {
 };
 
 type usePostType = {
-  postId: number;
+  id: number;
 };
 
 export const usePostMutation = () => {
   const router = useRouter();
-  return useMutation<usePostType, Error, postListingProps>({
+  return useMutation<usePostType, Error, postListingReq>({
     mutationFn: (data) => postListing(data),
-    onSuccess: ({ postId }: usePostType) =>
-      router.replace(`/listings/${postId}`),
+    onSuccess: ({ id }: usePostType) => router.replace(`/listings/${id}`),
   });
 };
 
@@ -82,7 +81,7 @@ export const useLikeMutation = () => {
 
 type usePatchListingProps = {
   postId: number;
-  listing: patchListingProps;
+  listing: patchListingReq;
 };
 export const usePatchListingMutation = () => {
   const router = useRouter();

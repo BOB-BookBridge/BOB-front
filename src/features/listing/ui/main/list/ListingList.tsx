@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import {
-  PostStatus,
+  PostTradeStatus,
   useFavoritesQuery,
   useListingQuery,
 } from '@/entities/listing';
@@ -22,7 +22,7 @@ const ListingList = ({
   id?: string;
 }) => {
   const { data: myData } = useMyQuery();
-  const memberId = id ? id : myData?.memberId;
+  const memberId = id ? id : myData?.id;
   const {
     key,
     keyword,
@@ -43,7 +43,7 @@ const ListingList = ({
         categoryId: categoryId ?? undefined,
         bookStatus: bookStatus ?? undefined,
         price: priceRange ?? undefined,
-        postStatus: isAvailableOnly ? ('READY' as PostStatus) : undefined,
+        postStatus: isAvailableOnly ? ('READY' as PostTradeStatus) : undefined,
         sort,
         size: PAGE_SIZE,
       };
@@ -86,7 +86,7 @@ const ListingList = ({
       ) : (
         <ListWrapper>
           {listings.map((listing) => (
-            <ListingCard key={`listing-${listing.postId}`} data={listing} />
+            <ListingCard key={`listing-${listing.id}`} data={listing} />
           ))}
 
           {hasNextPage && (

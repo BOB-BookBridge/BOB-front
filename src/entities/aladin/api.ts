@@ -1,6 +1,6 @@
-import { AladinResponse } from './type';
+import { AladinItemType } from './type';
 
-export const searchBook = async (query: string): Promise<AladinResponse> => {
+export const searchBook = async (query: string): Promise<AladinItemType[]> => {
   const res = await fetch(`/api/aladin?query=${query}`);
 
   if (!res.ok) {

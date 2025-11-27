@@ -1,5 +1,5 @@
 import axiosInstance from '@/shared/config/axios';
-import { BookState } from '../listing';
+import { BookModel } from '../listing';
 import {
   Bookcase,
   GetBookcaseReq,
@@ -7,6 +7,7 @@ import {
   patchPasswordReq,
   UserProfileRes,
   patchMyInfoReq,
+  Book,
 } from '.';
 
 export const getMyProfile = async (): Promise<UserProfileRes> => {
@@ -42,7 +43,7 @@ export const getUserProfile = async (id: string): Promise<UserProfileRes> => {
 };
 
 export const postBookcaseItem = async (book: PostBookcaseReq) => {
-  const { data } = await axiosInstance.post('/members/books', book);
+  const { data } = await axiosInstance.post('/members/bookcase', book);
   return data;
 };
 
@@ -50,26 +51,28 @@ export const getBookcase = async (
   prop: GetBookcaseReq,
 ): Promise<Bookcase[]> => {
   const { memberId, key, require } = prop;
-  const { data } = await axiosInstance.get(`/members/${memberId}/books`, {
+  const { data } = await axiosInstance.get(`/members/${memberId}/bookcase`, {
     params: {
       ...(key && { key }),
       ...(require && { require }),
     },
   });
-  return data.bookcase;
-};
-
-export const deleteBookcaseItem = async (bookItemId: number) => {
-  const { data } = await axiosInstance.delete(`/members/books/${bookItemId}`);
   return data;
 };
 
-export const getWishes = async (memberId: string) => {
+export const deleteBookcaseItem = async (bookItemId: number) => {
+  const { data } = await axiosInstance.delete(
+    `/members/bookcase/${bookItemId}`,
+  );
+  return data;
+};
+
+export const getWishes = async (memberId: string): Promise<Book[]> => {
   const { data } = await axiosInstance.get(`members/${memberId}/wishes`);
   return data;
 };
 
-export const postWishItem = async (req: BookState) => {
+export const postWishItem = async (req: BookModel) => {
   const { data } = await axiosInstance.post('/members/wishes', req);
   return data;
 };

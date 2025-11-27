@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'styled-components';
+import { ChatUser, useExitChatMutation } from '@/entities/chat';
 import { useFABStore, useIsMobile } from '@/shared/model';
-import { useExitChatMutation } from '@/entities/chat';
 import * as S from './ChatRoom.styles';
 import {
   ArrowBackIcon,
@@ -9,14 +9,9 @@ import {
   DeleteIcon,
 } from '@/shared/assets/icons';
 
-type Partner = {
-  id: string;
-  nickname: string;
-  profileUrl: string | null;
-};
 interface ChatRoomHeaderProps {
   id: number;
-  partner: Partner;
+  partner: ChatUser;
   isOpenMenu: boolean;
   onClick: () => void;
 }

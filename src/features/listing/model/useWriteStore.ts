@@ -1,11 +1,11 @@
-import { BookState } from '@/entities/listing';
 import { create } from 'zustand';
+import { BookModel } from '@/entities/listing';
 
 type WriteState = {
   categoryId: number | null;
-  book: BookState | null;
+  book: BookModel | null;
   setCategoryId: (id: number | null) => void;
-  setBook: (b: BookState | null) => void;
+  setBook: (b: BookModel | null) => void;
   resetWrite: () => void;
 };
 

@@ -5,9 +5,7 @@ import { useWriteStore } from '../../model/useWriteStore';
 import { DropdownIcon } from '@/shared/assets/icons';
 import * as S from './ListingWrite.styles';
 
-interface PriceAndCategoryProps {
-  price: string;
-  handlePriceChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+interface SelectCategoryProps {
   categoryId?: number | null;
 }
 
@@ -16,11 +14,7 @@ type Category = {
   name: string;
   parent_id: number | null;
 };
-const PriceAndCategory = ({
-  price,
-  handlePriceChange,
-  categoryId,
-}: PriceAndCategoryProps) => {
+const SelectCategory = ({ categoryId }: SelectCategoryProps) => {
   const theme = useTheme();
   const { setCategoryId } = useWriteStore();
   const [selectedCategory, setSelectedCategory] = useState<Category | null>();
@@ -72,16 +66,6 @@ const PriceAndCategory = ({
   }
   return (
     <Container>
-      <S.InputWrapper style={{ flex: 1 }}>
-        <span style={{ marginRight: 5 }}>₩</span>
-        <S.Input
-          type='text'
-          value={price}
-          onChange={handlePriceChange}
-          inputMode='numeric'
-          placeholder='가격'
-        />
-      </S.InputWrapper>
       <div style={{ width: 150 }}>
         <S.DropdownBox
           onClick={handleClickDropdown}
@@ -119,7 +103,7 @@ const PriceAndCategory = ({
   );
 };
 
-export default PriceAndCategory;
+export default SelectCategory;
 
 const Container = styled.div`
   width: 100%;

@@ -1,6 +1,6 @@
 export const postStatusMap = {
   READY: '판매 중',
-  IN_PROGRESS: '거래 예약',
+  RESERVED: '거래 예약',
   COMPLETED: '거래 완료',
 } as const;
 
@@ -13,7 +13,7 @@ export const bookStatusMap = {
 
 export const chatPostStatusMap = {
   READY: '판매중',
-  IN_PROGRESS: '예약중',
+  RESERVED: '예약중',
   COMPLETED: '판매완료',
 } as const;
 

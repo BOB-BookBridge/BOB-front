@@ -1,17 +1,17 @@
-export interface patchAreaProps {
+export interface postAreaReq {
   emdId: number;
   lat: number;
   lon: number;
 }
 
-export interface postSignUpProps {
+export interface postSignUpReq {
   nickname: string;
   email: string;
   password: string;
   emdId: number;
 }
 
-export interface postLoginProps {
+export interface postLoginReq {
   email: string;
   password: string;
 }

@@ -47,7 +47,11 @@ const ListingAreaButton = () => {
           isOpen={isOpen}
           onClose={handleButtonToggle}
           title='지역 변경'>
-          <SelectAreaSection defaultValue={emdId} onChange={setSelectedEmdId} />
+          <SelectAreaSection
+            defaultValue={emdId}
+            onChange={setSelectedEmdId}
+            isResponsive={true}
+          />
           <S.ConfirmButton onClick={handleApply}>적용</S.ConfirmButton>
         </ModalLayout>
       )}

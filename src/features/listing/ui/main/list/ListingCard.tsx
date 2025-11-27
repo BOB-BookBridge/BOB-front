@@ -2,22 +2,22 @@
 
 import Image from 'next/image';
 import { convertDiffToString, postStatusMap } from '@/shared/lib';
-import { ListingCardProps } from '@/entities/listing/types';
+import { PostModel } from '@/entities/listing/types';
 import { getCategoryNameById } from '../../../lib';
 import ListingCardTag from './ListingCardTag';
 import * as S from './ListingCard.styles';
 
-const ListingCard = ({ data }: { data: ListingCardProps }) => {
+const ListingCard = ({ data }: { data: PostModel }) => {
   const categoryName = getCategoryNameById(data.categoryId);
   const time = convertDiffToString(data.createdAt);
   return (
-    <S.CardContainer href={`/listings/${data.postId}`}>
+    <S.CardContainer href={`/listings/${data.id}`}>
       <S.ImageWrapper>
         <S.Overlay>
-          <S.OverlayDim status={data.postStatus} />
-          {data.postStatus !== 'READY' && (
+          <S.OverlayDim status={data.status} />
+          {data.status !== 'READY' && (
             <S.OverlayStatusText>
-              {postStatusMap[data.postStatus]}
+              {postStatusMap[data.status]}
             </S.OverlayStatusText>
           )}
           <S.TagWrapper>
@@ -33,8 +33,8 @@ const ListingCard = ({ data }: { data: ListingCardProps }) => {
           unoptimized
         />
       </S.ImageWrapper>
-      <S.TitleText>{data.postTitle}</S.TitleText>
-      <S.PriceText>{data.sellPrice.toLocaleString('ko-KR')}원</S.PriceText>
+      <S.TitleText>{data.title}</S.TitleText>
+      <S.PriceText>{data.price.toLocaleString('ko-KR')}원</S.PriceText>
       <S.InfoText>
         {categoryName} · {time}
       </S.InfoText>

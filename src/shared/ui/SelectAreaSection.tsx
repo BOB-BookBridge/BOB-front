@@ -16,7 +16,7 @@ import {
 
 const SelectAreaSection = ({
   defaultValue,
-  isResponsive,
+  isResponsive = false,
   onChange,
   editMode = true,
 }: SelectAreaSectionProps) => {
@@ -78,12 +78,7 @@ const SelectAreaSection = ({
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: 10,
-      }}>
+    <Wrapper $isResponsive={isResponsive}>
       {dropdownOptions.map((option, idx) => (
         <Dropdown
           key={idx}
@@ -105,12 +100,23 @@ const SelectAreaSection = ({
           isResponsive={isResponsive}
         />
       ))}
-    </div>
+    </Wrapper>
   );
 };
 
 export default SelectAreaSection;
 
+const Wrapper = styled.div<{ $isResponsive: boolean }>`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  ${({ $isResponsive }) =>
+    $isResponsive &&
+    `
+    justify-content: center;
+    align-items: center;
+  `}
+`;
 export const VerifyButton = styled.button<{ disabled: boolean }>`
   ${({ disabled = true, theme }) =>
     `background-color: ${disabled ? theme.colors.GRAY_300 : colors.light.PRIMARY};

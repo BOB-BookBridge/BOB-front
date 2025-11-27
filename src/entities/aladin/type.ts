@@ -8,6 +8,3 @@ export interface AladinItemType {
   priceStandard: number;
   cover: string;
 }
-export interface AladinResponse {
-  item: AladinItemType[];
-}

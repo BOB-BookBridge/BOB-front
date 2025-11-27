@@ -3,21 +3,21 @@ import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/shared/lib';
 import {
-  patchArea,
+  postArea,
   postCodeVerify,
   postEmailVerify,
   postLogin,
   postLogout,
   postSignUp,
-  patchAreaProps,
-  postLoginProps,
-  postSignUpProps,
+  postAreaReq,
+  postLoginReq,
+  postSignUpReq,
 } from '.';
 
 export const useSignupMutation = () => {
   const login = useLoginMutation();
 
-  return useMutation<void, Error, postSignUpProps>({
+  return useMutation<void, Error, postSignUpReq>({
     mutationFn: (data) => postSignUp(data),
     onSuccess: (_, variables) => {
       toast.success('회원가입 완료!');
@@ -45,8 +45,8 @@ export const useCodeVerifyMutation = () => {
 };
 
 export const useAreaMutation = () => {
-  return useMutation<void, Error, patchAreaProps>({
-    mutationFn: (data) => patchArea(data),
+  return useMutation<void, Error, postAreaReq>({
+    mutationFn: (data) => postArea(data),
     onSuccess: async () => {
       toast.success('인증 완료');
       await queryClient.invalidateQueries({ queryKey: ['my'] });
@@ -56,7 +56,7 @@ export const useAreaMutation = () => {
 
 export const useLoginMutation = () => {
   const router = useRouter();
-  return useMutation<void, Error, postLoginProps>({
+  return useMutation<void, Error, postLoginReq>({
     mutationFn: (data) => postLogin(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['my'] });

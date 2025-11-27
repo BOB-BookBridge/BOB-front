@@ -27,11 +27,7 @@ const ChatList = () => {
     <div>
       {data && !isPending ? (
         data.map((chat, idx) => (
-          <ChatListItem
-            key={chat.chatroomId}
-            data={chat}
-            onClick={handleClickChat}
-          />
+          <ChatListItem key={chat.id} data={chat} onClick={handleClickChat} />
         ))
       ) : (
         <LoadingContainer>

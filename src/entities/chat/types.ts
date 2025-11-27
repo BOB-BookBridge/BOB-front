@@ -1,45 +1,22 @@
-import { DetailImage, PostStatus } from '../listing';
-
-interface PartnerProps {
-  partnerId: number;
-  nickname: string;
-  profileUrl: string | null;
-}
-
-export interface ChatListProps {
-  chatroomId: number;
-  title: string;
-  thumbnailUrl: string;
-  lastMessage: string;
-  lastMessageAt: string;
-  partner: PartnerProps;
-  unreadCount: number;
-}
+import { DetailImage, PostTradeStatus } from '../listing';
+import { UserProfileRes } from '../user';
 
 export type ChatType = 'TEXT' | 'IMAGE' | 'SYSTEM';
 
-export interface postNewChatResponse {
-  chatRoomId: number;
-}
-
-export interface postNewChatProps {
-  postId: number;
-  isFar: boolean;
-}
-
 export interface ChatPost {
   id: number;
-  status: PostStatus;
+  status: PostTradeStatus;
   sellerId: string;
   title: string;
   thumbnailUrl: string;
   sellPrice: number;
 }
-export interface ChatPartner {
-  id: string;
-  nickname: string;
-  profileUrl: string | null;
-}
+
+export type ChatUser = Pick<
+  UserProfileRes,
+  'id' | 'nickname' | 'profileImageUrl'
+>;
+
 export interface ChatInfo {
   chatroomId: number;
   title: string;
@@ -48,16 +25,16 @@ export interface ChatInfo {
     status: 'REQUESTED' | 'CANCELED' | 'COMPLETED';
   };
   post: ChatPost;
-  partner: ChatPartner;
+  partner: ChatUser;
 }
 
-export interface postMessageProps {
+export interface postMessageReq {
   chatroomId: number;
   message: string | null;
   fileNames: string[];
 }
 
-export interface getMessageResponse {
+export interface getMessageRes {
   messages: ChatMessage[];
   hasNext: boolean;
 }
@@ -82,10 +59,10 @@ export interface LocalChat extends BasicChat {
 export type ChatMessage = ServerChat | LocalChat;
 
 export interface Chat {
-  chatroomId: number;
+  id: number;
   thumbnailUrl: string;
   lastMessage: string;
   lastMessageAt: string;
-  partner: ChatPartner;
+  partner: ChatUser;
   unreadCount: number;
 }

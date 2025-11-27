@@ -2,9 +2,9 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { ImageFile, useEditImageMutation } from '@/entities/files';
 import {
-  BookState,
+  BookModel,
   BookStatus,
-  ListingDetailProps,
+  ListingDetailRes,
   usePatchListingMutation,
   usePostMutation,
 } from '@/entities/listing';
@@ -16,14 +16,12 @@ interface UseUploadListingParams {
 
 export interface ListingFormValues {
   images: ImageFile[];
-  sellPrice: number | null;
-  price: string;
   bookStatus: BookStatus | null;
   description: string;
   wishOnly: boolean;
   categoryId: number | null;
-  book: BookState | null;
-  detailInfo?: ListingDetailProps;
+  book: BookModel | null;
+  detailInfo?: ListingDetailRes;
 }
 
 export function useUploadListing({ id, resetWrite }: UseUploadListingParams) {
@@ -35,7 +33,6 @@ export function useUploadListing({ id, resetWrite }: UseUploadListingParams) {
   async function upload(form: ListingFormValues) {
     const {
       categoryId,
-      sellPrice,
       bookStatus,
       description,
       book,
@@ -46,7 +43,6 @@ export function useUploadListing({ id, resetWrite }: UseUploadListingParams) {
 
     if (!book) return toast.error('판매할 책을 선택해 주세요');
     if (!bookStatus) return toast.error('책 상태를 선택해 주세요');
-    if (!sellPrice) return toast.error('가격을 입력해 주세요');
 
     // 신규 등록
     if (!id) {
@@ -57,9 +53,8 @@ export function useUploadListing({ id, resetWrite }: UseUploadListingParams) {
       postListing(
         {
           categoryId,
-          sellPrice,
           bookStatus,
-          postDescription: description,
+          description,
           book,
           fileNames: images.map((i) => i.fileName),
           wishOnly,
@@ -74,7 +69,6 @@ export function useUploadListing({ id, resetWrite }: UseUploadListingParams) {
     const changedImage = JSON.stringify(origin) !== JSON.stringify(current);
 
     const patch: Record<string, unknown> = {};
-    if (sellPrice !== detailInfo?.sellPrice) patch.sellPrice = sellPrice;
     if (bookStatus !== detailInfo?.bookStatus) patch.bookStatus = bookStatus;
     if (description !== detailInfo?.description)
       patch.description = description;

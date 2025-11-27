@@ -3,7 +3,7 @@ import { useTheme } from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
 import { CancelTradeForm, SelectBuyerForm } from '@/features/trade/ui';
 import { useDeleteListingMutation } from '@/entities/listing';
-import { PostStatus } from '@/entities/listing/types';
+import { PostTradeStatus } from '@/entities/listing/types';
 import * as S from './ListingDetail.styles';
 import { ModalLayout } from '@/shared/ui';
 import {
@@ -37,7 +37,7 @@ type EditModalType = keyof typeof EDIT_TITLE;
 
 const tradeStatusOptionMap: Record<string, string[]> = {
   READY: ['EDIT', 'RESERVED', 'COMPLETED', 'DELETE'],
-  IN_PROGRESS: ['EDIT', 'CANCELED', 'COMPLETED', 'DELETE'],
+  RESERVED: ['EDIT', 'CANCELED', 'COMPLETED', 'DELETE'],
   COMPLETED: ['EDIT', 'DELETE'],
 };
 
@@ -46,7 +46,7 @@ function getFilteredOptions(tradeStatus: string) {
   return editOptions.filter((opt) => allowed.includes(opt.value));
 }
 interface EditMenuProps {
-  postStatus: PostStatus;
+  postStatus: PostTradeStatus;
   postId: number;
 }
 

@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryClient } from '@/shared/lib';
-import { BookState } from '../listing';
+import { BookModel } from '../listing';
 import {
   PostBookcaseReq,
   getBookcase,
@@ -120,7 +120,7 @@ export const useWishesQuery = (memberId: string) => {
 
 export const usePostWishItemMutation = () => {
   return useMutation({
-    mutationFn: (req: BookState) => postWishItem(req),
+    mutationFn: (req: BookModel) => postWishItem(req),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my'] });
     },

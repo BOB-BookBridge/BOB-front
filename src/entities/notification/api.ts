@@ -1,7 +1,7 @@
 import axiosInstance from '@/shared/config/axios';
-import { NotificationsRes } from './types';
+import { NotificationModel } from './types';
 
-export const getNotifications = async (): Promise<NotificationsRes> => {
+export const getNotifications = async (): Promise<NotificationModel[]> => {
   const { data } = await axiosInstance.get('/notifications');
   return data;
 };

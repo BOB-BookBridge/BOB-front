@@ -1,10 +1,10 @@
-import { BookState, BookStatus } from '../listing';
+import { BookModel, BookStatus } from '../listing';
 
 export interface UserProfileRes {
   isSocial: boolean;
   email: string;
   interests: string[];
-  memberId: string;
+  id: string;
   nickname: string;
   profileImageUrl: string | null;
   area: {
@@ -40,9 +40,10 @@ export interface Book {
 export interface Bookcase extends Book {
   status: BookStatus;
   available: boolean;
+  isbn: string;
 }
 
-export interface PostBookcaseReq extends BookState {
+export interface PostBookcaseReq extends BookModel {
   status: BookStatus;
 }
 

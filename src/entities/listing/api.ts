@@ -1,22 +1,20 @@
 import {
-  getPostsProps,
-  GetPostsResponse,
-  ListingDetailProps,
-  patchListingProps,
-  postListingProps,
+  getPostsReq,
+  GetPostsRes,
+  ListingDetailRes,
+  patchListingReq,
+  postListingReq,
 } from '.';
 import axiosInstance from '@/shared/config/axios';
 
-export const getPosts = async (
-  filter: getPostsProps,
-): Promise<GetPostsResponse> => {
+export const getPosts = async (filter: getPostsReq): Promise<GetPostsRes> => {
   const { data } = await axiosInstance.get('/posts', {
     params: filter,
   });
   return data;
 };
 
-export const getPost = async (postId: number): Promise<ListingDetailProps> => {
+export const getPost = async (postId: number): Promise<ListingDetailRes> => {
   const { data } = await axiosInstance.get(`/posts/${postId}`);
   return data;
 };
@@ -27,14 +25,14 @@ export const getFavorites = async ({
 }: {
   page?: number;
   size?: number;
-}): Promise<GetPostsResponse> => {
+}): Promise<GetPostsRes> => {
   const { data } = await axiosInstance.get('/posts/favorites', {
     params: { page, size },
   });
   return data;
 };
 
-export const postListing = async (listing: postListingProps) => {
+export const postListing = async (listing: postListingReq) => {
   const { data } = await axiosInstance.post('/posts', listing);
   return data;
 };
@@ -44,7 +42,7 @@ export const patchListing = async ({
   listing,
 }: {
   postId: number;
-  listing: patchListingProps;
+  listing: patchListingReq;
 }) => {
   const { data } = await axiosInstance.patch(`/posts/${postId}`, listing);
   return data;

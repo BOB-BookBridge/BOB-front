@@ -1,14 +1,20 @@
-export interface postUrlsProps {
+export interface postUrlsReq {
   domain: 'POST' | 'CHAT';
   contentTypes: string[];
 }
 
-export interface postFilesProps {
+export interface postUrlsRes {
+  sequence: number;
+  fileName: string;
+  uploadUrl: string;
+}
+
+export interface postFilesReq {
   domain: 'POST' | 'CHAT';
   fileNames: string[];
 }
 
-export interface editFilesProps {
+export interface editFilesReq {
   domain: 'POST' | 'CHAT';
   fileNames: string[];
   referenceId: string;

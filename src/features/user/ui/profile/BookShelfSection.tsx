@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { ModalLayout } from '@/shared/ui';
-import { BookState, BookStatus } from '@/entities/listing';
+import { BookModel, BookStatus } from '@/entities/listing';
 import { SearchModalContent } from '@/features/search/ui';
 import SelectBookStatus from './SelectBookStatus';
 import AddBookItem from './AddBookItem';
@@ -23,7 +23,7 @@ const BookShelfSection = ({
 }) => {
   const [editMode, setEditMode] = useState(false);
   const [activeModal, setActiveModal] = useState<Modal | undefined>();
-  const [selectedBook, setSelectedBook] = useState<BookState>();
+  const [selectedBook, setSelectedBook] = useState<BookModel>();
   const { mutate: postBookcaseItem } = useBookcaseMutation();
   const { mutate: postWishItem } = usePostWishItemMutation();
 
@@ -39,7 +39,7 @@ const BookShelfSection = ({
     setActiveModal(undefined);
   }
 
-  function handleSelectAddBook(book: BookState) {
+  function handleSelectAddBook(book: BookModel) {
     if (type === 'BOOKCASE') {
       setSelectedBook(book);
       setActiveModal('STATUS');
