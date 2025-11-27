@@ -10,7 +10,7 @@ import TradeBook from './TradeBook';
 import { TradeRequest } from '..';
 import {
   GetTradesReq,
-  TradeListItem,
+  TradeListModel,
   useTradeDetailQuery,
 } from '@/entities/trade';
 import {
@@ -27,7 +27,7 @@ const TradeCard = ({
   type,
   query,
 }: {
-  trade: TradeListItem;
+  trade: TradeListModel;
   type: 'RESPONSE' | 'REQUEST';
   query: GetTradesReq;
 }) => {

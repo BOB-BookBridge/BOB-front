@@ -10,14 +10,14 @@ import {
   postLogout,
   postSignUp,
   postAreaReq,
-  postLoginProps,
-  postSignUpProps,
+  postLoginReq,
+  postSignUpReq,
 } from '.';
 
 export const useSignupMutation = () => {
   const login = useLoginMutation();
 
-  return useMutation<void, Error, postSignUpProps>({
+  return useMutation<void, Error, postSignUpReq>({
     mutationFn: (data) => postSignUp(data),
     onSuccess: (_, variables) => {
       toast.success('회원가입 완료!');
@@ -56,7 +56,7 @@ export const useAreaMutation = () => {
 
 export const useLoginMutation = () => {
   const router = useRouter();
-  return useMutation<void, Error, postLoginProps>({
+  return useMutation<void, Error, postLoginReq>({
     mutationFn: (data) => postLogin(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['my'] });

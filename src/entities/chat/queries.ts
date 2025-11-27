@@ -6,7 +6,7 @@ import {
   getMessages,
   getUnreadMessage,
   patchChatRoom,
-  postMessageProps,
+  postMessageReq,
   postNewMessage,
 } from '.';
 
@@ -30,14 +30,14 @@ export const useExitChatMutation = () => {
   });
 };
 
-interface useMessageMutationResponse {
+interface useMessageMutationRes {
   isRead: boolean;
   id: number;
   sentAt: string;
 }
 
 export const useMessageMutate = () => {
-  return useMutation<useMessageMutationResponse, Error, postMessageProps>({
+  return useMutation<useMessageMutationRes, Error, postMessageReq>({
     mutationFn: (data) => postNewMessage(data),
   });
 };

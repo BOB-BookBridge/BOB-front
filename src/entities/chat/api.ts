@@ -1,11 +1,5 @@
 import axiosInstance from '@/shared/config/axios';
-import {
-  Chat,
-  ChatInfo,
-  ChatMessage,
-  getMessageResponse,
-  postMessageProps,
-} from '.';
+import { Chat, ChatInfo, ChatMessage, getMessageRes, postMessageReq } from '.';
 
 export const connectChat = (
   chatroomId: number,
@@ -49,7 +43,7 @@ export const postNewMessage = async ({
   chatroomId,
   message,
   fileNames,
-}: postMessageProps) => {
+}: postMessageReq) => {
   const { data } = await axiosInstance.post(
     `/chatrooms/${chatroomId}/messages`,
     { message, fileNames },
@@ -59,7 +53,7 @@ export const postNewMessage = async ({
 
 export const getMessages = async (
   chatroomId: number,
-): Promise<getMessageResponse> => {
+): Promise<getMessageRes> => {
   const { data } = await axiosInstance.get(`/chatrooms/${chatroomId}/messages`);
   return data;
 };

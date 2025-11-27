@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { Book, ImageWrapper, BookInfo, BookTitle } from './styles';
-import { TradeMainItem } from '@/entities/trade';
+import { TradeMainModel } from '@/entities/trade';
 
-const TradeBook = ({ item }: { item: TradeMainItem }) => {
+const TradeBook = ({ item }: { item: TradeMainModel }) => {
   return (
     <Book>
       <ImageWrapper>

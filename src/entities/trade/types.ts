@@ -40,10 +40,10 @@ export interface PostTradeReq {
 
 export interface GetTradeListRes {
   totalCount: number;
-  trades: TradeListItem[];
+  trades: TradeListModel[];
 }
 
-export interface TradeListItem {
+export interface TradeListModel {
   id: number;
   status: TradeStatus;
   seller: TradeParticipant;
@@ -53,16 +53,16 @@ export interface TradeListItem {
 interface TradeParticipant {
   id: string;
   nickname: string;
-  item: TradeMainItem;
+  item: TradeMainModel;
 }
 
-export interface TradeMainItem {
+export interface TradeMainModel {
   title: string;
   cover: string;
   size: number;
 }
 
-interface PostSum {
+interface PostSummary {
   id: number;
   title: string;
   cover: string;
@@ -82,7 +82,7 @@ interface TradeUser {
 export interface GetTradeDetailRes {
   id: number;
   status: TradeStatus;
-  post: PostSum;
+  post: PostSummary;
   seller: TradeUser;
   buyer: TradeUser;
 }

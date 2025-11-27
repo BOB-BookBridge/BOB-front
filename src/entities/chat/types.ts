@@ -1,22 +1,6 @@
 import { DetailImage, PostTradeStatus } from '../listing';
 import { UserProfileRes } from '../user';
 
-interface PartnerProps {
-  partnerId: number;
-  nickname: string;
-  profileUrl: string | null;
-}
-
-export interface ChatListProps {
-  chatroomId: number;
-  title: string;
-  thumbnailUrl: string;
-  lastMessage: string;
-  lastMessageAt: string;
-  partner: PartnerProps;
-  unreadCount: number;
-}
-
 export type ChatType = 'TEXT' | 'IMAGE' | 'SYSTEM';
 
 export interface ChatPost {
@@ -44,13 +28,13 @@ export interface ChatInfo {
   partner: ChatUser;
 }
 
-export interface postMessageProps {
+export interface postMessageReq {
   chatroomId: number;
   message: string | null;
   fileNames: string[];
 }
 
-export interface getMessageResponse {
+export interface getMessageRes {
   messages: ChatMessage[];
   hasNext: boolean;
 }

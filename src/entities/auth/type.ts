@@ -4,14 +4,14 @@ export interface postAreaReq {
   lon: number;
 }
 
-export interface postSignUpProps {
+export interface postSignUpReq {
   nickname: string;
   email: string;
   password: string;
   emdId: number;
 }
 
-export interface postLoginProps {
+export interface postLoginReq {
   email: string;
   password: string;
 }

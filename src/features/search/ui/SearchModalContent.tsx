@@ -37,7 +37,7 @@ const SearchModalContent = ({
     const debounce = setTimeout(() => {
       if (newValue) {
         searchBook(newValue).then((data) => {
-          setResult(data.item);
+          setResult(data);
           setIsLoading(false);
         });
       }
