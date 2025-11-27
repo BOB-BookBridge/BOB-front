@@ -21,7 +21,9 @@ export const StyledButton = styled.button`
 export const ConfirmButton = styled.button`
   border: none;
   display: flex;
-  width: 455px;
+  margin: 0 20px 80px 20px;
+  width: 100%;
+  max-width: 455px;
   align-items: center;
   justify-content: center;
   background-color: ${colors.light.PRIMARY};
@@ -31,7 +33,7 @@ export const ConfirmButton = styled.button`
   cursor: pointer;
   padding: 5px;
   height: 40px;
-  @media (max-width: 479px) {
-    width: 330px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    max-width: 330px;
   }
 `;

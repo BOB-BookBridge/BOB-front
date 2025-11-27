@@ -37,7 +37,6 @@ export const ModalContainer = styled.div<{ $isClosing?: boolean }>`
   background-color: ${({ theme }) => theme.colors.WHITE};
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   padding: 20px 0;
-  overflow-y: auto;
   z-index: ${({ theme }) => theme.zIndex.modal};
 
   @media (max-width: 744px) {
