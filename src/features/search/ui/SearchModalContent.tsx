@@ -7,13 +7,13 @@ import { cleanHtmlText, formatDate } from '@/shared/lib';
 import { AladinItemType } from '@/entities/aladin/type';
 import { LoadingIndicator, Button } from '@/shared/ui';
 import { SearchIcon } from '@/shared/assets/icons';
-import { BookState } from '@/entities/listing';
+import { BookModel } from '@/entities/listing';
 import { searchBook } from '@/entities/aladin';
 
 interface SearchModalContentProps {
   value?: string;
   onClose?: () => void;
-  onSelectBook: (book: BookState) => void;
+  onSelectBook: (book: BookModel) => void;
 }
 
 const SearchModalContent = ({

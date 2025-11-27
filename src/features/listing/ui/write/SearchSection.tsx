@@ -4,7 +4,7 @@ import { useWriteStore } from '../../model/useWriteStore';
 import { SearchModalContent } from '@/features/search/ui';
 import { ArrowIConLg } from '@/shared/assets/icons';
 import { HELP_MESSAGES } from '@/shared/constants';
-import { BookState } from '@/entities/listing';
+import { BookModel } from '@/entities/listing';
 import * as S from './ListingWrite.styles';
 import { ModalLayout } from '@/shared/ui';
 import HelpButton from './HelpButton';
@@ -28,7 +28,7 @@ const SearchSection = ({ value, onChange }: SearchSectionProps) => {
     if (e.key === 'Enter') handleSearchBook();
   }
 
-  function handleSelectBook(book: BookState) {
+  function handleSelectBook(book: BookModel) {
     setBook(book);
     setIsOpen(false);
   }

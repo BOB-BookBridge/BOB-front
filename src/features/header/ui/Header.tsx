@@ -59,7 +59,7 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    const loginTmp = !isError && !!data?.memberId;
+    const loginTmp = !isError && !!data?.id;
     setIsLogin(loginTmp);
     if (loginTmp && !data.area.isAuthentication) {
       onNoti('활동 지역 갱신이 필요합니다.');

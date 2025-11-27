@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import SelectBookStatus from '@/features/user/ui/profile/SelectBookStatus';
 import { LoadingIndicator, ModalLayout } from '@/shared/ui';
-import { BookState, BookStatus } from '@/entities/listing';
+import { BookModel, BookStatus } from '@/entities/listing';
 import { SearchModalContent } from '@/features/search/ui';
 import SelectBook from './SelectBook';
 import {
@@ -33,7 +33,7 @@ const TradeRequest = ({
   const tabs = ['책 선택', '책 등록'];
   const [selectedTab, setSelectedTab] = useState(0);
   const [openStatusModal, setOpenStatusModal] = useState(false);
-  const [selectedBook, setSelectedBook] = useState<BookState | null>(null);
+  const [selectedBook, setSelectedBook] = useState<BookModel | null>(null);
   const { data: mydata } = useMyQuery();
   const { data: bookcaseData, isLoading } = useBookcaseQuery(
     { memberId: mydata?.memberId ?? '', key: 'AVAILABLE', require: prevItems },
@@ -51,7 +51,7 @@ const TradeRequest = ({
     setSelectedTab(v);
   }
 
-  function handleSelectAddBook(book: BookState) {
+  function handleSelectAddBook(book: BookModel) {
     setSelectedBook(book);
     setOpenStatusModal(true);
   }

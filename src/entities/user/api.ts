@@ -1,5 +1,5 @@
 import axiosInstance from '@/shared/config/axios';
-import { BookState } from '../listing';
+import { BookModel } from '../listing';
 import {
   Bookcase,
   GetBookcaseReq,
@@ -69,7 +69,7 @@ export const getWishes = async (memberId: string) => {
   return data;
 };
 
-export const postWishItem = async (req: BookState) => {
+export const postWishItem = async (req: BookModel) => {
   const { data } = await axiosInstance.post('/members/wishes', req);
   return data;
 };

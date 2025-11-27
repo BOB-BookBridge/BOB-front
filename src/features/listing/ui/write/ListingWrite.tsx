@@ -5,7 +5,7 @@ import { useListingWrite } from '../../hooks/useListingWrite';
 import { bookStatusList } from '../main/filter/FilterContent';
 import { Button, CheckBox, CheckCircle } from '@/shared/ui';
 import { HELP_MESSAGES } from '@/shared/constants';
-import PriceAndCategory from './PriceAndCategory';
+import SelectCategory from './SelectCategory';
 import { bookStatusMap } from '@/shared/lib';
 import SearchSection from './SearchSection';
 import * as S from './ListingWrite.styles';
@@ -19,13 +19,11 @@ interface ListingWriteProps {
 const ListingWrite = ({ id }: ListingWriteProps) => {
   const {
     images,
-    price,
     bookStatus,
     description,
     categoryId,
     title,
     wishOnly,
-    handlePriceChange,
     handleDescriptionChange,
     handleAddImage,
     handleRemoveImage,
@@ -73,11 +71,7 @@ const ListingWrite = ({ id }: ListingWriteProps) => {
           ))}
         </div>
       </S.StatusSection>
-      <PriceAndCategory
-        price={price}
-        handlePriceChange={handlePriceChange}
-        categoryId={categoryId}
-      />
+      <SelectCategory categoryId={categoryId} />
       <S.DescriptionSection>
         <S.HeaderText>설명</S.HeaderText>
         <S.InputWrapper>
