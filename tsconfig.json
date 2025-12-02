@@ -26,6 +26,7 @@
   "include": [
     "svg.d.ts",
     "next-env.d.ts",
+    "src/middleware.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     ".next/types/**/*.ts",
