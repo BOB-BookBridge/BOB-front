@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import TradeDetailContainer from '../TradeDetail/TradeDetailContainer';
 import { useTradeActions } from '../../model/useTradeActions';
 import { SwitchIcon } from '@/shared/assets/icons';
 import { ModalLayout } from '@/shared/ui';
 import TradeActions from './TradeActions';
-import TradeDetail from '../TradeDetail';
 import TradeBook from './TradeBook';
 import { TradeRequest } from '..';
 import {
@@ -80,7 +80,7 @@ const TradeCard = ({
           isOpen={openDetail}
           title={`${trade.buyer.nickname}님의 거래 요청`}
           onClose={() => setOpenDetail(false)}>
-          <TradeDetail
+          <TradeDetailContainer
             type={type}
             query={query}
             tradeId={trade.id}

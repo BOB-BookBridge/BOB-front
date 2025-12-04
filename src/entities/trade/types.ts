@@ -68,10 +68,10 @@ interface PostSummary {
   cover: string;
 }
 
-interface TradeBook extends Bookcase {
+type TradeBook = Omit<Bookcase, 'isbn'> & {
   priceStandard: number;
   pubDate: string;
-}
+};
 
 interface TradeUser {
   id: string;

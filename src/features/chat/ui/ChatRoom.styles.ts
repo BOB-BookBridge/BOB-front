@@ -72,8 +72,14 @@ export const DropdownItem = styled.div<{ $red?: boolean }>`
 
 export const Info = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
   margin: 10px;
+`;
+
+export const InfoLeftSection = styled.div`
+  display: flex;
+  align-items: center;
   gap: 10px;
 `;
 
@@ -111,11 +117,25 @@ export const StatusText = styled.div`
 `;
 
 export const TitleText = styled.div`
-  font-size: 15px;
+  font-size: 14px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 200px;
+  width: 180px;
+`;
+
+export const DetailButton = styled.div`
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border: 1px solid ${({ theme }) => theme.colors.PRIMARY};
+  color: ${({ theme }) => theme.colors.PRIMARY};
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.97);
+  }
 `;
 
 export const Chats = styled.div`

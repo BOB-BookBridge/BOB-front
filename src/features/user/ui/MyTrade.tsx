@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { GetTradesReq, useTradeQuery } from '@/entities/trade';
-import { LocalErrorBoundary } from '@/shared/lib';
 import { TradeCard } from '@/features/trade/ui';
 import { LoadingIndicator } from '@/shared/ui';
 import SubTab from './SubTab';
@@ -34,35 +33,33 @@ const MyTrade = () => {
         selected={selectedSubTab}
         onChange={handleChangeSubTab}
       />
-      <LocalErrorBoundary>
-        {isPending ? (
-          <ContentsContainer>
-            <LoadingIndicator />
-          </ContentsContainer>
-        ) : data && data.trades.length <= 0 ? (
-          <ContentsContainer>
-            <EmptyText>
-              {selectedSubTab === 0
-                ? '받은 제안이 없습니다.'
-                : '보낸 제안이 없습니다.'}
-            </EmptyText>
-          </ContentsContainer>
-        ) : (
-          data &&
-          data.trades && (
-            <TradeWrapper>
-              {data.trades.map((trade) => (
-                <TradeCard
-                  key={trade.id}
-                  trade={trade}
-                  type={selectedSubTab === 0 ? 'RESPONSE' : 'REQUEST'}
-                  query={selectedSubTab === 0 ? resQuery : reqQuery}
-                />
-              ))}
-            </TradeWrapper>
-          )
-        )}
-      </LocalErrorBoundary>
+      {isPending ? (
+        <ContentsContainer>
+          <LoadingIndicator />
+        </ContentsContainer>
+      ) : data && data.trades.length <= 0 ? (
+        <ContentsContainer>
+          <EmptyText>
+            {selectedSubTab === 0
+              ? '받은 제안이 없습니다.'
+              : '보낸 제안이 없습니다.'}
+          </EmptyText>
+        </ContentsContainer>
+      ) : (
+        data &&
+        data.trades && (
+          <TradeWrapper>
+            {data.trades.map((trade) => (
+              <TradeCard
+                key={trade.id}
+                trade={trade}
+                type={selectedSubTab === 0 ? 'RESPONSE' : 'REQUEST'}
+                query={selectedSubTab === 0 ? resQuery : reqQuery}
+              />
+            ))}
+          </TradeWrapper>
+        )
+      )}
     </div>
   );
 };

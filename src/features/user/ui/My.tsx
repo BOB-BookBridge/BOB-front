@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Profile from './Profile';
+import { useEffect, useState } from 'react';
+import { LocalErrorBoundary } from '@/shared/lib';
 import MyFavorite from './MyFavorite';
+import Profile from './Profile';
 import MyTrade from './MyTrade';
 import MyBook from './MyBook';
 import MyTab from './MyTab';
@@ -30,7 +31,9 @@ const My = () => {
       {selected === 0 ? (
         <Profile />
       ) : selected === 1 ? (
-        <MyTrade />
+        <LocalErrorBoundary>
+          <MyTrade />
+        </LocalErrorBoundary>
       ) : selected === 2 ? (
         <MyFavorite />
       ) : (
