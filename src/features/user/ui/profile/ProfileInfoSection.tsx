@@ -43,7 +43,6 @@ const ProfileInfoSection = ({
   const [emdId, setEmdId] = useState<number>(defaultArea.emdId);
   const [interests, setInterests] = useState<string[]>(defaultInterests);
   const { mutate: changeMyInfoMutation } = useMyInfoMutation();
-  const { handleAreaVerify } = useAreaVerify();
 
   const normalize = (str: string) => str.trim().toLowerCase();
 
@@ -76,10 +75,11 @@ const ProfileInfoSection = ({
     setInterests(defaultInterests);
   }
 
-  function handleRecertification() {
+  async function handleRecertification() {
     if (!emdId || defaultArea.emdId !== emdId) return;
-    handleAreaVerify(emdId);
+    updateLocation();
   }
+
   async function handleSaveEdit() {
     const interestSet = new Set(interests);
     const isSameInterest =
@@ -97,23 +97,28 @@ const ProfileInfoSection = ({
           interests,
         });
       } else if (emdId) {
-        const pos = await getCurrentPosition();
-        if (!pos) return;
-        const { lat, lon } = pos;
-        changeMyInfoMutation({
-          nickname,
-          emdId,
-          areaAuthenticate: true,
-          lat,
-          lon,
-          interests,
-        });
+        updateLocation();
       }
     } else {
       toast.info('변경 사항이 없습니다.');
       setEditMode(false);
     }
   }
+
+  async function updateLocation() {
+    const pos = await getCurrentPosition();
+    if (!pos) return;
+    const { lat, lon } = pos;
+    changeMyInfoMutation({
+      nickname,
+      emdId,
+      areaAuthenticate: true,
+      lat,
+      lon,
+      interests,
+    });
+  }
+
   return (
     <S.PriofileSectionContainer>
       {defaultProfileImageUrl === null && (

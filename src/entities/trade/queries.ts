@@ -64,6 +64,9 @@ export const usePostTradeMutation = () => {
       await queryClient.invalidateQueries({
         queryKey: ['tradelist', 'SENT', ['REQUESTED', 'REJECTED']],
       });
+      await queryClient.invalidateQueries({
+        queryKey: ['listing'],
+      });
       if (myId) {
         await queryClient.invalidateQueries({ queryKey: ['bookcase', myId] });
       } else {
@@ -80,10 +83,11 @@ export const useTradeQuery = ({ key, status }: GetTradesReq) => {
   });
 };
 
-export const useTradeDetailQuery = (tradeId: number) => {
+export const useTradeDetailQuery = (tradeId?: number) => {
   return useQuery({
     queryKey: ['tradeDetail', tradeId],
-    queryFn: () => getTradeDetail(tradeId),
+    queryFn: () => getTradeDetail(tradeId!),
+    enabled: !!tradeId,
   });
 };
 

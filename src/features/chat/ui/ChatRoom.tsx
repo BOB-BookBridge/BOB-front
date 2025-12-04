@@ -2,6 +2,15 @@ import { useParams } from 'next/navigation';
 import { useTheme } from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
 import { compareDate, formatDate, formatTime, queryClient } from '@/shared/lib';
+import { useFailedChatStore } from '../model/useFailedChatStore';
+import { useUploadImagesMutation } from '@/entities/files';
+import { useFABStore, useIsMobile } from '@/shared/model';
+import { DetailImage } from '@/entities/listing';
+import ChatRoomHeader from './ChatRoomHeader';
+import ChatRoomInfo from './ChatRoomInfo';
+import * as S from './ChatRoom.styles';
+import ChatImages from './ChatImages';
+import { Div } from './ChatWidget';
 import {
   ChatMessage,
   connectChat,
@@ -19,15 +28,6 @@ import {
   SendIcon,
   SendReverseIcon,
 } from '@/shared/assets/icons';
-import { useFailedChatStore } from '../model/useFailedChatStore';
-import { useUploadImagesMutation } from '@/entities/files';
-import { useFABStore, useIsMobile } from '@/shared/model';
-import { DetailImage } from '@/entities/listing';
-import ChatRoomHeader from './ChatRoomHeader';
-import ChatRoomInfo from './ChatRoomInfo';
-import * as S from './ChatRoom.styles';
-import ChatImages from './ChatImages';
-import { Div } from './ChatWidget';
 
 const ChatRoom = () => {
   const theme = useTheme();
@@ -63,7 +63,7 @@ const ChatRoom = () => {
   useEffect(() => {
     if (!chatData || !chatRoomId) return;
     const failed = failedChats[chatRoomId] ?? [];
-    setChats([...chatData.messages, ...failed]);
+    setChats([...chatData, ...failed]);
   }, [chatData, chatRoomId, failedChats]);
 
   useEffect(() => {
@@ -264,6 +264,7 @@ const ChatRoom = () => {
       />
       <Div />
       <ChatRoomInfo
+        tradeId={chatInfo.trade.id}
         post={chatInfo.post}
         isOpenDropdown={isOpenDropdown}
         onClick={() => setIsOpenDropdown(true)}

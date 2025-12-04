@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DropdownIconSm, PinIcon } from '@/shared/assets/icons';
 import { ModalLayout, SelectAreaSection } from '@/shared/ui';
 import emd_areas from '@/shared/constants/emd_areas.json';
@@ -16,13 +16,11 @@ const ListingAreaButton = () => {
   const { setEmdId } = useFilterStore();
   const [selectedEmdId, setSelectedEmdId] = useState<number>();
 
-  const selectedName = useMemo(() => {
-    const match = emd_areas.find((e) => e.id === emdId);
-    return match?.name ?? '선택안함';
-  }, [emdId]);
+  const selectedName =
+    emd_areas.find((e) => e.id === emdId)?.name ?? '선택안함';
 
   useEffect(() => {
-    if (myData) setEmdId(myData.area.emdId);
+    if (!emdId && myData) setEmdId(myData.area.emdId);
   }, [myData]);
 
   function handleApply() {

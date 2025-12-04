@@ -1,5 +1,6 @@
 import { DetailImage, PostTradeStatus } from '../listing';
 import { UserProfileRes } from '../user';
+import { TradeStatus } from '../trade';
 
 export type ChatType = 'TEXT' | 'IMAGE' | 'SYSTEM';
 
@@ -22,7 +23,7 @@ export interface ChatInfo {
   title: string;
   trade: {
     id: number;
-    status: 'REQUESTED' | 'CANCELED' | 'COMPLETED';
+    status: TradeStatus;
   };
   post: ChatPost;
   partner: ChatUser;
@@ -32,11 +33,6 @@ export interface postMessageReq {
   chatroomId: number;
   message: string | null;
   fileNames: string[];
-}
-
-export interface getMessageRes {
-  messages: ChatMessage[];
-  hasNext: boolean;
 }
 
 interface BasicChat {

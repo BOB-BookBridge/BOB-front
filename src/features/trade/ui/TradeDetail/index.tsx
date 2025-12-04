@@ -1,16 +1,8 @@
-import { useTradeActions } from '../../model/useTradeActions';
 import TradeDetailBookItem from './TradeDetailBookItem';
-import TradeActions from '../TradeCard/TradeActions';
+import { GetTradeDetailRes } from '@/entities/trade';
 import { SwitchIcon } from '@/shared/assets/icons';
 import {
-  GetTradesReq,
-  TradeStatus,
-  useTradeDetailQuery,
-} from '@/entities/trade';
-import {
-  ButtonSection,
   BooksSection,
-  Container,
   InfoText,
   WorthSection,
   SectionTitle,
@@ -20,29 +12,17 @@ import {
 
 const TradeDetail = ({
   type,
-  query,
-  tradeId,
-  status,
-  handleEdit,
+  trade,
 }: {
   type: 'REQUEST' | 'RESPONSE';
-  query: GetTradesReq;
-  tradeId: number;
-  status: TradeStatus;
-  handleEdit: () => void;
+  trade: GetTradeDetailRes;
 }) => {
-  const { handleAccept, handleReject, handleCancel, handleDelete } =
-    useTradeActions({
-      tradeId,
-      ...query,
-    });
-  const { data: trade } = useTradeDetailQuery(tradeId);
   if (!trade) return;
 
   const other = type === 'REQUEST' ? trade.seller : trade.buyer;
   const me = type === 'REQUEST' ? trade.buyer : trade.seller;
   return (
-    <Container>
+    <>
       <BooksSection>
         <SectionTitle>상대방의 거래 도서</SectionTitle>
         {other.item.map((book) => (
@@ -65,23 +45,7 @@ const TradeDetail = ({
           <WorthText>{me.worth.toLocaleString()}원</WorthText>
         </Worth>
       </WorthSection>
-      <ButtonSection>
-        <TradeActions
-          type={type}
-          status={status}
-          onAccept={handleAccept}
-          onReject={handleReject}
-          onCancel={handleCancel}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
-      </ButtonSection>
-      {type === 'RESPONSE' && (
-        <InfoText>
-          *거절 시 되돌릴 수 없으며, 수락 시 채팅방이 생성됩니다.
-        </InfoText>
-      )}
-    </Container>
+    </>
   );
 };
 

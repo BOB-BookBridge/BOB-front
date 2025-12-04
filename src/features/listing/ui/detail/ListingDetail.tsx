@@ -1,19 +1,13 @@
 'use client';
 
-import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
-import { useTheme } from 'styled-components';
-
-import { useLikeMutation, useListingDetailQuery } from '@/entities/listing';
 import { bookStatusMap, convertDiffToString } from '@/shared/lib';
 import { LoadingContainer } from '@/shared/ui/LoadingIndicator';
-import { calcDistance, getCategoryNameById } from '../../lib';
-import { LoadingIndicator, ModalLayout } from '@/shared/ui';
+import { useListingDetailQuery } from '@/entities/listing';
 import BookItem from '@/features/user/ui/profile/BookItem';
-import { TradeRequest } from '@/features/trade/ui';
-import { LikeIcon } from '@/shared/assets/icons';
-import { useMyQuery } from '@/entities/user';
-import { colors } from '@/shared/constants';
+import ListingDetailActions from './ListingDetailActions';
+import { getCategoryNameById } from '../../lib';
+import { LoadingIndicator } from '@/shared/ui';
 import * as S from './ListingDetail.styles';
 import ImageCarousel from './ImageCarousel';
 import UserInfo from './UserInfo';
@@ -25,69 +19,14 @@ import {
 } from '@/features/user/ui/profile/Interests';
 
 const ListingDetail = ({ id }: { id: number }) => {
-  const theme = useTheme();
-  const { data: mydata } = useMyQuery();
   const { data, isPending } = useListingDetailQuery(id);
-  const [liked, setLiked] = useState<boolean | undefined>(undefined);
-  const [originalLiked, setOriginalLiked] = useState<boolean | undefined>(
-    undefined,
-  );
   const [likeCount, setLikeCount] = useState<number | undefined>(undefined);
-  const { mutate: controlLike } = useLikeMutation();
-  const [openTradeRequest, setOpenTradeRequest] = useState(false);
-
-  function handleLike() {
-    if (!data || !mydata) {
-      toast.info('로그인 후 이용해 주세요');
-      return;
-    }
-    if (data?.isOwner) {
-      toast.info('본인의 게시글은 찜할 수 없어요');
-      return;
-    }
-    setLiked((prev) => !prev);
-  }
-
-  function handleClickExchange() {
-    if (!data || !mydata) {
-      toast.info('로그인 후 이용해 주세요');
-      return;
-    }
-    if (data.isOwner) {
-      toast.info('자신의 게시글에는 교환을 신청할 수 없어요');
-      return;
-    }
-    setOpenTradeRequest(true);
-  }
 
   useEffect(() => {
     if (data) {
-      setLiked(data.isFavorite);
-      setOriginalLiked(data.isFavorite);
       setLikeCount(data.scrapCount);
     }
   }, [data]);
-
-  useEffect(() => {
-    const debounce = setTimeout(() => {
-      if (liked !== undefined && liked !== originalLiked) {
-        controlLike(
-          { postId: id, like: liked },
-          {
-            onSuccess: () => {
-              setOriginalLiked(liked);
-              setLikeCount((prev) => {
-                const safePrev = prev ?? 0;
-                return liked ? safePrev + 1 : safePrev - 1;
-              });
-            },
-          },
-        );
-      }
-    }, 500);
-
-    return () => clearTimeout(debounce);
-  }, [liked]);
 
   return (
     <>
@@ -131,24 +70,8 @@ const ListingDetail = ({ id }: { id: number }) => {
                 pubDate={data.book.pubDate}
                 description={data.book.description}
               />
-              {!data.isOwner && (
-                <S.ButtonRow>
-                  <S.Button
-                    variant={liked ? 'outline-primary' : 'outline-gray'}
-                    onClick={handleLike}>
-                    <LikeIcon
-                      fill={liked ? colors.light.PRIMARY : 'none'}
-                      stroke={
-                        !liked ? theme.colors.GRAY_500 : theme.colors.PRIMARY
-                      }
-                      strokeWidth={1.5}
-                    />
-                    찜하기
-                  </S.Button>
-                  <S.Button variant='primary' onClick={handleClickExchange}>
-                    교환 신청
-                  </S.Button>
-                </S.ButtonRow>
+              {data && !data.isOwner && (
+                <ListingDetailActions data={data} postId={id} />
               )}
               {data.wishOnly && (
                 <S.InfoText>
@@ -182,18 +105,6 @@ const ListingDetail = ({ id }: { id: number }) => {
         <LoadingContainer>
           <LoadingIndicator />
         </LoadingContainer>
-      )}
-      {openTradeRequest && mydata && data && (
-        <ModalLayout
-          isOpen={openTradeRequest}
-          title='교환할 책을 선택해 주세요'
-          onClose={() => setOpenTradeRequest(false)}>
-          <TradeRequest
-            isFar={calcDistance(mydata.area.emdId, data.writer.emdId)}
-            postId={id}
-            onClose={() => setOpenTradeRequest(false)}
-          />
-        </ModalLayout>
       )}
     </>
   );

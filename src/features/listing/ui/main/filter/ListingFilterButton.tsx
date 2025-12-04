@@ -1,14 +1,13 @@
 'use client';
 
-import { FilterIcon } from '@/shared/assets/icons';
-import * as S from './ListingControls.styles';
-import { Button, ModalLayout } from '@/shared/ui';
-import { useRef, useState } from 'react';
-import FilterContent from './FilterContent';
-import { BookStatus } from '@/entities/listing/types';
 import styled from 'styled-components';
+import { useRef, useState } from 'react';
+import { BookStatus } from '@/entities/listing/types';
+import { FilterIcon } from '@/shared/assets/icons';
+import { Button, ModalLayout } from '@/shared/ui';
 import { useFilterStore } from '../../../model';
-import { colors } from '@/shared/constants';
+import * as S from './ListingControls.styles';
+import FilterContent from './FilterContent';
 
 export interface FilterStatus {
   isAvailableOnly: boolean;
@@ -16,6 +15,7 @@ export interface FilterStatus {
   bookStatus: BookStatus | null;
   priceRange: number | null;
 }
+
 const ListingFilterButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isAvailableOnly = useFilterStore((state) => state.isAvailableOnly);
