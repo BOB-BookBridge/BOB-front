@@ -1,5 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { queryClient } from '@/shared/lib';
 import {
   deleteLike,
   getFavorites,
@@ -13,7 +14,6 @@ import {
   patchListingReq,
   patchListing,
 } from '.';
-import { queryClient } from '@/shared/lib';
 
 export const useListingQuery = (filter: getPostsReq) => {
   return useInfiniteQuery({
@@ -71,10 +71,13 @@ type useLikeProps = {
   like: boolean;
 };
 
-export const useLikeMutation = () => {
+export const useLikeMutation = (postId: number) => {
   return useMutation<void, Error, useLikeProps>({
     mutationFn: async ({ postId, like }) => {
       return like ? postLike(postId) : deleteLike(postId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['listingDetail', postId] });
     },
   });
 };

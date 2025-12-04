@@ -21,14 +21,14 @@ const ListingCard = ({ data }: { data: PostModel }) => {
               {postStatusMap[data.status]}
             </S.OverlayStatusText>
           )}
-          {data.participation === 'CANCELED' ||
+          {(data.participation === 'CANCELED' ||
             data.participation === 'REQUESTED' ||
             data.participation === 'ACCEPTED' ||
-            (data.participation === 'REJECTED' && (
-              <S.LeftTagWrapper>
-                <ListingCardTag $tradeStatus={data.participation} />
-              </S.LeftTagWrapper>
-            ))}
+            data.participation === 'REJECTED') && (
+            <S.LeftTagWrapper>
+              <ListingCardTag $tradeStatus={data.participation} />
+            </S.LeftTagWrapper>
+          )}
           <S.RightTagWrapper>
             <ListingCardTag $bookStatus={data.bookStatus} />
           </S.RightTagWrapper>
