@@ -9,7 +9,7 @@ const Z_OVERLAY_STATUS = 13;
 const Z_TAG_WRAPPER = 10;
 
 interface OverlayProps {
-  status: PostTradeStatus;
+  $status: PostTradeStatus;
 }
 
 export const CardContainer = styled(Link)`
@@ -62,18 +62,25 @@ export const Overlay = styled.div`
 
 export const OverlayDim = styled.div<OverlayProps>`
   position: absolute;
-  background-color: ${({ status }) =>
-    status === 'READY' ? 'transparent' : 'rgba(0, 0, 0, 0.7)'};
+  background-color: ${({ $status }) =>
+    $status === 'READY' ? 'transparent' : 'rgba(0, 0, 0, 0.7)'};
   z-index: ${Z_OVERLAY_DIM};
   width: 100%;
   height: 100%;
 `;
 
-export const TagWrapper = styled.div`
+const TagWrapper = styled.div`
   position: absolute;
   top: 10px;
-  right: 10px;
   z-index: ${Z_TAG_WRAPPER};
+`;
+
+export const RightTagWrapper = styled(TagWrapper)`
+  right: 10px;
+`;
+
+export const LeftTagWrapper = styled(TagWrapper)`
+  left: 10px;
 `;
 
 export const OverlayStatusText = styled.div`

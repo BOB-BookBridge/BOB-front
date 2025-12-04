@@ -5,6 +5,7 @@ export type BookStatus = 'BEST' | 'HIGH' | 'MEDIUM' | 'LOW';
 export type PostTradeStatus = 'READY' | 'RESERVED' | 'COMPLETED';
 export type SortKey = 'RECENT' | 'OLD' | 'LOW_PRICE' | 'HIGH_PRICE';
 export type SearchKey = '통합' | '제목' | '저자';
+export type ParticipationType = TradeStatus | 'NONE' | 'OWNER';
 
 export interface GetPostsRes {
   totalCount: number;
@@ -34,6 +35,7 @@ export interface PostModel {
   thumbnailUrl: string;
   bookStatus: BookStatus;
   createdAt: string;
+  participation: ParticipationType;
 }
 
 export interface ListingDetailTrade {

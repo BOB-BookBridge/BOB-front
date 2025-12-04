@@ -19,8 +19,7 @@ export async function GET(req: NextRequest) {
     if (response.ok) {
       const item = data.item;
       const items = Array.isArray(item) ? item : item ? [item] : [];
-      console.log(items);
-      return new Response(JSON.stringify({ ...data, item: items }), {
+      return new Response(JSON.stringify(items), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       });
@@ -30,7 +29,6 @@ export async function GET(req: NextRequest) {
       });
     }
   } catch (error) {
-    console.log(error);
     return new Response(
       JSON.stringify({
         message: 'Internal Server Error',

@@ -29,3 +29,10 @@ export const sortMap = {
   LOW_PRICE: '낮은가격순',
   HIGH_PRICE: '높은가격순',
 } as const;
+
+export const tradeStatusMap = {
+  CANCELED: '취소됨',
+  REQUESTED: '요청중',
+  ACCEPTED: '거래중',
+  REJECTED: '거절됨',
+} as const;

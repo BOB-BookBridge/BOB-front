@@ -10,22 +10,30 @@ import * as S from './ListingCard.styles';
 const ListingCard = ({ data }: { data: PostModel }) => {
   const categoryName = getCategoryNameById(data.categoryId);
   const time = convertDiffToString(data.createdAt);
+
   return (
     <S.CardContainer href={`/listings/${data.id}`}>
       <S.ImageWrapper>
         <S.Overlay>
-          <S.OverlayDim status={data.status} />
+          <S.OverlayDim $status={data.status} />
           {data.status !== 'READY' && (
             <S.OverlayStatusText>
               {postStatusMap[data.status]}
             </S.OverlayStatusText>
           )}
-          <S.TagWrapper>
-            <ListingCardTag status={data.bookStatus} />
-          </S.TagWrapper>
+          {data.participation === 'CANCELED' ||
+            data.participation === 'REQUESTED' ||
+            data.participation === 'ACCEPTED' ||
+            (data.participation === 'REJECTED' && (
+              <S.LeftTagWrapper>
+                <ListingCardTag $tradeStatus={data.participation} />
+              </S.LeftTagWrapper>
+            ))}
+          <S.RightTagWrapper>
+            <ListingCardTag $bookStatus={data.bookStatus} />
+          </S.RightTagWrapper>
         </S.Overlay>
         <Image
-          loader={() => data.thumbnailUrl}
           src={data.thumbnailUrl}
           alt='책 대표사진'
           fill
