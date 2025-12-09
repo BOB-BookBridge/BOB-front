@@ -11,7 +11,7 @@ interface EditAreaProps {
   authenticatedAt: string;
   editMode: boolean;
   onRecertification: () => void;
-  onChange: (value: number) => void;
+  onChange: (value: number | undefined) => void;
 }
 const EditArea = ({
   emdId,

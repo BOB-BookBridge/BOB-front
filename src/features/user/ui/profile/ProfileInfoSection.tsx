@@ -38,7 +38,7 @@ const ProfileInfoSection = ({
     mode: 'onChange',
   });
   const nickname = useWatch({ name: 'nickname', control });
-  const [emdId, setEmdId] = useState<number>(defaultArea.emdId);
+  const [emdId, setEmdId] = useState<number | undefined>(defaultArea.emdId);
   const [interests, setInterests] = useState<string[]>(defaultInterests);
   const { mutate: changeMyInfoMutation } = useMyInfoMutation();
 
@@ -104,7 +104,7 @@ const ProfileInfoSection = ({
 
   async function updateLocation() {
     const pos = await getCurrentPosition();
-    if (!pos) return;
+    if (!pos || !emdId) return;
     const { lat, lon } = pos;
     changeMyInfoMutation({
       nickname,
