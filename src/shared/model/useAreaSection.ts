@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export function useAreaSection(onChange?: (emdId: number) => void) {
+export function useAreaSection(onChange?: (emdId: number | undefined) => void) {
   const [sidoId, setSidoId] = useState<number | undefined>(undefined);
   const [siggId, setSiggId] = useState<number | undefined>(undefined);
   const [emdId, setEmdId] = useState<number | undefined>(undefined);
@@ -10,6 +10,7 @@ export function useAreaSection(onChange?: (emdId: number) => void) {
     if (sidoId && value !== sidoId) {
       setSiggId(undefined);
       setEmdId(undefined);
+      onChange?.(undefined);
     }
     setSidoId(value);
   }
@@ -17,6 +18,7 @@ export function useAreaSection(onChange?: (emdId: number) => void) {
   function handleSelectSigg(value: number) {
     if (siggId && value !== siggId) {
       setEmdId(undefined);
+      onChange?.(undefined);
     }
     setSiggId(value);
   }

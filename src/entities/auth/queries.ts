@@ -1,7 +1,6 @@
-import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { queryClient } from '@/shared/lib';
+import { queryClient, showToast } from '@/shared/lib';
 import {
   postArea,
   postCodeVerify,
@@ -20,7 +19,7 @@ export const useSignupMutation = () => {
   return useMutation<void, Error, postSignUpReq>({
     mutationFn: (data) => postSignUp(data),
     onSuccess: (_, variables) => {
-      toast.success('회원가입 완료!');
+      showToast.success('회원가입이 완료되었습니다.');
       login.mutate({ email: variables.email, password: variables.password });
     },
   });
@@ -30,7 +29,7 @@ export const useEmailVerifyMutation = () => {
   return useMutation<void, Error, { email: string }>({
     mutationFn: (data) => postEmailVerify(data),
     onSuccess: () => {
-      toast.success('이메일 전송! 메일함을 확인해 주세요');
+      showToast.success('메일이 전송되었으니 메일함을 확인해주세요.');
     },
   });
 };
@@ -39,7 +38,7 @@ export const useCodeVerifyMutation = () => {
   return useMutation<void, Error, { email: string; code: string }>({
     mutationFn: (data) => postCodeVerify(data),
     onSuccess: () => {
-      toast.success('인증 완료! 계속 진행해 주세요');
+      showToast.success('인증이 완료되었습니다. 계속 진행해주세요.');
     },
   });
 };
@@ -47,10 +46,6 @@ export const useCodeVerifyMutation = () => {
 export const useAreaMutation = () => {
   return useMutation<void, Error, postAreaReq>({
     mutationFn: (data) => postArea(data),
-    onSuccess: async () => {
-      toast.success('인증 완료');
-      await queryClient.invalidateQueries({ queryKey: ['my'] });
-    },
   });
 };
 

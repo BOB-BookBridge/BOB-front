@@ -22,13 +22,12 @@ export const FallbackGlobal = ({
 
   const errorData = getErrorDataByCode(error);
   const isLoginRequired =
-    ('requireLogin' in errorData && errorData.requireLogin === true) ||
-    errorData.code === 'E003';
+    'requireLogin' in errorData && errorData.requireLogin === true;
   return (
     <Container>
       <Wrapper>
-        <CodeText>{errorData.code}!</CodeText>
-        <MessageText>{errorData.message}</MessageText>
+        <CodeText>{errorData.title}!</CodeText>
+        <MessageText>{errorData.detail}</MessageText>
         <StyledLink
           onClick={() => navigatePage(isLoginRequired ? '/login' : '/')}>
           {isLoginRequired ? '로그인' : '메인 화면으로'}
@@ -65,6 +64,7 @@ const MessageText = styled.span`
   font-weight: 400;
   font-size: 20px;
   margin-bottom: 30px;
+  white-space: pre-line;
 `;
 
 const StyledLink = styled.div`

@@ -1,5 +1,5 @@
-import { toast } from 'react-toastify';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { queryClient, showToast } from '@/shared/lib';
 import {
   getPostTrades,
   patchTrade,
@@ -16,7 +16,6 @@ import {
   patchTradeItems,
   PatchTradeItemsReq,
 } from '.';
-import { queryClient } from '@/shared/lib';
 
 export const usePostTradeQuery = (postId: number) => {
   return useQuery({
@@ -49,7 +48,7 @@ export const useTradeMutation = ({
         await queryClient.invalidateQueries({
           queryKey: ['tradelist', key, status],
         });
-      toast.success('거래 상태가 변경되었습니다');
+      showToast.success('거래 상태가 변경되었습니다.');
     },
   });
 };
@@ -60,7 +59,7 @@ export const usePostTradeMutation = () => {
     onSuccess: async () => {
       const myData = queryClient.getQueryData<{ memberId: string }>(['my']);
       const myId = myData?.memberId;
-      toast.success('거래 요청이 완료되었습니다');
+      showToast.success('거래 요청이 완료되었습니다');
       await queryClient.invalidateQueries({
         queryKey: ['tradelist', 'SENT', ['REQUESTED', 'REJECTED']],
       });
@@ -95,7 +94,7 @@ export const useDeleteTradeMutation = () => {
   return useMutation({
     mutationFn: (tradeId: number) => deleteTrade(tradeId),
     onSuccess: async () => {
-      toast.success('거래가 삭제되었습니다.');
+      showToast.success('거래가 삭제되었습니다.');
       await queryClient.invalidateQueries({
         queryKey: ['tradelist', 'SENT', ['REQUESTED', 'REJECTED']],
       });
@@ -110,7 +109,7 @@ export const usePatchTradeItemsMutation = () => {
     onSuccess: async (_, variables) => {
       const { tradeId } = variables;
 
-      toast.success('거래 물품이 변경되었어요');
+      showToast.success('거래 물품이 변경되었습니다.');
       await queryClient.invalidateQueries({
         queryKey: ['tradelist', 'SENT', ['REQUESTED', 'REJECTED']],
       });

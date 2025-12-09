@@ -32,17 +32,15 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     if (!error.response) return Promise.reject(error);
 
-    const code = error.response.data?.code as string | undefined;
+    const title = error.response.data?.title as string | undefined;
     const cfg = (error.config || {}) as Cfg;
     if (isAuthRequest(cfg.url)) return Promise.reject(error);
     if (isRefresh(cfg.url) || cfg._retry) return Promise.reject(error);
 
-    const nonLogin = code === 'E001';
-    const tryRefresh = code === 'E002';
+    const nonLogin = title === 'AUTHENTICATION_FAILED';
+    const tryRefresh = title === 'ACCESS_TOKEN_EXPIRED';
 
-    if (nonLogin) {
-      return;
-    } else if (!tryRefresh) {
+    if (nonLogin || !tryRefresh) {
       return Promise.reject(error);
     }
 

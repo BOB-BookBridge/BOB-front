@@ -1,64 +1,124 @@
 import { AxiosError } from 'axios';
 
-type ErrorCodeType = {
-  [key: string]: { code: string; message: string; requireLogin?: boolean };
+interface ErrorModel {
+  type: string;
+  title: string;
+  status: number;
+  detail: string;
+  instance: string;
+  properties?: {
+    timestamp: string;
+  };
+  requireLogin?: boolean;
+}
+
+type ErrorCodeMap = {
+  [key: string]: {
+    title: string;
+    status: number;
+    detail: string;
+    requireLogin?: boolean;
+  };
 };
 
-export const ERROR_CODE: ErrorCodeType = {
-  default: { code: 'ERROR', message: '알 수 없는 오류가 발생했습니다.' },
+export const BASE_ERROR = {
+  type: 'about:blank',
+  instance: '',
+  properties: {
+    timestamp: new Date().toISOString(),
+  },
+};
 
-  // axios error
+export const ERROR_CODE: ErrorCodeMap = {
+  DEFAULT: {
+    title: 'UNKNOWN_ERROR',
+    status: 500,
+    detail: '일시적인 문제가 발생했습니다. 잠시 후 다시 이용해주세요.',
+  },
+
   ERR_NETWORK: {
-    code: '통신 에러',
-    message:
-      '서버가 응답하지 않습니다. \n페이지를 재시작하거나 관리자에게 연락해 주세요.',
-  },
-  ECONNABORTED: {
-    code: '요청 시간 초과',
-    message: '요청 시간을 초과했습니다.',
+    title: 'NETWORK_ERROR',
+    status: 0,
+    detail:
+      '네트워크 연결이 불안정합니다. 인터넷 상태를 확인한 후 다시 시도해주세요.',
   },
 
-  // http status code 및 정의 된 코드
-  400: {
-    code: '400',
-    message: '요청이 올바르지 않습니다. 입력값을 확인해주세요.',
+  ECONNABORTED: {
+    title: 'TIMEOUT',
+    status: 0,
+    detail: '응답이 지연되고 있습니다. 네트워크 환경을 확인해주세요',
   },
+
+  400: {
+    title: 'BAD_REQUEST',
+    status: 400,
+    detail: '요청이 올바르지 않습니다. 요청값을 확인한 후 다시 시도해주세요.',
+  },
+
   401: {
-    code: '401',
-    message: '로그인 정보가 유효하지 않습니다. 다시 로그인 해주세요.',
+    title: 'UNAUTHORIZED',
+    status: 401,
+    detail: '로그인 정보가 만료되었습니다. 다시 로그인 해주세요.',
     requireLogin: true,
   },
+
   403: {
-    code: '403',
-    message: '접근 권한이 없습니다. 다른 계정으로 시도해보세요.',
+    title: 'FORBIDDEN',
+    status: 403,
+    detail:
+      '접근 권한이 없습니다. 계정 상태를 확인하거나 다른 계정으로 로그인 해주세요.',
   },
-  408: {
-    code: '408',
-    message: '요청이 너무 오래 걸렸습니다. 다시 시도해주세요.',
+
+  404: {
+    title: 'NOT_FOUND',
+    status: 404,
+    detail:
+      '요청한 정보를 찾을 수 없습니다. 주소 또는 요청 항목을 다시 확인해주세요.',
   },
+
   429: {
-    code: '429',
-    message: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.',
+    title: 'TOO_MANY_REQUESTS',
+    status: 429,
+    detail: '요청이 너무 많이 발생했습니다. 잠시 후 다시 시도해주세요.',
   },
+
   500: {
-    code: '500',
-    message: '문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+    title: 'SERVER_ERROR',
+    status: 500,
+    detail: `서버에서 문제가 발생했습니다. 잠시 후 다시 이용해주세요. \n 문제가 계속되면 고객센터로 문의해주세요.`,
   },
 } as const;
 
-export const getErrorDataByCode = (error: unknown) => {
-  const axiosError = error as AxiosError<{ code: number; message: string }>;
+export const getErrorDataByCode = (error: unknown): ErrorModel => {
+  const axiosError = error as AxiosError<unknown>;
   const serverErrorData = axiosError?.response?.data ?? '';
-  const httpErrorCode = axiosError?.response?.status ?? '';
-  const axiosErrorCode = axiosError?.code ?? '';
-  if (serverErrorData) {
-    return serverErrorData;
+  const status = axiosError?.response?.status;
+  const axiosCode = axiosError?.code;
+
+  if (
+    serverErrorData &&
+    typeof serverErrorData === 'object' &&
+    'title' in serverErrorData
+  ) {
+    return serverErrorData as ErrorModel;
   }
-  if (httpErrorCode in ERROR_CODE) {
-    return ERROR_CODE[httpErrorCode as keyof typeof ERROR_CODE];
+
+  if (status && ERROR_CODE[status]) {
+    return {
+      ...BASE_ERROR,
+      ...ERROR_CODE[status],
+    };
   }
-  if (axiosErrorCode in ERROR_CODE) {
-    return ERROR_CODE[axiosErrorCode as keyof typeof ERROR_CODE];
+
+  if (axiosCode && ERROR_CODE[axiosCode]) {
+    return {
+      ...BASE_ERROR,
+      ...ERROR_CODE[axiosCode],
+    };
   }
-  return ERROR_CODE.default;
+
+  return {
+    ...BASE_ERROR,
+    ...ERROR_CODE['DEFAULT'],
+  };
 };
