@@ -1,6 +1,6 @@
-import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { ImageFile, useEditImageMutation } from '@/entities/files';
+import { showToast } from '@/shared/lib';
 import {
   BookModel,
   BookStatus,
@@ -41,14 +41,14 @@ export function useUploadListing({ id, resetWrite }: UseUploadListingParams) {
       detailInfo,
     } = form;
 
-    if (!book) return toast.error('판매할 책을 선택해 주세요');
-    if (!bookStatus) return toast.error('책 상태를 선택해 주세요');
+    if (!book) return showToast.error('판매할 책을 선택해 주세요.');
+    if (!bookStatus) return showToast.error('책 상태를 선택해 주세요.');
 
     // 신규 등록
     if (!id) {
       if (!book.isbn || !book.cover)
-        return toast.error('도서 정보가 올바르지 않습니다.');
-      if (!categoryId) return toast.error('카테고리를 입력해 주세요.');
+        return showToast.error('도서 정보가 올바르지 않습니다.');
+      if (!categoryId) return showToast.error('카테고리를 입력해 주세요.');
 
       postListing(
         {
@@ -76,7 +76,7 @@ export function useUploadListing({ id, resetWrite }: UseUploadListingParams) {
     const changedPosting = Object.keys(patch).length > 0;
 
     if (!changedImage && !changedPosting)
-      return toast.info('변경된 내용이 없습니다');
+      return showToast.info('변경된 내용이 없습니다.');
 
     const tasks: Promise<unknown>[] = [];
     if (changedImage)
@@ -96,12 +96,14 @@ export function useUploadListing({ id, resetWrite }: UseUploadListingParams) {
 
     if (anySuccess) {
       if (!allSuccess)
-        return toast.warn('일부만 반영되었습니다. 새로고침 후 확인해주세요.');
-      toast.success('수정이 완료되었습니다.');
+        return showToast.warn(
+          '일부만 반영되었습니다. 새로고침 후 확인해주세요.',
+        );
+      showToast.success('수정이 완료되었습니다.');
       resetWrite();
       router.replace(`/listings/${id}`);
     } else {
-      toast.error('수정에 실패했습니다.');
+      showToast.error('수정에 실패했습니다.');
     }
   }
 

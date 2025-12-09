@@ -1,11 +1,11 @@
 'use client';
 
 import styled from 'styled-components';
-import { toast } from 'react-toastify';
 import { useForm, useWatch } from 'react-hook-form';
 import { emailRule, passwordBasicRule } from '@/shared/constants';
 import { useLoginMutation } from '@/entities/auth/queries';
 import { InputGroup, Button } from '@/shared/ui';
+import { showToast } from '@/shared/lib';
 
 interface LoginFormValues {
   email: string;
@@ -27,10 +27,10 @@ const LoginForm = () => {
   const { mutate: login } = useLoginMutation();
   function handleClickLogin() {
     if (!email) {
-      return toast.error('이메일을 입력해 주세요');
+      return showToast.error('이메일을 입력해 주세요.');
     }
     if (!password) {
-      return toast.error('비밀번호를 입력해 주세요');
+      return showToast.error('비밀번호를 입력해 주세요.');
     }
     login({ email, password });
   }

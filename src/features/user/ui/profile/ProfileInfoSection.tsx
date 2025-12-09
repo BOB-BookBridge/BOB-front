@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { useForm, useWatch } from 'react-hook-form';
 import { useMyInfoMutation, UserProfileRes } from '@/entities/user';
-import { useAreaVerify } from '@/features/auth/model/useAreaVerify';
 import DefaultProfile from '@/shared/assets/default-profile.svg';
-import { getCurrentPosition } from '@/shared/lib';
+import { getCurrentPosition, showToast } from '@/shared/lib';
 import EditNickname from './EditNickname';
 import * as S from '../Profile.styles';
 import { Button } from '@/shared/ui';
@@ -48,11 +46,11 @@ const ProfileInfoSection = ({
 
   function addInterest(value: string) {
     if (interests.length === 20) {
-      toast.error('관심사는 최대 20개까지 등록할 수 있습니다');
+      showToast.error('관심사는 최대 20개까지 등록할 수 있습니다.');
       return false;
     }
     if (interests.some((item) => normalize(item) === normalize(value))) {
-      toast.error('이미 존재하는 관심사입니다.');
+      showToast.error('이미 존재하는 관심사입니다.');
       return false;
     } else {
       setInterests((prev) => [...prev, value]);
@@ -100,8 +98,7 @@ const ProfileInfoSection = ({
         updateLocation();
       }
     } else {
-      toast.info('변경 사항이 없습니다.');
-      setEditMode(false);
+      showToast.info('변경 사항이 없습니다.');
     }
   }
 

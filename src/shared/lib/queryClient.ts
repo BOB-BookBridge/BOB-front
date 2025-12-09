@@ -1,6 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import { getErrorDataByCode } from './getErrorDataByCode';
-import { toast } from 'react-toastify';
+import showToast from './showToast';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -12,7 +12,7 @@ export const queryClient = new QueryClient({
       onError: (error: unknown) => {
         console.log(error);
         const errorData = getErrorDataByCode(error);
-        toast.error(`${errorData.detail}`);
+        showToast.error(`${errorData.detail}`);
       },
     },
   },

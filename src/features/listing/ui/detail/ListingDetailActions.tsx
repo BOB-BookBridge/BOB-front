@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
 import { ListingDetailRes, useLikeMutation } from '@/entities/listing';
@@ -10,6 +9,7 @@ import * as S from './ListingDetail.styles';
 import { colors } from '@/shared/constants';
 import { ModalLayout } from '@/shared/ui';
 import { calcDistance } from '../../lib';
+import { showToast } from '@/shared/lib';
 
 interface ListingDetailActionsProps {
   data: ListingDetailRes;
@@ -30,7 +30,7 @@ const ListingDetailActions = ({ data, postId }: ListingDetailActionsProps) => {
 
   function checkLogin() {
     if (!data || !myData) {
-      toast.info('로그인 후 이용해 주세요');
+      showToast.info('로그인 후 이용해 주세요.');
       return false;
     }
     return true;
@@ -39,7 +39,7 @@ const ListingDetailActions = ({ data, postId }: ListingDetailActionsProps) => {
   function handleLike() {
     if (!checkLogin()) return;
     if (data.isOwner) {
-      toast.info('본인의 게시글은 찜할 수 없어요');
+      showToast.warn('본인의 게시글은 찜할 수 없습니다.');
       return;
     }
     setLiked((prev) => !prev);
@@ -48,7 +48,7 @@ const ListingDetailActions = ({ data, postId }: ListingDetailActionsProps) => {
   function handleClickExchange() {
     if (!checkLogin()) return;
     if (data.isOwner) {
-      toast.info('자신의 게시글에는 교환을 신청할 수 없어요');
+      showToast.warn('자신의 게시글에는 교환을 신청할 수 없습니다.');
       return;
     }
     setOpenTradeRequest(true);

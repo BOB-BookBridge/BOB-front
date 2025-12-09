@@ -1,9 +1,9 @@
 import React from 'react';
 import { Metadata } from 'next';
 import localFont from 'next/font/local';
-import { ToastContainer } from 'react-toastify';
 import StyledComponentsRegistry from '@/shared/lib/StyledComponentsRegistry';
 import { ReactQueryClientProvider, ThemeRegistry } from '@/shared/providers';
+import ToastStyledContainer from '@/shared/styles/ToastStyledContainer';
 import { NotificationWidget } from '@/features/notification/ui';
 import { GlobalErrorBoundary } from '@/shared/lib';
 import { ChatWidget } from '@/features/chat/ui';
@@ -34,7 +34,7 @@ export default function RootLayout({
                 <FloatingButton />
                 <ChatWidget />
                 <NotificationWidget />
-                <ToastContainer autoClose={1000} hideProgressBar />
+                <ToastStyledContainer autoClose={1000} hideProgressBar />
               </GlobalErrorBoundary>
             </ThemeRegistry>
           </ReactQueryClientProvider>
