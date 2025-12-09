@@ -12,7 +12,7 @@ export const queryClient = new QueryClient({
       onError: (error: unknown) => {
         console.log(error);
         const errorData = getErrorDataByCode(error);
-        toast.error(`[${errorData.code}] ${errorData.message}`);
+        toast.error(`${errorData.detail}`);
       },
     },
   },
