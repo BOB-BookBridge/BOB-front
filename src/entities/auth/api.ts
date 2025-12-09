@@ -21,7 +21,7 @@ export const postCodeVerify = async ({
 };
 
 export const postArea = async (area: postAreaReq) => {
-  const { data } = await axiosInstance.patch('/areas/authentication', area);
+  const { data } = await axiosInstance.post('/areas/authentication', area);
   return data;
 };
 
