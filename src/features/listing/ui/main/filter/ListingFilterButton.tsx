@@ -52,6 +52,11 @@ const ListingFilterButton = () => {
     filterRef.current?.resetFilter();
   }
 
+  function handleClose() {
+    handleReset();
+    setIsOpen(false);
+  }
+
   const activeFilterCount =
     (isAvailableOnly ? 1 : 0) +
     (categoryId !== null ? 1 : 0) +
@@ -68,20 +73,21 @@ const ListingFilterButton = () => {
         <ModalLayout
           isOpen={isOpen}
           title={'필터'}
-          onClose={() => setIsOpen(false)}
+          onClose={handleClose}
           isOnlyMobile={true}>
-          <FilterContent
-            isAvailableOnly={isAvailableOnly}
-            categoryId={categoryId}
-            bookStatus={bookStatus}
-            priceStatus={priceRange}
-            ref={filterRef}
-          />
-          <ButtonWrapper>
-            <Button variant='cancel' text='초기화' onClick={handleReset} />
-
-            <Button variant='primary' text='적용' onClick={handleApply} />
-          </ButtonWrapper>
+          <S.FilterContentWrapper>
+            <FilterContent
+              isAvailableOnly={isAvailableOnly}
+              categoryId={categoryId}
+              bookStatus={bookStatus}
+              priceStatus={priceRange}
+              ref={filterRef}
+            />
+            <ButtonWrapper>
+              <Button variant='cancel' text='초기화' onClick={handleReset} />
+              <Button variant='primary' text='적용' onClick={handleApply} />
+            </ButtonWrapper>
+          </S.FilterContentWrapper>
         </ModalLayout>
       )}
     </S.StyledButton>
