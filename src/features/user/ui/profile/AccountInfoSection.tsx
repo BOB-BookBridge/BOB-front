@@ -1,9 +1,10 @@
 import { useFailedChatStore } from '@/features/chat/model/useFailedChatStore';
-import { useLogoutMutation } from '@/entities/auth/queries';
 import { useDeleteUserMutation, UserProfileRes } from '@/entities/user';
+import { useLogoutMutation } from '@/entities/auth/queries';
+import { useFilterStore } from '@/features/listing/model';
+import { useRouter } from 'next/navigation';
 import EditPassword from './EditPassword';
 import * as S from '../Profile.styles';
-import { useRouter } from 'next/navigation';
 
 type AccountInfoProps = Pick<UserProfileRes, 'isSocial' | 'email'>;
 
@@ -11,12 +12,14 @@ const AccountInfoSection = ({ isSocial, email }: AccountInfoProps) => {
   const { mutate: logout } = useLogoutMutation();
   const { mutate: deleteUser } = useDeleteUserMutation();
   const { reset } = useFailedChatStore();
+  const { setEmdId } = useFilterStore();
   const router = useRouter();
 
   function handleLogout() {
     logout();
     reset();
     sessionStorage.removeItem('my-tab-selected');
+    setEmdId(undefined);
   }
 
   function handleDeleteAccount() {
@@ -24,6 +27,7 @@ const AccountInfoSection = ({ isSocial, email }: AccountInfoProps) => {
     if (ok) {
       reset();
       sessionStorage.removeItem('my-tab-selected');
+      setEmdId(undefined);
       deleteUser(undefined, { onSuccess: () => router.push('/') });
     }
   }

@@ -18,26 +18,6 @@ export const StyledButton = styled.button`
   margin-right: 10px;
 `;
 
-export const ConfirmButton = styled.button`
-  border: none;
-  display: flex;
-  margin: 0 20px 80px 20px;
-  width: 100%;
-  max-width: 455px;
-  align-items: center;
-  justify-content: center;
-  background-color: ${colors.light.PRIMARY};
-  color: ${colors.light.WHITE};
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 5px;
-  height: 40px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    max-width: 330px;
-  }
-`;
-
 export const FilterContentWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     max-height: 500px;
@@ -66,5 +46,24 @@ export const FilterContentWrapper = styled.div`
 
   &::-webkit-scrollbar-thumb:hover {
     background-color: ${({ theme }) => `${theme.colors.GRAY_500}`};
+  }
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  max-width: 455px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    max-width: 330px;
+  }
+
+  :first-child {
+    flex: 0.5;
+  }
+  :last-child {
+    flex: 1;
   }
 `;
