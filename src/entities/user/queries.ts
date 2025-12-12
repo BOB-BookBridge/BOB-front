@@ -20,7 +20,7 @@ import {
   patchMyInfoReq,
 } from '.';
 
-export const useMyQuery = () => {
+export const useMyQuery = (refetchOnMount?: boolean) => {
   return useQuery({
     queryKey: ['my'],
     queryFn: getMyProfile,
@@ -28,6 +28,7 @@ export const useMyQuery = () => {
     staleTime: 1000 * 60 * 5,
     throwOnError: false,
     retry: false,
+    refetchOnMount,
   });
 };
 
