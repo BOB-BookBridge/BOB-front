@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { EmptyMessage } from '@/features/listing/ui/main/list/ListingList';
 import { SelectBuyerSubmitData } from '../../listing/ui/detail/EditMenu';
-import DefaultProfile from '@/shared/assets/default-profile.svg';
 import { TradeStatus, usePostTradeQuery } from '@/entities/trade';
+import DefaultProfile from '@/shared/assets/default-profile.svg';
 import { Button, LoadingIndicator } from '@/shared/ui';
 import { SelectIcon } from '@/shared/assets/icons';
 import { colors } from '@/shared/constants';
@@ -38,8 +39,7 @@ const SelectBuyerForm = ({
       <ListWrapper>
         {isPending ? (
           <LoadingIndicator />
-        ) : (
-          data &&
+        ) : data && data.trades ? (
           data.trades.map((trade) => {
             const isSelected = selectedId === trade.id;
             return (
@@ -59,6 +59,8 @@ const SelectBuyerForm = ({
               </ListItem>
             );
           })
+        ) : (
+          <EmptyMessage>이 게시글에서 대화한 사용자가 없습니다.</EmptyMessage>
         )}
       </ListWrapper>
       <ButtonGroup>

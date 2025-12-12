@@ -37,3 +37,34 @@ export const ConfirmButton = styled.button`
     max-width: 330px;
   }
 `;
+
+export const FilterContentWrapper = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    max-height: 500px;
+    justify-content: flex-start;
+    margin-top: 0;
+    overflow-y: auto;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => `${theme.colors.GRAY_700}`};
+    border-radius: 5px;
+    border-right: 1px solid transparent;
+    background-clip: padding-box;
+    box-sizing: border-box;
+  }
+
+  &::-webkit-scrollbar-button:vertical:start:increment,
+  &::-webkit-scrollbar-button:vertical:end:decrement {
+    display: block;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: ${({ theme }) => `${theme.colors.GRAY_500}`};
+  }
+`;

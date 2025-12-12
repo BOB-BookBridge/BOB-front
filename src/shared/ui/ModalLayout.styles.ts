@@ -21,8 +21,10 @@ export const Backdrop = styled.div<{ $isOnlyMobile: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  ${({ $isOnlyMobile }) =>
-    $isOnlyMobile ? `@media(min-width: 744px){display: none;}` : ''}
+  ${({ $isOnlyMobile, theme }) =>
+    $isOnlyMobile
+      ? `@media(min-width: ${theme.breakpoints.tablet}){display: none;}`
+      : ''}
 `;
 
 export const ModalContainer = styled.div<{ $isClosing?: boolean }>`
