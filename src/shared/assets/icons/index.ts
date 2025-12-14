@@ -38,6 +38,7 @@ import RawNotiTrade from './noti-trade.svg';
 import RawAddBook from './add-book.svg';
 import RawSwitch from './switch.svg';
 import RawSiren from './siren.svg';
+import RawInquiry from './inquiry.svg';
 
 export const UserIcon = withIconSize(RawUserIcon);
 export const NotiIcon = withIconSize(RawNotiIcon);
@@ -77,6 +78,7 @@ export const AIIconSm = withIconSize(RawAIIcon, 18);
 export const BookIcon = withIconSize(RawBookIcon, 18);
 export const ChatIcon = withIconSize(RawChatIcon, 18);
 export const SirenIcon = withIconSize(RawSiren, 18);
+export const InquiryIcon = withIconSize(RawInquiry, 18);
 
 export const ArrowBackIcon = withIconSize(RawArrowBack, 24);
 export const ChatMeatballsIcon = withIconSize(RawMeatballsIcon, 24);

@@ -23,7 +23,10 @@ import {
   ChatIcon,
   CloseIcon,
   FABDefaultIcon,
+  InquiryIcon,
 } from '../assets/icons';
+import ModalLayout from './ModalLayout';
+import InquiryContents from './InquiryContents';
 
 const FloatingButton = () => {
   const mode = useThemeStore((state) => state.mode);
@@ -37,9 +40,9 @@ const FloatingButton = () => {
   const isLogin = useMyStore((s) => s.isLogin);
   const { data: unRead, refetch: unReadRefetch } = useUnreadQuery(isLogin);
   const unReadCount = unRead ? unRead.unreadCount : 0;
-
   const [visibleNoti, setVisibleNoti] = useState<Notification | null>(null);
   const [dismissing, setDismissing] = useState<boolean>(false);
+  const [isOpenInquiry, setIsOpenInquiry] = useState(false);
   const timers = useRef<{ fade?: number; clear?: number }>({});
 
   const onNoti = useCallback(
@@ -81,6 +84,7 @@ const FloatingButton = () => {
     pathname?.startsWith('/chats') ||
     pathname?.startsWith('/ai') ||
     pathname?.startsWith('/error');
+
   if (hideButton) return null;
 
   const menuItems = [
@@ -99,6 +103,17 @@ const FloatingButton = () => {
       icon: <BookIcon />,
       label: '내 책 팔기',
       href: '/listings/write',
+    },
+    {
+      icon: (
+        <InquiryIcon
+          fill='none'
+          stroke={colors.light.WHITE}
+          strokeWidth={2.5}
+        />
+      ),
+      label: '문의하기',
+      onClick: () => setIsOpenInquiry(true),
     },
   ];
 
@@ -182,6 +197,14 @@ const FloatingButton = () => {
               ),
             )}
           </S.MenuWrapper>
+        )}
+        {isOpenInquiry && (
+          <ModalLayout
+            isOpen={isOpenInquiry}
+            title='문의하기'
+            onClose={() => setIsOpenInquiry(false)}>
+            <InquiryContents onClose={() => setIsOpenInquiry(false)} />
+          </ModalLayout>
         )}
       </S.Container>
     </>
