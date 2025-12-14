@@ -37,6 +37,7 @@ import RawAddHeart from './add-heart.svg';
 import RawNotiTrade from './noti-trade.svg';
 import RawAddBook from './add-book.svg';
 import RawSwitch from './switch.svg';
+import RawSiren from './siren.svg';
 
 export const UserIcon = withIconSize(RawUserIcon);
 export const NotiIcon = withIconSize(RawNotiIcon);
@@ -75,6 +76,7 @@ export const AIIcon = withIconSize(RawAIIcon, 35);
 export const AIIconSm = withIconSize(RawAIIcon, 18);
 export const BookIcon = withIconSize(RawBookIcon, 18);
 export const ChatIcon = withIconSize(RawChatIcon, 18);
+export const SirenIcon = withIconSize(RawSiren, 18);
 
 export const ArrowBackIcon = withIconSize(RawArrowBack, 24);
 export const ChatMeatballsIcon = withIconSize(RawMeatballsIcon, 24);

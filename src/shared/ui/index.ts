@@ -8,6 +8,7 @@ import CheckCircle from './CheckCircle';
 import ModalLayout from './ModalLayout';
 import { LoadingIndicator } from './LoadingIndicator';
 import { FallbackGlobal } from './FallbackGlobal';
+import ReportModalContents from './ReportModalContents';
 
 export {
   Button,
@@ -20,4 +21,5 @@ export {
   FallbackGlobal,
   LoadingIndicator,
   SelectAreaSection,
+  ReportModalContents,
 };
