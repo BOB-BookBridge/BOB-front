@@ -46,9 +46,11 @@ const ListingDetail = ({ id }: { id: number }) => {
             <S.RightSection>
               <S.HeaderRow>
                 <S.HeadingText>{data.book.title}</S.HeadingText>
-                {data.isOwner && (
-                  <EditMenu postStatus={data.tradeStatus} postId={data.id} />
-                )}
+                <EditMenu
+                  isOwner={data.isOwner}
+                  postStatus={data.tradeStatus}
+                  postId={data.id}
+                />
               </S.HeaderRow>
 
               <S.MetaRow>

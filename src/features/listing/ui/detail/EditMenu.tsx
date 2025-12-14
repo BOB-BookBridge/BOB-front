@@ -2,16 +2,17 @@ import { useRouter } from 'next/navigation';
 import { useTheme } from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
 import { CancelTradeForm, SelectBuyerForm } from '@/features/trade/ui';
+import { ModalLayout, ReportModalContents } from '@/shared/ui';
 import { useDeleteListingMutation } from '@/entities/listing';
 import { PostTradeStatus } from '@/entities/listing/types';
 import * as S from './ListingDetail.styles';
-import { ModalLayout } from '@/shared/ui';
 import {
   CancelIcon,
   CompleteIcon,
   DeleteIcon,
   EditIcon,
   MeatballsIcon,
+  SirenIcon,
 } from '@/shared/assets/icons';
 import {
   TradeStatus,
@@ -46,6 +47,7 @@ function getFilteredOptions(tradeStatus: string) {
   return editOptions.filter((opt) => allowed.includes(opt.value));
 }
 interface EditMenuProps {
+  isOwner: boolean;
   postStatus: PostTradeStatus;
   postId: number;
 }
@@ -61,15 +63,20 @@ export type SelectBuyerSubmitData = {
 
 type ModalSubmitData = CancelSubmitData | SelectBuyerSubmitData;
 
-const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
+const EditMenu = ({ isOwner, postStatus, postId }: EditMenuProps) => {
   const theme = useTheme();
   const router = useRouter();
   const [isOpenEdit, setIsOpenEdit] = useState(false);
+  const [isOpenReport, setIsOpenReport] = useState(false);
+
   const [openModalType, setOpenModalType] = useState<EditModalType | null>(
     null,
   );
   const menuRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
+  const { mutate: changeTradeStatus } = useTradeMutation({ postId });
+  const { mutate: deleteMutate } = useDeleteListingMutation();
+  const { data: tradeData } = usePostTradeQuery(postId, isOwner);
 
   useEffect(() => {
     if (!isOpenEdit) return;
@@ -96,9 +103,10 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
   function handleOpenEdit() {
     setIsOpenEdit((prev) => !prev);
   }
-  const { mutate: deleteMutate } = useDeleteListingMutation();
+
   function handleEditOptionClick(option: string) {
-    if (option === 'EDIT') router.push(`/listings/${postId}/edit`);
+    if (option === 'REPORT') setIsOpenReport(true);
+    else if (option === 'EDIT') router.push(`/listings/${postId}/edit`);
     else if (
       option === 'CANCELED' ||
       option === 'RESERVED' ||
@@ -116,8 +124,6 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
     setOpenModalType(null);
   }
 
-  const { mutate: changeTradeStatus } = useTradeMutation({ postId });
-  const { data: tradeData } = usePostTradeQuery(postId);
   function handleModalSubmit(data: ModalSubmitData) {
     if ('reason' in data) {
       if (
@@ -163,15 +169,24 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
 
       {isOpenEdit && (
         <S.EditList ref={menuRef}>
-          {getFilteredOptions(postStatus).map((option) => (
+          {isOwner ? (
+            getFilteredOptions(postStatus).map((option) => (
+              <S.EditItem
+                key={option.value}
+                type={option.value}
+                onClick={() => handleEditOptionClick(option.value)}>
+                {getMatchIcon(option.value)}
+                {option.label}
+              </S.EditItem>
+            ))
+          ) : (
             <S.EditItem
-              key={option.value}
-              type={option.value}
-              onClick={() => handleEditOptionClick(option.value)}>
-              {getMatchIcon(option.value)}
-              {option.label}
+              type='REPORT'
+              onClick={() => handleEditOptionClick('REPORT')}>
+              <SirenIcon stroke={theme.colors.BLACK} strokeWidth={2} />
+              신고하기
             </S.EditItem>
-          ))}
+          )}
         </S.EditList>
       )}
       {openModalType && (
@@ -192,6 +207,18 @@ const EditMenu = ({ postStatus, postId }: EditMenuProps) => {
               onClose={handleCloseModal}
             />
           )}
+        </ModalLayout>
+      )}
+      {isOpenReport && (
+        <ModalLayout
+          isOpen={isOpenReport}
+          onClose={() => setIsOpenReport(false)}
+          title='신고 사유 선택'>
+          <ReportModalContents
+            type='POST'
+            refId={postId}
+            onClose={() => setIsOpenReport(false)}
+          />
         </ModalLayout>
       )}
     </div>

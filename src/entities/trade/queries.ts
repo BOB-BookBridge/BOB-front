@@ -17,10 +17,11 @@ import {
   PatchTradeItemsReq,
 } from '.';
 
-export const usePostTradeQuery = (postId: number) => {
+export const usePostTradeQuery = (postId: number, enabled: boolean) => {
   return useQuery({
     queryKey: ['trade', postId],
     queryFn: () => getPostTrades(postId),
+    enabled,
   });
 };
 

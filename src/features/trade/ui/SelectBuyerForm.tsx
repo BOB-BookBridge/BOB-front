@@ -21,7 +21,8 @@ const SelectBuyerForm = ({
   onClose,
 }: SelectBuyerFormProps) => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const { data, isPending } = usePostTradeQuery(postId);
+  const { data, isPending } = usePostTradeQuery(postId, true);
+
   function handleClickApply() {
     if (selectedId) {
       onSubmit({
