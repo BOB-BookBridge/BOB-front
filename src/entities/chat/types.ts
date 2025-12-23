@@ -19,7 +19,7 @@ export type ChatUser = Pick<
 >;
 
 export interface ChatInfo {
-  chatroomId: number;
+  id: number;
   title: string;
   trade: {
     id: number;

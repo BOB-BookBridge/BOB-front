@@ -47,6 +47,7 @@ function getFilteredOptions(tradeStatus: string) {
   return editOptions.filter((opt) => allowed.includes(opt.value));
 }
 interface EditMenuProps {
+  writerId: string;
   isOwner: boolean;
   postStatus: PostTradeStatus;
   postId: number;
@@ -63,12 +64,11 @@ export type SelectBuyerSubmitData = {
 
 type ModalSubmitData = CancelSubmitData | SelectBuyerSubmitData;
 
-const EditMenu = ({ isOwner, postStatus, postId }: EditMenuProps) => {
+const EditMenu = ({ writerId, isOwner, postStatus, postId }: EditMenuProps) => {
   const theme = useTheme();
   const router = useRouter();
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [isOpenReport, setIsOpenReport] = useState(false);
-
   const [openModalType, setOpenModalType] = useState<EditModalType | null>(
     null,
   );
@@ -217,6 +217,7 @@ const EditMenu = ({ isOwner, postStatus, postId }: EditMenuProps) => {
           <ReportModalContents
             type='POST'
             refId={postId}
+            reportedId={writerId}
             onClose={() => setIsOpenReport(false)}
           />
         </ModalLayout>
