@@ -1,29 +1,77 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { useInquiryMutation } from '@/entities/inquiries';
+import { useMyQuery } from '@/entities/user';
 import { colors } from '../constants';
+import { showToast } from '../lib';
 import Button from './Button';
 
+const MAX_LENGTH = 200;
 interface InquiryContentsProps {
   onClose: () => void;
 }
 const InquiryContents = ({ onClose }: InquiryContentsProps) => {
-  const [value, setValue] = useState('');
+  const { data: myData } = useMyQuery();
+  const { mutate: inquiryMutate } = useInquiryMutation();
+  const [title, setTitle] = useState('');
+  const [email, setEmail] = useState(myData ? myData.email : '');
+  const [content, setContent] = useState('');
 
   function handleClickInquiry() {
-    onClose();
+    if (!title || !email || !content) {
+      showToast.error(
+        `${!title ? '제목' : !email ? '이메일' : '내용'}을 입력해 주세요`,
+      );
+      return;
+    }
+    inquiryMutate(
+      { email, title, content },
+      {
+        onSuccess: () => {
+          showToast.success('문의가 접수되었습니다.');
+          onClose();
+        },
+      },
+    );
+  }
+
+  function handleChangeTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    const input = e.target.value;
+
+    const safeChars = [...input];
+
+    if (safeChars.length <= MAX_LENGTH) {
+      setContent(input);
+    } else {
+      setContent(safeChars.slice(0, MAX_LENGTH).join(''));
+    }
   }
 
   return (
     <Container>
       <InputContainer>
-        <TitleArea placeholder='문의 제목을 입력해주세요' />
+        <InputArea
+          placeholder='문의 제목을 입력해주세요'
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
       </InputContainer>
+      {!myData && (
+        <InputContainer>
+          <InputArea
+            placeholder='답변 받을 이메일을 입력해주세요'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </InputContainer>
+      )}
       <Textarea
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder='문의 내용을 입력해주세요 (200자 내외)'
+        value={content}
+        onChange={handleChangeTextarea}
+        placeholder='문의 내용을 입력해주세요'
         rows={4}
       />
+      <TextareaLength>{content.length} / 200</TextareaLength>
       <Button text='문의' onClick={handleClickInquiry} />
     </Container>
   );
@@ -46,8 +94,8 @@ export const InputContainer = styled.div`
   border: 1px solid ${colors.light.GRAY_400};
 `;
 
-const TitleArea = styled.input`
-  flex: 1;
+const InputArea = styled.input`
+  width: 100%;
   border: none;
   outline: none;
   font-size: 14px;
@@ -88,4 +136,9 @@ const Textarea = styled.textarea`
     color: ${({ theme }) => theme.colors.GRAY_500};
     font-size: 14px;
   }
+`;
+
+const TextareaLength = styled.div`
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.GRAY_700};
 `;

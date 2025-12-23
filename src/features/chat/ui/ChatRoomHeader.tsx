@@ -56,10 +56,6 @@ const ChatRoomHeader = ({
     });
   }
 
-  function handleReportChat() {
-    console.log('신고');
-  }
-
   function handleClickNickname() {
     router.push(`/profile/${partner.id}`);
   }
@@ -90,6 +86,7 @@ const ChatRoomHeader = ({
           <ReportModalContents
             type='CHAT'
             refId={id}
+            reportedId={partner.id}
             onClose={() => setIsOpenReport(false)}
           />
         </ModalLayout>

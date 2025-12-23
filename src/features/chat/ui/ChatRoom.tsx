@@ -250,128 +250,131 @@ const ChatRoom = () => {
     );
   }
 
-  if (!chatInfo) return;
   return (
-    <S.Container>
-      {(isOpenMenu || isOpenDropdown) && (
-        <S.Overlay onClick={handleCloseOverlay} />
-      )}
-      <ChatRoomHeader
-        id={chatInfo.chatroomId}
-        partner={chatInfo.partner}
-        isOpenMenu={isOpenMenu}
-        onClick={() => setIsOpenMenu(true)}
-      />
-      <Div />
-      <ChatRoomInfo
-        tradeId={chatInfo.trade.id}
-        post={chatInfo.post}
-        isOpenDropdown={isOpenDropdown}
-        onClick={() => setIsOpenDropdown(true)}
-      />
-      <Div />
-      <S.Chats>
-        {chats.map((chat: ChatMessage, idx: number) => {
-          const isLast = idx === chats.length - 1;
-          const prev = idx > 0 ? chats[idx - 1].sentAt : null;
-          const isNewDate = chat.sentAt
-            ? !prev || compareDate(chat.sentAt, prev)
-            : false;
+    <>
+      {chatInfo && (
+        <S.Container>
+          {(isOpenMenu || isOpenDropdown) && (
+            <S.Overlay onClick={handleCloseOverlay} />
+          )}
+          <ChatRoomHeader
+            id={chatInfo.id}
+            partner={chatInfo.partner}
+            isOpenMenu={isOpenMenu}
+            onClick={() => setIsOpenMenu(true)}
+          />
+          <Div />
+          <ChatRoomInfo
+            tradeId={chatInfo.trade.id}
+            post={chatInfo.post}
+            isOpenDropdown={isOpenDropdown}
+            onClick={() => setIsOpenDropdown(true)}
+          />
+          <Div />
+          <S.Chats>
+            {chats.map((chat: ChatMessage, idx: number) => {
+              const isLast = idx === chats.length - 1;
+              const prev = idx > 0 ? chats[idx - 1].sentAt : null;
+              const isNewDate = chat.sentAt
+                ? !prev || compareDate(chat.sentAt, prev)
+                : false;
 
-          return (
-            <React.Fragment key={'id' in chat ? chat.id : chat.clientId}>
-              {chat.sentAt && isNewDate && (
-                <S.NoticeWrapper>
-                  <S.DateText>{formatDate(chat.sentAt)}</S.DateText>
-                </S.NoticeWrapper>
-              )}
-              {chat.type === 'SYSTEM' ? (
-                <S.NoticeWrapper>
-                  <S.SystemMessage>
-                    <b>알림 </b>
-                    {chat.content}
-                  </S.SystemMessage>
-                </S.NoticeWrapper>
-              ) : chat.isMine ? (
-                <S.SendChatWrapper>
-                  <S.MessageInfo>
-                    {'isError' in chat && chat.isError ? (
-                      <S.ErrorBox>
-                        <ChatRefreshIcon
-                          stroke={theme.colors.BLACK}
-                          strokeWidth={2}
-                          strokeLinecap='round'
-                          onClick={() => handleClickRefresh(idx)}
-                        />
-                        <ChatDeleteIcon
-                          fill={theme.colors.ERROR}
-                          onClick={() => handleClickDelete(idx)}
-                        />
-                      </S.ErrorBox>
-                    ) : 'isLoading' in chat && chat.isLoading ? (
-                      <SendReverseIcon fill={theme.colors.GRAY_500} />
-                    ) : (
-                      <>
-                        {'isRead' in chat && !chat.isRead && (
-                          <S.UnreadText>1</S.UnreadText>
+              return (
+                <React.Fragment key={'id' in chat ? chat.id : chat.clientId}>
+                  {chat.sentAt && isNewDate && (
+                    <S.NoticeWrapper>
+                      <S.DateText>{formatDate(chat.sentAt)}</S.DateText>
+                    </S.NoticeWrapper>
+                  )}
+                  {chat.type === 'SYSTEM' ? (
+                    <S.NoticeWrapper>
+                      <S.SystemMessage>
+                        <b>알림 </b>
+                        {chat.content}
+                      </S.SystemMessage>
+                    </S.NoticeWrapper>
+                  ) : chat.isMine ? (
+                    <S.SendChatWrapper>
+                      <S.MessageInfo>
+                        {'isError' in chat && chat.isError ? (
+                          <S.ErrorBox>
+                            <ChatRefreshIcon
+                              stroke={theme.colors.BLACK}
+                              strokeWidth={2}
+                              strokeLinecap='round'
+                              onClick={() => handleClickRefresh(idx)}
+                            />
+                            <ChatDeleteIcon
+                              fill={theme.colors.ERROR}
+                              onClick={() => handleClickDelete(idx)}
+                            />
+                          </S.ErrorBox>
+                        ) : 'isLoading' in chat && chat.isLoading ? (
+                          <SendReverseIcon fill={theme.colors.GRAY_500} />
+                        ) : (
+                          <>
+                            {'isRead' in chat && !chat.isRead && (
+                              <S.UnreadText>1</S.UnreadText>
+                            )}
+                            {chat.sentAt && (
+                              <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
+                            )}
+                          </>
                         )}
-                        {chat.sentAt && (
-                          <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
-                        )}
-                      </>
-                    )}
-                  </S.MessageInfo>
-                  {chat.type === 'IMAGE' ? (
-                    <ChatImages images={chat.images} />
+                      </S.MessageInfo>
+                      {chat.type === 'IMAGE' ? (
+                        <ChatImages images={chat.images} />
+                      ) : (
+                        <S.SendChat>{chat.content}</S.SendChat>
+                      )}
+                    </S.SendChatWrapper>
                   ) : (
-                    <S.SendChat>{chat.content}</S.SendChat>
+                    <S.ReceiveChatWrapper>
+                      {chat.type === 'IMAGE' ? (
+                        <ChatImages images={chat.images} />
+                      ) : (
+                        <S.ReceiveChat>{chat.content}</S.ReceiveChat>
+                      )}
+                      {chat.sentAt && (
+                        <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
+                      )}
+                    </S.ReceiveChatWrapper>
                   )}
-                </S.SendChatWrapper>
-              ) : (
-                <S.ReceiveChatWrapper>
-                  {chat.type === 'IMAGE' ? (
-                    <ChatImages images={chat.images} />
-                  ) : (
-                    <S.ReceiveChat>{chat.content}</S.ReceiveChat>
-                  )}
-                  {chat.sentAt && (
-                    <S.TimeText>{formatTime(chat.sentAt)}</S.TimeText>
-                  )}
-                </S.ReceiveChatWrapper>
-              )}
-              {isLast && <div ref={bottomRef} />}
-            </React.Fragment>
-          );
-        })}
-      </S.Chats>
-      <S.InputSection>
-        <label style={{ cursor: 'pointer' }}>
-          <AddIcon
-            stroke={theme.colors.GRAY_500}
-            strokeWidth={4}
-            strokeLinecap='round'
-          />
-          <input
-            onChange={handleSelectImages}
-            type='file'
-            multiple
-            style={{ display: 'none' }}
-          />
-        </label>
-        <S.InputWrapper>
-          <S.Input
-            onKeyDown={handleEnterEvent}
-            value={message}
-            onChange={(e) => handleInputMessage(e.target.value)}
-          />
-          <SendIcon
-            fill={theme.colors.PRIMARY}
-            style={{ cursor: 'pointer' }}
-            onClick={() => handleSendMessage()}
-          />
-        </S.InputWrapper>
-      </S.InputSection>
-    </S.Container>
+                  {isLast && <div ref={bottomRef} />}
+                </React.Fragment>
+              );
+            })}
+          </S.Chats>
+          <S.InputSection>
+            <label style={{ cursor: 'pointer' }}>
+              <AddIcon
+                stroke={theme.colors.GRAY_500}
+                strokeWidth={4}
+                strokeLinecap='round'
+              />
+              <input
+                onChange={handleSelectImages}
+                type='file'
+                multiple
+                style={{ display: 'none' }}
+              />
+            </label>
+            <S.InputWrapper>
+              <S.Input
+                onKeyDown={handleEnterEvent}
+                value={message}
+                onChange={(e) => handleInputMessage(e.target.value)}
+              />
+              <SendIcon
+                fill={theme.colors.PRIMARY}
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleSendMessage()}
+              />
+            </S.InputWrapper>
+          </S.InputSection>
+        </S.Container>
+      )}
+    </>
   );
 };
 

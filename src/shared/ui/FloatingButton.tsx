@@ -4,20 +4,16 @@ import Link from 'next/link';
 import { useTheme } from 'styled-components';
 import { useRouter, usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  useFABStore,
-  useThemeStore,
-  useHandleOpenWidget,
-  useWidgetStore,
-} from '../model';
+import { useFABStore, useHandleOpenWidget, useWidgetStore } from '../model';
 import { connectNoti, Notification } from '../model/connectNoti';
 import { useMyStore } from '../model/useMyStore';
 import { useUnreadQuery } from '@/entities/chat';
+import InquiryContents from './InquiryContents';
 import * as S from './FloatingButton.styles';
+import ModalLayout from './ModalLayout';
 import { colors } from '../constants';
 import Badge from './Badge';
 import {
-  AIIcon,
   AIIconSm,
   BookIcon,
   ChatIcon,
@@ -25,13 +21,9 @@ import {
   FABDefaultIcon,
   InquiryIcon,
 } from '../assets/icons';
-import ModalLayout from './ModalLayout';
-import InquiryContents from './InquiryContents';
 
 const FloatingButton = () => {
-  const mode = useThemeStore((state) => state.mode);
   const theme = useTheme();
-  const router = useRouter();
   const pathname = usePathname();
   const isOpen = useFABStore((s) => s.isOpen);
   const { toggleIsOpen, resetChat, resetAll } = useFABStore();
@@ -92,17 +84,20 @@ const FloatingButton = () => {
       icon: <AIIconSm />,
       label: 'AI 북메이트',
       href: '/ai',
+      access: 'ALL',
     },
     {
       icon: <ChatIcon />,
       label: '채팅',
       onClick: (e: React.MouseEvent) => handleOpenWidget({ e, type: 'chat' }),
       badge: unReadCount > 0 ? unReadCount : undefined,
+      access: 'USER',
     },
     {
       icon: <BookIcon />,
       label: '내 책 팔기',
       href: '/listings/write',
+      access: 'USER',
     },
     {
       icon: (
@@ -114,12 +109,13 @@ const FloatingButton = () => {
       ),
       label: '문의하기',
       onClick: () => setIsOpenInquiry(true),
+      access: 'ALL',
     },
   ];
 
-  function handleClickAI() {
-    router.push('/ai');
-  }
+  const filteredMenu = isLogin
+    ? menuItems
+    : menuItems.filter((item) => item.access === 'ALL');
 
   function handleClickToggle() {
     if (isOpen) {
@@ -141,7 +137,7 @@ const FloatingButton = () => {
   return (
     <>
       {isOpen && <S.Overlay onClick={handleClose} />}
-      <S.Container onClick={isLogin ? handleClickToggle : handleClickAI}>
+      <S.Container onClick={handleClickToggle}>
         {visibleNoti && (
           <S.Noti $dismiss={dismissing} onClick={handleNoti}>
             {visibleNoti.type === 'CHAT' && visibleNoti.sender
@@ -149,19 +145,15 @@ const FloatingButton = () => {
               : visibleNoti.body}
           </S.Noti>
         )}
-        <S.IconWrapper mode={mode} $isOpen={isOpen}>
-          {isLogin ? (
-            isOpen ? (
-              <CloseIcon fill={theme.colors.BLACK} />
-            ) : (
-              <FABDefaultIcon
-                stroke={colors.light.WHITE}
-                strokeWidth={6}
-                strokeLinecap='round'
-              />
-            )
+        <S.IconWrapper $isOpen={isOpen}>
+          {isOpen ? (
+            <CloseIcon fill={theme.colors.BLACK} />
           ) : (
-            <AIIcon fill={colors.light.WHITE} />
+            <FABDefaultIcon
+              stroke={colors.light.WHITE}
+              strokeWidth={6}
+              strokeLinecap='round'
+            />
           )}
           {!isOpen && unReadCount > 0 && (
             <Badge type='fab' unReadCount={unReadCount} />
@@ -170,7 +162,7 @@ const FloatingButton = () => {
 
         {isOpen && (
           <S.MenuWrapper>
-            {menuItems.map((item, idx) =>
+            {filteredMenu.map((item, idx) =>
               item.href ? (
                 <Link
                   href={item.href}

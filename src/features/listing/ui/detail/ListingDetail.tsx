@@ -47,6 +47,7 @@ const ListingDetail = ({ id }: { id: number }) => {
               <S.HeaderRow>
                 <S.HeadingText>{data.book.title}</S.HeadingText>
                 <EditMenu
+                  writerId={data.writer.id}
                   isOwner={data.isOwner}
                   postStatus={data.tradeStatus}
                   postId={data.id}
