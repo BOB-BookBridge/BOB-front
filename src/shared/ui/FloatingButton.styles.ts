@@ -65,7 +65,6 @@ export const Noti = styled.div<{ $dismiss: boolean }>`
 `;
 
 interface IconWrapperProps {
-  mode: 'dark' | 'light';
   $isOpen: boolean;
 }
 export const IconWrapper = styled.div<IconWrapperProps>`
