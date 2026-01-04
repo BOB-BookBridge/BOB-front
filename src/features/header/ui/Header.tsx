@@ -38,7 +38,8 @@ const Header = () => {
     pathname?.startsWith('/signup') ||
     pathname?.startsWith('/password') ||
     pathname?.startsWith('/chats/') ||
-    pathname?.startsWith('/error');
+    pathname?.startsWith('/error') ||
+    pathname?.startsWith('/403');
 
   const onNoti = useCallback((newNoti: string) => {
     clearTimeout(timers.current.fade);
