@@ -40,6 +40,12 @@ import RawSwitch from './switch.svg';
 import RawSiren from './siren.svg';
 import RawInquiry from './inquiry.svg';
 
+import RawAnnouncements from './announcements.svg';
+import RawDashboard from './dashboard.svg';
+import RawPosts from './posts.svg';
+import RawReports from './reports.svg';
+import RawUsers from './users.svg';
+
 export const UserIcon = withIconSize(RawUserIcon);
 export const NotiIcon = withIconSize(RawNotiIcon);
 export const DarkModeIcon = withIconSize(RawDarkModeIcon);
@@ -90,3 +96,9 @@ export const ChatDeleteIcon = withIconSize(RawCloseIcon, 18);
 export const AddHeartIcon = withIconSize(RawAddHeart, 18);
 export const NotiTradeIcon = withIconSize(RawNotiTrade, 18);
 export const SwitchIcon = withIconSize(RawSwitch, 18);
+
+export const AnnouncementsIcon = withIconSize(RawAnnouncements, 18);
+export const DashboardIcon = withIconSize(RawDashboard, 18);
+export const PostsIcon = withIconSize(RawPosts, 18);
+export const ReportsIcon = withIconSize(RawReports, 18);
+export const UsersIcon = withIconSize(RawUsers, 18);
