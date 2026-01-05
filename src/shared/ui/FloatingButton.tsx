@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useTheme } from 'styled-components';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useFABStore, useHandleOpenWidget, useWidgetStore } from '../model';
 import { connectNoti, Notification } from '../model/connectNoti';
@@ -75,7 +75,9 @@ const FloatingButton = () => {
     pathname?.startsWith('/listings/write') ||
     pathname?.startsWith('/chats') ||
     pathname?.startsWith('/ai') ||
-    pathname?.startsWith('/error');
+    pathname?.startsWith('/error') ||
+    pathname?.startsWith('/403') ||
+    pathname?.startsWith('/admin');
 
   if (hideButton) return null;
 

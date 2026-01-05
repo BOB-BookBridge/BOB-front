@@ -6,6 +6,7 @@ export interface UserProfileRes {
   interests: string[];
   id: string;
   nickname: string;
+  role: 'ADMIN' | 'USER';
   profileImageUrl: string | null;
   area: {
     emdId: number;
