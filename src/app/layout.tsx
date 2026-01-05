@@ -5,9 +5,9 @@ import StyledComponentsRegistry from '@/shared/lib/StyledComponentsRegistry';
 import { ReactQueryClientProvider, ThemeRegistry } from '@/shared/providers';
 import ToastStyledContainer from '@/shared/styles/ToastStyledContainer';
 import { NotificationWidget } from '@/features/notification/ui';
+import { Header, AdminHeader } from '@/features/header/ui';
 import { GlobalErrorBoundary } from '@/shared/lib';
 import { ChatWidget } from '@/features/chat/ui';
-import { Header } from '@/features/header/ui';
 import { FloatingButton } from '@/shared/ui';
 
 const pretendard = localFont({
@@ -29,6 +29,7 @@ export default function RootLayout({
           <ReactQueryClientProvider>
             <ThemeRegistry>
               <GlobalErrorBoundary>
+                <AdminHeader />
                 <Header />
                 {children}
                 <FloatingButton />

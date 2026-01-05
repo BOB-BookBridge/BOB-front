@@ -6,6 +6,7 @@ import { useThemeStore } from './useThemeStore';
 import { useMediaQuery } from './useMediaQuery';
 import { useIsMobile } from './useIsMobile';
 import { useFABStore } from './useFABStore';
+import { useMyStore } from './useMyStore';
 
 export {
   useThemeStore,
@@ -14,4 +15,5 @@ export {
   useIsMobile,
   useMediaQuery,
   useWidgetStore,
+  useMyStore,
 };

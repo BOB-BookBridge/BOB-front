@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { useTheme } from 'styled-components';
 import { useRouter, usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHandleOpenWidget, useThemeStore } from '@/shared/model';
 import { useMyStore } from '@/shared/model/useMyStore';
-import { useHandleOpenWidget, useThemeStore } from '../../../shared/model';
-import { colors } from '../../../shared/constants';
 import { useMyQuery } from '@/entities/user';
+import { colors } from '@/shared/constants';
 import Logo from '@/shared/assets/logo.svg';
 import * as S from './Header.styles';
 import {
@@ -15,7 +15,7 @@ import {
   LightModeIcon,
   NotiIcon,
   UserIcon,
-} from '../../../shared/assets/icons';
+} from '@/shared/assets/icons';
 
 const Header = () => {
   const mode = useThemeStore((state) => state.mode);
@@ -39,7 +39,8 @@ const Header = () => {
     pathname?.startsWith('/password') ||
     pathname?.startsWith('/chats/') ||
     pathname?.startsWith('/error') ||
-    pathname?.startsWith('/403');
+    pathname?.startsWith('/403') ||
+    pathname?.startsWith('/admin');
 
   const onNoti = useCallback((newNoti: string) => {
     clearTimeout(timers.current.fade);
@@ -76,9 +77,7 @@ const Header = () => {
 
   return (
     <S.Container>
-      <Link
-        href='/'
-        onClick={() => sessionStorage.removeItem('my-tab-selected')}>
+      <Link href='/' replace={true} onClick={() => sessionStorage.clear()}>
         <Logo width={60} />
       </Link>
       <S.RightSection>

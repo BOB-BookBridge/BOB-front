@@ -1,32 +1,26 @@
+import { useRouter } from 'next/navigation';
 import { useFailedChatStore } from '@/features/chat/model/useFailedChatStore';
 import { useDeleteUserMutation, UserProfileRes } from '@/entities/user';
-import { useLogoutMutation } from '@/entities/auth/queries';
 import { useFilterStore } from '@/features/listing/model';
-import { useRouter } from 'next/navigation';
+import { useLogout } from '@/features/auth/model';
 import EditPassword from './EditPassword';
 import * as S from '../Profile.styles';
 
 type AccountInfoProps = Pick<UserProfileRes, 'isSocial' | 'email'>;
 
 const AccountInfoSection = ({ isSocial, email }: AccountInfoProps) => {
-  const { mutate: logout } = useLogoutMutation();
+  const { logout } = useLogout();
+
   const { mutate: deleteUser } = useDeleteUserMutation();
   const { reset } = useFailedChatStore();
   const { setEmdId } = useFilterStore();
   const router = useRouter();
 
-  function handleLogout() {
-    logout();
-    reset();
-    sessionStorage.removeItem('my-tab-selected');
-    setEmdId(undefined);
-  }
-
   function handleDeleteAccount() {
     const ok = window.confirm('정말 탈퇴하시겠습니까?');
     if (ok) {
       reset();
-      sessionStorage.removeItem('my-tab-selected');
+      sessionStorage.clear();
       setEmdId(undefined);
       deleteUser(undefined, { onSuccess: () => router.push('/') });
     }
@@ -43,7 +37,7 @@ const AccountInfoSection = ({ isSocial, email }: AccountInfoProps) => {
         {!isSocial && <EditPassword />}
       </S.SectionContainer>
       <S.Actions style={{ gap: 10 }}>
-        <S.AccountText $isButton={true} onClick={handleLogout}>
+        <S.AccountText $isButton={true} onClick={logout}>
           {`로그아웃 >`}
         </S.AccountText>
         <S.AccountText $isButton={true} onClick={handleDeleteAccount}>
