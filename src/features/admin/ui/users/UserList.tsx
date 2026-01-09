@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { formatDate } from '@/shared/lib';
+import { ModalLayout } from '@/shared/ui';
 import Pagination from './Pagination';
+import UserDetail from './UserDetail';
 
 const mockData = {
   totalCount: 20,
@@ -35,6 +37,7 @@ const mockData = {
 const PAGE_SIZE = 20;
 const UserList = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [openDetail, setOpenDetail] = useState<string>('');
   return (
     <Container>
       <Table>
@@ -52,14 +55,20 @@ const UserList = () => {
           {mockData.members.map((member, index) => {
             const absoluteNumber = (currentPage - 1) * PAGE_SIZE + index + 1;
             return (
-              <TableRow key={member.id}>
+              <TableRow
+                key={member.id}
+                onClick={() => setOpenDetail(member.id)}>
                 <td>{absoluteNumber}</td>
                 <td>{member.role === 'ADMIN' ? '관리자' : '사용자'}</td>
                 <td>{member.nickname}</td>
                 <td>{member.email}</td>
                 <td>
                   <StatusBadge $status={member.status}>
-                    {member.status === 'ACTIVE' ? '활성' : '비활성'}
+                    {member.status === 'ACTIVE'
+                      ? '활성'
+                      : member.status === 'BANNED'
+                        ? '정지'
+                        : '비활성'}
                   </StatusBadge>
                 </td>
                 <td>{formatDate(member.createdAt)}</td>
@@ -68,12 +77,19 @@ const UserList = () => {
           })}
         </tbody>
       </Table>
-
       <Pagination
         totalCount={mockData.totalCount}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
+      {openDetail && (
+        <ModalLayout
+          isOpen={!!openDetail}
+          title='회원 정보'
+          onClose={() => setOpenDetail('')}>
+          <UserDetail id={openDetail} />
+        </ModalLayout>
+      )}
     </Container>
   );
 };
