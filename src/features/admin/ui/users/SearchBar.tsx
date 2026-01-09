@@ -1,7 +1,7 @@
+import styled from 'styled-components';
+import { useEffect, useRef, useState } from 'react';
 import { DropdownIconSm } from '@/shared/assets/icons';
 import { showToast } from '@/shared/lib';
-import { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
 
 const keys = [
   { value: 'email', label: '이메일' },
@@ -85,6 +85,7 @@ const Container = styled.div`
   border-radius: 12px;
   box-shadow: 0 0 2px 2px ${({ theme }) => theme.colors.GRAY_300};
   display: flex;
+  margin-bottom: 12px;
 `;
 
 const KeyDropdown = styled.div`
