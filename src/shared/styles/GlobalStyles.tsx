@@ -26,6 +26,9 @@ const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
     box-sizing: border-box;
   }
+  input, textarea, select, button {
+    font-family: inherit;
+  }
 `;
 
 export default GlobalStyle;
