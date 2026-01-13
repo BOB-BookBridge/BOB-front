@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { LoadingContainer } from '@/shared/ui/LoadingIndicator';
 import { AdminSidebar } from '@/features/admin/ui';
 import { getMyProfile } from '@/entities/user';
 import { LoadingIndicator } from '@/shared/ui';
@@ -31,7 +32,12 @@ export default function AdminLayout({
     checkAuth();
   }, []);
 
-  if (!isAuthorized) return <LoadingIndicator text='처리중...' />;
+  if (!isAuthorized)
+    return (
+      <LoadingContainer>
+        <LoadingIndicator text='처리중...' />
+      </LoadingContainer>
+    );
 
   return (
     <Container>

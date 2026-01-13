@@ -1,93 +1,91 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { formatDate } from '@/shared/lib';
-import { ModalLayout } from '@/shared/ui';
+import { LoadingIndicator, LoadingContainer, ModalLayout } from '@/shared/ui';
+import { formatDate, LocalErrorBoundary } from '@/shared/lib';
+import { useMemberListQuery } from '@/entities/admin';
+import { SearchKeyType } from './SearchBar';
 import Pagination from './Pagination';
 import UserDetail from './UserDetail';
 
-const mockData = {
-  totalCount: 20,
-  members: [
-    {
-      id: '019b0689-4ddd-7d0e-807a-cff21461a374',
-      status: 'ACTIVE',
-      role: 'ADMIN',
-      email: 'manager@bob.com',
-      nickname: 'manager001',
-      reportCount: 0,
-      area: null,
-      memo: null,
-      lastActiveAt: null,
-      createdAt: '2025-09-28T13:33:40.302',
-    },
-    {
-      id: '019b0689-4ddd-7d0e-807a-bfcbcc682200',
-      status: 'BANNED',
-      role: 'USER',
-      email: 'kmdy125@gmail.com',
-      nickname: '김도예',
-      reportCount: 1,
-      area: null,
-      memo: null,
-      lastActiveAt: '2025-05-27T17:05:00.287672',
-      createdAt: '2025-05-27T13:33:40.302565',
-    },
-  ],
-};
-const PAGE_SIZE = 20;
-const UserList = () => {
+export const PAGE_SIZE = 20;
+
+interface UserListProps {
+  searchKey: SearchKeyType;
+  keyword: string;
+}
+const UserList = ({ searchKey, keyword }: UserListProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [openDetail, setOpenDetail] = useState<string>('');
+  const { data, isPending } = useMemberListQuery({
+    key: searchKey,
+    keyword,
+    page: currentPage - 1,
+    size: PAGE_SIZE,
+  });
+
   return (
     <Container>
-      <Table>
-        <thead>
-          <TableHeader>
-            <th>번호</th>
-            <th>권한</th>
-            <th>닉네임</th>
-            <th>이메일</th>
-            <th>활성 상태</th>
-            <th>가입일</th>
-          </TableHeader>
-        </thead>
-        <tbody>
-          {mockData.members.map((member, index) => {
-            const absoluteNumber = (currentPage - 1) * PAGE_SIZE + index + 1;
-            return (
-              <TableRow
-                key={member.id}
-                onClick={() => setOpenDetail(member.id)}>
-                <td>{absoluteNumber}</td>
-                <td>{member.role === 'ADMIN' ? '관리자' : '사용자'}</td>
-                <td>{member.nickname}</td>
-                <td>{member.email}</td>
-                <td>
-                  <StatusBadge $status={member.status}>
-                    {member.status === 'ACTIVE'
-                      ? '활성'
-                      : member.status === 'BANNED'
-                        ? '정지'
-                        : '비활성'}
-                  </StatusBadge>
-                </td>
-                <td>{formatDate(member.createdAt)}</td>
-              </TableRow>
-            );
-          })}
-        </tbody>
-      </Table>
-      <Pagination
-        totalCount={mockData.totalCount}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      {isPending ? (
+        <LoadingContainer>
+          <LoadingIndicator />
+        </LoadingContainer>
+      ) : (
+        data && (
+          <>
+            <Table>
+              <thead>
+                <TableHeader>
+                  <th>번호</th>
+                  <th>권한</th>
+                  <th>닉네임</th>
+                  <th>이메일</th>
+                  <th>활성 상태</th>
+                  <th>가입일</th>
+                </TableHeader>
+              </thead>
+              <tbody>
+                {data.members.map((member, index) => {
+                  const absoluteNumber =
+                    (currentPage - 1) * PAGE_SIZE + index + 1;
+                  return (
+                    <TableRow
+                      key={member.id}
+                      onClick={() => setOpenDetail(member.id)}>
+                      <td>{absoluteNumber}</td>
+                      <td>{member.role === 'ADMIN' ? '관리자' : '사용자'}</td>
+                      <td>{member.nickname}</td>
+                      <td>{member.email}</td>
+                      <td>
+                        <StatusBadge $status={member.status}>
+                          {member.status === 'ACTIVE'
+                            ? '활성'
+                            : member.status === 'BANNED'
+                              ? '정지'
+                              : '비활성'}
+                        </StatusBadge>
+                      </td>
+                      <td>{formatDate(member.createdAt)}</td>
+                    </TableRow>
+                  );
+                })}
+              </tbody>
+            </Table>
+            <Pagination
+              totalCount={data.totalCount}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          </>
+        )
+      )}
       {openDetail && (
         <ModalLayout
           isOpen={!!openDetail}
           title='회원 정보'
           onClose={() => setOpenDetail('')}>
-          <UserDetail id={openDetail} />
+          <LocalErrorBoundary>
+            <UserDetail id={openDetail} />
+          </LocalErrorBoundary>
         </ModalLayout>
       )}
     </Container>

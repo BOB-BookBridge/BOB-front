@@ -1,5 +1,11 @@
 import { BookModel, BookStatus } from '../listing';
 
+export interface UserAreaModel {
+  emdId: number;
+  isAuthentication: boolean;
+  authenticatedAt: string;
+}
+
 export interface UserProfileRes {
   isSocial: boolean;
   email: string;
@@ -8,11 +14,7 @@ export interface UserProfileRes {
   nickname: string;
   role: 'ADMIN' | 'USER';
   profileImageUrl: string | null;
-  area: {
-    emdId: number;
-    isAuthentication: boolean;
-    authenticatedAt: string;
-  };
+  area: UserAreaModel;
   bookcase: Bookcase[];
   wishes: Book[];
 }

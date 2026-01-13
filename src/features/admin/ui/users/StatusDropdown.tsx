@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { DropdownIconSm } from '@/shared/assets/icons';
+import { MemberStatus } from '@/entities/admin';
 
-const STATUS_LABEL: Record<string, string> = {
+const STATUS_LABEL: Record<MemberStatus, string> = {
   ACTIVE: '활성',
   BANNED: '정지',
   DEACTIVATED: '비활성',
@@ -13,13 +14,13 @@ const StatusDropdown = ({
   onChange,
   disabled,
 }: {
-  value: string;
-  onChange: (v: string) => void;
+  value: MemberStatus;
+  onChange: (v: MemberStatus) => void;
   disabled: boolean;
 }) => {
   const [open, setOpen] = useState(false);
 
-  const handleSelect = (v: string) => {
+  const handleSelect = (v: MemberStatus) => {
     onChange(v);
     setOpen(false);
   };
@@ -35,7 +36,7 @@ const StatusDropdown = ({
 
       {open && !disabled && (
         <DropdownList>
-          {Object.keys(STATUS_LABEL).map((s) => (
+          {(Object.keys(STATUS_LABEL) as MemberStatus[]).map((s) => (
             <DropdownItem key={s} onClick={() => handleSelect(s)}>
               {STATUS_LABEL[s]}
             </DropdownItem>

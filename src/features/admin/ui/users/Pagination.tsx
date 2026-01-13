@@ -1,6 +1,6 @@
 import styled from 'styled-components';
+import { PAGE_SIZE } from './UserList';
 
-const PAGE_SIZE = 20;
 const BLOCK_SIZE = 5;
 
 interface PaginationProps {

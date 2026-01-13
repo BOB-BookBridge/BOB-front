@@ -1,17 +1,27 @@
 import styled from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
 import { DropdownIconSm } from '@/shared/assets/icons';
-import { showToast } from '@/shared/lib';
 
 const keys = [
   { value: 'email', label: '이메일' },
   { value: 'nickname', label: '닉네임' },
 ];
 export type SearchKeyType = (typeof keys)[number]['value'];
-const SearchBar = () => {
+
+interface SearchBarProps {
+  searchKey: SearchKeyType;
+  keyword: string;
+  onSearchKeyChange: (key: SearchKeyType) => void;
+  onKeywordChange: (keyword: string) => void;
+}
+const SearchBar = ({
+  searchKey,
+  keyword,
+  onSearchKeyChange,
+  onKeywordChange,
+}: SearchBarProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [key, setKey] = useState<SearchKeyType>('email');
-  const [keyword, setKeyword] = useState<string>('');
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
   useEffect(() => {
@@ -38,36 +48,38 @@ const SearchBar = () => {
   }
 
   function handleClickDropdownItem(value: SearchKeyType) {
-    setKey(value);
+    onSearchKeyChange(value);
     setIsOpenDropdown(false);
   }
 
   function handleEnterInput() {
-    showToast.success(keyword.trim());
+    onKeywordChange(searchKeyword.trim());
   }
 
   return (
     <Container ref={dropdownRef}>
-      <KeyDropdown onClick={handleClickDropdown}>
-        {keys.find((k) => k.value === key)?.label}
-        <DropdownIconSm />
-      </KeyDropdown>
-      {isOpenDropdown && (
-        <DropdownItems>
-          {keys.map((k) => (
-            <DropdownItem
-              key={k.value}
-              $active={k.value === key}
-              onClick={() => handleClickDropdownItem(k.value)}>
-              {k.label}
-            </DropdownItem>
-          ))}
-        </DropdownItems>
-      )}
+      <div ref={dropdownRef}>
+        <KeyDropdown onClick={handleClickDropdown}>
+          {keys.find((k) => k.value === searchKey)?.label}
+          <DropdownIconSm />
+        </KeyDropdown>
+        {isOpenDropdown && (
+          <DropdownItems>
+            {keys.map((k) => (
+              <DropdownItem
+                key={k.value}
+                $active={k.value === searchKey}
+                onClick={() => handleClickDropdownItem(k.value)}>
+                {k.label}
+              </DropdownItem>
+            ))}
+          </DropdownItems>
+        )}
+      </div>
       <StyledInput
         placeholder='검색어를 입력하세요'
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
+        value={searchKeyword}
+        onChange={(e) => setSearchKeyword(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === 'Enter') handleEnterInput();
         }}
