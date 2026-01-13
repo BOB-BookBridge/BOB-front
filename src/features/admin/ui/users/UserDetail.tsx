@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { Button, LoadingContainer, LoadingIndicator } from '@/shared/ui';
 import { getAreaNameById } from '@/features/user/lib';
 import { formatDate, showToast } from '@/shared/lib';
 import StatusDropdown from './StatusDropdown';
-import { Button, LoadingContainer, LoadingIndicator } from '@/shared/ui';
 import {
   MemberStatus,
   useMemberDetailQuery,

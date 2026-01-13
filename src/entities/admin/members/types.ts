@@ -1,4 +1,4 @@
-import { UserAreaModel } from '../user';
+import { UserAreaModel } from '../../user';
 
 export interface GetMemberListReq {
   key?: string;
