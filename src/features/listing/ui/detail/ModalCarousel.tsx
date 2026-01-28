@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { Navigation } from 'swiper/modules';
@@ -41,7 +42,7 @@ const ModalCarousel = ({
           {images.map((img, idx) => (
             <SwiperSlide key={idx}>
               <ImageWrapper>
-                <img
+                <Image
                   src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/${img.fileName}`}
                   alt={`Image ${idx + 1}`}
                 />

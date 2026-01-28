@@ -5,7 +5,10 @@ const nextConfig: NextConfig = {
     styledComponents: true,
   },
   images: {
-    domains: ['s3.bucket.com', 'image.aladin.co.kr'],
+    domains: [
+      'bookbridge-image.s3.ap-northeast-2.amazonaws.com',
+      'image.aladin.co.kr',
+    ],
     remotePatterns: [
       {
         protocol: 'https',
@@ -14,7 +17,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 's3.bucket.com',
+        hostname: 'bookbridge-image.s3.ap-northeast-2.amazonaws.com',
         pathname: '/**',
       },
     ],

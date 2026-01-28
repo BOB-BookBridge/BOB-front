@@ -1,11 +1,13 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import * as S from './ListingDetail.styles';
+import Image from 'next/image';
 import { useState } from 'react';
+import { Navigation } from 'swiper/modules';
+import * as S from './ListingDetail.styles';
 import ModalCarousel from './ModalCarousel';
 import { DetailImage } from '@/entities/listing';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 interface ImageCarouselProps {
   images?: DetailImage[];
@@ -30,7 +32,7 @@ const ImageCarousel = ({ images, thumbnail }: ImageCarouselProps) => {
         {images
           ? images.map((image, idx) => (
               <SwiperSlide key={idx}>
-                <img
+                <Image
                   alt='등록된 책 사진'
                   onClick={() => {
                     setSelectedIndex(idx);
@@ -42,7 +44,7 @@ const ImageCarousel = ({ images, thumbnail }: ImageCarouselProps) => {
             ))
           : thumbnail && (
               <SwiperSlide>
-                <img
+                <Image
                   alt='책 썸네일'
                   onClick={() => {
                     setSelectedIndex(0);

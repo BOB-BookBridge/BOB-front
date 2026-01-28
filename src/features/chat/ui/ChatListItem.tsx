@@ -31,10 +31,11 @@ const ChatListItem = ({
             )}
           </ProfileWrapper>
           <BookThumbnailWrapper>
-            <img
+            <Image
               src={data.thumbnailUrl}
               alt='책 표지'
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              fill
+              style={{ objectFit: 'cover' }}
             />
           </BookThumbnailWrapper>
         </ImagesWrapper>
