@@ -55,12 +55,10 @@ const ChatRoomInfo = ({
         <S.InfoLeftSection>
           <S.ImageWrapper>
             <Image
-              loader={() => post.thumbnailUrl}
               src={post.thumbnailUrl}
               alt='책 대표사진'
               width={40}
               height={40}
-              unoptimized
             />
           </S.ImageWrapper>
           <div>

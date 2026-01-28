@@ -38,7 +38,6 @@ const ListingCard = ({ data }: { data: PostModel }) => {
           alt='책 대표사진'
           fill
           sizes='(max-width: 744px) 50vw, 20vw'
-          unoptimized
         />
       </S.ImageWrapper>
       <S.TitleText>{data.title}</S.TitleText>

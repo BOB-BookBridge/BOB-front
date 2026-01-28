@@ -11,7 +11,6 @@ const TradeBook = ({ item }: { item: TradeMainModel }) => {
           alt={item.title}
           fill
           style={{ objectFit: 'cover' }}
-          unoptimized
         />
       </ImageWrapper>
       <BookInfo>
