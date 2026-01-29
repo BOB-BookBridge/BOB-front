@@ -36,10 +36,9 @@ export const DeleteButton = styled.div`
   align-items: center;
 `;
 
-export const StyledImage = styled.img`
+export const ImageWrapper = styled.div`
   width: 120px;
   height: 120px;
-  object-fit: cover;
   border-radius: 20px;
   border: 1.5px solid ${({ theme }) => theme.colors.GRAY_500};
 `;

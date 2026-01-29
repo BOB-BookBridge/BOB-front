@@ -27,6 +27,7 @@
     "react-error-boundary": "^6.0.0",
     "react-hook-form": "^7.56.4",
     "react-toastify": "^11.0.5",
+    "sharp": "^0.34.5",
     "styled-components": "^6.1.18",
     "swiper": "^11.2.8",
     "xml2js": "^0.6.2",
