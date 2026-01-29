@@ -193,10 +193,12 @@ const BookItemWrapper = styled.div<BookItemWrapperProps>`
 `;
 
 const BookImageWrapper = styled.div`
+  position: relative;
   width: 80px;
   aspect-ratio: 1 / 1;
   flex-shrink: 0;
   border-radius: 10px;
+  overflow: hidden;
 `;
 
 const TitleText = styled.div`

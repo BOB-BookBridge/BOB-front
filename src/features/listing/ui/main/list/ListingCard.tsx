@@ -37,6 +37,7 @@ const ListingCard = ({ data }: { data: PostModel }) => {
           src={data.thumbnailUrl}
           alt='책 대표사진'
           fill
+          style={{ objectFit: 'cover' }}
           sizes='(max-width: 744px) 50vw, 20vw'
         />
       </S.ImageWrapper>

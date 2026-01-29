@@ -57,8 +57,8 @@ const ChatRoomInfo = ({
             <Image
               src={post.thumbnailUrl}
               alt='책 대표사진'
-              width={40}
-              height={40}
+              fill
+              style={{ objectFit: 'cover' }}
             />
           </S.ImageWrapper>
           <div>
