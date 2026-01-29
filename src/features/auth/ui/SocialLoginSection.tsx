@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styled from 'styled-components';
 
 const SocialLoginSection = () => {
@@ -11,10 +12,14 @@ const SocialLoginSection = () => {
       </DividerWithText>
       <SocialLoginContainer>
         <Link href={'https://api.bookbridge.kr/oauth2/authorization/naver'}>
-          <Icon src='/naver.png' alt='네이버 로그인' />
+          <IconWrapper>
+            <Image src='/naver.png' alt='네이버 로그인' fill />
+          </IconWrapper>
         </Link>
         <Link href={'https://api.bookbridge.kr/oauth2/authorization/google'}>
-          <Icon src='/google.png' alt='구글 로그인' />
+          <IconWrapper>
+            <Image src='/google.png' alt='구글 로그인' fill />
+          </IconWrapper>
         </Link>
       </SocialLoginContainer>
     </Wrapper>
@@ -58,7 +63,7 @@ const SocialLoginContainer = styled.div`
   gap: 20px;
 `;
 
-const Icon = styled.img`
+const IconWrapper = styled.div`
   width: 40px;
   height: 40px;
   cursor: pointer;

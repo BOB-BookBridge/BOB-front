@@ -3,6 +3,7 @@ import { CloseIconSm, PhotoIcon } from '@/shared/assets/icons';
 import { useUploadImagesMutation } from '@/entities/files';
 import { ImageFile } from '@/entities/files';
 import * as S from './ListingWrite.styles';
+import Image from 'next/image';
 
 interface PhotoListProps {
   images: ImageFile[];
@@ -61,14 +62,19 @@ const PhotoList = ({ images, onAddImage, onDeleteImage }: PhotoListProps) => {
           <S.DeleteButton onClick={() => handleDeleteImage(idx)}>
             <CloseIconSm fill={theme.colors.WHITE} />
           </S.DeleteButton>
-          <S.StyledImage
-            src={
-              image.fileUrl
-                ? image.fileUrl
-                : `${process.env.NEXT_PUBLIC_S3_BASE_URL}/${image.fileName}`
-            }
-            draggable={false}
-          />
+          <S.ImageWrapper>
+            <Image
+              src={
+                image.fileUrl
+                  ? image.fileUrl
+                  : `${process.env.NEXT_PUBLIC_S3_BASE_URL}/${image.fileName}`
+              }
+              alt='이미지'
+              fill
+              style={{ objectFit: 'cover' }}
+              draggable={false}
+            />
+          </S.ImageWrapper>
         </div>
       ))}
     </Container>

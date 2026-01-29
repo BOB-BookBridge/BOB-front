@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useState } from 'react';
 import styled from 'styled-components';
 import ModalCarousel from '@/features/listing/ui/detail/ModalCarousel';
@@ -17,9 +18,14 @@ const ChatImages = ({ images }: { images: DetailImage[] }) => {
       <S.ImageGrid onClick={handleShowAllImages}>
         {topImages.map((img, idx) => (
           <div key={img.fileName + idx} style={{ position: 'relative' }}>
-            <S.ImageThumbnail
-              src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/${img.fileName}`}
-            />
+            <S.ImageThumbnailWrapper>
+              <Image
+                src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/${img.fileName}`}
+                fill
+                alt='책 이미지'
+                style={{ objectFit: 'cover' }}
+              />
+            </S.ImageThumbnailWrapper>
             {idx === 2 && (
               <S.ImageOverlay>
                 <S.OverlayText>+{restCount}</S.OverlayText>

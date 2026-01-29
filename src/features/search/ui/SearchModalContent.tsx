@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { LoadingContainer } from '@/shared/ui/LoadingIndicator';
@@ -108,7 +109,14 @@ const SearchModalContent = ({
               key={item.itemId}
               onClick={() => handleClickBook(item)}
               $isSelected={selected?.itemId === item.itemId}>
-              <BookImage src={item.cover} />
+              <BookImageWrapper>
+                <Image
+                  src={item.cover}
+                  alt='커버이미지'
+                  fill
+                  style={{ objectFit: 'cover' }}
+                />
+              </BookImageWrapper>
               <div style={{ flex: 1 }}>
                 <TitleText>{item.title}</TitleText>
                 <InfoText>{item.author}</InfoText>
@@ -184,11 +192,10 @@ const BookItemWrapper = styled.div<BookItemWrapperProps>`
     $isSelected ? `2px solid ${theme.colors.PRIMARY}` : 'none'};
 `;
 
-const BookImage = styled.img`
+const BookImageWrapper = styled.div`
   width: 80px;
   aspect-ratio: 1 / 1;
   flex-shrink: 0;
-  object-fit: cover;
   border-radius: 10px;
 `;
 
