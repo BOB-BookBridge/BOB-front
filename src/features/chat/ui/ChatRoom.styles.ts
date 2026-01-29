@@ -84,6 +84,7 @@ export const InfoLeftSection = styled.div`
 `;
 
 export const ImageWrapper = styled.div`
+  position: relative;
   width: 40px;
   height: 40px;
   border-radius: 10px;
@@ -236,9 +237,11 @@ export const ImageGrid = styled.div`
 `;
 
 export const ImageThumbnailWrapper = styled.div`
+  position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 5px;
+  overflow: hidden;
 `;
 
 export const ImageOverlay = styled.div`

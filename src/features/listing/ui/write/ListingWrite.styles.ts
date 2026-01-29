@@ -37,10 +37,12 @@ export const DeleteButton = styled.div`
 `;
 
 export const ImageWrapper = styled.div`
+  position: relative;
   width: 120px;
   height: 120px;
   border-radius: 20px;
   border: 1.5px solid ${({ theme }) => theme.colors.GRAY_500};
+  overflow: hidden;
 `;
 
 export const InputWrapper = styled.div`

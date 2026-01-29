@@ -38,6 +38,7 @@ const ImageCarousel = ({ images, thumbnail }: ImageCarouselProps) => {
                     setSelectedIndex(idx);
                     setIsModalOpen(true);
                   }}
+                  fill
                   src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/${image.fileName}`}
                 />
               </SwiperSlide>
@@ -50,6 +51,7 @@ const ImageCarousel = ({ images, thumbnail }: ImageCarouselProps) => {
                     setSelectedIndex(0);
                     setIsModalOpen(true);
                   }}
+                  fill
                   src={thumbnail}
                 />
               </SwiperSlide>

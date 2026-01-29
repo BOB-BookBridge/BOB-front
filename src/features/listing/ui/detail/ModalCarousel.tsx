@@ -44,7 +44,9 @@ const ModalCarousel = ({
               <ImageWrapper>
                 <Image
                   src={`${process.env.NEXT_PUBLIC_S3_BASE_URL}/${img.fileName}`}
+                  fill
                   alt={`Image ${idx + 1}`}
+                  style={{ objectFit: 'cover' }}
                 />
               </ImageWrapper>
             </SwiperSlide>
@@ -92,13 +94,7 @@ export const ModalContent = styled.div`
 `;
 
 export const ImageWrapper = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
-
-  img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: contain;
-  }
 `;

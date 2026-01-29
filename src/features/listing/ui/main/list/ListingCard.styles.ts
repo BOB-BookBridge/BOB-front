@@ -42,10 +42,6 @@ export const ImageWrapper = styled.div`
   border: 0.5px solid ${({ theme }) => theme.colors.GRAY_300};
 
   img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
     transform: scale(1.03);
     transform-origin: center;
     transition: transform 0.3s ease;
