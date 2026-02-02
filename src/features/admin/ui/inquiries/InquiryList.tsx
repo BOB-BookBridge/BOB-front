@@ -258,7 +258,9 @@ const InquiryList = ({ searchKey, keyword, status }: InquiryListProps) => {
                 ...inq,
                 number: (currentPage - 1) * PAGE_SIZE + index + 1,
               }))}
-              onRowClick={(inq) => router.push(`/supports/inquiries/${inq.id}`)}
+              onRowClick={(inq) =>
+                router.push(`/admin/supports/inquiries/${inq.id}`)
+              }
               keyExtractor={(inq) => inq.id}
             />
             <Pagination

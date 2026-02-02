@@ -36,7 +36,7 @@ const navItems: NavItem[] = [
     children: [
       {
         label: '게시글 관리',
-        href: '/admin/posts',
+        href: '/admin/posts/manage',
         icon: null,
       },
       {
@@ -71,22 +71,22 @@ const navItems: NavItem[] = [
 ];
 const AdminSidebar = () => {
   const pathname = usePathname();
-  const isParentActive = (href: string) => pathname.startsWith(href);
+  const isActive = (href: string) => pathname.startsWith(href);
 
   return (
     <Container>
       {navItems.map((item) => (
         <div key={item.href}>
-          <NavLink href={item.href} $active={isParentActive(item.href)}>
+          <NavLink href={item.href} $active={isActive(item.href)}>
             {item.icon} {item.label}
           </NavLink>
-          {item.children && isParentActive(item.href) && (
+          {item.children && isActive(item.href) && (
             <SubNavWrapper>
               {item.children.map((children) => (
                 <SubNavLink
                   key={'children' + children.href}
                   href={children.href}
-                  $active={pathname === children.href}>
+                  $active={isActive(children.href)}>
                   {children.label}
                 </SubNavLink>
               ))}
