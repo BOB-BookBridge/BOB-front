@@ -8,6 +8,7 @@ import showToast from './showToast';
 export * from './postTextMap';
 export * from './date';
 export * from './cleanHtmlText';
+export * from './adminTextMap';
 
 export {
   withIconSize,

@@ -44,6 +44,18 @@ export function formatDate(dateString: string) {
   ].join('-');
 }
 
+export function simpleFormatDate(dateString: string) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return [
+    String(year).slice(-2),
+    String(month).padStart(2, '0'),
+    String(day).padStart(2, '0'),
+  ].join('.');
+}
+
 export function formatTime(dateString: string) {
   const date = new Date(dateString);
   const hour = String(date.getHours()).padStart(2, '0');
