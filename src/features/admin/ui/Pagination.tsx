@@ -1,5 +1,7 @@
+'use client';
+
 import styled from 'styled-components';
-import { PAGE_SIZE } from './UserList';
+import { PAGE_SIZE } from './users/UserList';
 
 const BLOCK_SIZE = 5;
 

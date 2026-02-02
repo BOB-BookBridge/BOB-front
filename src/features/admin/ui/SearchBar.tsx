@@ -1,25 +1,25 @@
+'use client';
+
 import styled from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
 import { DropdownIconSm } from '@/shared/assets/icons';
+import { Option } from '@/entities/admin';
 
-const keys = [
-  { value: 'email', label: '이메일' },
-  { value: 'nickname', label: '닉네임' },
-];
-export type SearchKeyType = (typeof keys)[number]['value'];
-
-interface SearchBarProps {
-  searchKey: SearchKeyType;
+interface SearchBarProps<T extends string = string> {
+  options: Option[];
+  searchKey: T;
   keyword: string;
-  onSearchKeyChange: (key: SearchKeyType) => void;
+  onSearchKeyChange: (key: T) => void;
   onKeywordChange: (keyword: string) => void;
 }
-const SearchBar = ({
+
+const SearchBar = <T extends string = string>({
+  options,
   searchKey,
   keyword,
   onSearchKeyChange,
   onKeywordChange,
-}: SearchBarProps) => {
+}: SearchBarProps<T>) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [searchKeyword, setSearchKeyword] = useState<string>('');
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
@@ -47,7 +47,7 @@ const SearchBar = ({
     setIsOpenDropdown((prev) => !prev);
   }
 
-  function handleClickDropdownItem(value: SearchKeyType) {
+  function handleClickDropdownItem(value: T) {
     onSearchKeyChange(value);
     setIsOpenDropdown(false);
   }
@@ -60,17 +60,17 @@ const SearchBar = ({
     <Container ref={dropdownRef}>
       <div ref={dropdownRef}>
         <KeyDropdown onClick={handleClickDropdown}>
-          {keys.find((k) => k.value === searchKey)?.label}
+          {options.find((opt) => opt.value === searchKey)?.label}
           <DropdownIconSm />
         </KeyDropdown>
         {isOpenDropdown && (
           <DropdownItems>
-            {keys.map((k) => (
+            {options.map((opt) => (
               <DropdownItem
-                key={k.value}
-                $active={k.value === searchKey}
-                onClick={() => handleClickDropdownItem(k.value)}>
-                {k.label}
+                key={opt.value}
+                $active={opt.value === searchKey}
+                onClick={() => handleClickDropdownItem(opt.value as T)}>
+                {opt.label}
               </DropdownItem>
             ))}
           </DropdownItems>
