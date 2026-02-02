@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button, LoadingContainer, LoadingIndicator } from '@/shared/ui';
 import { getAreaNameById } from '@/features/user/lib';
@@ -18,6 +18,13 @@ const UserDetail = ({ id }: { id: string }) => {
     data?.member.status ?? 'DEACTIVATED',
   );
   const [editMode, setEditMode] = useState(false);
+
+  useEffect(() => {
+    if (data) {
+      setMemo(data.member.memo ?? '');
+      setStatus(data.member.status);
+    }
+  }, [data]);
 
   function handleEditCancel() {
     if (data) {
