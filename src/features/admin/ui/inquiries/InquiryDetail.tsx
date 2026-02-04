@@ -1,38 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
-import { InquiryDetailRes, InquiryStatus } from '@/entities/admin/inquirues';
-import { formatDateTime, inquiryStatusMap } from '@/shared/lib';
+import {
+  useAdminInquiryMutation,
+  useInquiryQuery,
+} from '@/entities/admin/inquirues/queries';
+import { formatDateTime, inquiryStatusMap, showToast } from '@/shared/lib';
+import { InquiryStatus } from '@/entities/admin/inquirues';
+import { Button, LoadingIndicator } from '@/shared/ui';
 import { DropdownIconSm } from '@/shared/assets/icons';
 import { useMyQuery } from '@/entities/user';
-import { Button } from '@/shared/ui';
 import * as S from './InquiryDetail.styles';
-
-const data: InquiryDetailRes = {
-  id: 2,
-  email: 'znight1020@naver.com',
-  title: '아니이거 왜 안 되나요?',
-  content:
-    '원래 이거 이렁쿵저러쿵뭐시기저시기해서 이렇게저렇게 되어야 하느 거 아닌가요? 근데 안 돼요 ',
-  reply:
-    '아 그거는 이러쿵저러쿵 이렇습니다. 불편함을 겪게 하여 죄송합니다. 좋은 하루 보내세요 :)',
-  status: 'IN_REVIEW',
-  managerNickname: 'manager',
-  processedAt: '2026-01-21T10:34:00',
-  createdAt: '2026-01-20T07:34:41',
-};
 
 const options = ['PENDING', 'IN_REVIEW', 'CLOSED'] as const;
 
-const InquiryDetail = () => {
+const InquiryDetail = ({ id }: { id: number }) => {
   const { data: myData } = useMyQuery();
+  const { isPending, data } = useInquiryQuery(id);
+  const { mutate } = useAdminInquiryMutation(id);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<InquiryStatus>(
-    data.status,
-  );
-  const [replyContent, setReplyContent] = useState(data.reply ?? '');
-  const needReply =
-    data.status === 'PENDING' ||
-    (data.status === 'IN_REVIEW' && data.managerNickname === myData?.nickname);
+  const [replyContent, setReplyContent] = useState('');
+
+  useEffect(() => {
+    if (data) {
+      setReplyContent(data.reply ?? '');
+    }
+  }, [data]);
 
   useEffect(() => {
     if (!isOpenDropdown) return;
@@ -54,16 +46,22 @@ const InquiryDetail = () => {
     };
   }, [isOpenDropdown]);
 
+  if (isPending) return <LoadingIndicator />;
+  if (!data) return <div>데이터가 존재하지 않습니다.</div>;
+
+  const needReply =
+    data.status === 'PENDING' ||
+    (data.status === 'IN_REVIEW' && data.managerNickname === myData?.nickname);
+
   function handleClickDropdown() {
-    if (selectedStatus === 'PROCESSED') return;
+    if (data && data.status === 'PROCESSED') return;
     setIsOpenDropdown((prev) => !prev);
   }
 
   function handleChangeStatus(value: InquiryStatus) {
-    if (selectedStatus !== value) {
-      setSelectedStatus(value);
+    if (data && data.status !== value) {
+      mutate({ status: value }, { onSuccess: () => setIsOpenDropdown(false) });
     }
-    setIsOpenDropdown(false);
   }
 
   function handleReplySubmit() {
@@ -71,6 +69,12 @@ const InquiryDetail = () => {
     if (!trimmedContent) {
       return;
     }
+    mutate(
+      { status: 'PROCESSED', reply: trimmedContent },
+      {
+        onSuccess: () => showToast.success('답변이 정상적으로 등록되었습니다.'),
+      },
+    );
   }
 
   return (
@@ -78,11 +82,9 @@ const InquiryDetail = () => {
       <S.Header>
         <S.Title>문의 상세</S.Title>
         <div ref={dropdownRef} style={{ position: 'relative' }}>
-          <S.StatusDropdown
-            onClick={handleClickDropdown}
-            $status={selectedStatus}>
-            {inquiryStatusMap[selectedStatus]}
-            {selectedStatus !== 'PROCESSED' && <DropdownIconSm />}
+          <S.StatusDropdown onClick={handleClickDropdown} $status={data.status}>
+            {inquiryStatusMap[data.status]}
+            {data.status !== 'PROCESSED' && <DropdownIconSm />}
           </S.StatusDropdown>
           {isOpenDropdown && (
             <S.DropdownItems>
@@ -90,7 +92,7 @@ const InquiryDetail = () => {
                 <S.DropdownItem
                   key={opt}
                   onClick={() => handleChangeStatus(opt)}
-                  $active={opt === selectedStatus}>
+                  $active={opt === data.status}>
                   {inquiryStatusMap[opt]}
                 </S.DropdownItem>
               ))}
