@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Button, LoadingContainer, LoadingIndicator } from '@/shared/ui';
 import { getAreaNameById } from '@/features/user/lib';
 import { formatDate, showToast } from '@/shared/lib';
+import { UserAreaModel } from '@/entities/user';
 import StatusDropdown from './StatusDropdown';
 import {
   MemberStatus,
@@ -25,6 +26,19 @@ const UserDetail = ({ id }: { id: string }) => {
       setStatus(data.member.status);
     }
   }, [data]);
+
+  function formatAreaInfo(area: null | UserAreaModel) {
+    if (!area) return '정보 없음';
+
+    const areaName = getAreaNameById(area.emdId);
+    const status = area.isAuthentication ? '인증됨' : '미인증';
+    if (area.authenticatedAt) {
+      const date = formatDate(area.authenticatedAt);
+      return `${areaName}, ${status} (${date})`;
+    }
+
+    return `${areaName}, ${status}`;
+  }
 
   function handleEditCancel() {
     if (data) {
@@ -65,13 +79,7 @@ const UserDetail = ({ id }: { id: string }) => {
             </Row>
             <Row>
               <Title>지역 정보</Title>
-              <Content>
-                {data.member.area
-                  ? `${getAreaNameById(data.member.area.emdId)}, 
-                ${data.member.area.isAuthentication ? '인증됨' : '미인증'} (
-                ${formatDate(data.member.area.authenticatedAt)})`
-                  : '정보 없음'}
-              </Content>
+              <Content>{formatAreaInfo(data.member.area)}</Content>
             </Row>
             <Row>
               <Title>권한</Title>
