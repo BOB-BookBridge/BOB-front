@@ -15,6 +15,13 @@ const common = {
   },
   SENDCHAT_BACK: '#FFE0A5',
   SENDCHAT_TEXT: '#424242',
+
+  WARNING: '#F57C00',
+  WARNING_100: '#FFF3E0',
+  SUCCESS: '#388E3C',
+  SUCCESS_100: '#E8F5E9',
+  DANGER: '#DC2626',
+  DANGER_100: '#FEF2F2',
 };
 
 export const colors = {

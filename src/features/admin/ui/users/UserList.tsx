@@ -1,18 +1,25 @@
+'use client';
+
 import { useState } from 'react';
 import styled from 'styled-components';
 import { LoadingIndicator, LoadingContainer, ModalLayout } from '@/shared/ui';
-import { formatDate, LocalErrorBoundary } from '@/shared/lib';
-import { useMemberListQuery } from '@/entities/admin';
-import { SearchKeyType } from './SearchBar';
-import Pagination from './Pagination';
+import { formatDate, LocalErrorBoundary, memberStatusMap } from '@/shared/lib';
+import AdminTable, { ColumnConfig } from '../AdminTable';
 import UserDetail from './UserDetail';
+import { Pagination } from '..';
+import {
+  MemberStatus,
+  useMemberListQuery,
+  UserSearchKey,
+} from '@/entities/admin';
 
 export const PAGE_SIZE = 20;
 
 interface UserListProps {
-  searchKey: SearchKeyType;
+  searchKey: UserSearchKey;
   keyword: string;
 }
+
 const UserList = ({ searchKey, keyword }: UserListProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [openDetail, setOpenDetail] = useState<string>('');
@@ -23,6 +30,33 @@ const UserList = ({ searchKey, keyword }: UserListProps) => {
     size: PAGE_SIZE,
   });
 
+  const columns: ColumnConfig[] = [
+    { key: 'number', label: '번호', width: 8 },
+    {
+      key: 'role',
+      label: '권한',
+      width: 12,
+      render: (role) => (role === 'ADMIN' ? '관리자' : '사용자'),
+    },
+    { key: 'nickname', label: '닉네임', width: 18 },
+    { key: 'email', label: '이메일', width: 30 },
+    {
+      key: 'status',
+      label: '활성 상태',
+      width: 14,
+      render: (status) => (
+        <StatusBadge $status={status as MemberStatus}>
+          {memberStatusMap[status as MemberStatus]}
+        </StatusBadge>
+      ),
+    },
+    {
+      key: 'createdAt',
+      label: '가입일',
+      width: 18,
+      render: (date) => formatDate(date as string),
+    },
+  ];
   return (
     <Container>
       {isPending ? (
@@ -32,44 +66,15 @@ const UserList = ({ searchKey, keyword }: UserListProps) => {
       ) : (
         data && (
           <>
-            <Table>
-              <thead>
-                <TableHeader>
-                  <th>번호</th>
-                  <th>권한</th>
-                  <th>닉네임</th>
-                  <th>이메일</th>
-                  <th>활성 상태</th>
-                  <th>가입일</th>
-                </TableHeader>
-              </thead>
-              <tbody>
-                {data.members.map((member, index) => {
-                  const absoluteNumber =
-                    (currentPage - 1) * PAGE_SIZE + index + 1;
-                  return (
-                    <TableRow
-                      key={member.id}
-                      onClick={() => setOpenDetail(member.id)}>
-                      <td>{absoluteNumber}</td>
-                      <td>{member.role === 'ADMIN' ? '관리자' : '사용자'}</td>
-                      <td>{member.nickname}</td>
-                      <td>{member.email}</td>
-                      <td>
-                        <StatusBadge $status={member.status}>
-                          {member.status === 'ACTIVE'
-                            ? '활성'
-                            : member.status === 'BANNED'
-                              ? '정지'
-                              : '비활성'}
-                        </StatusBadge>
-                      </td>
-                      <td>{formatDate(member.createdAt)}</td>
-                    </TableRow>
-                  );
-                })}
-              </tbody>
-            </Table>
+            <AdminTable
+              columns={columns}
+              data={data.members.map((member, index) => ({
+                ...member,
+                number: (currentPage - 1) * PAGE_SIZE + index + 1,
+              }))}
+              onRowClick={(member) => setOpenDetail(member.id)}
+              keyExtractor={(member) => member.id}
+            />
             <Pagination
               totalCount={data.totalCount}
               currentPage={currentPage}
@@ -101,68 +106,20 @@ const Container = styled.div`
   gap: 24px;
 `;
 
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  background-color: ${({ theme }) => theme.colors.WHITE};
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 0 2px 2px ${({ theme }) => theme.colors.GRAY_300};
-  table-layout: fixed;
+const STATUS_STYLE_MAP = {
+  ACTIVE: { color: 'SECONDARY', backgroundColor: 'SECONDARY_100' },
+  BANNED: { color: 'DANGER', backgroundColor: 'DANGER_100' },
+  DEACTIVATED: { color: 'GRAY_500', backgroundColor: 'GRAY_200' },
+} as const;
 
-  th:nth-child(1) {
-    width: 8%;
-  }
-  th:nth-child(2) {
-    width: 12%;
-  }
-  th:nth-child(3) {
-    width: 18%;
-  }
-  th:nth-child(4) {
-    width: 30%;
-  }
-  th:nth-child(5) {
-    width: 14%;
-  }
-  th:nth-child(6) {
-    width: 18%;
-  }
-`;
-
-const TableRow = styled.tr`
-  cursor: pointer;
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.GRAY_200};
-  }
-
-  td {
-    padding: 12px 0;
-    text-align: center;
-    font-size: 14px;
-    color: ${({ theme }) => theme.colors.BLACK};
-  }
-`;
-
-const TableHeader = styled.tr`
-  th {
-    padding: 12px 0;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 600;
-    color: ${({ theme }) => theme.colors.BLACK};
-    border-bottom: 2px solid ${({ theme }) => theme.colors.GRAY_300};
-  }
-`;
-
-const StatusBadge = styled.span<{ $status: string }>`
+const StatusBadge = styled.span<{ $status: MemberStatus }>`
   display: inline-block;
   padding: 4px 12px;
   border-radius: 8px;
   font-size: 12px;
   font-weight: 500;
   color: ${({ $status, theme }) =>
-    $status === 'ACTIVE' ? theme.colors.SECONDARY : theme.colors.GRAY_500};
+    theme.colors[STATUS_STYLE_MAP[$status].color]};
   background-color: ${({ $status, theme }) =>
-    $status === 'ACTIVE' ? theme.colors.SECONDARY_100 : theme.colors.GRAY_200};
+    theme.colors[STATUS_STYLE_MAP[$status].backgroundColor]};
 `;

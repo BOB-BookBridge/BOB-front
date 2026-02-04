@@ -1,5 +1,7 @@
 import { UserAreaModel } from '../../user';
 
+export type UserSearchKey = 'email' | 'nickname';
+
 export interface GetMemberListReq {
   key?: string;
   keyword?: string;

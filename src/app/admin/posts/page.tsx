@@ -1,5 +1,5 @@
-const AdminPostsPage = () => {
-  return <div>게시글 관리</div>;
-};
+import { redirect } from 'next/navigation';
 
-export default AdminPostsPage;
+export default function PostPage() {
+  redirect('/admin/posts/manage');
+}
