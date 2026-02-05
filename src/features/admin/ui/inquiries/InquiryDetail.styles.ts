@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { InquiryStatus } from '@/entities/admin/inquirues';
-import { STATUS_STYLE_MAP } from './constants';
+import { STATUS_STYLE_MAP } from '../../constants/status_style';
 
 export const Container = styled.div`
   width: 100%;
