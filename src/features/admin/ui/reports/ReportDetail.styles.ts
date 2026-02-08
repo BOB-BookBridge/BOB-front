@@ -99,7 +99,7 @@ export const InfoValue = styled.div`
 
 export const PostPreview = styled.div`
   display: flex;
-  flex-direcion: column;
+  flex-direction: column;
   gap: 12px;
 `;
 
@@ -112,11 +112,11 @@ export const PostImageWrapper = styled.div`
 `;
 
 export const PostTitle = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
 `;
 export const PostContent = styled.div`
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
 `;
 

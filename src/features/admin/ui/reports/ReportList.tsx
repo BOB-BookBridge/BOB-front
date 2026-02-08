@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
 import { reportStatusMap, simpleFormatDate } from '@/shared/lib';
+import { LoadingContainer, LoadingIndicator } from '@/shared/ui';
 import AdminTable, { ColumnConfig } from '../AdminTable';
 import { STATUS_STYLE_MAP } from '../../constants';
 import Pagination from '../Pagination';
@@ -11,53 +12,11 @@ import {
   ReportStatusWithAll,
   ReportTypeWithAll,
   User,
+  useReportsQuery,
 } from '@/entities/admin/reports';
 
 const PAGE_SIZE = 20;
 
-const data = {
-  totalCount: 2,
-  reports: [
-    {
-      id: 2,
-      status: 'PENDING',
-      type: 'CHAT',
-      reason: '욕설/비방',
-      reporter: {
-        id: '019b0689-4ddd-7d0e-807a-cff21461a374',
-        email: 'manager@bob.com',
-        nickname: 'manager001',
-      },
-      reported: {
-        id: '019b0689-4ddd-7d0e-807a-bfcbcc682200',
-        email: 'znight1020@naver.com',
-        nickname: 'leehs',
-      },
-      managerNickname: null,
-      processedAt: null,
-      createdAt: '2026-01-14T14:00:57',
-    },
-    {
-      id: 1,
-      status: 'PENDING',
-      type: 'POST',
-      reason: '부적절한 콘텐츠',
-      reporter: {
-        id: '019b0689-4ddd-7d0e-807a-cff21461a374',
-        email: 'manager@bob.com',
-        nickname: 'manager001',
-      },
-      reported: {
-        id: '019b0689-4ddd-7d0e-807a-bfcbcc682200',
-        email: 'znight1020@naver.com',
-        nickname: 'leehs',
-      },
-      managerNickname: null,
-      processedAt: null,
-      createdAt: '2025-12-20T20:08:14',
-    },
-  ],
-};
 interface ReportListProps {
   searchKey: ReportSearchKey;
   keyword: string;
@@ -68,6 +27,16 @@ interface ReportListProps {
 const ReportList = ({ searchKey, keyword, status, type }: ReportListProps) => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
+  const { isPending, data, isError, error } = useReportsQuery({
+    reporterEmail:
+      searchKey === 'reporterEmail' && keyword ? keyword : undefined,
+    reportedEmail:
+      searchKey === 'reportedEmail' && keyword ? keyword : undefined,
+    status: status === 'ALL' ? undefined : status,
+    type: type === 'ALL' ? undefined : type,
+    page: currentPage - 1,
+    size: PAGE_SIZE,
+  });
   const columns: ColumnConfig[] = [
     { key: 'number', label: '번호', width: 6 },
     {
@@ -107,22 +76,43 @@ const ReportList = ({ searchKey, keyword, status, type }: ReportListProps) => {
       render: (nickname) => (nickname ? (nickname as string) : '-'),
     },
   ];
+
+  if (isPending)
+    return (
+      <LoadingContainer>
+        <LoadingIndicator />
+      </LoadingContainer>
+    );
+  if (isError || data.reports.length === 0) {
+    return (
+      <LoadingContainer>
+        <div>신고 내역이 존재하지 않습니다.</div>
+      </LoadingContainer>
+    );
+  }
+
   return (
     <>
-      <AdminTable
-        columns={columns}
-        data={data.reports.map((rep, index) => ({
-          ...rep,
-          number: (currentPage - 1) * PAGE_SIZE + index + 1,
-        }))}
-        onRowClick={(rep) => router.push(`/admin/supports/reports/${rep.id}`)}
-        keyExtractor={(rep) => rep.id}
-      />
-      <Pagination
-        totalCount={data.totalCount}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      {data && (
+        <>
+          <AdminTable
+            columns={columns}
+            data={data.reports.map((rep, index) => ({
+              ...rep,
+              number: (currentPage - 1) * PAGE_SIZE + index + 1,
+            }))}
+            onRowClick={(rep) =>
+              router.push(`/admin/supports/reports/${rep.id}`)
+            }
+            keyExtractor={(rep) => rep.id}
+          />
+          <Pagination
+            totalCount={data.totalCount}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </>
+      )}
     </>
   );
 };
