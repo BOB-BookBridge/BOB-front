@@ -7,6 +7,7 @@ import * as queriesModule from '@/entities/admin/inquirues/queries';
 import { GetInquiryRes } from '@/entities/admin/inquirues';
 import InquiryDetail from '../InquiryDetail';
 import { useMyQuery } from '@/entities/user';
+import { inquiryStatusMap } from '@/shared/lib';
 
 const mockInquiryData: GetInquiryRes = {
   id: 1,
@@ -142,13 +143,13 @@ describe('InquiryDetail', () => {
     const user = userEvent.setup();
     renderWithProviders(<InquiryDetail id={1} />);
 
-    const statusButton = screen.getByText('답변 대기');
+    const statusButton = screen.getByText(inquiryStatusMap['PENDING']);
     await user.click(statusButton);
 
-    expect(screen.getByText('검토 중')).toBeInTheDocument();
+    expect(screen.getByText(inquiryStatusMap['IN_REVIEW'])).toBeInTheDocument();
 
-    const inReviewOptions = screen.getAllByText('검토 중');
-    const inReviewOption = inReviewOptions[inReviewOptions.length - 1]; // 마지막 것 선택
+    const inReviewOptions = screen.getAllByText(inquiryStatusMap['IN_REVIEW']);
+    const inReviewOption = inReviewOptions[inReviewOptions.length - 1];
     await user.click(inReviewOption);
 
     expect(mockMutate).toHaveBeenCalled();
@@ -169,10 +170,12 @@ describe('InquiryDetail', () => {
     const user = userEvent.setup();
     renderWithProviders(<InquiryDetail id={1} />);
 
-    const statusButton = screen.getByText('처리 완료');
+    const statusButton = screen.getByText(inquiryStatusMap['PROCESSED']);
     await user.click(statusButton);
 
-    expect(screen.queryByText('답변 대기')).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(inquiryStatusMap['PENDING']),
+    ).not.toBeInTheDocument();
   });
 
   it('답변 텍스트를 입력하고 제출할 수 있습니다', async () => {
