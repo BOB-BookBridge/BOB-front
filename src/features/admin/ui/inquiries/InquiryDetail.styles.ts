@@ -2,30 +2,6 @@ import styled from 'styled-components';
 import { InquiryStatus } from '@/entities/admin/inquirues';
 import { STATUS_STYLE_MAP } from '../../constants/status_style';
 
-export const Container = styled.div`
-  width: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding-bottom: 100px;
-`;
-
-export const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 10px;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.GRAY_300};
-`;
-
-export const Title = styled.div`
-  font-size: 20px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.BLACK};
-  margin: 0;
-`;
-
 export const StatusDropdown = styled.div<{ $status: InquiryStatus }>`
   display: flex;
   justify-content: center;
@@ -74,24 +50,6 @@ export const DropdownItem = styled.div<{ $active: boolean }>`
   }
 `;
 
-export const Section = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 0 2px 2px ${({ theme }) => theme.colors.GRAY_300};
-`;
-
-export const SectionTitle = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.BLACK};
-  margin-bottom: 8px;
-  margin-top: 0;
-`;
-
 export const InfoGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -114,19 +72,6 @@ export const InfoContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-`;
-
-export const InfoLabel = styled.div`
-  font-size: 12px;
-  color: ${({ theme }) => theme.colors.GRAY_600};
-  font-weight: 500;
-`;
-
-export const InfoValue = styled.div`
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.BLACK};
-  line-height: 1.6;
-  white-space: pre-wrap;
 `;
 
 export const InquiryTitle = styled.span`

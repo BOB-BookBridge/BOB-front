@@ -8,6 +8,7 @@ import InquiryDetail from './inquiries/InquiryDetail';
 import ReportList from './reports/ReportList';
 import ReportDetail from './reports/ReportDetail';
 import PostList from './posts/PostList';
+import PostDetail from './posts/PostDetail';
 
 export {
   AdminSidebar,
@@ -20,4 +21,5 @@ export {
   ReportList,
   ReportDetail,
   PostList,
+  PostDetail,
 };

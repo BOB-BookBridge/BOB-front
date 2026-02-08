@@ -4,19 +4,19 @@ import { adminPostStatusMap, LocalErrorBoundary } from '@/shared/lib';
 import { PostList, SearchBar, StatusBar } from '@/features/admin/ui';
 import { Option } from '@/entities/admin';
 import {
-  AdminPostStatus,
-  AdminPostStatusWithAll,
+  AdminFilterPostStatusWithAll,
+  AdminFilterPostStatus,
   PostSearchKey,
 } from '@/entities/admin/posts';
 
 const postSearchOptions: Option[] = [{ value: 'email', label: '이메일' }];
-const allInquiryStatuses: AdminPostStatus[] = Object.keys(
+const allPostStatuses: AdminFilterPostStatus[] = Object.keys(
   adminPostStatusMap,
-) as AdminPostStatus[];
+) as AdminFilterPostStatus[];
 
-const postStatusOptions: Option<AdminPostStatusWithAll>[] = [
+const postStatusOptions: Option<AdminFilterPostStatusWithAll>[] = [
   { value: 'ALL', label: '전체' },
-  ...allInquiryStatuses.map((status) => ({
+  ...allPostStatuses.map((status) => ({
     value: status,
     label: adminPostStatusMap[status],
   })),
@@ -25,7 +25,7 @@ const AdminPostsPage = () => {
   const [searchKey, setSearchKey] = useState<PostSearchKey>('email');
   const [keyword, setKeyword] = useState<string>('');
   const [selectedStatus, setSelectedStatus] =
-    useState<AdminPostStatusWithAll>('ALL');
+    useState<AdminFilterPostStatusWithAll>('ALL');
 
   return (
     <>
@@ -36,7 +36,7 @@ const AdminPostsPage = () => {
         onSearchKeyChange={setSearchKey}
         onKeywordChange={setKeyword}
       />
-      <StatusBar<AdminPostStatus>
+      <StatusBar<AdminFilterPostStatus>
         options={postStatusOptions}
         selectedValue={selectedStatus}
         onSelectedValueChange={setSelectedStatus}

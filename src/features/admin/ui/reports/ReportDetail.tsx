@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Button, LoadingContainer, LoadingIndicator } from '@/shared/ui';
 import { ClockIconSm, DropdownIconSm } from '@/shared/assets/icons';
 import * as S from './ReportDetail.styles';
+import * as C from '../DetailPage.styles';
 import {
   ReportStatus,
   useReportMutation,
@@ -75,78 +76,78 @@ const ReportDetail = ({ id }: { id: number }) => {
   return (
     <>
       {data && (
-        <S.Container>
-          <S.Header>
-            <S.Title>신고 상세</S.Title>
-            <S.StatusBox $status={data.status}>
+        <C.Container>
+          <C.Header>
+            <C.Title>신고 상세</C.Title>
+            <C.StatusBox $status={data.status}>
               {reportStatusMap[data.status]}
-            </S.StatusBox>
-          </S.Header>
-          <S.ContentWrapper>
-            <S.LeftSection>
-              <S.Section>
-                <S.SectionTitle>기본 정보</S.SectionTitle>
-                <S.InfoRow>
-                  <S.InfoLabel>신고 유형</S.InfoLabel>
-                  <S.InfoValue>{reportTypeMap[data.type]}</S.InfoValue>
-                </S.InfoRow>
-                <S.InfoRow>
-                  <S.InfoLabel>신고 사유</S.InfoLabel>
-                  <S.InfoValue>{data.reason}</S.InfoValue>
-                </S.InfoRow>
-                <S.InfoRow>
-                  <S.InfoLabel>신고 일시</S.InfoLabel>
-                  <S.InfoValue>{formatDateTime(data.createdAt)}</S.InfoValue>
-                </S.InfoRow>
-                <S.InfoRow>
-                  <S.InfoLabel>처리 횟수</S.InfoLabel>
-                  <S.InfoValue>{data.reportedProcessedCount}회</S.InfoValue>
-                </S.InfoRow>
-              </S.Section>
-              <S.Section>
-                <S.SectionTitle>피신고자 정보</S.SectionTitle>
-                <S.InfoRow>
-                  <S.InfoLabel>닉네임</S.InfoLabel>
-                  <S.InfoValue>{data.reported.nickname}</S.InfoValue>
-                </S.InfoRow>
-                <S.InfoRow>
-                  <S.InfoLabel>이메일</S.InfoLabel>
-                  <S.InfoValue>{data.reported.email}</S.InfoValue>
-                </S.InfoRow>
-              </S.Section>
-              <S.Section>
-                <S.SectionTitle>신고자 정보</S.SectionTitle>
-                <S.InfoRow>
-                  <S.InfoLabel>닉네임</S.InfoLabel>
-                  <S.InfoValue>{data.reporter.nickname}</S.InfoValue>
-                </S.InfoRow>
-                <S.InfoRow>
-                  <S.InfoLabel>이메일</S.InfoLabel>
-                  <S.InfoValue>{data.reporter.email}</S.InfoValue>
-                </S.InfoRow>
-              </S.Section>
-              <S.Section>
-                <S.SectionTitle>신고된 컨텐츠</S.SectionTitle>
+            </C.StatusBox>
+          </C.Header>
+          <C.ContentWrapper>
+            <C.LeftSection>
+              <C.Section>
+                <C.SectionTitle>기본 정보</C.SectionTitle>
+                <C.InfoRow>
+                  <C.InfoLabel>신고 유형</C.InfoLabel>
+                  <C.InfoValue>{reportTypeMap[data.type]}</C.InfoValue>
+                </C.InfoRow>
+                <C.InfoRow>
+                  <C.InfoLabel>신고 사유</C.InfoLabel>
+                  <C.InfoValue>{data.reason}</C.InfoValue>
+                </C.InfoRow>
+                <C.InfoRow>
+                  <C.InfoLabel>신고 일시</C.InfoLabel>
+                  <C.InfoValue>{formatDateTime(data.createdAt)}</C.InfoValue>
+                </C.InfoRow>
+                <C.InfoRow>
+                  <C.InfoLabel>처리 횟수</C.InfoLabel>
+                  <C.InfoValue>{data.reportedProcessedCount}회</C.InfoValue>
+                </C.InfoRow>
+              </C.Section>
+              <C.Section>
+                <C.SectionTitle>피신고자 정보</C.SectionTitle>
+                <C.InfoRow>
+                  <C.InfoLabel>닉네임</C.InfoLabel>
+                  <C.InfoValue>{data.reported.nickname}</C.InfoValue>
+                </C.InfoRow>
+                <C.InfoRow>
+                  <C.InfoLabel>이메일</C.InfoLabel>
+                  <C.InfoValue>{data.reported.email}</C.InfoValue>
+                </C.InfoRow>
+              </C.Section>
+              <C.Section>
+                <C.SectionTitle>신고자 정보</C.SectionTitle>
+                <C.InfoRow>
+                  <C.InfoLabel>닉네임</C.InfoLabel>
+                  <C.InfoValue>{data.reporter.nickname}</C.InfoValue>
+                </C.InfoRow>
+                <C.InfoRow>
+                  <C.InfoLabel>이메일</C.InfoLabel>
+                  <C.InfoValue>{data.reporter.email}</C.InfoValue>
+                </C.InfoRow>
+              </C.Section>
+              <C.Section>
+                <C.SectionTitle>신고된 컨텐츠</C.SectionTitle>
                 {data.type === 'POST' ? (
-                  <S.InfoRow>
-                    <S.PostImageWrapper>
+                  <C.InfoRow>
+                    <C.PostImageWrapper>
                       <Image
                         src={data.reportedContent.thumbnailUrl}
                         alt={`${data.reportedContent.title} 이미지`}
                         fill
                         style={{ objectFit: 'cover' }}
                       />
-                    </S.PostImageWrapper>
+                    </C.PostImageWrapper>
                     <S.PostPreview>
                       <S.PostTitle>{data.reportedContent.title}</S.PostTitle>
                       <S.PostContent>
                         {data.reportedContent.description}
                       </S.PostContent>
                     </S.PostPreview>
-                  </S.InfoRow>
+                  </C.InfoRow>
                 ) : (
                   <S.ChatPreview>
-                    <S.InfoLabel>채팅 내역</S.InfoLabel>
+                    <C.InfoLabel>채팅 내역</C.InfoLabel>
                     {data.reportedContent.messages.map((mes) => (
                       <S.MessageItem key={mes.content + mes.sentAt}>
                         <S.MessageContent>{mes.content}</S.MessageContent>
@@ -157,64 +158,64 @@ const ReportDetail = ({ id }: { id: number }) => {
                     ))}
                   </S.ChatPreview>
                 )}
-              </S.Section>
-            </S.LeftSection>
-            <S.RightSection>
-              <S.Section>
-                <S.SectionTitle>상태 변경</S.SectionTitle>
-                <S.InfoLabel>처리 상태</S.InfoLabel>
-                <S.DropdownWrapper ref={dropdownRef}>
-                  <S.StatusDropdown onClick={handleClickDropdown}>
+              </C.Section>
+            </C.LeftSection>
+            <C.RightSection>
+              <C.Section>
+                <C.SectionTitle>상태 변경</C.SectionTitle>
+                <C.InfoLabel>처리 상태</C.InfoLabel>
+                <C.DropdownWrapper ref={dropdownRef}>
+                  <C.StatusDropdown onClick={handleClickDropdown}>
                     {reportStatusMap[statusValue]}
                     {data.status !== 'PROCESSED' && <DropdownIconSm />}
-                  </S.StatusDropdown>
+                  </C.StatusDropdown>
                   {isOpenDropdown && (
-                    <S.DropdownItems>
+                    <C.DropdownItems>
                       {options.map((opt) => (
-                        <S.DropdownItem
+                        <C.DropdownItem
                           key={opt}
                           onClick={() => handleClickStatus(opt)}
                           $active={opt === statusValue}>
                           {reportStatusMap[opt]}
-                        </S.DropdownItem>
+                        </C.DropdownItem>
                       ))}
-                    </S.DropdownItems>
+                    </C.DropdownItems>
                   )}
-                </S.DropdownWrapper>
-                <S.InfoLabel>메모(선택 사항)</S.InfoLabel>
-                <S.Textarea
+                </C.DropdownWrapper>
+                <C.InfoLabel>메모(선택 사항)</C.InfoLabel>
+                <C.Textarea
                   placeholder='처리 사항이나 특이 사항을 입력하세요'
                   value={memoText}
                   onChange={(e) => setMemoText(e.target.value)}
                 />
-                <S.ButtonWrapper>
+                <C.ButtonWrapper>
                   <Button
                     text='적용'
                     onClick={handleChangeStatus}
                     variant='secondary'
                     size='free'
                   />
-                </S.ButtonWrapper>
-              </S.Section>
+                </C.ButtonWrapper>
+              </C.Section>
               {(data.processedAt || data.managerNickname) && (
-                <S.Section>
-                  <S.SectionTitle>처리 정보</S.SectionTitle>
-                  <S.InfoRow>
+                <C.Section>
+                  <C.SectionTitle>처리 정보</C.SectionTitle>
+                  <C.InfoRow>
                     {data.processedAt ? (
-                      <S.ProcessLabel>
+                      <C.ProcessLabel>
                         <ClockIconSm stroke='currentColor' />
                         {formatDateTime(data.processedAt)}
-                      </S.ProcessLabel>
+                      </C.ProcessLabel>
                     ) : (
-                      <S.InfoLabel>처리 중</S.InfoLabel>
+                      <C.InfoLabel>처리 중</C.InfoLabel>
                     )}
-                    <S.InfoValue>{data.managerNickname}</S.InfoValue>
-                  </S.InfoRow>
-                </S.Section>
+                    <C.InfoValue>{data.managerNickname}</C.InfoValue>
+                  </C.InfoRow>
+                </C.Section>
               )}
-            </S.RightSection>
-          </S.ContentWrapper>
-        </S.Container>
+            </C.RightSection>
+          </C.ContentWrapper>
+        </C.Container>
       )}
     </>
   );

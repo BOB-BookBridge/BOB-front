@@ -27,4 +27,6 @@ export const reportTypeMap = {
 export const adminPostStatusMap = {
   PENDING: '보류',
   BANNED: '제재',
+  ACTIVE: '활성',
+  DEACTIVATED: '비활성',
 };
