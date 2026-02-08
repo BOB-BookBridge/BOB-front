@@ -45,6 +45,7 @@ import RawDashboard from './dashboard.svg';
 import RawPosts from './posts.svg';
 import RawReports from './reports.svg';
 import RawUsers from './users.svg';
+import RawClock from './clock.svg';
 
 export const UserIcon = withIconSize(RawUserIcon);
 export const NotiIcon = withIconSize(RawNotiIcon);
@@ -102,3 +103,4 @@ export const DashboardIcon = withIconSize(RawDashboard, 18);
 export const PostsIcon = withIconSize(RawPosts, 18);
 export const ReportsIcon = withIconSize(RawReports, 18);
 export const UsersIcon = withIconSize(RawUsers, 18);
+export const ClockIconSm = withIconSize(RawClock, 14);

@@ -155,6 +155,7 @@ export const ReplyTextarea = styled.textarea`
   border: 1px solid ${({ theme }) => theme.colors.GRAY_400};
   border-radius: 8px;
   font-size: 14px;
+  background-color: ${({ theme }) => theme.colors.WHITE};
   color: ${({ theme }) => theme.colors.BLACK};
   resize: none;
   font-family: inherit;

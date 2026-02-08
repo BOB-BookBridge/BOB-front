@@ -8,10 +8,11 @@ const BUTTON_STYLE = {
   sm: { width: '180px', height: '45px', fontSize: '14px' },
   md: { width: '300px', height: '50px', fontSize: '16px' },
   lg: { width: '370px', height: '50px', fontSize: '18px' },
+  free: { width: '100%', height: '100%', fontSize: '16px' },
 } as const;
 
 type Variant = 'primary' | 'secondary' | 'cancel' | 'disabled' | 'reject';
-export type Size = 'xs' | 'sm' | 'md' | 'lg';
+export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'free';
 
 const Button = ({
   text,
