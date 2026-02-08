@@ -7,6 +7,7 @@ import StatusBar from './StatusBar';
 import InquiryDetail from './inquiries/InquiryDetail';
 import ReportList from './reports/ReportList';
 import ReportDetail from './reports/ReportDetail';
+import PostList from './posts/PostList';
 
 export {
   AdminSidebar,
@@ -18,4 +19,5 @@ export {
   InquiryDetail,
   ReportList,
   ReportDetail,
+  PostList,
 };

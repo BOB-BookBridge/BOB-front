@@ -23,3 +23,8 @@ export const reportTypeMap = {
   CHAT: '채팅 신고',
   POST: '게시글 신고',
 };
+
+export const adminPostStatusMap = {
+  PENDING: '보류',
+  BANNED: '제재',
+};
