@@ -5,6 +5,8 @@ import Pagination from './Pagination';
 import InquiryList from './inquiries/InquiryList';
 import StatusBar from './StatusBar';
 import InquiryDetail from './inquiries/InquiryDetail';
+import ReportList from './reports/ReportList';
+import ReportDetail from './reports/ReportDetail';
 
 export {
   AdminSidebar,
@@ -14,4 +16,6 @@ export {
   InquiryList,
   StatusBar,
   InquiryDetail,
+  ReportList,
+  ReportDetail,
 };

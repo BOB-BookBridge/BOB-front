@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useInquiriesQuery } from '@/entities/admin/inquirues/queries';
 import { simpleFormatDate, inquiryStatusMap } from '@/shared/lib';
 import { LoadingIndicator, LoadingContainer } from '@/shared/ui';
+import { STATUS_STYLE_MAP } from '../../constants/status_style';
 import AdminTable, { ColumnConfig } from '../AdminTable';
-import { STATUS_STYLE_MAP } from './constants';
 import { Pagination } from '..';
 import {
   InquirySearchKey,
