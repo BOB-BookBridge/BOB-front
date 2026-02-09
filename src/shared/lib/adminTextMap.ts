@@ -24,6 +24,11 @@ export const reportTypeMap = {
   POST: '게시글 신고',
 };
 
+export const adminFilterPostStatusMap = {
+  PENDING: '보류',
+  BANNED: '제재',
+};
+
 export const adminPostStatusMap = {
   PENDING: '보류',
   BANNED: '제재',

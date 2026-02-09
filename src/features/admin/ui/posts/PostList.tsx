@@ -10,9 +10,10 @@ import AdminTable, { ColumnConfig } from '../AdminTable';
 import { User } from '@/entities/admin/reports';
 import { Pagination } from '..';
 import {
-  AdminPostStatus,
-  AdminPostStatusWithAll,
+  AdminFilterPostStatus,
+  AdminFilterPostStatusWithAll,
   PostSearchKey,
+  useAdminPostsQuery,
 } from '@/entities/admin/posts';
 
 export const PAGE_SIZE = 20;
@@ -20,60 +21,19 @@ export const PAGE_SIZE = 20;
 interface PostListProps {
   searchKey: PostSearchKey;
   keyword: string;
-  status: AdminPostStatusWithAll;
+  status: AdminFilterPostStatusWithAll;
 }
-const data = {
-  totalCount: 3,
-  posts: [
-    {
-      id: 3020,
-      title: '빠르게 실패하기',
-      thumbnailUrl:
-        'https://image.aladin.co.kr/product/30070/40/cover500/k892839663_2.jpg',
-      description: '나쁜말',
-      status: 'PENDING',
-      createdAt: '2026-02-08T13:30:49',
-      writer: {
-        id: 'cb09d2d9-fa06-11f0-b313-961215ac38c3',
-        email: 'tester001@bob.com',
-        nickname: 'tester001',
-      },
-    },
-    {
-      id: 3017,
-      title: '밥 챙겨 먹어요, 행복하세요',
-      thumbnailUrl:
-        'https://image.aladin.co.kr/product/30585/22/cover500/k842830716_1.jpg',
-      description: '심한욕',
-      status: 'PENDING',
-      createdAt: '2026-02-08T13:30:40',
-      writer: {
-        id: 'cb09d2d9-fa06-11f0-b313-961215ac38c3',
-        email: 'tester001@bob.com',
-        nickname: 'tester001',
-      },
-    },
-    {
-      id: 3028,
-      title: '넌 대체 몇 년째 영어 공부를 하고 있는 거니?',
-      thumbnailUrl:
-        'https://image.aladin.co.kr/product/30665/63/cover500/k562830031_1.jpg',
-      description: '신고 제재용 게시글',
-      status: 'BANNED',
-      createdAt: '2026-02-08T13:30:45',
-      writer: {
-        id: 'cb09d2d9-fa06-11f0-b313-961215ac38c3',
-        email: 'tester001@bob.com',
-        nickname: 'tester001',
-      },
-    },
-  ],
-} as const;
+
 // 현재는 email이 유일한 searchKey이지만 추후 더 생길 수도 있어 포함해둠
 const PostList = ({ searchKey, keyword, status }: PostListProps) => {
   const router = useRouter();
-  const isPending = false;
   const [currentPage, setCurrentPage] = useState(1);
+  const { isPending, data } = useAdminPostsQuery({
+    email: searchKey === 'email' && keyword ? keyword : undefined,
+    status: status === 'ALL' ? undefined : status,
+    page: currentPage - 1,
+    size: PAGE_SIZE,
+  });
 
   const columns: ColumnConfig[] = [
     { key: 'number', label: '번호', width: 6 },
@@ -89,8 +49,8 @@ const PostList = ({ searchKey, keyword, status }: PostListProps) => {
       label: '상태',
       width: 10,
       render: (status) => (
-        <StatusBadge $status={status as AdminPostStatus}>
-          {adminPostStatusMap[status as AdminPostStatus]}
+        <StatusBadge $status={status as AdminFilterPostStatus}>
+          {adminPostStatusMap[status as AdminFilterPostStatus]}
         </StatusBadge>
       ),
     },
@@ -108,7 +68,12 @@ const PostList = ({ searchKey, keyword, status }: PostListProps) => {
           <LoadingIndicator />
         </LoadingContainer>
       ) : (
-        data && (
+        data &&
+        (data.totalCount === 0 ? (
+          <LoadingContainer>
+            <div>게시글이 없습니다</div>
+          </LoadingContainer>
+        ) : (
           <>
             <AdminTable
               columns={columns}
@@ -127,7 +92,7 @@ const PostList = ({ searchKey, keyword, status }: PostListProps) => {
               setCurrentPage={setCurrentPage}
             />
           </>
-        )
+        ))
       )}
     </Container>
   );
@@ -142,7 +107,7 @@ const Container = styled.div`
   gap: 24px;
 `;
 
-const StatusBadge = styled.span<{ $status: AdminPostStatus }>`
+const StatusBadge = styled.span<{ $status: AdminFilterPostStatus }>`
   display: inline-block;
   padding: 4px 8px;
   border-radius: 8px;

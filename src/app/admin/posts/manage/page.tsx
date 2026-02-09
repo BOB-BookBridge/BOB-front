@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { adminPostStatusMap, LocalErrorBoundary } from '@/shared/lib';
+import { adminFilterPostStatusMap, LocalErrorBoundary } from '@/shared/lib';
 import { PostList, SearchBar, StatusBar } from '@/features/admin/ui';
 import { Option } from '@/entities/admin';
 import {
@@ -11,14 +11,14 @@ import {
 
 const postSearchOptions: Option[] = [{ value: 'email', label: '이메일' }];
 const allPostStatuses: AdminFilterPostStatus[] = Object.keys(
-  adminPostStatusMap,
+  adminFilterPostStatusMap,
 ) as AdminFilterPostStatus[];
 
 const postStatusOptions: Option<AdminFilterPostStatusWithAll>[] = [
   { value: 'ALL', label: '전체' },
   ...allPostStatuses.map((status) => ({
     value: status,
-    label: adminPostStatusMap[status],
+    label: adminFilterPostStatusMap[status],
   })),
 ];
 const AdminPostsPage = () => {

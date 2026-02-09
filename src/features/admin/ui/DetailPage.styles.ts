@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { AdminFilterPostStatus } from '@/entities/admin/posts';
+import { AdminPostStatus } from '@/entities/admin/posts';
 import { ReportStatus } from '@/entities/admin/reports';
 import { STATUS_STYLE_MAP } from '../constants';
 
@@ -28,7 +28,7 @@ export const Title = styled.div`
 `;
 
 export const StatusBox = styled.div<{
-  $status: ReportStatus | AdminFilterPostStatus;
+  $status: ReportStatus | AdminPostStatus;
 }>`
   display: flex;
   justify-content: center;
