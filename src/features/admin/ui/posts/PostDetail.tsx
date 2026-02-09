@@ -11,7 +11,12 @@ import {
   useAdminPostQuery,
 } from '@/entities/admin/posts';
 
-const options = ['BANNED', 'ACTIVE', 'DEACTIVATED'] as const;
+type ChangeableStatus = 'PENDING' | 'BANNED';
+
+const options: Record<ChangeableStatus, readonly AdminPostStatus[]> = {
+  BANNED: ['DEACTIVATED'],
+  PENDING: ['BANNED', 'ACTIVE', 'DEACTIVATED'],
+} as const;
 
 const PostDetail = ({ id }: { id: number }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -45,8 +50,7 @@ const PostDetail = ({ id }: { id: number }) => {
   }, [isOpenDropdown]);
 
   function handleClickDropdown() {
-    if (data && (data.status === 'ACTIVE' || data.status === 'DEACTIVATED'))
-      return;
+    if (data && data.status !== 'PENDING' && data.status !== 'BANNED') return;
     setIsOpenDropdown((prev) => !prev);
   }
 
@@ -123,14 +127,16 @@ const PostDetail = ({ id }: { id: number }) => {
                   <C.SectionTitle>상태 변경</C.SectionTitle>
                   <C.InfoLabel>처리 상태</C.InfoLabel>
                   <C.DropdownWrapper ref={dropdownRef}>
-                    <C.StatusDropdown onClick={handleClickDropdown}>
+                    <StatusDropdown
+                      onClick={handleClickDropdown}
+                      $status={data.status}>
                       {adminPostStatusMap[statusValue]}
                       {(data.status === 'PENDING' ||
                         data.status === 'BANNED') && <DropdownIconSm />}
-                    </C.StatusDropdown>
+                    </StatusDropdown>
                     {isOpenDropdown && (
                       <C.DropdownItems>
-                        {options.map((opt) => (
+                        {options[data.status as ChangeableStatus].map((opt) => (
                           <C.DropdownItem
                             key={opt}
                             onClick={() => handleClickStatus(opt)}
@@ -225,4 +231,22 @@ export const ReportInfoTitle = styled.div`
 export const ReportInfoReason = styled.div`
   font-size: 12px;
   font-weight: 400;
+`;
+
+export const StatusDropdown = styled.div<{ $status: AdminPostStatus }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.colors.GRAY_400};
+  font-size: 14px;
+  font-weight: 400;
+
+  cursor: ${({ $status }) =>
+    $status === 'PENDING' || $status === 'BANNED' ? 'pointer' : 'not-allowed'};
+  svg {
+    fill: currentColor;
+  }
 `;

@@ -124,7 +124,8 @@ export const StatusDropdown = styled.div`
   font-size: 14px;
   font-weight: 400;
 
-  cursor: 'pointer' svg {
+  cursor: pointer;
+  svg {
     fill: currentColor;
   }
 `;
