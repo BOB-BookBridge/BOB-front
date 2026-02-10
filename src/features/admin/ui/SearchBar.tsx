@@ -81,7 +81,8 @@ const SearchBar = <T extends string = string>({
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter') handleEnterInput();
+          if (e.key === 'Enter' && e.nativeEvent.isComposing === false)
+            handleEnterInput();
         }}
       />
     </Container>

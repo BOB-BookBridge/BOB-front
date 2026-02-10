@@ -1,33 +1,45 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { CloseIconSm } from '@/shared/assets/icons';
-import { KeywordModel } from '@/entities/admin/posts';
+import { Button, LoadingContainer, LoadingIndicator } from '@/shared/ui';
 import * as C from '../DetailPage.styles';
-import { Button } from '@/shared/ui';
+import { showToast } from '@/shared/lib';
+import {
+  KeywordModel,
+  useAddFilterKeywordMutation,
+  useDeleteFilterKeywordMutation,
+  useFilterKeywordQuery,
+} from '@/entities/admin/posts';
 
-const data = [
-  {
-    id: 563,
-    word: '비속어',
-    predefined: false,
-    createdAt: '2026-02-07T00:18:22',
-    editable: true,
-  },
-  {
-    id: 564,
-    word: '심한욕',
-    predefined: false,
-    createdAt: '2026-02-07T00:21:23',
-    editable: true,
-  },
-];
 const KeywordManagement = () => {
+  const { isPending, data } = useFilterKeywordQuery();
+  const { mutate: addKeywordMutation } = useAddFilterKeywordMutation();
+  const { mutate: deleteKeywordMutation } = useDeleteFilterKeywordMutation();
+  const [isAdding, setIsAdding] = useState<boolean>(false);
   const [addKeyword, setAddKeyword] = useState('');
 
-  function handleAddKeyword() {}
+  function handleAddKeyword() {
+    const value = addKeyword.trim();
+    if (!value) {
+      showToast.error('등록할 키워드를 입력해 주세요');
+      return;
+    }
+    setIsAdding(true);
+    addKeywordMutation(value, {
+      onSuccess: () => {
+        setIsAdding(false);
+        setAddKeyword('');
+        showToast.success('키워드가 등록되었습니다');
+      },
+      onError: () => {
+        setIsAdding(false);
+      },
+    });
+  }
 
   function handleDeleteKeyword(keyword: KeywordModel) {
-    if (window.confirm(`"${keyword.word}" 키워드를 삭제하시겠습니까?`)) {
+    if (window.confirm(`'${keyword.word}' 키워드를 삭제하시겠습니까?`)) {
+      deleteKeywordMutation(keyword.id);
     }
   }
   return (
@@ -39,13 +51,19 @@ const KeywordManagement = () => {
             type='text'
             value={addKeyword}
             onChange={(e) => setAddKeyword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && e.nativeEvent.isComposing === false) {
+                e.preventDefault();
+                handleAddKeyword();
+              }
+            }}
             placeholder='탐지할 키워드를 입력하세요 (예: 카톡, 전화번호)'
           />
           <ButtonWrapper>
             <Button
-              text='+ 등록'
+              text={isAdding ? '등록 중' : '+ 등록'}
               onClick={handleAddKeyword}
-              variant='secondary'
+              variant={isAdding ? 'disabled' : 'secondary'}
               size='sm'
             />
           </ButtonWrapper>
@@ -53,15 +71,28 @@ const KeywordManagement = () => {
       </C.Section>
       <C.Section>
         <C.SectionTitle>등록된 키워드</C.SectionTitle>
-        <KeywordList>
-          {data.map((keyword) => (
-            <KeywordBox
-              key={keyword.id}
-              onClick={() => handleDeleteKeyword(keyword)}>
-              {keyword.word} <CloseIconSm />
-            </KeywordBox>
-          ))}
-        </KeywordList>
+        {isPending ? (
+          <LoadingContainer>
+            <LoadingIndicator />
+          </LoadingContainer>
+        ) : (
+          data &&
+          (data.length === 0 ? (
+            <EmptyMessage>
+              등록된 키워드가 존재하지 않습니다. 키워드를 등록해 주세요.
+            </EmptyMessage>
+          ) : (
+            <KeywordList>
+              {data.map((keyword) => (
+                <KeywordBox
+                  key={keyword.id}
+                  onClick={() => handleDeleteKeyword(keyword)}>
+                  {keyword.word} <CloseIconSm />
+                </KeywordBox>
+              ))}
+            </KeywordList>
+          ))
+        )}
       </C.Section>
       <NoticeBox>
         <NoticeTitle>키워드 등록 시 유의사항</NoticeTitle>
@@ -109,6 +140,10 @@ const KeywordInput = styled.input`
 
 const ButtonWrapper = styled.div`
   width: 100px;
+`;
+
+const EmptyMessage = styled.div`
+  font-size: 14px;
 `;
 
 const KeywordList = styled.div`

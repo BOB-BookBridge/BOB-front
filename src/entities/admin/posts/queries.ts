@@ -1,11 +1,14 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryClient } from '@/shared/lib';
 import {
+  deleteFilterKeyword,
   getAdminPost,
   getAdminPosts,
   GetAdminPostsReq,
+  getFilterKeyword,
   patchAdminPost,
   patchAdminPostReq,
+  postFilterKeyword,
 } from '.';
 
 export const useAdminPostsQuery = (param: GetAdminPostsReq) => {
@@ -28,6 +31,31 @@ export const useAdminPostMutation = (id: number) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['post', id] });
       queryClient.invalidateQueries({ queryKey: ['posts'] });
+    },
+  });
+};
+
+export const useFilterKeywordQuery = () => {
+  return useQuery({
+    queryKey: ['filter-keyword'],
+    queryFn: () => getFilterKeyword(),
+  });
+};
+
+export const useAddFilterKeywordMutation = () => {
+  return useMutation({
+    mutationFn: (word: string) => postFilterKeyword(word),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['filter-keyword'] });
+    },
+  });
+};
+
+export const useDeleteFilterKeywordMutation = () => {
+  return useMutation({
+    mutationFn: (id: number) => deleteFilterKeyword(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['filter-keyword'] });
     },
   });
 };
