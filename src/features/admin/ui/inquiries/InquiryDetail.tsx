@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-  useAdminInquiryMutation,
-  useInquiryQuery,
-} from '@/entities/admin/inquirues/queries';
 import { formatDateTime, inquiryStatusMap, showToast } from '@/shared/lib';
 import { InquiryStatus } from '@/entities/admin/inquirues';
 import { Button, LoadingIndicator } from '@/shared/ui';
 import { DropdownIconSm } from '@/shared/assets/icons';
 import { useMyQuery } from '@/entities/user';
 import * as S from './InquiryDetail.styles';
+import * as C from '../DetailPage.styles';
+import {
+  useAdminInquiryMutation,
+  useInquiryQuery,
+} from '@/entities/admin/inquirues/queries';
 
 const options = ['PENDING', 'IN_REVIEW', 'CLOSED'] as const;
 
@@ -78,9 +79,9 @@ const InquiryDetail = ({ id }: { id: number }) => {
   }
 
   return (
-    <S.Container>
-      <S.Header>
-        <S.Title>문의 상세</S.Title>
+    <C.Container>
+      <C.Header>
+        <C.Title>문의 상세</C.Title>
         <div ref={dropdownRef} style={{ position: 'relative' }}>
           <S.StatusDropdown onClick={handleClickDropdown} $status={data.status}>
             {inquiryStatusMap[data.status]}
@@ -99,44 +100,44 @@ const InquiryDetail = ({ id }: { id: number }) => {
             </S.DropdownItems>
           )}
         </div>
-      </S.Header>
+      </C.Header>
 
-      <S.Section>
-        <S.SectionTitle>문의</S.SectionTitle>
-        <S.InfoLabel>제목</S.InfoLabel>
+      <C.Section>
+        <C.SectionTitle>문의</C.SectionTitle>
+        <C.InfoLabel>제목</C.InfoLabel>
         <S.InquiryTitle>{data.title}</S.InquiryTitle>
-        <S.InfoLabel>내용</S.InfoLabel>
-        <S.InfoValue>{data.content}</S.InfoValue>
+        <C.InfoLabel>내용</C.InfoLabel>
+        <C.InfoValue>{data.content}</C.InfoValue>
 
         <S.InfoGrid>
           <S.InfoItem>
             <S.IconLabel>📧</S.IconLabel>
             <S.InfoContent>
-              <S.InfoLabel>작성자 이메일</S.InfoLabel>
-              <S.InfoValue>{data.email}</S.InfoValue>
+              <C.InfoLabel>작성자 이메일</C.InfoLabel>
+              <C.InfoValue>{data.email}</C.InfoValue>
             </S.InfoContent>
           </S.InfoItem>
 
           <S.InfoItem>
             <S.IconLabel>📅</S.IconLabel>
             <S.InfoContent>
-              <S.InfoLabel>작성일</S.InfoLabel>
-              <S.InfoValue>{formatDateTime(data.createdAt)}</S.InfoValue>
+              <C.InfoLabel>작성일</C.InfoLabel>
+              <C.InfoValue>{formatDateTime(data.createdAt)}</C.InfoValue>
             </S.InfoContent>
           </S.InfoItem>
 
           <S.InfoItem>
             <S.IconLabel>👤</S.IconLabel>
             <S.InfoContent>
-              <S.InfoLabel>담당자</S.InfoLabel>
-              <S.InfoValue>{data.managerNickname ?? '-'}</S.InfoValue>
+              <C.InfoLabel>담당자</C.InfoLabel>
+              <C.InfoValue>{data.managerNickname ?? '-'}</C.InfoValue>
             </S.InfoContent>
           </S.InfoItem>
         </S.InfoGrid>
-      </S.Section>
+      </C.Section>
 
-      <S.Section>
-        <S.SectionTitle>답변</S.SectionTitle>
+      <C.Section>
+        <C.SectionTitle>답변</C.SectionTitle>
         {data.processedAt && data.status === 'PROCESSED' && (
           <S.AnswerDate>{formatDateTime(data.processedAt)} 답변됨</S.AnswerDate>
         )}
@@ -149,7 +150,7 @@ const InquiryDetail = ({ id }: { id: number }) => {
             maxLength={1000}
           />
         </S.ReplyForm>
-      </S.Section>
+      </C.Section>
 
       {needReply && (
         <S.ButtonWrapper>
@@ -160,7 +161,7 @@ const InquiryDetail = ({ id }: { id: number }) => {
           />
         </S.ButtonWrapper>
       )}
-    </S.Container>
+    </C.Container>
   );
 };
 

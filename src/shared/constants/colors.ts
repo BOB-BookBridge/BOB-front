@@ -22,6 +22,7 @@ const common = {
   SUCCESS_100: '#E8F5E9',
   DANGER: '#DC2626',
   DANGER_100: '#FEF2F2',
+  DANGER_900: '#991B1B',
 };
 
 export const colors = {

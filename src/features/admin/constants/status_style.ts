@@ -4,4 +4,7 @@ export const STATUS_STYLE_MAP = {
   PROCESSED: { color: 'SUCCESS', backgroundColor: 'SUCCESS_100' },
   CLOSED: { color: 'GRAY_500', backgroundColor: 'GRAY_200' },
   DUPLICATED: { color: 'GRAY_500', backgroundColor: 'GRAY_200' },
+  BANNED: { color: 'DANGER', backgroundColor: 'DANGER_100' },
+  ACTIVE: { color: 'SECONDARY', backgroundColor: 'SECONDARY_100' },
+  DEACTIVATED: { color: 'GRAY_500', backgroundColor: 'GRAY_200' },
 } as const;
