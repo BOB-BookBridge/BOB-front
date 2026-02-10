@@ -9,6 +9,7 @@ import ReportList from './reports/ReportList';
 import ReportDetail from './reports/ReportDetail';
 import PostList from './posts/PostList';
 import PostDetail from './posts/PostDetail';
+import KeywordManagement from './posts/KeywordManagement';
 
 export {
   AdminSidebar,
@@ -22,4 +23,5 @@ export {
   ReportDetail,
   PostList,
   PostDetail,
+  KeywordManagement,
 };

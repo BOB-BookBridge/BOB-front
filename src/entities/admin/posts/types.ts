@@ -49,3 +49,11 @@ export interface patchAdminPostReq {
   status: AdminPostStatus;
   memo?: string;
 }
+
+export interface KeywordModel {
+  id: number;
+  word: string;
+  predefined: boolean;
+  createdAt: string;
+  editable: boolean;
+}
