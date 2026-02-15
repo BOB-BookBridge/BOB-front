@@ -4,16 +4,16 @@ import { useEffect, useRef, useState } from 'react';
 import { ClockIconSm, DropdownIconSm } from '@/shared/assets/icons';
 import { adminPostStatusMap, formatDateTime, showToast } from '@/shared/lib';
 import { Button, LoadingContainer, LoadingIndicator } from '@/shared/ui';
+import { PostActiveStatus } from '@/entities/listing';
 import * as C from '../DetailPage.styles';
 import {
-  AdminPostStatus,
   useAdminPostMutation,
   useAdminPostQuery,
 } from '@/entities/admin/posts';
 
 type ChangeableStatus = 'PENDING' | 'BANNED';
 
-const options: Record<ChangeableStatus, readonly AdminPostStatus[]> = {
+const options: Record<ChangeableStatus, readonly PostActiveStatus[]> = {
   BANNED: ['DEACTIVATED'],
   PENDING: ['BANNED', 'ACTIVE', 'DEACTIVATED'],
 } as const;
@@ -22,7 +22,7 @@ const PostDetail = ({ id }: { id: number }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { isPending, data } = useAdminPostQuery(id);
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
-  const [statusValue, setStatusValue] = useState<AdminPostStatus>('PENDING');
+  const [statusValue, setStatusValue] = useState<PostActiveStatus>('PENDING');
   const [memoText, setMemoText] = useState('');
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const PostDetail = ({ id }: { id: number }) => {
     setIsOpenDropdown((prev) => !prev);
   }
 
-  function handleClickStatus(value: AdminPostStatus) {
+  function handleClickStatus(value: PostActiveStatus) {
     setStatusValue(value);
     setIsOpenDropdown(false);
   }
@@ -233,7 +233,7 @@ export const ReportInfoReason = styled.div`
   font-weight: 400;
 `;
 
-export const StatusDropdown = styled.div<{ $status: AdminPostStatus }>`
+export const StatusDropdown = styled.div<{ $status: PostActiveStatus }>`
   display: flex;
   justify-content: space-between;
   align-items: center;

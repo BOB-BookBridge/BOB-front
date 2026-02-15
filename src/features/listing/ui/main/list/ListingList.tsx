@@ -43,7 +43,7 @@ const ListingList = ({
         categoryId: categoryId ?? undefined,
         bookStatus: bookStatus ?? undefined,
         price: priceRange ?? undefined,
-        postStatus: isAvailableOnly ? ('READY' as PostTradeStatus) : undefined,
+        tradeStatus: isAvailableOnly ? ('READY' as PostTradeStatus) : undefined,
         sort,
         size: PAGE_SIZE,
       };

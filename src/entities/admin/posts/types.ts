@@ -1,9 +1,9 @@
+import { PostActiveStatus } from '@/entities/listing';
 import { User } from '../reports';
 
 export type PostSearchKey = 'email';
 export type AdminFilterPostStatus = 'PENDING' | 'BANNED';
 export type AdminFilterPostStatusWithAll = AdminFilterPostStatus | 'ALL';
-export type AdminPostStatus = 'PENDING' | 'BANNED' | 'ACTIVE' | 'DEACTIVATED';
 
 export interface GetAdminPostsReq {
   email?: string;
@@ -29,7 +29,7 @@ export interface AdminPostsModel {
 
 export interface GetAdminPostRes {
   id: number;
-  status: AdminPostStatus;
+  status: PostActiveStatus;
   title: string;
   thumbnailUrl: string;
   description: string;
@@ -40,13 +40,13 @@ export interface GetAdminPostRes {
     reasons: string[];
   };
   managerNickname: string | null;
-  previousStatus: AdminPostStatus;
+  previousStatus: PostActiveStatus;
   memo: string | null;
   processedAt: string | null;
 }
 
 export interface patchAdminPostReq {
-  status: AdminPostStatus;
+  status: PostActiveStatus;
   memo?: string;
 }
 

@@ -15,10 +15,10 @@ const ListingCard = ({ data }: { data: PostModel }) => {
     <S.CardContainer href={`/listings/${data.id}`}>
       <S.ImageWrapper>
         <S.Overlay>
-          <S.OverlayDim $status={data.status} />
-          {data.status !== 'READY' && (
+          <S.OverlayDim $status={data.tradeStatus} />
+          {data.tradeStatus !== 'READY' && (
             <S.OverlayStatusText>
-              {postStatusMap[data.status]}
+              {postStatusMap[data.tradeStatus]}
             </S.OverlayStatusText>
           )}
           {(data.participation === 'CANCELED' ||
