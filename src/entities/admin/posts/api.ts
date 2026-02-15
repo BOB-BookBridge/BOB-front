@@ -3,6 +3,7 @@ import {
   GetAdminPostRes,
   GetAdminPostsReq,
   GetAdminPostsRes,
+  KeywordModel,
   patchAdminPostReq,
 } from '.';
 
@@ -28,5 +29,22 @@ export const patchAdminPost = async (
     `/management/posts/${postId}`,
     payload,
   );
+  return data;
+};
+
+export const getFilterKeyword = async (): Promise<KeywordModel[]> => {
+  const { data } = await axiosInstance.get('/management/filter-words');
+  return data;
+};
+
+export const postFilterKeyword = async (word: string) => {
+  const { data } = await axiosInstance.post('/management/filter-words', {
+    word,
+  });
+  return data;
+};
+
+export const deleteFilterKeyword = async (id: number) => {
+  const { data } = await axiosInstance.delete(`/management/filter-words/${id}`);
   return data;
 };

@@ -1,5 +1,13 @@
+'use client';
+import { KeywordManagement } from '@/features/admin/ui';
+import { LocalErrorBoundary } from '@/shared/lib';
+
 const AdminPostKeywordsPage = () => {
-  return <div>키워드</div>;
+  return (
+    <LocalErrorBoundary>
+      <KeywordManagement />
+    </LocalErrorBoundary>
+  );
 };
 
 export default AdminPostKeywordsPage;
