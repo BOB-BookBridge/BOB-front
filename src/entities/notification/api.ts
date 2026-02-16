@@ -12,3 +12,8 @@ export const patchReadNotification = async (notificationId: number) => {
   );
   return data;
 };
+
+export const patchReadAllNotification = async () => {
+  const { data } = await axiosInstance.patch('/notifications');
+  return data;
+};

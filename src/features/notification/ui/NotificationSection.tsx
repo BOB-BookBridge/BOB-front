@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styled from 'styled-components';
+import { useReadAllNotificationMutation } from '@/entities/notification/queries';
 import { LocalErrorBoundary } from '@/shared/lib';
 import NotificationList from './NotificationList';
 
@@ -14,9 +15,14 @@ export type NotiTabOption = (typeof tabs)[number]['value'];
 
 const NotificationSection = () => {
   const [selectTab, setSelectTab] = useState<NotiTabOption>('ALL');
+  const { mutate } = useReadAllNotificationMutation();
 
   function handleClickTab(value: NotiTabOption) {
     setSelectTab(value);
+  }
+
+  function handleClickReadAll() {
+    mutate();
   }
   return (
     <Container>
@@ -33,7 +39,7 @@ const NotificationSection = () => {
       <LocalErrorBoundary>
         <NotificationList selectTab={selectTab} />
       </LocalErrorBoundary>
-      <ReadAll>모두 읽음 표시</ReadAll>
+      <ReadAll onClick={handleClickReadAll}>모두 읽음 표시</ReadAll>
     </Container>
   );
 };
