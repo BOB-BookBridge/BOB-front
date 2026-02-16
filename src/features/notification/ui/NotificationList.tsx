@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
 import { LoadingContainer } from '@/shared/ui/LoadingIndicator';
+import InquiryNotiModalContent from './InquiryNotiModalContent';
 import { useIsMobile, useWidgetStore } from '@/shared/model';
+import { LoadingIndicator, ModalLayout } from '@/shared/ui';
 import { NotificationModel } from '@/entities/notification';
 import { NotiTabOption } from './NotificationSection';
-import { LoadingIndicator } from '@/shared/ui';
 import Notification from './Notification';
 import {
   useNotificationQuery,
@@ -22,7 +24,11 @@ const NotificationList = ({ selectTab }: NotificationListProps) => {
   const { setActiveWidget } = useWidgetStore();
   const isMobile = useIsMobile();
   const notifications = data ?? [];
-
+  const [openModal, setOpenModal] = useState<{
+    type: 'INQUIRY' | 'REPORT' | null;
+    refId: number | null;
+  }>({ type: null, refId: null });
+  const [modalTitle, setModalTitle] = useState('');
   const reversed = [...notifications].reverse();
 
   const filteredNotifications =
@@ -32,9 +38,39 @@ const NotificationList = ({ selectTab }: NotificationListProps) => {
     if (!noti.isRead) {
       readMutate(noti.id);
     }
-    if (!isMobile) setActiveWidget(null);
-    router.push(`/listings/${noti.refId}`);
+    if (noti.type === 'TRADE') {
+      if (!isMobile) setActiveWidget(null);
+      router.push(`/listings/${noti.refId}`);
+      return;
+    }
+    setModalTitle(
+      noti.type === 'INQUIRY'
+        ? '문의 상세'
+        : noti.type === 'REPORT'
+          ? '신고 상세'
+          : '',
+    );
+    setOpenModal({
+      type: noti.type as 'INQUIRY' | 'REPORT',
+      refId: noti.refId,
+    });
   }
+
+  const getModalContent = () => {
+    if (openModal.type === 'INQUIRY' && openModal.refId) {
+      return <InquiryNotiModalContent refId={openModal.refId} />;
+    }
+    if (openModal.type === 'REPORT') {
+      return (
+        <div>
+          <p>신고가 접수되었습니다.</p>
+          <p>자세한 내용은 문의 부탁드립니다.</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <NotificationWrapper>
       {isLoading ? (
@@ -49,6 +85,14 @@ const NotificationList = ({ selectTab }: NotificationListProps) => {
             onClick={() => handleClickItem(noti)}
           />
         ))
+      )}
+      {openModal.type && (
+        <ModalLayout
+          title={modalTitle}
+          isOpen={!!openModal}
+          onClose={() => setOpenModal({ type: null, refId: null })}>
+          {getModalContent()}
+        </ModalLayout>
       )}
     </NotificationWrapper>
   );

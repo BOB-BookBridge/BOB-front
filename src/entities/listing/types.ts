@@ -2,6 +2,7 @@ import { TradeStatus } from '../trade';
 import { UserProfileRes } from '../user';
 
 export type BookStatus = 'BEST' | 'HIGH' | 'MEDIUM' | 'LOW';
+export type PostActiveStatus = 'PENDING' | 'BANNED' | 'ACTIVE' | 'DEACTIVATED';
 export type PostTradeStatus = 'READY' | 'RESERVED' | 'COMPLETED';
 export type SortKey = 'RECENT' | 'OLD' | 'LOW_PRICE' | 'HIGH_PRICE';
 export type SearchKey = '통합' | '제목' | '저자';
@@ -30,7 +31,8 @@ export interface PostModel {
   id: number;
   categoryId: number;
   title: string;
-  status: PostTradeStatus;
+  status: PostActiveStatus;
+  tradeStatus: PostTradeStatus;
   price: number;
   thumbnailUrl: string;
   bookStatus: BookStatus;
@@ -76,7 +78,7 @@ export interface getPostsReq {
   emdId?: number;
   categoryId?: number;
   price?: number;
-  postStatus?: PostTradeStatus;
+  tradeStatus?: PostTradeStatus;
   bookStatus?: BookStatus;
   sort?: SortKey;
   page?: number;
