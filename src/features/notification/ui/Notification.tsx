@@ -1,12 +1,20 @@
 import styled from 'styled-components';
+import { InquiryIcon, NotiTradeIcon, SirenIcon } from '@/shared/assets/icons';
 import { NotificationModel } from '@/entities/notification';
-import { NotiTradeIcon } from '@/shared/assets/icons';
 import { convertDiffToString } from '@/shared/lib';
 
 const NotiTitle = {
   TRADE: {
     label: '거래 알림',
     icon: NotiTradeIcon,
+  },
+  INQUIRY: {
+    label: '문의 알림',
+    icon: InquiryIcon,
+  },
+  REPORT: {
+    label: '신고 알림',
+    icon: SirenIcon,
   },
 } as const;
 
