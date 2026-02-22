@@ -1,5 +1,19 @@
+'use client';
+
+import { AlertSection, BannerSection } from '@/features/admin/ui';
+import { LocalErrorBoundary } from '@/shared/lib';
+
 const AdminAnnouncementPage = () => {
-  return <div>공지</div>;
+  return (
+    <>
+      <LocalErrorBoundary>
+        <BannerSection />
+      </LocalErrorBoundary>
+      <LocalErrorBoundary>
+        <AlertSection />
+      </LocalErrorBoundary>
+    </>
+  );
 };
 
 export default AdminAnnouncementPage;

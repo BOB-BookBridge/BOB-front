@@ -10,6 +10,8 @@ import ReportDetail from './reports/ReportDetail';
 import PostList from './posts/PostList';
 import PostDetail from './posts/PostDetail';
 import KeywordManagement from './posts/KeywordManagement';
+import AlertSection from './announcements/AlertSection';
+import BannerSection from './announcements/BannerSection';
 
 export {
   AdminSidebar,
@@ -24,4 +26,6 @@ export {
   PostList,
   PostDetail,
   KeywordManagement,
+  AlertSection,
+  BannerSection,
 };
