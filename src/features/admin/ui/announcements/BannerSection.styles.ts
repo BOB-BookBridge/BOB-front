@@ -100,10 +100,11 @@ export const StyledInput = styled.input`
   font-size: 13px;
   outline: none;
   background-color: ${({ theme }) => theme.colors.WHITE};
+  height: 40px;
+  font-family: inherit;
   &::placeholder {
     color: ${({ theme }) => theme.colors.GRAY_500};
   }
-  height: 40px;
 `;
 
 export const SubmitButton = styled.div`
