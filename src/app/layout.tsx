@@ -2,7 +2,11 @@ import React from 'react';
 import { Metadata } from 'next';
 import localFont from 'next/font/local';
 import StyledComponentsRegistry from '@/shared/lib/StyledComponentsRegistry';
-import { ReactQueryClientProvider, ThemeRegistry } from '@/shared/providers';
+import {
+  LocalizationClientProvider,
+  ReactQueryClientProvider,
+  ThemeRegistry,
+} from '@/shared/providers';
 import ToastStyledContainer from '@/shared/styles/ToastStyledContainer';
 import { NotificationWidget } from '@/features/notification/ui';
 import { Header, AdminHeader } from '@/features/header/ui';
@@ -26,19 +30,21 @@ export default function RootLayout({
     <html lang='ko'>
       <body className={`${pretendard.variable}`} suppressHydrationWarning>
         <StyledComponentsRegistry>
-          <ReactQueryClientProvider>
-            <ThemeRegistry>
-              <GlobalErrorBoundary>
-                <AdminHeader />
-                <Header />
-                {children}
-                <FloatingButton />
-                <ChatWidget />
-                <NotificationWidget />
-                <ToastStyledContainer autoClose={1000} hideProgressBar />
-              </GlobalErrorBoundary>
-            </ThemeRegistry>
-          </ReactQueryClientProvider>
+          <LocalizationClientProvider>
+            <ReactQueryClientProvider>
+              <ThemeRegistry>
+                <GlobalErrorBoundary>
+                  <AdminHeader />
+                  <Header />
+                  {children}
+                  <FloatingButton />
+                  <ChatWidget />
+                  <NotificationWidget />
+                  <ToastStyledContainer autoClose={1000} hideProgressBar />
+                </GlobalErrorBoundary>
+              </ThemeRegistry>
+            </ReactQueryClientProvider>
+          </LocalizationClientProvider>
         </StyledComponentsRegistry>
       </body>
     </html>
