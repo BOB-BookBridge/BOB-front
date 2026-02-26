@@ -1,3 +1,5 @@
+import { Dayjs } from 'dayjs';
+
 export interface GetDashboardBasicRes {
   newMembers: number;
   newPosts: number;
@@ -59,4 +61,9 @@ export interface GetDashboardTradeRes {
     reserved: number;
     completed: number;
   };
+}
+
+export interface DateRange {
+  from: Dayjs | null;
+  to: Dayjs | null;
 }

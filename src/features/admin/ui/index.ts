@@ -14,6 +14,10 @@ import AlertSection from './announcements/AlertSection';
 import BannerSection from './announcements/BannerSection';
 import DashboardHeader from './dashboard/DashboardHeader';
 import DashboardStatSection from './dashboard/DashboardStatSection';
+import DashboardDatePicker from './dashboard/DashboardDatePicker';
+import DashboardMemberSection from './dashboard/member/DashboardMemberSection';
+import DashboardPostSection from './dashboard/DashboardPostSection';
+import DashboardTradeSection from './dashboard/DashboardTradeSection';
 
 export {
   AdminSidebar,
@@ -32,4 +36,8 @@ export {
   BannerSection,
   DashboardHeader,
   DashboardStatSection,
+  DashboardDatePicker,
+  DashboardMemberSection,
+  DashboardPostSection,
+  DashboardTradeSection,
 };
