@@ -36,6 +36,11 @@ const common = {
     PURPLE_100: '#FAF5FF',
     PURPLE_200: '#E9D5FF',
     PURPLE_300: '#7C3AED',
+
+    CHART_1: '#60A5FA',
+    CHART_2: '#34D399',
+    CHART_3: '#F472B6',
+    CHART_4: '#A78BFA',
   },
 };
 
