@@ -1,5 +1,5 @@
 import 'dayjs/locale/ko';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import styled from 'styled-components';
 import { useState, useRef } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -24,54 +24,76 @@ const DashboardDatePicker = ({
   const [fromOpen, setFromOpen] = useState(false);
   const [toOpen, setToOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
+  const [localRange, setLocalRange] = useState<DateRange>(value);
 
-  const handleTriggerClick = () => {
+  function handleTriggerClick() {
     setFromOpen(true);
-  };
+  }
 
-  const handleFromChange = (date: Dayjs | null) => {
-    onChange({ from: date, to: value.to });
+  function handleFromChange(date: Dayjs | null) {
+    setLocalRange({ from: date, to: localRange.to });
     setFromOpen(false);
     setToOpen(true);
-  };
+  }
 
-  const handleToChange = (date: Dayjs | null) => {
-    onChange({ from: value.from, to: date });
+  function handleToChange(date: Dayjs | null) {
+    const newRange = { from: localRange.from, to: date };
+    setLocalRange(newRange);
     setToOpen(false);
-  };
+    if (
+      newRange.from?.isSame(value.from, 'day') &&
+      newRange.to?.isSame(value.to, 'day')
+    )
+      return;
+
+    onChange(newRange);
+  }
+
+  function handleFromClose() {
+    setFromOpen(false);
+
+    if (localRange.from) {
+      setToOpen(true);
+    }
+  }
+
+  function handleToClose() {
+    setToOpen(false);
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ko'>
       <Trigger ref={anchorRef} onClick={handleTriggerClick}>
         <DateText>
-          {formatDate(value.from)}~{formatDate(value.to)}
+          {formatDate(localRange.from)}~{formatDate(localRange.to)}
         </DateText>
         <CalendarIcon />
       </Trigger>
 
       <DatePicker
-        value={value.from}
-        onChange={handleFromChange}
+        value={localRange.from}
+        onAccept={handleFromChange}
         open={fromOpen}
-        onClose={() => setFromOpen(false)}
+        onClose={handleFromClose}
         slots={{ field: () => null }}
         slotProps={{
           popper: { anchorEl: anchorRef.current },
         }}
-        maxDate={value.to ?? undefined}
+        minDate={dayjs('2025-05-01')}
+        maxDate={dayjs()}
       />
 
       <DatePicker
-        value={value.to}
-        onChange={handleToChange}
+        value={localRange.to}
+        onAccept={handleToChange}
         open={toOpen}
-        onClose={() => setToOpen(false)}
+        onClose={handleToClose}
         slots={{ field: () => null }}
         slotProps={{
           popper: { anchorEl: anchorRef.current },
         }}
-        minDate={value.from ?? undefined}
-        maxDate={value.to ?? undefined}
+        minDate={localRange.from ?? undefined}
+        maxDate={dayjs()}
       />
     </LocalizationProvider>
   );
