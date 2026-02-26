@@ -22,13 +22,13 @@ export const getDashboardMembers = async (
 export const getDashboardPost = async (
   params: GetDashboardReq,
 ): Promise<GetDashboardPostRes> => {
-  const { data } = await axiosInstance.get('/statistics/post', { params });
+  const { data } = await axiosInstance.get('/statistics/posts', { params });
   return data;
 };
 
 export const getDashboardTrade = async (
   params: GetDashboardReq,
 ): Promise<GetDashboardTradeRes> => {
-  const { data } = await axiosInstance.get('/statistics/trade', { params });
+  const { data } = await axiosInstance.get('/statistics/trades', { params });
   return data;
 };
