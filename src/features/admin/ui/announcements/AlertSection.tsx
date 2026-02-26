@@ -1,59 +1,30 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { showToast, simpleFormatDate } from '@/shared/lib';
 import AdminTable, { ColumnConfig } from '../AdminTable';
-import { Button, ModalLayout } from '@/shared/ui';
-import { simpleFormatDate } from '@/shared/lib';
 import { User } from '@/entities/admin/reports';
-import AlertDetail from './AlertDetail';
+import {
+  useAlertNoticesQuery,
+  usePostAlertNoticeMutation,
+} from '@/entities/admin/announcements';
 import {
   SectionContainer,
   SectionTitle,
   StyledInput,
 } from './BannerSection.styles';
-const data = [
-  {
-    id: 1,
-    writer: {
-      id: '019bf8a2-ef66-7bf5-b97b-0b0047fa36fd',
-      nickname: 'manager001',
-    },
-    title: '[공지]',
-    content: '테스트 공지3',
-    createdAt: '2026-02-20T00:33:06',
-  },
-  {
-    id: 2,
-    writer: {
-      id: '019bf8a2-ef66-7bf5-b97b-0b0047fa36fd',
-      nickname: 'manager001',
-    },
-    title: '[공지]',
-    content: '테스트 공지2',
-    createdAt: '2026-02-20T00:33:03',
-  },
-  {
-    id: 3,
-    writer: {
-      id: '019bf8a2-ef66-7bf5-b97b-0b0047fa36fd',
-      nickname: 'manager001',
-    },
-    title: '[공지]',
-    content: '테스트 공지1',
-    createdAt: '2026-02-20T00:32:53',
-  },
-];
+import {
+  Button,
+  LoadingContainer,
+  LoadingIndicator,
+  ModalLayout,
+} from '@/shared/ui';
 
 const AlertSection = () => {
+  const { isPending, data } = useAlertNoticesQuery();
+  const { mutate: postAlert } = usePostAlertNoticeMutation();
   const [isOpenWriteModal, setIsOpenWriteModal] = useState(false);
-  const [isOpenDetailModal, setIsOpenDetailModal] = useState(false);
-  const [selectedNotice, setSelectedNotice] = useState<number | null>(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-
-  function handleClickDetail(value: number) {
-    setIsOpenDetailModal(true);
-    setSelectedNotice(value);
-  }
 
   function handleClickAdd() {
     setIsOpenWriteModal(true);
@@ -63,12 +34,13 @@ const AlertSection = () => {
     setIsOpenWriteModal(false);
     setTitle('');
     setContent('');
-    setIsOpenDetailModal(false);
-    setSelectedNotice(null);
   }
 
   function handleClickSubmit() {
-    console.log(title, content);
+    if (!title || !content) {
+      showToast.error('공지를 작성해 주세요');
+      return;
+    } else postAlert({ title, content });
   }
 
   const columns: ColumnConfig[] = [
@@ -91,26 +63,35 @@ const AlertSection = () => {
 
   return (
     <SectionContainer>
-      <Row>
-        <SectionTitle>🔔 알림 공지 목록</SectionTitle>
-        <div style={{ width: 80 }}>
-          <Button
-            text='+ 공지 등록'
-            onClick={handleClickAdd}
-            variant='secondary'
-            size='xs'
-          />
-        </div>
-      </Row>
-      <AdminTable
-        columns={columns}
-        data={data.map((inq, index) => ({
-          ...inq,
-          number: index + 1,
-        }))}
-        keyExtractor={(inq) => inq.number}
-        onRowClick={(inq) => handleClickDetail(inq.id)}
-      />
+      {isPending ? (
+        <LoadingContainer>
+          <LoadingIndicator />
+        </LoadingContainer>
+      ) : (
+        <>
+          <Row>
+            <SectionTitle>🔔 알림 공지 목록</SectionTitle>
+            <div style={{ width: 80 }}>
+              <Button
+                text='+ 공지 등록'
+                onClick={handleClickAdd}
+                variant='secondary'
+                size='xs'
+              />
+            </div>
+          </Row>
+          {data && data.length > 0 && (
+            <AdminTable
+              columns={columns}
+              data={data.map((inq, index) => ({
+                ...inq,
+                number: index + 1,
+              }))}
+              keyExtractor={(inq) => inq.number}
+            />
+          )}
+        </>
+      )}
       {isOpenWriteModal && (
         <ModalLayout
           isOpen={isOpenWriteModal}
@@ -144,14 +125,6 @@ const AlertSection = () => {
               />
             </ButtonWrapper>
           </ModalContainer>
-        </ModalLayout>
-      )}
-      {isOpenDetailModal && selectedNotice && (
-        <ModalLayout
-          isOpen={isOpenDetailModal}
-          title='공지 상세'
-          onClose={handleResetAll}>
-          <AlertDetail id={selectedNotice} />
         </ModalLayout>
       )}
     </SectionContainer>

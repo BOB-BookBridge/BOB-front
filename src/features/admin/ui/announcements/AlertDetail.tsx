@@ -1,24 +1,28 @@
 import styled from 'styled-components';
 import { formatDateTime } from '@/shared/lib';
+import { useNoticeQuery } from '@/entities/admin/announcements';
+import { LoadingContainer, LoadingIndicator } from '@/shared/ui';
 
-const data = {
-  writer: {
-    id: '019bf8a2-ef66-7bf5-b97b-0b0047fa36fd',
-    nickname: 'manager001',
-  },
-  title: '[공지]',
-  content: '테스트 공지3',
-  createdAt: '2026-02-20T00:33:06',
-};
 const AlertDetail = ({ id }: { id: number }) => {
+  const { isPending, data } = useNoticeQuery(id);
   return (
     <Container>
-      <Row>
-        <Title>{data.title}</Title>
-        <DateTime>{formatDateTime(data.createdAt)} 작성</DateTime>
-      </Row>
-      <Divider />
-      <Content>{data.content}</Content>
+      {isPending ? (
+        <LoadingContainer>
+          <LoadingIndicator />
+        </LoadingContainer>
+      ) : (
+        data && (
+          <>
+            <Row>
+              <Title>{data.title}</Title>
+              <DateTime>{formatDateTime(data.createdAt)} 작성</DateTime>
+            </Row>
+            <Divider />
+            <Content>{data.content}</Content>
+          </>
+        )
+      )}
     </Container>
   );
 };
