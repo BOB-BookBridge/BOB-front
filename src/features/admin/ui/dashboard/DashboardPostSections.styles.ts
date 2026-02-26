@@ -75,7 +75,6 @@ export const CategoryCount = styled.span`
   color: ${({ theme }) => theme.colors.SECONDARY_400};
 `;
 
-// 지역별 분포
 export const AreaList = styled.div`
   display: flex;
   flex-direction: column;

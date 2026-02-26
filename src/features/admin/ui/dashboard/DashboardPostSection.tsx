@@ -15,7 +15,6 @@ const toQueryParam = (date: Dayjs | null) =>
   date?.format('YYYY-MM-DD') ?? undefined;
 const TOP_N = 5;
 
-// emdId → sido 이름
 const getSidoNameByEmdId = (emdId: number): string => {
   const emd = emd_areas.find((e) => e.id === emdId);
   if (!emd) return '기타';
@@ -25,7 +24,6 @@ const getSidoNameByEmdId = (emdId: number): string => {
   return sido?.name ?? '기타';
 };
 
-// sido 기준으로 그룹핑 후 상위 N개 + 기타
 const groupBySido = (areaDistribution: { emdId: number; count: number }[]) => {
   const map = new Map<string, number>();
   for (const area of areaDistribution) {
@@ -45,7 +43,6 @@ const groupBySido = (areaDistribution: { emdId: number; count: number }[]) => {
   return [...top, { name: '기타', count: etcCount }];
 };
 
-// 카테고리 상위 N개 + 기타
 const groupCategories = (
   categoryDistribution: { categoryId: number; count: number }[],
 ) => {
