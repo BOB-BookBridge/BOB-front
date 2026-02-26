@@ -12,6 +12,8 @@ import PostDetail from './posts/PostDetail';
 import KeywordManagement from './posts/KeywordManagement';
 import AlertSection from './announcements/AlertSection';
 import BannerSection from './announcements/BannerSection';
+import DashboardHeader from './dashboard/DashboardHeader';
+import DashboardStatSection from './dashboard/DashboardStatSection';
 
 export {
   AdminSidebar,
@@ -28,4 +30,6 @@ export {
   KeywordManagement,
   AlertSection,
   BannerSection,
+  DashboardHeader,
+  DashboardStatSection,
 };

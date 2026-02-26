@@ -24,6 +24,19 @@ const common = {
   DANGER: '#DC2626',
   DANGER_100: '#FEF2F2',
   DANGER_900: '#991B1B',
+
+  DASHBOARD: {
+    BLUE_100: '#EFF6FF',
+    BLUE_200: '#BFDBFE',
+    BLUE_300: '#2563EB',
+    GREEN_100: '#F0FDF4',
+    GREEN_200: '#BBEF63',
+    GREEN_300: '#16A34A',
+    RED_200: '#FECACA',
+    PURPLE_100: '#FAF5FF',
+    PURPLE_200: '#E9D5FF',
+    PURPLE_300: '#7C3AED',
+  },
 };
 
 export const colors = {
