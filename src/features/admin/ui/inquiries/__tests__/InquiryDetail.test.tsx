@@ -40,7 +40,6 @@ jest.mock('@/entities/admin/inquirues/queries');
 jest.mock('next/navigation');
 jest.mock('@/entities/user');
 
-// 헬퍼 함수
 const mockUseInquiryQuery = (
   data?: GetInquiryRes | null,
   isPending = false,
