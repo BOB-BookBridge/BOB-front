@@ -26,13 +26,25 @@ const BannerSection = () => {
       showToast.error('공지 내용을 작성해 주세요');
       return;
     }
+    if (endTime && !dayjs(endTime).isAfter(dayjs())) {
+      showToast.error('종료 시간은 현재 시간 이후로 설정해 주세요');
+      return;
+    }
     if (!endTime) {
       postNotice({ content });
     } else {
-      postNotice({
-        content,
-        endTime: dayjs(endTime).format('YYYY-MM-DDTHH:mm:ss'),
-      });
+      postNotice(
+        {
+          content,
+          endTime: dayjs(endTime).format('YYYY-MM-DDTHH:mm:ss'),
+        },
+        {
+          onSuccess: () => {
+            setContent('');
+            setEndTime(null);
+          },
+        },
+      );
     }
   }
   return (
@@ -80,6 +92,7 @@ const BannerSection = () => {
             <div style={{ flex: 1.5 }}>
               <S.SubTitle>종료 시간</S.SubTitle>
               <DateTimePicker
+                minDateTime={dayjs().add(1, 'minute')}
                 enableAccessibleFieldDOMStructure={false}
                 value={endTime}
                 onChange={(value) => setEndTime(value)}
