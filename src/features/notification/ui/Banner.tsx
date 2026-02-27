@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import styled, { keyframes } from 'styled-components';
 import { useBannerNoticeQuery } from '@/entities/admin/announcements';
 import { CloseIcon } from '@/shared/assets/icons';
@@ -8,6 +9,7 @@ import { CloseIcon } from '@/shared/assets/icons';
 const Banner = () => {
   const { data } = useBannerNoticeQuery();
   const [visible, setVisible] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!data) return;
@@ -26,7 +28,17 @@ const Banner = () => {
     sessionStorage.setItem(key, 'true');
     setVisible(false);
   }
-  if (!data) return;
+
+  const hideBanner =
+    pathname?.startsWith('/login') ||
+    pathname?.startsWith('/signup') ||
+    pathname?.startsWith('/password') ||
+    pathname?.startsWith('/chats/') ||
+    pathname?.startsWith('/error') ||
+    pathname?.startsWith('/403') ||
+    pathname?.startsWith('/admin');
+
+  if (!data || hideBanner) return;
 
   return (
     <BannerWrap role='alert' aria-live='assertive'>
@@ -53,9 +65,7 @@ const scroll = keyframes`
 `;
 
 const BannerWrap = styled.div`
-  position: sticky;
-  top: 0;
-  margin: 0 10px;
+  margin: 0 10px 10px 10px;
   border-radius: 10px;
   background: ${({ theme }) => theme.colors.GRAY_200};
   color: ${({ theme }) => theme.colors.SECONDARY};
