@@ -3,8 +3,8 @@ import { formatDateTime } from '@/shared/lib';
 import { useNoticeQuery } from '@/entities/admin/announcements';
 import { LoadingContainer, LoadingIndicator } from '@/shared/ui';
 
-const AlertDetail = ({ id }: { id: number }) => {
-  const { isPending, data } = useNoticeQuery(id);
+const NoticeNotiModalContent = ({ refId }: { refId: number }) => {
+  const { isPending, data } = useNoticeQuery(refId);
   return (
     <Container>
       {isPending ? (
@@ -27,7 +27,7 @@ const AlertDetail = ({ id }: { id: number }) => {
   );
 };
 
-export default AlertDetail;
+export default NoticeNotiModalContent;
 
 const Container = styled.div`
   width: 100%;

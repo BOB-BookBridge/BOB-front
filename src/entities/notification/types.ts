@@ -11,4 +11,4 @@ export interface NotificationModel {
   sender?: User;
 }
 
-export type NotificationType = 'TRADE' | 'INQUIRY' | 'REPORT';
+export type NotificationType = 'TRADE' | 'INQUIRY' | 'REPORT' | 'NOTICE';

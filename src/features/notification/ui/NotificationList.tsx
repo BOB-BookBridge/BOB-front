@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
 import { LoadingContainer } from '@/shared/ui/LoadingIndicator';
 import InquiryNotiModalContent from './InquiryNotiModalContent';
+import NoticeNotiModalContent from './NoticeNotiModalContent';
 import { useIsMobile, useWidgetStore } from '@/shared/model';
 import { LoadingIndicator, ModalLayout } from '@/shared/ui';
 import { NotificationModel } from '@/entities/notification';
@@ -25,14 +26,15 @@ const NotificationList = ({ selectTab }: NotificationListProps) => {
   const isMobile = useIsMobile();
   const notifications = data ?? [];
   const [openModal, setOpenModal] = useState<{
-    type: 'INQUIRY' | 'REPORT' | null;
+    type: 'INQUIRY' | 'REPORT' | 'NOTICE' | null;
     refId: number | null;
   }>({ type: null, refId: null });
   const [modalTitle, setModalTitle] = useState('');
-  const reversed = [...notifications].reverse();
 
   const filteredNotifications =
-    selectTab === 'ALL' ? reversed : reversed.filter((noti) => !noti.isRead);
+    selectTab === 'ALL'
+      ? notifications
+      : notifications.filter((noti) => !noti.isRead);
 
   function handleClickItem(noti: NotificationModel) {
     if (!noti.isRead) {
@@ -48,10 +50,12 @@ const NotificationList = ({ selectTab }: NotificationListProps) => {
         ? '문의 상세'
         : noti.type === 'REPORT'
           ? '신고 상세'
-          : '',
+          : noti.type === 'NOTICE'
+            ? '알림 상세'
+            : '상세',
     );
     setOpenModal({
-      type: noti.type as 'INQUIRY' | 'REPORT',
+      type: noti.type as 'INQUIRY' | 'REPORT' | 'NOTICE',
       refId: noti.refId,
     });
   }
@@ -67,6 +71,9 @@ const NotificationList = ({ selectTab }: NotificationListProps) => {
           <p>자세한 내용은 문의 부탁드립니다.</p>
         </div>
       );
+    }
+    if (openModal.type === 'NOTICE' && openModal.refId) {
+      return <NoticeNotiModalContent refId={openModal.refId} />;
     }
     return null;
   };
