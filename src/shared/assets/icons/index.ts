@@ -39,6 +39,7 @@ import RawAddBook from './add-book.svg';
 import RawSwitch from './switch.svg';
 import RawSiren from './siren.svg';
 import RawInquiry from './inquiry.svg';
+import RawMegaphone from './megaphone.svg';
 
 import RawAnnouncements from './announcements.svg';
 import RawDashboard from './dashboard.svg';
@@ -97,6 +98,7 @@ export const ChatDeleteIcon = withIconSize(RawCloseIcon, 18);
 export const AddHeartIcon = withIconSize(RawAddHeart, 18);
 export const NotiTradeIcon = withIconSize(RawNotiTrade, 18);
 export const SwitchIcon = withIconSize(RawSwitch, 18);
+export const MegaphoneIcon = withIconSize(RawMegaphone, 18);
 
 export const AnnouncementsIcon = withIconSize(RawAnnouncements, 18);
 export const DashboardIcon = withIconSize(RawDashboard, 18);

@@ -2,17 +2,17 @@ import React from 'react';
 import { Metadata } from 'next';
 import localFont from 'next/font/local';
 import StyledComponentsRegistry from '@/shared/lib/StyledComponentsRegistry';
+import ToastStyledContainer from '@/shared/styles/ToastStyledContainer';
+import { Banner, NotificationWidget } from '@/features/notification/ui';
+import { Header, AdminHeader } from '@/features/header/ui';
+import { GlobalErrorBoundary } from '@/shared/lib';
+import { ChatWidget } from '@/features/chat/ui';
+import { FloatingButton } from '@/shared/ui';
 import {
   LocalizationClientProvider,
   ReactQueryClientProvider,
   ThemeRegistry,
 } from '@/shared/providers';
-import ToastStyledContainer from '@/shared/styles/ToastStyledContainer';
-import { NotificationWidget } from '@/features/notification/ui';
-import { Header, AdminHeader } from '@/features/header/ui';
-import { GlobalErrorBoundary } from '@/shared/lib';
-import { ChatWidget } from '@/features/chat/ui';
-import { FloatingButton } from '@/shared/ui';
 
 const pretendard = localFont({
   src: '../shared/assets/fonts/PretendardVariable.woff2',
@@ -36,6 +36,7 @@ export default function RootLayout({
                 <GlobalErrorBoundary>
                   <AdminHeader />
                   <Header />
+                  <Banner />
                   {children}
                   <FloatingButton />
                   <ChatWidget />

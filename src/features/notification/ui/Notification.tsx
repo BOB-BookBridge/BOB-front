@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { InquiryIcon, NotiTradeIcon, SirenIcon } from '@/shared/assets/icons';
+import {
+  InquiryIcon,
+  MegaphoneIcon,
+  NotiTradeIcon,
+  SirenIcon,
+} from '@/shared/assets/icons';
 import { NotificationModel } from '@/entities/notification';
 import { convertDiffToString } from '@/shared/lib';
 
@@ -16,6 +21,10 @@ const NotiTitle = {
     label: '신고 알림',
     icon: SirenIcon,
   },
+  NOTICE: {
+    label: '공지 알림',
+    icon: MegaphoneIcon,
+  },
 } as const;
 
 interface NotificationProps {
@@ -26,7 +35,10 @@ const Notification = ({ notification, onClick }: NotificationProps) => {
   const Icon = NotiTitle[notification.type].icon;
 
   return (
-    <Container $isRead={notification.isRead} onClick={onClick}>
+    <Container
+      $isRead={notification.isRead}
+      $isNotice={notification.type === 'NOTICE'}
+      onClick={onClick}>
       <Icon />
       <Content>
         <div>{NotiTitle[notification.type].label}</div>
@@ -41,7 +53,7 @@ const Notification = ({ notification, onClick }: NotificationProps) => {
 
 export default Notification;
 
-const Container = styled.div<{ $isRead: boolean }>`
+const Container = styled.div<{ $isRead: boolean; $isNotice: boolean }>`
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -58,7 +70,7 @@ const Container = styled.div<{ $isRead: boolean }>`
   transition: background-color 0.15s ease;
 
   svg {
-    fill: currentColor;
+    fill: ${({ $isNotice }) => ($isNotice ? 'none' : 'currentColor')};
   }
 
   &:hover {
