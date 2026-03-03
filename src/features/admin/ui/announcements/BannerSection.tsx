@@ -30,22 +30,20 @@ const BannerSection = () => {
       showToast.error('종료 시간은 현재 시간 이후로 설정해 주세요');
       return;
     }
-    if (!endTime) {
-      postNotice({ content });
-    } else {
-      postNotice(
-        {
-          content,
+    postNotice(
+      {
+        content,
+        ...(endTime && {
           endTime: dayjs(endTime).format('YYYY-MM-DDTHH:mm:ss'),
+        }),
+      },
+      {
+        onSuccess: () => {
+          setContent('');
+          setEndTime(null);
         },
-        {
-          onSuccess: () => {
-            setContent('');
-            setEndTime(null);
-          },
-        },
-      );
-    }
+      },
+    );
   }
   return (
     <S.SectionContainer>
@@ -68,7 +66,7 @@ const BannerSection = () => {
                   {`작성자: ${data.writer.nickname}`}{' '}
                 </S.NoticeInfoText>
                 <S.NoticeInfoText>
-                  {`종료일시: ${formatDateTime(data.endTime)}`}
+                  {`종료일시: ${data.endTime ? formatDateTime(data.endTime) : '-'}`}
                 </S.NoticeInfoText>
               </S.NoticeLeft>
               <S.DeactiveButton
