@@ -2,8 +2,9 @@ import { useRouter } from 'next/navigation';
 import { useTheme } from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
 import { CancelTradeForm, SelectBuyerForm } from '@/features/trade/ui';
-import { ModalLayout, ReportModalContents } from '@/shared/ui';
+import { ModalLayout } from '@/shared/ui';
 import { useDeleteListingMutation } from '@/entities/listing';
+import { ReportModalContents } from '@/features/report/ui';
 import { PostTradeStatus } from '@/entities/listing/types';
 import * as S from './ListingDetail.styles';
 import {

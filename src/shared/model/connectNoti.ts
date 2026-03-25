@@ -1,10 +1,14 @@
-import { ChatUser } from '@/entities/chat';
+interface Sender {
+  id: string;
+  nickname: string;
+  profileImageUrl: string | null;
+}
 
 export interface Notification {
   type: 'CHAT' | 'TRADE';
   refId: number;
   body: string;
-  sender: ChatUser | null;
+  sender: Sender | null;
   sentAt: string;
 }
 

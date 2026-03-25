@@ -4,10 +4,10 @@ import localFont from 'next/font/local';
 import StyledComponentsRegistry from '@/shared/lib/StyledComponentsRegistry';
 import ToastStyledContainer from '@/shared/styles/ToastStyledContainer';
 import { Banner, NotificationWidget } from '@/features/notification/ui';
+import { FloatingButton } from '@/features/floating-button/ui';
 import { Header, AdminHeader } from '@/features/header/ui';
 import { GlobalErrorBoundary } from '@/shared/lib';
 import { ChatWidget } from '@/features/chat/ui';
-import { FloatingButton } from '@/shared/ui';
 import {
   LocalizationClientProvider,
   ReactQueryClientProvider,

@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import styled from 'styled-components';
-import CheckCircle from './CheckCircle';
-import { showToast } from '../lib';
-import Button from './Button';
+import CheckCircle from '@/shared/ui/CheckCircle';
+import { showToast } from '@/shared/lib';
+import Button from '@/shared/ui/Button';
 import {
   REPORT_REASON,
   reportReasonList,
