@@ -2,13 +2,24 @@
 
 <img src="./docs/images/logo-text.svg" width="200"/>
 
-**서비스 소개**
+> **이웃 간 중고 책 교환을 위한 플랫폼**
 
-> **사람과 책을 잇는 사용자 친화적 중고책 교환 서비스**
+**개발 기간 및 정보**
 
-**개발 기간**
+> 2025.04 ~ 2026.02,
+> 2인 개발(프론트엔드 전담)
 
-> 2025.04 ~ 현재
+<br /><br />
+
+### 🛠️ 기술 스택
+
+| 분류       | 기술                 |
+| ---------- | -------------------- |
+| 프레임워크 | Next.js              |
+| 언어       | TypeScript           |
+| 상태 관리  | Zustand, React Query |
+| 스타일     | Styled Components    |
+| 외부 API   | OpenAI, 알라딘       |
 
 <br /><br />
 
@@ -30,7 +41,7 @@
 - 거래 상태 변경(예약 중/교환 완료)
 - 거래에 사용될 도서 변경
 
-**4. AI 북메이트 (AI 서비스)**
+**4. AI 북메이트**
 
 - 사용자 요청 기반 도서 추천 및 책 줄거리 요약 제공
 
@@ -39,30 +50,12 @@
 - 메시지 수신, 거래 상태 변경 시 실시간 알림
 - 알림 목록 확인
 
-<br />
+**6. 관리자 페이지**
 
-### 🛠️ 기술 스택
+- DAU/WAU/MAU 통계 시각화
+- 회원·게시글·신고·문의·공지 관리
 
-> 백엔드
-
-![Spring Boot 3](https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
-![Java 17](https://img.shields.io/badge/Java_17-007396?style=for-the-badge)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-![Redis](https://img.shields.io/badge/Redis-FF4438?style=for-the-badge&logo=Redis&logoColor=white)
-![Test Conatiner](https://img.shields.io/badge/Test_Conatiner-2496ED?style=for-the-badge)
-![JUnit5](https://img.shields.io/badge/JUnit5-25A162?style=for-the-badge&logo=JUnit5&logoColor=white)
-![Jacoco](https://img.shields.io/badge/Jacoco-25A162?style=for-the-badge)
-
-> 프론트엔드
-
-![next.js](https://img.shields.io/badge/next.js-white?style=for-the-badge&logo=nextdotjs&logoColor=black)
-![TS](https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=Typescript&logoColor=white)
-![ReactQuery](https://img.shields.io/badge/reactquery-FF4154?style=for-the-badge&logo=reactquery&logoColor=white)
-![zustand](https://img.shields.io/badge/zustand-F46D2C?style=for-the-badge&logoColor=white)
-![styledcomponents](https://img.shields.io/badge/styled_components-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white)
-![jest](https://img.shields.io/badge/jest-C21325?style=for-the-badge&logo=jest&logoColor=white)
-
-<br />
+<br /><br />
 
 ### 📺 화면 미리보기
 
@@ -88,8 +81,49 @@
 
 <br /><br/>
 
-### 👨‍👧‍👦 팀원 소개
+### 📝 구현 상세
 
-|  이현수  | 김도예 |
-| :------: | :----: |
-| BE/Infra |   FE   |
+**에러 핸들링 구조 개선**
+
+> 일부 API 실패 시 전체 페이지가 에러 화면으로 대체되는 문제를 해결하기 위해 UI를 쿼리 단위로 분리했습니다. 각 컴포넌트에 Fallback UI를 적용하고 `QueryErrorResetBoundary`로 실패한 쿼리를 초기화·재요청할 수 있도록 구현해 전체 화면 중단 없이 부분적으로 복원되는 구조를 만들었습니다.
+
+<br />
+
+**Axios 인터셉터 기반 자동 재인증**
+
+> 인증 만료 시 사용자 흐름이 끊기는 문제를 해결하기 위해 응답 body의 에러 타입을 기준으로 토큰 만료 여부를 판단하고, 토큰 재발급 → 원래 요청 재전송 구조를 구현했습니다. \_retry 플래그로 무한 루프를 방지하고, 재발급 요청이 중복으로 발생하지 않도록 진행 중인 Promise를 공유하는 방식으로 처리했습니다.
+
+```typescript
+if (!refreshInFlight) {
+  refreshInFlight = axiosInstance.post('/auth/token/refresh').then(() => {});
+  refreshInFlight.finally(() => (refreshInFlight = null));
+}
+await refreshInFlight;
+return axiosInstance(cfg);
+```
+
+<br />
+
+**반응형 UI**
+
+> `@media` 쿼리와 `useIsMobile` 커스텀 훅을 활용해 모바일·웹 레이아웃을 분리했습니다. 채팅·알림 등 일부 기능의 레이아웃을 모바일에서는 전용 페이지로, 웹에서는 플로팅 패널로 제공합니다.
+
+<br />
+
+**FSD 기반 폴더 구조**
+
+> Feature-Sliced Design을 참고해 폴더 구조를 설계했습니다. 기능별로 관심사를 분리해 코드의 응집도를 높이고 의존성을 명확하게 관리하고자 했습니다.
+
+```
+src/
+├── app/         # 라우팅, 루트 레이아웃 등
+├── entities/    # 도메인 엔티티 (타입, API, 모델)
+├── features/    # 기능 단위 모듈
+└── shared/      # 공통 컴포넌트, 훅, 유틸 등
+```
+
+<br />
+
+**외부 API 연동**
+
+> Next.js Route Handler로 직접 API 엔드포인트를 구성해 OpenAI, 알라딘 API를 연동했습니다.
