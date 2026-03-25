@@ -4,15 +4,14 @@ import Link from 'next/link';
 import { useTheme } from 'styled-components';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useFABStore, useHandleOpenWidget, useWidgetStore } from '../model';
-import { connectNoti, Notification } from '../model/connectNoti';
-import { useMyStore } from '../model/useMyStore';
+import { connectNoti, Notification } from '@/shared/model/connectNoti';
+import InquiryContents from '@/features/floating-button/ui/InquiryContents';
+import { useMyStore } from '@/shared/model/useMyStore';
+import ModalLayout from '@/shared/ui/ModalLayout';
 import { useUnreadQuery } from '@/entities/chat';
-import InquiryContents from './InquiryContents';
 import * as S from './FloatingButton.styles';
-import ModalLayout from './ModalLayout';
-import { colors } from '../constants';
-import Badge from './Badge';
+import { colors } from '@/shared/constants';
+import Badge from '@/shared/ui/Badge';
 import {
   AIIconSm,
   BookIcon,
@@ -20,7 +19,12 @@ import {
   CloseIcon,
   FABDefaultIcon,
   InquiryIcon,
-} from '../assets/icons';
+} from '@/shared/assets/icons';
+import {
+  useFABStore,
+  useHandleOpenWidget,
+  useWidgetStore,
+} from '@/shared/model';
 
 const FloatingButton = () => {
   const theme = useTheme();

@@ -1,10 +1,12 @@
+'use client';
+
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useInquiryMutation } from '@/entities/inquiries';
 import { useMyQuery } from '@/entities/user';
-import { colors } from '../constants';
-import { showToast } from '../lib';
-import Button from './Button';
+import { colors } from '@/shared/constants';
+import { showToast } from '@/shared/lib';
+import Button from '@/shared/ui/Button';
 
 const MAX_LENGTH = 200;
 interface InquiryContentsProps {

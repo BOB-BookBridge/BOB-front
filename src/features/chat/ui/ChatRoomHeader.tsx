@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'styled-components';
 import { ChatUser, useExitChatMutation } from '@/entities/chat';
+import { ReportModalContents } from '@/features/report/ui';
 import { useFABStore, useIsMobile } from '@/shared/model';
 import * as S from './ChatRoom.styles';
 import {
@@ -10,7 +11,7 @@ import {
   DeleteIcon,
   SirenIcon,
 } from '@/shared/assets/icons';
-import { ModalLayout, ReportModalContents } from '@/shared/ui';
+import { ModalLayout } from '@/shared/ui';
 
 interface ChatRoomHeaderProps {
   id: number;
