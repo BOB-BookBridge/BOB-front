@@ -48,8 +48,14 @@ axiosInstance.interceptors.response.use(
     if (!refreshInFlight) {
       refreshInFlight = axiosInstance
         .post('/auth/token/refresh')
-        .then(() => {});
-      refreshInFlight.finally(() => (refreshInFlight = null));
+        .then(() => {})
+        .catch((err) => {
+          window.location.href = '/login';
+          return Promise.reject(err);
+        })
+        .finally(() => {
+          refreshInFlight = null;
+        });
     }
 
     try {
