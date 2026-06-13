@@ -5,7 +5,6 @@ export interface AIChatReq {
 
 export interface AIChatRes {
   reply: string;
-  error: boolean;
 }
 
 export type ChatRole = 'user' | 'assistant';

@@ -75,7 +75,7 @@ const AI = () => {
           sentAt: new Date().toISOString(),
           role: 'assistant',
           isLoading: false,
-          isError: res.error,
+          isError: false,
         },
       ]);
     } catch (err) {

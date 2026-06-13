@@ -91,22 +91,17 @@ export async function POST(req: Request) {
 
     const reply = res.choices[0]?.message?.content;
     if (!reply) {
-      return NextResponse.json({
-        reply:
-          '죄송해요, 답변을 생성하지 못했어요. 잠시 후 다시 시도해주세요 📚',
-        error: true,
-      });
+      return NextResponse.json(
+        { message: '답변을 생성하지 못했어요.' },
+        { status: 500 },
+      );
     }
-    return NextResponse.json({ reply, error: false });
+    return NextResponse.json({ reply });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return NextResponse.json(
-      {
-        reply:
-          '죄송해요, 서버에서 오류가 발생했어요. 잠시 후 다시 시도해주세요📚',
-        error: true,
-      },
-      { status: 200 },
+      { message: '서버에서 오류가 발생했어요.' },
+      { status: 500 },
     );
   }
 }
